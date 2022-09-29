@@ -1,3 +1,8 @@
+.footer > div {
+  display: flex;
+  flex-direction: column;
+}
+
 footer {
   padding: 2rem;
   background-color: black;
@@ -10,29 +15,35 @@ footer .footer {
   margin: auto;
 }
 
-footer .footer p {
+.footer .disclaimer, .copyright {
+  margin-top: 15px;
   margin: 1;
   text-align: center;
 }
 
-footer .footer a {
+.footer .disclaimer a {
   color: red;
 }
 
-.footer .columns a {
-  color: white;
-}
-
-.footer .columns a:hover {
+.footer .disclaimer a:hover {
   text-decoration: none;
   font-weight: bold;
 }
 
-.footer .columns h1 {
+.footer a {
+  color: white;
+}
+
+.footer a:hover {
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.footer h1 {
   text-transform: capitalize;
   color: white;
 }
 
-.footer .columns ul {
+.footer ul {
   list-style-type: none;
 }
