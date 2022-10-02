@@ -52,10 +52,10 @@ export async function loadProducts(url = PRODUCTS_URL, offset=0, limit=1000) {
 
 export async function getProduct(productID) {
     console.log('getting product id ' + productID);
-    var p = findProductInCache(productID);
-    if (p) {
-        return p;
-    }
+    //var p = findProductInCache(productID);
+    //if (p) {
+    //    return p;
+    //}
 
     var json = await loadProducts();
     if(!json.data) return;
@@ -63,7 +63,7 @@ export async function getProduct(productID) {
     var count = 0;
     
     do {
-        addToProductsCache(json.data, productID);
+        //addToProductsCache(json.data, productID);
         let p = findProduct(json.data, productID);
         if (p) return p;
         count =+ json.data.length;
