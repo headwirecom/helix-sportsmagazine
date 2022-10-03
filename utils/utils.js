@@ -1,5 +1,5 @@
 const PRODUCTS_URL = '/products/test-product-list-ballmarker.json';
-
+const PRODUCTS_REQUEST_LIMIT = 1000;
 const productsCache = [];
 function addToProductsCache(products) {
     // could use window.sessionStorage
@@ -43,8 +43,8 @@ export function clearProductCache() {
     }
 }
 
-export async function loadProducts(url = PRODUCTS_URL, offset=0, limit=1000) {
-    const resp = await fetch(url+'?offset='+offset+'&limit='+limit);
+export async function loadProducts(url = PRODUCTS_URL, offset=0) {
+    const resp = await fetch(url+'?offset='+offset+'&limit='+PRODUCTS_REQUEST_LIMIT);
     if (!resp.ok) return {};
     const json = await resp.json();
     return json;
@@ -57,7 +57,8 @@ export async function getProduct(productID) {
         return p;
     }
 
-    var json = await loadProducts();
+    var offset = productsCache.length*PRODUCTS_REQUEST_LIMIT;
+    var json = await loadProducts(PRODUCTS_URL, offset);
     if(!json.data) return;
     var totalRecords = json.total;
     var count = 0;
@@ -68,7 +69,7 @@ export async function getProduct(productID) {
         if (p) return p;
         count =+ json.data.length;
         if (count < totalRecords) {
-            let offset = json.offset + json.limit;
+            offset = json.offset + json.limit;
             json = await loadProducts(PRODUCTS_URL, offset);
         }
     } while(count < totalRecords);
