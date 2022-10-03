@@ -43,6 +43,13 @@ export function clearProductCache() {
     }
 }
 
+export async function loadProductRaw(raw) {
+    const resp = await fetch(PRODUCTS_URL+'?offset='+raw+'&limit=1');
+    if (!resp.ok) return {};
+    const json = await resp.json();
+    return json.data[0];
+}
+
 export async function loadProducts(url = PRODUCTS_URL, offset=0) {
     const resp = await fetch(url+'?offset='+offset+'&limit='+PRODUCTS_REQUEST_LIMIT);
     if (!resp.ok) return {};
@@ -52,6 +59,11 @@ export async function loadProducts(url = PRODUCTS_URL, offset=0) {
 
 export async function getProduct(productID) {
     console.log('getting product id ' + productID);
+    if (productID.startsWith('raw-')) {
+        const raw = productID.split('-')[1];
+        return loadProductRaw(raw);
+    }
+    
     var p = findProductInCache(productID);
     if (p) {
         return p;
