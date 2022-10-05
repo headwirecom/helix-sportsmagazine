@@ -1,9 +1,12 @@
 import { getProduct, createTag } from "../../utils/utils.js";
 
-export default async function decorate(block) {
+export default function decorate(block) {
     const container = block.children[0];
     const productID = container.children[0].innerHTML;
-    const product = await getProduct(productID);
+    getProduct(productID).then(product => decorateProductDetail(container, productID, product));
+}
+
+function decorateProductDetail(container, productID, product) {
     if (product) { 
         let titleTag = createTag('h5', {}, product['Title']);
         container.appendChild(titleTag);
@@ -18,7 +21,7 @@ export default async function decorate(block) {
 
         let priceTag = createTag('p', {}, '$' + product['Price'] + ' | ' + product['Source']);
         container.appendChild(priceTag);
-        
+
         let buttonLinkTag = createTag('a', {
             href: product['Product URL'],
             title: product['Product URL'],
