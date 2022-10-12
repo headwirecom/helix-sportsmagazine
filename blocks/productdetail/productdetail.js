@@ -5,7 +5,7 @@ export default async function decorate(block) {
     const productID = container.children[0].innerHTML;
     const product = await getProduct(productID);
     if (product) { 
-        let titleTag = createTag('h5', {}, product['Title']);
+        let titleTag = createTag('h2', {}, product['Title']);
         container.appendChild(titleTag);
 
         let imgTag = createTag('img', 
