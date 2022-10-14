@@ -76,5 +76,7 @@ function decorateLinkItem(el, svg, url, title, networkId) {
     linkTag.setAttribute('data-social-share-network', networkId);
     linkTag.append(iconSpan);
     linkTag.append(titleSpan);
-    el.append(linkTag);
+    let tmpNode = document.createElement('div');
+    tmpNode.append(linkTag);
+    el.innerHTML = tmpNode.innerHTML;
 }
