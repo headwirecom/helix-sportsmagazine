@@ -8,7 +8,7 @@ export default function decorate(block) {
 
 function decorateProductDetail(container, productID, product) {
     if (product) { 
-        let titleTag = createTag('h5', {}, product['Title']);
+        let titleTag = createTag('h2', {}, product['Title']);
         container.appendChild(titleTag);
 
         let imgTag = createTag('img', 
