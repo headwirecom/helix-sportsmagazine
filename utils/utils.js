@@ -103,3 +103,9 @@ export function createTag(tag, attributes, html) {
     }
     return el;
 }
+
+export function createTagFromString(htmlString) {
+    const tmpDiv = document.createElement('div');
+    tmpDiv.innerHTML = htmlString.trim();
+    return tmpDiv.firstChild;
+}

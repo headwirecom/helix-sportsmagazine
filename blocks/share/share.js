@@ -42,8 +42,8 @@ async function getSVG(networkId, uuid) {
 export default function decorate(block) {
     const container = block.children[0];
     container.children[0].classList.add('o-SocialShare');
-    for (var icons of container.children[0].getElementsByTagName('ul')) icons.classList.add('m-SocialIcons'); 
-    const list = container.children[0].getElementsByTagName('li');
+    for (var icons of container.getElementsByTagName('ul')) icons.classList.add('m-SocialIcons'); 
+    const list = container.getElementsByTagName('li');
     for (let el of list) {
         let title = el.innerHTML;
         let name = title.toLowerCase();
