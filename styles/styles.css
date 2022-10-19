@@ -1,7 +1,4 @@
-
-
- :root {
-
+:root {
   /* fonts */
   --font-gotham: 'Gotham', helvetica, ubuntu, roboto, noto, sans-serif;
   --font-tungsten: 'Tungsten', helvetica, ubuntu, roboto, noto, sans-serif;
@@ -64,47 +61,22 @@ body {
   margin: 0;
   line-height: 1.6;
   display: none;
-
-}
-
-.default-content-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 30px;
-
-  margin-bottom: 20px;
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 400;
-  letter-spacing: 0.1em;
-}
-
-.default-content-wrapper {
-  margin-bottom: 60px;
-}
-
-.default-content-wrapper:first-of-type > p:first-child {
-  color: var(--grey);
-  margin: 0;
-  text-align: center;
-  text-transform: uppercase;
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 500;
-  letter-spacing: 0.1em;
 }
 
 body.appear {
   display: unset;
 }
 
-header {
-  height: var(--nav-height);
+
+.default-content-wrapper:first-of-type > p:first-child {
+  color: var(--grey);
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-align: left;
 }
 
 h1, h2, h3,
@@ -125,33 +97,10 @@ h4 { font-size: var(--heading-font-size-s) }
 h5 { font-size: var(--heading-font-size-xs) }
 h6 { font-size: var(--heading-font-size-xs) }
 
-p, dl, ol, ul, pre, blockquote {
-  margin-top :0;
-  margin-bottom: 1em;
-}
-
-a:any-link {
-  color: var(--link-color);
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-  color: var(--link-hover-color);
-}
-
-code, pre, samp {
-  font-family: var(--fixed-font-family);
-  font-size: var(--body-font-size-s);
-}
-
-code, samp {
-  padding: .125em;
-}
-
-pre {
-  overflow: scroll;
-}
+/* p, dl, ol, ul, pre, blockquote { */
+/*   margin-top :0; */
+/*   margin-bottom: 1em; */
+/* } */
 
 /* buttons */
 a.button:any-link, button {
@@ -163,18 +112,6 @@ a.button:any-link, button {
   background: var(--news);
   color: var(--white);
   border: 2px solid var(--news);
-
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 156%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  text-decoration: none;
-  margin: 8px 0px;
 }
 
 a.button:hover, a.button:focus, button:hover, button:focus  {
@@ -182,11 +119,6 @@ a.button:hover, a.button:focus, button:hover, button:focus  {
   background: none;
   color: var(--news);
   border: 2px solid var(--news);
-}
-
-main > div:first-child {
-  width: var(--article-container-width);
-  max-width: 100%;
 }
 
 main input {
@@ -207,42 +139,6 @@ main input:hover {
   border: 1px solid var(--text-color);
 }
 
-main .section {
-  padding: 64px 16px;
-}
-
-main pre {
-  background-color: var(--overlay-background-color);
-  padding: 1em;
-  border-radius: .25em;
-  overflow-x: auto;
-  white-space: pre;
-}
-
-main blockquote {
-  font-style: italic;
-  margin: 3rem;
-  text-indent: -1rem;
-  hanging-punctuation: first;
-}
-
-main blockquote p::before {
-  content: "“";
-  line-height: 0;
-}
-
-main blockquote p::after {
-  content: "”";
-  line-height: 0;
-}
-
-hr {
-  margin-top: 1.5em;
-  margin-bottom: 1.5em;
-  border: 0;
-  border-bottom: 1px solid var(--overlay-background-color);
-}
-
 main img {
   max-width: 100%;
   width: auto;
@@ -250,40 +146,12 @@ main img {
   margin: 0;
 }
 
-.image p{
-  margin-bottom: 0;
-}
-
-
 main .image p:last-of-type {
   color: var(--grey);
   font-size: var(--body-font-size-xs);
 }
-
 .image-wrapper {
   margin-bottom: 60px;
-}
-
-@media (min-width: 600px) {
-  main .section {
-    padding: 64px 32px;
-  }  
-}
-
-@media (min-width: 900px) {
-  :root {
-    /* --heading-font-size-xxl: 60px; */
-    /* --heading-font-size-xl: 40px; */
-    /* --heading-font-size-l: 36px; */
-    /* --heading-font-size-m: 30px; */
-    /* --heading-font-size-s: 24px; */
-    /* --heading-font-size-xs: 22px; */  
-  }
-  
-  .section > div {
-    max-width: var(--main-container-width);
-    margin: auto;
-  }
 }
 
 /* progressive section appearance */
@@ -292,84 +160,180 @@ main .section[data-section-status='initialized'] {
   display: none;
 }
 
-main .section.highlight {
-  background-color: var(--highlight-background-color);
+main > .section {
+  padding: 15px;
+  display: grid;
+  grid-template: 
+  "hed "
+  "by  "
+  "img " 
+  "body"
+  "side"
+  /100%
+}
+
+@media (min-width: 600px) {
+  main > .section {
+    grid-template: 
+    "...  hed   hed   side  ..."
+    "...  by    by    side  ..."
+    "...  img   img   side  ..."
+    "...  ...   body  side  ..."
+    /auto 136px 776px 512px auto;
+  }
+}
+
+main > .section > * {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 600px) {
+  main > .section > * {
+    grid-column: 3 / 4;
+  }
+}
+
+main > .section > .default-content-wrapper:first-child {
+  grid-area: hed
+}
+
+main > .section > .image-wrapper {
+  grid-area: img
+}
+
+main > .section > .share-wrapper:nth-child(2) {
+  grid-area: by
+}
+
+/* Main article content */
+main > .section > div:nth-child(4) {
+  grid-area: body;
+}
+
+/* Article typography styles */
+/* */
+main > .section > div:nth-child(4) p {
+  font-family: var(--font-gotham);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 30px;
+  margin: 0;
+  text-align: left;
+  margin-bottom: 60px;
+}
+
+a {
+  color: inherit;
+  font-weight: 500;
+}
+
+a:hover {
+  color: var(--news);
+}
+
+h2 {
+  display: inline;
+  font-family: var(--font-tungsten);
+  font-size: 37px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 38px;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--news);
+  margin: 0;
+  text-align: center;
+  align-self: center;
+} 
+
+h3 {
+  font-family: var(--font-gotham);
+  text-align: left;
+  margin: -30px 0;
+}
+
+ol, ul {
+  text-align: left;
+  font-family: var(--font-gotham);
+  list-style-position: inside;
+  padding-left: 0;
+  line-height: 30px;
 }
 
 @font-face {
-	font-family: 'Tungsten';
+  font-family: 'Tungsten';
   src: url('/styles/fonts/Tungsten/Tungsten-Book_Web.woff2') format('woff2');
   font-display: swap;
-	font-weight: 400;
-	font-style: normal;
+  font-weight: 400;
+  font-style: normal;
 }
 @font-face {
-	font-family: 'Tungsten';
+  font-family: 'Tungsten';
   src: url('/styles/fonts/Tungsten/Tungsten-Medium_Web.woff2') format('woff2');
   font-display: swap;
-	font-weight: 500;
-	font-style: normal;
+  font-weight: 500;
+  font-style: normal;
 }
 @font-face {
-	font-family: 'Tungsten';
-	src: url('/styles/fonts/Tungsten/Tungsten-Semibold_Web.woff2') format('woff2'); 
+  font-family: 'Tungsten';
+  src: url('/styles/fonts/Tungsten/Tungsten-Semibold_Web.woff2') format('woff2'); 
   font-display: swap;
-	font-weight: 600;
-	font-style: normal;
+  font-weight: 600;
+  font-style: normal;
 }
 @font-face {
-	font-family: 'Tungsten';
-	src: url('/styles/fonts/Tungsten/Tungsten-Bold_Web.woff2') format('woff2'); 
+  font-family: 'Tungsten';
+  src: url('/styles/fonts/Tungsten/Tungsten-Bold_Web.woff2') format('woff2'); 
   font-display: swap;
-	font-weight: 700;
-	font-style: normal;
+  font-weight: 700;
+  font-style: normal;
 }
 @font-face {
-	font-family: 'Tungsten';
-	src: url('/styles/fonts/Tungsten/Tungsten-Black_Web.woff2') format('woff2'); 
+  font-family: 'Tungsten';
+  src: url('/styles/fonts/Tungsten/Tungsten-Black_Web.woff2') format('woff2'); 
   font-display: swap;
-	font-weight: 800;
-	font-style: normal;
+  font-weight: 800;
+  font-style: normal;
 }
 @font-face {
-	font-family: 'Gotham';
-	src: url('/styles/fonts/Gotham/Gotham-Book_Web.woff2') format('woff2'); 
+  font-family: 'Gotham';
+  src: url('/styles/fonts/Gotham/Gotham-Book_Web.woff2') format('woff2'); 
   font-display: swap;
-	font-weight: 400;
-	font-style: normal;
+  font-weight: 400;
+  font-style: normal;
 }
 @font-face {
-	font-family: 'Gotham';
-	src: url('/styles/fonts/Gotham/Gotham-BookItalic_Web.woff2') format('woff2'); 
+  font-family: 'Gotham';
+  src: url('/styles/fonts/Gotham/Gotham-BookItalic_Web.woff2') format('woff2'); 
   font-display: swap;
-	font-weight: 400;
-	font-style: italic;
+  font-weight: 400;
+  font-style: italic;
 }
 @font-face {
-	font-family: 'Gotham';
-	src: url('/styles/fonts/Gotham/Gotham-Medium_Web.woff2') format('woff2'); 
+  font-family: 'Gotham';
+  src: url('/styles/fonts/Gotham/Gotham-Medium_Web.woff2') format('woff2'); 
   font-display: swap;
-	font-weight: 500;
-	font-style: normal;
+  font-weight: 500;
+  font-style: normal;
 }
 @font-face {
-	font-family: 'Gotham';
-	src: url('/styles/fonts/Gotham/Gotham-MediumItalic_Web.woff2') format('woff2'); 
+  font-family: 'Gotham';
+  src: url('/styles/fonts/Gotham/Gotham-MediumItalic_Web.woff2') format('woff2'); 
   font-display: swap;
-	font-weight: 500;
-	font-style: italic;
+  font-weight: 500;
+  font-style: italic;
 }
 @font-face {
-	font-family: 'Gotham';
-	src: url('/styles/fonts/Gotham/Gotham-Bold_Web.woff2') format('woff2'); 
+  font-family: 'Gotham';
+  src: url('/styles/fonts/Gotham/Gotham-Bold_Web.woff2') format('woff2'); 
   font-display: swap;
-	font-weight: 700;
-	font-style: normal;
+  font-weight: 700;
+  font-style: normal;
 }
 @font-face {
-	font-family: 'Gotham';
-	src: url('/styles/fonts/Gotham/Gotham-BoldItalic_Web.woff2') format('woff2'); 
+  font-family: 'Gotham';
+  src: url('/styles/fonts/Gotham/Gotham-BoldItalic_Web.woff2') format('woff2'); 
   font-display: swap;
-	font-weight: 700;
-	font-style: italic;
+  font-weight: 700;
+  font-style: italic;
 }
