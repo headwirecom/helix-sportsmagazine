@@ -1,8 +1,10 @@
 import { createTag, createTagFromString } from "../../utils/utils.js";
 import { bylineTemplate } from "./templates.js";
+import { loadCSS } from "../scripts/scripts.js"
 
 function decorateShareBlock(block) {
     import('./share/share.js').then(mod => {
+        loadCSS(`${window.hlx.codeBasePath}/blocks/share/share.css`);
         mod.default(block);
     });
 }
