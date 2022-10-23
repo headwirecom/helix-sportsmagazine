@@ -44,10 +44,7 @@ export function clearProductCache() {
 }
 
 export async function loadProductRaw(raw) {
-    const resp = await fetch(PRODUCTS_URL+'?offset='+raw+'&limit=1');
-    if (!resp.ok) return {};
-    const json = await resp.json();
-    return json.data[0];
+    
 }
 
 export async function loadProducts(url = PRODUCTS_URL, offset=0) {
@@ -104,8 +101,35 @@ export function createTag(tag, attributes, html) {
     return el;
 }
 
-export function createTagFromString(htmlString) {
-    const tmpDiv = document.createElement('div');
-    tmpDiv.innerHTML = htmlString.trim();
-    return tmpDiv.firstChild;
+export function createTagFromString(html, parentTag = 'div', attributes) {
+    const el = createTag(parentTag, attributes, html);
+    return el;
+}
+
+export function loadScript(url, callback, type) {
+    const head = document.querySelector('head');
+    const script = document.createElement('script');
+    script.src = url;
+    if (type) {
+        script.setAttribute('type', type);
+    }
+    script.onload = callback;
+    head.append(script);
+    return script;
+}
+
+export function jsonp(url) {
+    return new Promise(function(resolve, reject) {
+        let scriptTag = document.createElement('script');
+        const callbackFunc = "_jsonp_" + Math.round(100000 * Math.random());
+        if (url.match(/\?/)) url += "&callback="+callbackFunc
+        else url += "?callback="+callbackFunc
+        scriptTag.src = url;
+        window[callbackFunc] = function(data) {
+            resolve(data);
+            document.body.removeChild(scriptTag);
+            delete window[callbackFunc];
+        }
+        document.body.append(scriptTag);
+    });
 }

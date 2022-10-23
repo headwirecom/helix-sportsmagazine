@@ -1,5 +1,8 @@
+import { createTag, createTagFromString } from "../../utils/utils.js";
+
 export function bylineTemplate(data) {
-    return `<div class="o-ArticleByline">
+    let template = 
+        `<div class="o-ArticleByline">
                 <div class="attribution">
                     <div class="o-Attribution">
                         <div class="o-Attribution__m-Body">
@@ -34,4 +37,16 @@ export function bylineTemplate(data) {
                     </div>
                 </div>
             </div>`
+    return createTagFromString(template);
+}
+
+export function youtubeEmbedTemplate(url) {
+    let template = `
+        <iframe 
+            width="100%"
+            height="100%"
+            src="${url}">
+        </iframe>
+    `;
+    return createTagFromString(template);
 }
