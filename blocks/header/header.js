@@ -1,4 +1,6 @@
 import { readBlockConfig, decorateIcons } from '../../scripts/scripts.js';
+import { leaderboardTemplate } from '../templates.js';
+import { createTagFromString } from '../../utils/utils.js';
 
 /**
  * collapses all open nav sections
@@ -20,6 +22,10 @@ export default async function decorate(block) {
   const cfg = readBlockConfig(block);
   block.textContent = '';
 
+  // insert leaderboard
+  const leaderboard = leaderboardTemplate({});
+  block.insertAdjacentHTML('beforebegin', leaderboard);
+  
   // fetch nav content
   const navPath = cfg.nav || '/nav';
   const resp = await fetch(`${navPath}.plain.html`);

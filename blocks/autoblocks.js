@@ -1,5 +1,4 @@
-import { jsonp, loadScript } from "../../utils/utils.js";
-import { bylineTemplate, youtubeEmbedTemplate } from "./templates.js";
+import { bylineTemplate } from "./templates.js";
 import { loadCSS } from "../scripts/scripts.js"
 
 function loadBlock(block, name) {
@@ -17,32 +16,18 @@ function buildBylineBlock(main, metadata) {
     h1.after(byline);
 }
 
-function buildSocialLinkBlocks(main) {
+function buildEmbedBlocks(main) {
+    const EMBEDS = ['youtube', 'twitter'];
     const links = main.getElementsByTagName('a');
-    var isTwitterScriptInserted = false;
     for (let link of links) {
         let url = link.innerHTML;
-        if(url.startsWith('https://twitter.com/') || url.startsWith('https://www.twitter.com/')) {
-            jsonp(`//publish.twitter.com/oembed?url=${url}&partner=&hide_thread=false`).then((res) => {
-                if (res.html) {
-                    let el = document.createElement('div');
-                    el.innerHTML = res.html;
-                    let blockquote = el.getElementsByTagName('blockquote')[0];
-                    if (!isTwitterScriptInserted) {
-                        loadScript('https://platform.twitter.com/widgets.js');
-                        isTwitterScriptInserted = true;
-                    }
-                    link.replaceWith(blockquote);
-                }
-            });
-        } else if (url.startsWith('https://youtube.com/') || url.startsWith('https://www.youtube.com/')) {
-           let el = youtubeEmbedTemplate(url);
-           link.replaceWith(el);
+        if (EMBEDS.some(match => url.includes(match))) {
+            loadBlock(link.parentElement, 'embed');
         }
     }
 }
 
 export default function decorate(main, metadata) {
     buildBylineBlock(main, metadata);
-    buildSocialLinkBlocks(main);
+    buildEmbedBlocks(main);
 }
