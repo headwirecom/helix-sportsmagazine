@@ -192,18 +192,6 @@ main > .section > * {
   }
 }
 
-main > .section > .default-content-wrapper:first-child {
-  grid-area: hed
-}
-
-main > .section > .image-wrapper {
-  grid-area: img
-}
-
-main > .section > .share-wrapper:nth-child(2) {
-  grid-area: by
-}
-
 /* Main article content */
 main > .section > div:nth-child(4) {
   grid-area: body;
