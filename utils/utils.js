@@ -37,6 +37,13 @@ function findProduct(products, productID) {
     return products.find(p => p['Product ID'] === productID);
 }
 
+export async function loadJsonData(url) {
+    const resp = await fetch(url);
+    if (!resp.ok) return {};
+    const json = await resp.json();
+    return json;
+}
+
 export function clearProductCache() {
     while (productsCache.length > 0) {
         productsCache.pop();
@@ -44,7 +51,10 @@ export function clearProductCache() {
 }
 
 export async function loadProductRaw(raw) {
-    
+    const resp = await fetch(PRODUCTS_URL+'?offset='+raw+'&limit=1');
+    if (!resp.ok) return {};
+    const json = await resp.json();
+    return json.data[0];
 }
 
 export async function loadProducts(url = PRODUCTS_URL, offset=0) {
