@@ -28,7 +28,6 @@ export function bylineTemplate(data) {
                         <span style="display: none" class="clicktracking"></span>
                         <div class="o-SocialShare">
                             <ul>
-                                <li>Share story</li>
                                 <li>Facebook</li>
                                 <li>Twitter</li>
                                 <li>Linkedin</li>
