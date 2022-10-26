@@ -1,5 +1,5 @@
-import { readBlockConfig, decorateIcons } from '../../scripts/scripts.js';
-import { leaderboardTemplate } from '../templates.js';
+import { readBlockConfig, loadCSS, decorateIcons } from '../../scripts/scripts.js';
+import { leaderboardTemplate, headerTemplate } from '../templates.js';
 import { loadJsonData } from '../../utils/utils.js';
 
 const LEADERBOARD_URL = '/bin/leaderboard/leaders.json';
@@ -50,6 +50,10 @@ function collapseAllNavSections(sections) {
   });
 }
 
+function buildHeader(block) {
+  block.innerHTML = headerTemplate({});
+}
+
 /**
  * decorates the header, mainly the nav
  * @param {Element} block The header block element
@@ -62,7 +66,11 @@ export default async function decorate(block) {
   // insert leaderboard
   createLeaderBoard(block);
 
+  // build header
+  buildHeader(block);
+
   // fetch nav content
+  /*
   const navPath = cfg.nav || '/nav';
   const resp = await fetch(`${navPath}.plain.html`);
   if (resp.ok) {
@@ -105,4 +113,5 @@ export default async function decorate(block) {
     decorateIcons(nav);
     block.append(nav);
   }
+  */
 }
