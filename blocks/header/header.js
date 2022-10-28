@@ -4,6 +4,62 @@ import { loadJsonData } from '../../utils/utils.js';
 
 const LEADERBOARD_URL = '/bin/leaderboard/leaders.json';
 
+let loadBehaviors = [];
+let roots = Array.from(document.querySelectorAll('li.nav-level-0'));
+let menuState = false;
+const openClass = 'is-Open';
+const activeClass = 'is-Active';
+
+function handleExpand(expandButton) {
+  const item = expandButton.closest('.o-NavMenu__a-NavListItem');
+  const expanded = item.parentNode.querySelector('.expanded');
+
+  if(expanded === item) {
+    item.classList.toggle('expanded');
+  }
+  else {
+    item.classList.toggle('expanded');
+    if(!item.classList.contains('nav-level-0')) expanded?.classList.remove('expanded');
+  }
+
+  handleRootExpand();
+}
+
+function handleRootExpand() {
+  const anyExpanded = roots.reduce( (expanded, current) => expanded || current.classList.contains('expanded'), false )
+  for(const root of roots) {
+    if(!anyExpanded) {
+      root.style.display = 'block'
+    }
+    else  {
+      root.style.display = null;
+    }
+  }
+}
+
+function toggleNav(state) {
+  menuState = state = (typeof state === 'undefined') ? !menuState : state;
+  // toggleSearch(false);
+  // setNavTop();
+  let menuBtn = document.querySelector('.o-Header__a-MenuButton');
+  let menuEl = document.querySelector('.o-Header__m-NavMenu');
+  menuBtn.classList.toggle(activeClass);
+  menuEl.classList.toggle(openClass);
+  document.querySelector('.o-Header__m-Overlay').style = `display: ${state ? 'block' : 'none'}`;
+}
+
+function registerMenuEvents() {
+  roots = Array.from(document.querySelectorAll('li.nav-level-0'));
+  let menuBtn = document.querySelector('.o-Header__a-MenuButton');
+  let menuCloseBtn = document.querySelector('.o-Header__a-Close');
+  menuBtn.onclick = function(event) {
+    toggleNav();
+  };
+  menuCloseBtn.onclick = function(event) {
+    toggleNav(false);
+  }
+}
+
 function createLeaderboardPlayerHTML(data) {
   let html = `
   <div class="o-Leaderboard__m-Players__m-Player">
@@ -68,6 +124,8 @@ export default async function decorate(block) {
 
   // build header
   buildHeader(block);
+
+  registerMenuEvents();
 
   // fetch nav content
   /*
