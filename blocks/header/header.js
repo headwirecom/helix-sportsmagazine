@@ -48,6 +48,29 @@ function toggleNav(state) {
   document.querySelector('.o-Header__m-Overlay').style = `display: ${state ? 'block' : 'none'}`;
 }
 
+function registerSubMenuEvents(rootMenu) {
+  const allSubMenus = rootMenu.querySelectorAll('.o-NavMenu__m-NavList'); 
+  for (let menu of allSubMenus) {
+    let buttons = menu.querySelectorAll('.expand-button');
+    for (let btn of buttons) {
+      btn.onclick = function() {
+        handleExpand(btn);
+      };
+    }
+  }
+}
+
+function registerRootMenuEvents(rootMenu) {
+  const menuBtn = rootMenu.querySelector('.expand-button');
+  if (menuBtn) {
+    menuBtn.onclick = function(event) {
+      rootMenu.classList.toggle('expanded');
+      handleRootExpand();
+    };
+  }
+  registerSubMenuEvents(rootMenu);
+}
+
 function registerMenuEvents() {
   roots = Array.from(document.querySelectorAll('li.nav-level-0'));
   let menuBtn = document.querySelector('.o-Header__a-MenuButton');
@@ -57,6 +80,9 @@ function registerMenuEvents() {
   };
   menuCloseBtn.onclick = function(event) {
     toggleNav(false);
+  };
+  for (let menu of roots) {
+    registerRootMenuEvents(menu);
   }
 }
 
