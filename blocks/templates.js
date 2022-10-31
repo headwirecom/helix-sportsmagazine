@@ -69,7 +69,6 @@ export function leaderboardTemplate(data) {
 export function headerTemplate(data) {
     let template = `
     <span style="display: none" class="clicktracking" data-resource-type="golfdigestcom/components/hidden/header"></span>
-    <header class="o-Header" data-module="golf-header" id="mod-golf-header-1">
     <script type="text/x-config">
     {
         "gigyaScreensets": {

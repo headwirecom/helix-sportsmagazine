@@ -90,7 +90,7 @@ function toggleSearch(state) {
 
 function toggleNav(state) {
   menuState = state = (typeof state === 'undefined') ? !menuState : state;
-  toggleSearch(false);
+  if (menuState) toggleSearch(false);
   // setNavTop();
   let menuBtn = document.querySelector('.o-Header__a-MenuButton');
   let menuEl = document.querySelector('.o-Header__m-NavMenu');
@@ -216,6 +216,12 @@ function buildHeader(block) {
 export default async function decorate(block) {
   const cfg = readBlockConfig(block);
   block.textContent = '';
+
+  let header = block.closest('.header-wrapper');
+  if (header) {
+    header.classList.add('o-Header');
+    header.setAttribute('data-module', 'golf-header');
+ }
 
   // insert leaderboard
   createLeaderBoard(block);
