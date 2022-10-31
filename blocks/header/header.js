@@ -7,8 +7,25 @@ const LEADERBOARD_URL = '/bin/leaderboard/leaders.json';
 let loadBehaviors = [];
 let roots = Array.from(document.querySelectorAll('li.nav-level-0'));
 let menuState = false;
-const openClass = 'is-Open';
-const activeClass = 'is-Active';
+
+let defaults = {
+  setNavTop:        true,
+  searchExposed:    false,
+  highlightHeader: true,
+  useFixedMenus:   false,   // Area header uses fixed menus
+  headerSelector: '.o-Header',
+  openClass:        'is-Open',
+  activeClass:      'is-Active',
+  searchOpenClass:  'has-OpenSearch',
+  fixMenuOpen:      'has-FixedMenu',
+  navMenuSel:       '[data-module="golf-mobile-nav"]',
+  navButtonSel:     '[data-type="button-header-nav"]',
+  searchBoxSel:     '[data-mobile-search-box]',
+  searchInputSel:   '[data-type="search-input"]'
+};
+
+// TODO: hardcode defaults for now
+let config = defaults;
 
 function handleExpand(expandButton) {
   const item = expandButton.closest('.o-NavMenu__a-NavListItem');
@@ -37,15 +54,61 @@ function handleRootExpand() {
   }
 }
 
+function toggleSearch(state) {
+  let searchContainer = document.querySelector(config.searchBoxSel);
+  let searchBtn = document.querySelector('[data-type=button-search-toggle]');
+  let mainHeader = document.querySelector(config.headerSelector);
+
+  const outsideClickListener = function(event) {
+    if (!searchContainer.contains(event.target) && !searchBtn.contains(event.target)) {
+      toggleSearch(false);
+    }
+  };
+
+  if (state) {
+    toggleNav(false);
+    if (config.highlightHeader) {
+      mainHeader.classList.add(config.searchOpenClass); // used for main header
+      document.body.classList.add(config.fixMenuOpen);
+      // context.broadcast('openSearch');
+    }
+  } else {
+    document.removeEventListener('click', outsideClickListener);
+    document.querySelectorAll(config.searchInputSel).value = '';
+    if (config.highlightHeader) {
+      mainHeader.classList.remove(config.searchOpenClass);
+      document.body.classList.remove(config.fixMenuOpen);
+      // context.broadcast('closeSearch');
+    }
+  }
+  searchContainer.classList.toggle(config.openClass, state);
+  if (state) {
+    document.querySelector(config.searchInputSel).focus();
+    document.addEventListener('click', outsideClickListener);
+  }
+}
+
 function toggleNav(state) {
   menuState = state = (typeof state === 'undefined') ? !menuState : state;
-  // toggleSearch(false);
+  toggleSearch(false);
   // setNavTop();
   let menuBtn = document.querySelector('.o-Header__a-MenuButton');
   let menuEl = document.querySelector('.o-Header__m-NavMenu');
-  menuBtn.classList.toggle(activeClass);
-  menuEl.classList.toggle(openClass);
+  menuBtn.classList.toggle(config.activeClass, state);
+  menuEl.classList.toggle(config.openClass, state);
   document.querySelector('.o-Header__m-Overlay').style = `display: ${state ? 'block' : 'none'}`;
+
+  const outsideClickListener = function(event) {
+    if (!menuEl.contains(event.target) && !menuBtn.contains(event.target)) {
+      toggleNav(false);
+    }
+  };
+
+  if(menuState) {
+    document.addEventListener('click', outsideClickListener);
+  } else {
+    document.removeEventListener('click', outsideClickListener);
+  }
 }
 
 function registerSubMenuEvents(rootMenu) {
@@ -75,6 +138,8 @@ function registerMenuEvents() {
   roots = Array.from(document.querySelectorAll('li.nav-level-0'));
   let menuBtn = document.querySelector('.o-Header__a-MenuButton');
   let menuCloseBtn = document.querySelector('.o-Header__a-Close');
+  let searchBtn = document.querySelector('[data-type=button-search-toggle]');
+  let searchCancelBtn = document.querySelector('[data-type=button-search-cancel]');
   menuBtn.onclick = function(event) {
     toggleNav();
   };
@@ -84,6 +149,13 @@ function registerMenuEvents() {
   for (let menu of roots) {
     registerRootMenuEvents(menu);
   }
+  searchBtn.onclick = function(event) {
+    toggleSearch(true);
+  };
+  searchCancelBtn.onclick = function(event) {
+    event.preventDefault();
+    toggleSearch(false);
+  };
 }
 
 function createLeaderboardPlayerHTML(data) {
