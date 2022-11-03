@@ -78,24 +78,6 @@ body.appear {
   text-align: left;
 }
 
-h1, h2, h3,
-h4, h5, h6 {
-  font-family: var(--font-gotham);
-  font-weight: 700;
-  line-height: 44px;
-  letter-spacing: 0px;
-  scroll-margin: calc(var(--nav-height) + 1em);
-  margin-top: 0;
-  margin-bottom: 20px;
-}
-
-h1 { font-size: var(--heading-font-size-xl) }
-h2 { font-size: var(--heading-font-size-l) }
-h3 { font-size: var(--heading-font-size-m) }
-h4 { font-size: var(--heading-font-size-s) }
-h5 { font-size: var(--heading-font-size-xs) }
-h6 { font-size: var(--heading-font-size-xs) }
-
 /* p, dl, ol, ul, pre, blockquote { */
 /*   margin-top :0; */
 /*   margin-bottom: 1em; */

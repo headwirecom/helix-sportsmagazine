@@ -164,7 +164,7 @@ function createLeaderboardPlayerHTML(data) {
       <div class="o-Leaderboard__m-Players__m-PlayerMain">
           <h4 class="o-Leaderboard__m-Players__m-PlayerMain__a-Place">${data.Position}</h4>
           <div class="o-Leaderboard__m-Players__m-PlayerMain__a-Name">
-            <i style="background-image:url(${data.CountryFlag}});"></i><h5>${data.FirstName} ${data.LatsName}</h5>
+            <i style="background-image:url(${data.CountryFlag});"></i><h5>${data.FirstName} ${data.LatsName}</h5>
           </div>
           <p class="o-Leaderboard__m-Players__m-PlayerMain__a-Record">${data.Rounds.length} ${data.TotalScoreToPar}</p>
       </div>
