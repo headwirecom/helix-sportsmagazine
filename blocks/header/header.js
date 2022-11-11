@@ -252,9 +252,37 @@ function decorateMainMenuLevel(listEl, level) {
   });
 }
 
+function decorateSubNav(section) {
+  const subNav = document.querySelector('.o-Header__a-SubNav');
+  subNav.innerHTML = `
+  <ul>
+        <li class="active">
+            <a href="//www.golfdigest.com/play">All</a>
+        </li>
+    
+        <li>
+            <a href="//www.golfdigest.com/play/instruction">Instruction</a>
+        </li>
+    
+        <li>
+            <a href="//www.golfdigest.com/play/equipment">Equipment</a>
+        </li>
+    
+        <li>
+            <a href="//www.golfdigest.com/play/courses">Courses</a>
+        </li>
+    
+        <li>
+            <a href="//www.golfdigest.com/play/instruction/women">Women's Golf</a>
+        </li>
+    </ul>
+  `;
+}
+
 function decorateMainSideNav(section) {
   let main = section.querySelector('ul');
   decorateMainMenuLevel(main, 0);
+  decorateSubNav(section);
   return main;
 }
 

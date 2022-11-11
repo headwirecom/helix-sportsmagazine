@@ -119,6 +119,7 @@ export function headerTemplate(data) {
     The Loop
     </a>
     <div class="separator"></div>
+    <div class="o-Header__a-SubNav"></div>
     <div class="o-Header__m-BottomRight">
         <form action="/search" method="get" data-module="search-form" class="m-SearchForm" data-mobile-search-box="" id="mod-search-form-1">
             <script type="text/x-config">
