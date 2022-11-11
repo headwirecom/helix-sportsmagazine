@@ -21,7 +21,8 @@ let defaults = {
   navMenuSel:       '[data-module="golf-mobile-nav"]',
   navButtonSel:     '[data-type="button-header-nav"]',
   searchBoxSel:     '[data-mobile-search-box]',
-  searchInputSel:   '[data-type="search-input"]'
+  searchInputSel:   '[data-type="search-input"]',
+  anyHeadingSel:    'h1, h2, h3, h4, h5, h6'
 };
 
 // TODO: hardcode defaults for now
@@ -216,7 +217,6 @@ function decorateNavHeader(section) {
   <path fill="#ED1C24" d="M101 7.6c2.1 0 3.8-1.7 3.8-3.8S103.1 0 101 0s-3.8 1.7-3.8 3.8 1.7 3.8 3.8 3.8"></path>
   <path fill="#A8A9A3" d="M114.7 35.1v-.3c2.9-.3 6-1.4 6-3.8 0-1.4-1-1.9-2.5-1.9h-7.6c-2.9 0-5-1.4-5-4.6 0-2.6 2.3-4 4-4.8l.2.2c-.3.2-.6.5-.6 1.1 0 .7.5 1 1.2 1h8.3c4.2 0 6.6 1.6 6.6 5.8 0 3.9-4.5 6.9-10.6 7.3m-1.1 0c-5.8 0-8.6-1-8.6-3 0-1.5 1.7-2.3 4.9-2.5l.1.2c-.4.3-1 1-1 2.3 0 1.9 1.9 2.5 4.5 2.7v.3m1.3-15v-.3c.7-.2 1.2-1.9 1.2-5.6 0-3.8-.6-5.6-1.2-5.7v-.4c3.4.2 7.9 1.9 7.9 6s-4.5 5.9-7.9 6m-.9 0c-3.4-.2-8-1.9-8-5.9s4.6-5.9 8-6v.3c-.7.2-1.3 1.9-1.3 5.7 0 3.8.7 5.5 1.3 5.6v.3m9.9-9.4c-1.3 0-2.4-1.1-2.4-2.5s1.1-2.5 2.4-2.5c1.4 0 2.5 1.1 2.5 2.5-.1 1.5-1.2 2.5-2.5 2.5M82.5 26.7v-.5c3.3-.3 5-3.1 5-11.6 0-8.9-1.6-11.3-5.1-11.6v-.6c8.5.1 14 3.5 14 12.2.1 7.9-5.2 12-13.9 12.1m-1.4 0h-8.7V2.4h8.7v24.3M104.8 26.7h-7.5V9.1l7.5-.7v18.3M164.8 27c-3.5 0-6.1-1.6-6.1-5.9v-10h-2.3V8.5h2.4v-4l7.7-2.7-.2 6.7h4.8v2.6h-4.8v9.3c0 2.2.9 3 2.9 3 .8 0 2-.3 2.4-.5v.6c-1.1 1.9-3.4 3.5-6.8 3.5M148.8 27v-.4c1.2-.2 2.2-.8 2.2-2.2 0-1.2-.7-1.8-2.6-2.7l-2.4-1.1c-2.2-1-4.2-2.7-4.2-5.9 0-3.3 3.2-6.3 7.7-6.6v.4c-1 .1-2.1.6-2.1 2 0 1.3.8 1.9 2.1 2.5l3.3 1.5c2 .9 3.7 2.8 3.7 5.4.1 4.4-2.2 6.9-7.7 7.1m-.9 0c-1.9 0-4.3-.3-5.7-.7v-4.7c1.9 2 4 4.2 5.7 5v.4m7.7-14c-1.6-2.2-3.2-3.7-5.1-4.4v-.5c1.8 0 3.9.4 5.1.8V13M132.9 27c-6.5 0-9.3-4.7-9.3-9.5 0-5.1 4-9 9.2-9.4v.4c-1.1.3-1.6 1.4-1.6 6.5 0 4.2 1.7 6.5 5.2 6.5 2 0 3.8-.5 4.9-1.4v.7c-.7 2.2-2.8 6.2-8.4 6.2m8.2-11.2h-9v-.5l2.5-.4c0-4-.5-6.2-1.2-6.4v-.4c5.6.3 7.7 4.3 7.7 7.7"></path>
   </svg>`;
-  console.log('decorateNavHeader');  
   return el;
 }
 
@@ -255,7 +255,6 @@ function decorateMainMenuLevel(listEl, level) {
 function decorateMainSideNav(section) {
   let main = section.querySelector('ul');
   decorateMainMenuLevel(main, 0);
-  console.log('decorateMainSideNav'); 
   return main;
 }
 
@@ -266,7 +265,6 @@ function decorateSchoolsNav(section) {
   const logoTitle = title + ' Logo'
   let el = createTag('a', {'target': '_blank', 'class': 'o-Header__a-SchoolsLink', 'href': url, 'title': title, 'arial-label': logoTitle});
   el.insertAdjacentHTML('beforeend', headerSchoolsIconTemplate({title: logoTitle}));
-  console.log('decorateSchoolsNav'); 
   return el;
 }
 
@@ -278,19 +276,17 @@ function decorateSideNav(section, sectionClass) {
   sectionLinks.querySelectorAll('li').forEach(item => {
     item.querySelector('a').classList.add('a-NavLink');
   });
-  console.log('decorateSecondarySideNav'); 
   return el;
 }
 
 function decorateSecondarySideNav(section) {
   let el = decorateSideNav(section, 'o-NavMenu__m-Secondary');
-  console.log('decorateSecondarySideNav'); 
   return el;
 }
 
 function decorateLogin(section) {
   let el = createTag('ul', {class:'o-HeaderFresh__m-ProfileInfo'});
-  el.innerHTML = `<li data-logged-in="false">
+  el.innerHTML = `<li data-logged-in="false" style="display: none;">
   <a class="m-ProfileInfo__a-Nickname" data-social-nickname="" href="//www.golfdigest.com/my-account"></a>
   <a class="m-ProfileInfo__a-Button--Logout o-Button o-Button--transparent" href="#" data-type="gigya-logout">Log Out</a>
 </li>
@@ -298,48 +294,79 @@ function decorateLogin(section) {
   <a class="m-ProfileInfo__a-Button--Login o-Button" href="#" data-type="gigya-login">Log In</a>
   <a class="m-ProfileInfo__a-Button--Register o-Button o-Button--no-styles" href="#" data-type="gigya-register">Sign Up</a>
 </li>`;
-  console.log('decorateLogin');
   return el;
 }
 
 function decorateTertiarySideNav(section) {
   let el = decorateSideNav(section, 'o-NavMenu__m-Tertiary');
-  console.log('decorateTertiarySideNav'); 
   return el;
 }
 
+function getSocialLinkIconFromURL(url) {
+  const iconTemplates = [
+    {
+      match: ['facebook'],
+      getIcon: url => {
+        return `<a class="o-SocialLinks__a-Icon--facebook" href="${url}" target="_blank" rel="noopener" aria-label="Facebook Logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Facebook Logo">
+    <title>Facebook Logo</title>
+    <path d="M18 2H15C13.6739 2 12.4021 2.52678 11.4645 3.46447C10.5268 4.40215 10 5.67392 10 7V10H7V14H10V22H14V14H17L18 10H14V7C14 6.73478 14.1054 6.48043 14.2929 6.29289C14.4804 6.10536 14.7348 6 15 6H18V2Z" stroke="#ED3E49" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+      </a>`;
+      }
+    },
+    {
+      match: ['twitter'],
+      getIcon: url => {
+        return `<a class="o-SocialLinks__a-Icon--twitter" href="${url}" target="_blank" rel="noopener" aria-label="Twitter Logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Twitter Logo">
+    <title>Twitter Logo</title>
+    <path d="M23 2.9998C22.0424 3.67528 20.9821 4.19191 19.86 4.5298C19.2577 3.83731 18.4573 3.34649 17.567 3.12373C16.6767 2.90096 15.7395 2.957 14.8821 3.28426C14.0247 3.61151 13.2884 4.1942 12.773 4.95352C12.2575 5.71283 11.9877 6.61214 12 7.5298V8.5298C10.2426 8.57537 8.50127 8.18561 6.93101 7.39525C5.36074 6.60488 4.01032 5.43844 3 3.9998C3 3.9998 -1 12.9998 8 16.9998C5.94053 18.3978 3.48716 19.0987 1 18.9998C10 23.9998 21 18.9998 21 7.4998C20.9991 7.22126 20.9723 6.9434 20.92 6.6698C21.9406 5.6633 22.6608 4.39251 23 2.9998V2.9998Z" stroke="#ED3E49" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+      </a>`;
+      }
+    },
+    {
+      match: ['instagram'],
+      getIcon: url => {
+        return `<a class="o-SocialLinks__a-Icon--instagram" href="${url}" target="_blank" rel="noopener" aria-label="Instagram Logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Instagram Logo">
+    <title>Instagram Logo</title>
+    <path d="M17 2H7C4.23858 2 2 4.23858 2 7V17C2 19.7614 4.23858 22 7 22H17C19.7614 22 22 19.7614 22 17V7C22 4.23858 19.7614 2 17 2Z" stroke="#ED3E49" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="M16.0002 11.3698C16.1236 12.2021 15.9815 13.052 15.594 13.7988C15.2065 14.5456 14.5933 15.1512 13.8418 15.5295C13.0903 15.9077 12.2386 16.0394 11.408 15.9057C10.5773 15.7721 9.80996 15.3799 9.21503 14.785C8.62011 14.1901 8.22793 13.4227 8.09426 12.592C7.9606 11.7614 8.09226 10.9097 8.47052 10.1582C8.84878 9.40667 9.45438 8.79355 10.2012 8.40605C10.948 8.01856 11.7979 7.8764 12.6302 7.99981C13.4791 8.1257 14.265 8.52128 14.8719 9.12812C15.4787 9.73496 15.8743 10.5209 16.0002 11.3698Z" stroke="#ED3E49" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="M17.5 6.5H17.51" stroke="#ED3E49" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+      </a>`;
+      }
+    },
+    {
+      match: ['youtube'],
+      getIcon: url => {
+        return `<a class="o-SocialLinks__a-Icon--instagram" href="${url}" target="_blank" rel="noopener" aria-label="Youtube Logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Youtube Logo">
+    <title>Youtube Icon</title>
+    <path d="M22.5401 6.42C22.4213 5.94541 22.1794 5.51057 21.8387 5.15941C21.4981 4.80824 21.0708 4.55318 20.6001 4.42C18.8801 4 12.0001 4 12.0001 4C12.0001 4 5.12008 4 3.40008 4.46C2.92933 4.59318 2.50206 4.84824 2.16143 5.19941C1.8208 5.55057 1.57887 5.98541 1.46008 6.46C1.1453 8.20556 0.991319 9.97631 1.00008 11.75C0.988863 13.537 1.14285 15.3213 1.46008 17.08C1.59104 17.5398 1.83839 17.9581 2.17823 18.2945C2.51806 18.6308 2.9389 18.8738 3.40008 19C5.12008 19.46 12.0001 19.46 12.0001 19.46C12.0001 19.46 18.8801 19.46 20.6001 19C21.0708 18.8668 21.4981 18.6118 21.8387 18.2606C22.1794 17.9094 22.4213 17.4746 22.5401 17C22.8524 15.2676 23.0064 13.5103 23.0001 11.75C23.0113 9.96295 22.8573 8.1787 22.5401 6.42V6.42Z" stroke="#ED3E49" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="M9.75 15.02L15.5 11.75L9.75 8.47998V15.02Z" stroke="#ED3E49" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+      </a>`;
+      }
+    }
+  ];
+  let template = iconTemplates.find((e) => e.match.some((match) => url.includes(match)));
+  return ((template) ? template.getIcon(url) : '');
+} 
+
 function decorateSocialSideNav(section) {
-  let el = createTag('div', { class:'o-SocialLinks'}, '<h3>Follow Us</h3>');
-  el.insertAdjacentHTML('beforeend', `<div class="o-SocialLinks__m-IconWrapper">
-  <a class="o-SocialLinks__a-Icon--facebook" href="https://www.facebook.com/GolfDigest/" target="_blank" rel="noopener" aria-label="Facebook Logo">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Facebook Logo">
-<title>Facebook Logo</title>
-<path d="M18 2H15C13.6739 2 12.4021 2.52678 11.4645 3.46447C10.5268 4.40215 10 5.67392 10 7V10H7V14H10V22H14V14H17L18 10H14V7C14 6.73478 14.1054 6.48043 14.2929 6.29289C14.4804 6.10536 14.7348 6 15 6H18V2Z" stroke="#ED3E49" stroke-linecap="round" stroke-linejoin="round"></path>
-</svg>
-  </a>
-  <a class="o-SocialLinks__a-Icon--twitter" href="https://twitter.com/GolfDigest" target="_blank" rel="noopener" aria-label="Twitter Logo">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Twitter Logo">
-<title>Twitter Logo</title>
-<path d="M23 2.9998C22.0424 3.67528 20.9821 4.19191 19.86 4.5298C19.2577 3.83731 18.4573 3.34649 17.567 3.12373C16.6767 2.90096 15.7395 2.957 14.8821 3.28426C14.0247 3.61151 13.2884 4.1942 12.773 4.95352C12.2575 5.71283 11.9877 6.61214 12 7.5298V8.5298C10.2426 8.57537 8.50127 8.18561 6.93101 7.39525C5.36074 6.60488 4.01032 5.43844 3 3.9998C3 3.9998 -1 12.9998 8 16.9998C5.94053 18.3978 3.48716 19.0987 1 18.9998C10 23.9998 21 18.9998 21 7.4998C20.9991 7.22126 20.9723 6.9434 20.92 6.6698C21.9406 5.6633 22.6608 4.39251 23 2.9998V2.9998Z" stroke="#ED3E49" stroke-linecap="round" stroke-linejoin="round"></path>
-</svg>
-  </a>
-  <a class="o-SocialLinks__a-Icon--instagram" href="https://www.instagram.com/golfdigest/" target="_blank" rel="noopener" aria-label="Instagram Logo">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Instagram Logo">
-<title>Instagram Logo</title>
-<path d="M17 2H7C4.23858 2 2 4.23858 2 7V17C2 19.7614 4.23858 22 7 22H17C19.7614 22 22 19.7614 22 17V7C22 4.23858 19.7614 2 17 2Z" stroke="#ED3E49" stroke-linecap="round" stroke-linejoin="round"></path>
-<path d="M16.0002 11.3698C16.1236 12.2021 15.9815 13.052 15.594 13.7988C15.2065 14.5456 14.5933 15.1512 13.8418 15.5295C13.0903 15.9077 12.2386 16.0394 11.408 15.9057C10.5773 15.7721 9.80996 15.3799 9.21503 14.785C8.62011 14.1901 8.22793 13.4227 8.09426 12.592C7.9606 11.7614 8.09226 10.9097 8.47052 10.1582C8.84878 9.40667 9.45438 8.79355 10.2012 8.40605C10.948 8.01856 11.7979 7.8764 12.6302 7.99981C13.4791 8.1257 14.265 8.52128 14.8719 9.12812C15.4787 9.73496 15.8743 10.5209 16.0002 11.3698Z" stroke="#ED3E49" stroke-linecap="round" stroke-linejoin="round"></path>
-<path d="M17.5 6.5H17.51" stroke="#ED3E49" stroke-linecap="round" stroke-linejoin="round"></path>
-</svg>
-  </a>
-  <a class="o-SocialLinks__a-Icon--instagram" href="https://www.youtube.com/channel/UCkMOtD7MMYs1H55XH6CkWEw" target="_blank" rel="noopener" aria-label="Youtube Logo">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Youtube Logo">
-<title>Youtube Icon</title>
-<path d="M22.5401 6.42C22.4213 5.94541 22.1794 5.51057 21.8387 5.15941C21.4981 4.80824 21.0708 4.55318 20.6001 4.42C18.8801 4 12.0001 4 12.0001 4C12.0001 4 5.12008 4 3.40008 4.46C2.92933 4.59318 2.50206 4.84824 2.16143 5.19941C1.8208 5.55057 1.57887 5.98541 1.46008 6.46C1.1453 8.20556 0.991319 9.97631 1.00008 11.75C0.988863 13.537 1.14285 15.3213 1.46008 17.08C1.59104 17.5398 1.83839 17.9581 2.17823 18.2945C2.51806 18.6308 2.9389 18.8738 3.40008 19C5.12008 19.46 12.0001 19.46 12.0001 19.46C12.0001 19.46 18.8801 19.46 20.6001 19C21.0708 18.8668 21.4981 18.6118 21.8387 18.2606C22.1794 17.9094 22.4213 17.4746 22.5401 17C22.8524 15.2676 23.0064 13.5103 23.0001 11.75C23.0113 9.96295 22.8573 8.1787 22.5401 6.42V6.42Z" stroke="#ED3E49" stroke-linecap="round" stroke-linejoin="round"></path>
-<path d="M9.75 15.02L15.5 11.75L9.75 8.47998V15.02Z" stroke="#ED3E49" stroke-linecap="round" stroke-linejoin="round"></path>
-</svg>
-  </a>
-</div>`);
-  console.log('decorateSocialSideNav'); 
+  let heading = section.querySelector(config.anyHeadingSel);
+  let links = section.querySelectorAll('a');
+  let el = createTag('div', { class:'o-SocialLinks'}, heading);
+  let iconsWrapper = createTag('div', {class: 'o-SocialLinks__m-IconWrapper'});
+  el.append(iconsWrapper);
+  section.querySelectorAll('a').forEach(link => {
+    let url = link.getAttribute('href');
+    let icon = getSocialLinkIconFromURL(url);
+    iconsWrapper.insertAdjacentHTML('beforeend', icon);
+  });
   return el;
 }
 
@@ -389,50 +416,4 @@ export default async function decorate(block) {
     buildHeader(block, html);
     registerMenuEvents();
   }
-
-  // fetch nav content
-  /*
-  const navPath = cfg.nav || '/nav';
-  const resp = await fetch(`${navPath}.plain.html`);
-  if (resp.ok) {
-    const html = await resp.text();
-
-    // decorate nav DOM
-    const nav = document.createElement('nav');
-    nav.innerHTML = html;
-    decorateIcons(nav);
-
-    const classes = ['brand', 'sections', 'tools'];
-    classes.forEach((e, j) => {
-      const section = nav.children[j];
-      if (section) section.classList.add(`nav-${e}`);
-    });
-
-    const navSections = [...nav.children][1];
-    if (navSections) {
-      navSections.querySelectorAll(':scope > ul > li').forEach((navSection) => {
-        if (navSection.querySelector('ul')) navSection.classList.add('nav-drop');
-        navSection.addEventListener('click', () => {
-          const expanded = navSection.getAttribute('aria-expanded') === 'true';
-          collapseAllNavSections(navSections);
-          navSection.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-        });
-      });
-    }
-
-    // hamburger for mobile
-    const hamburger = document.createElement('div');
-    hamburger.classList.add('nav-hamburger');
-    hamburger.innerHTML = '<div class="nav-hamburger-icon"></div>';
-    hamburger.addEventListener('click', () => {
-      const expanded = nav.getAttribute('aria-expanded') === 'true';
-      document.body.style.overflowY = expanded ? '' : 'hidden';
-      nav.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-    });
-    nav.prepend(hamburger);
-    nav.setAttribute('aria-expanded', 'false');
-    decorateIcons(nav);
-    block.append(nav);
-  }
-  */
 }
