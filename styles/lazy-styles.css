@@ -1299,7 +1299,7 @@
 
     .o-Leaderboard__m-EventInfo {
         grid-area: a;
-        max-width: 100%
+        max-width: 191px;
     }
 
     .o-Leaderboard__m-LinkContainer {
