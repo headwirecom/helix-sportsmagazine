@@ -1,0 +1,89 @@
+.o-SocialShare {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    margin-bottom: 28px
+}
+
+.o-SocialShare,
+.o-SocialShare .m-SocialIcons {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex
+}
+
+.o-SocialShare .m-SocialIcons {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 0;
+    margin: 0
+}
+
+.o-SocialShare .m-SocialIcons li {
+    display: block;
+    margin-bottom: 10px
+}
+
+.o-SocialShare .m-SocialIcons li:last-child .o-SocialShare__m-IconWrap {
+    margin-right: 0
+}
+
+.o-SocialShare__a-ShareLabel {
+    font-family: Gotham, arial, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 16px;
+    letter-spacing: .3em;
+    text-align: left;
+    text-transform: uppercase
+}
+
+.o-SocialShare__m-IconWrap {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    margin-right: 17.5px;
+    background: #2c2c2c
+}
+
+.o-SocialShare__m-IconWrap:hover {
+    background-color: #ed3e49
+}
+
+.o-SocialShare .a-Icon {
+    margin: 0;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    color: #fff
+}
+
+.o-SocialShare .a-Icon * {
+    fill: #fff;
+    stroke: #fff
+}
+
+.o-SocialShare__a-Label {
+    display: none
+}
+
+.share-wrapper .socialSharing {
+    display: block;
+    margin-bottom: 40px
+}
+
+.share-wrapper .o-SocialShare__a-ShareLabel {
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1
+}

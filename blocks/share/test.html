@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="/blocks/share/share.css">
+    <script>
+        import('/blocks/share/share.js').then(mod => {
+            const block = document.querySelector('.share');
+            console.log("share module loaded: " + block.innerHTML);
+            mod.default(block);
+        });
+    </script>
+</head>
+
+<body>
+
+    <header><h1>Share Test SVG.</h1></header>
+
+    <div class="share block" data-block-name="share" data-block-status="loaded">
+        <div>
+          <div>
+            <ul>
+              <li>Share Story</li>
+              <li>Facebook</li>
+              <li>Twitter</li>
+              <li>LinkedIn</li>
+            </ul>
+          </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
