@@ -75,8 +75,10 @@ const loadScript = (url, callback, type) => {
     const config = EMBEDS_CONFIG.find((e) => e.match.some((match) => link.includes(match)));
     const url = new URL(link);
     if (config) {
-      block.innerHTML = config.embed(url);
-      block.classList = `block embed embed-${config.match[0]}`;
+      setTimeout(() => {
+        block.innerHTML = config.embed(url);
+        block.classList = `block embed embed-${config.match[0]}`;
+      }, 3000);
     } else {
       block.innerHTML = getDefaultEmbed(url);
       block.classList = 'block embed';
