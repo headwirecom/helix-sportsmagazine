@@ -67,6 +67,10 @@ body.appear {
   display: unset;
 }
 
+header {
+  min-height: 203.58px;
+}
+
 
 .default-content-wrapper:first-of-type > p:first-child {
   color: var(--grey);
