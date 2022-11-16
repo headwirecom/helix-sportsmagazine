@@ -67,7 +67,7 @@ body.appear {
   display: unset;
 }
 
-header {
+body > header {
   min-height: 203.58px;
 }
 
