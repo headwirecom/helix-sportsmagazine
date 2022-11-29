@@ -78,7 +78,7 @@ const loadScript = (url, callback, type) => {
       setTimeout(() => {
         block.innerHTML = config.embed(url);
         block.classList = `block embed embed-${config.match[0]}`;
-      }, 500);
+      }, 3000);
     } else {
       block.innerHTML = getDefaultEmbed(url);
       block.classList = 'block embed';
