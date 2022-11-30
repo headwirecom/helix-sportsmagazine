@@ -84,11 +84,15 @@ export default {
       appendMetadata(metadata, 'Author URL', authorURL);
       appendMetadata(metadata, 'Publication Date', publicationDate);
 
+      const metaMatchFilter = [ 'msapplication-TileColor', 'msapplication-TileImage', 'keywords', 'news_keywords', 
+                          'fb:app_id', 'fb:admins', 'twitter:domain', 'og:type', 'og:site_name', 'parsely-metadata',
+                          'tp:initialize', 'tp:PreferredRuntimes', 'fb:app_id' ];
       document.querySelectorAll('meta').forEach(metaEl => {
         let key = metaEl.getAttribute('name');
         if (!key) key = metaEl.getAttribute('property');
+        let name = metaMatchFilter.find((m) => { if (m.match(key)) { return m } } );
         let value = metaEl.getAttribute('content');
-        if (key && value) appendMetadata(metadata, key, value);
+        if (name && value) appendMetadata(metadata, name, value);
       });
       return main;
     
