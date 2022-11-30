@@ -1,4 +1,4 @@
-import { bylineTemplate } from "./templates.js";
+import { bylineTemplate, shareTemplate } from "./templates.js";
 import { loadCSS } from "../scripts/scripts.js"
 
 function loadBlock(block, name) {
@@ -27,7 +27,15 @@ function buildEmbedBlocks(main) {
     }
 }
 
+function buildShareBlock(main) {
+    const defaultContent = main.querySelector('.default-content-wrapper');
+    const shareBlock = shareTemplate();
+    defaultContent.append(shareBlock);
+    loadBlock(shareBlock, 'share');
+}
+
 export default function decorate(main, metadata) {
     buildBylineBlock(main, metadata);
     buildEmbedBlocks(main);
+    buildShareBlock(main);
 }

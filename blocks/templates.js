@@ -28,6 +28,7 @@ export function bylineTemplate(data) {
                         <span style="display: none" class="clicktracking"></span>
                         <div class="o-SocialShare">
                             <ul>
+                                <li>Share Story</li>
                                 <li>Facebook</li>
                                 <li>Twitter</li>
                                 <li>Linkedin</li>
@@ -36,6 +37,24 @@ export function bylineTemplate(data) {
                     </div>
                 </div>
             </div>`
+    return createTagFromString(template.trim());
+}
+
+export function shareTemplate() {
+    const template = `
+                <div class="share block">
+                    <div class="socialSharing">
+                        <span style="display: none" class="clicktracking"></span>
+                        <div class="o-SocialShare">
+                            <ul>
+                                <li>Share Story</li>
+                                <li>Facebook</li>
+                                <li>Twitter</li>
+                                <li>Linkedin</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>`;
     return createTagFromString(template.trim());
 }
 
