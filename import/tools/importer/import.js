@@ -125,5 +125,5 @@ export default {
     generateDocumentPath: ({
       // eslint-disable-next-line no-unused-vars
       document, url, html, params,
-    }) => new URL(url).pathname.replace(/\.html$/, '').replace(/\/$/, ''),
+    }) => new URL(url).pathname.replace(/\.html$/, '').replace(/\/$/, '').replace(/\/content\/golfdigest-com\/en/, ''),
   };
