@@ -23,6 +23,11 @@ function getPublicationDate(document) {
   return '';
 }
 
+function getRubric(document) {
+  const el = document.querySelector('.a-Rubric');
+  if (el) return el.innerHTML.trim();
+}
+
 function createMetadataBlock(document, main) {
   const block = WebImporter.Blocks.getMetadataBlock(document, {});
   main.append(block);
@@ -77,12 +82,15 @@ export default {
       const publicationDate = getPublicationDate(document);
       console.log(`Author: ${author}. Publication Date: ${publicationDate}`);
 
+      const rubric = getRubric(document);
+
       // const metadataBlock = WebImporter.Blocks.getMetadataBlock(document, {});
       // alert(metadataBlock.outerHTML);
       const metadata = createMetadataBlock(document, main);
       appendMetadata(metadata, 'Author', author);
       appendMetadata(metadata, 'Author URL', authorURL);
       appendMetadata(metadata, 'Publication Date', publicationDate);
+      appendMetadata(metadata, 'Rubric', rubric);
 
       const metaMatchFilter = [ 'msapplication-TileColor', 'msapplication-TileImage', 'keywords', 'news_keywords', 
                           'fb:app_id', 'fb:admins', 'twitter:domain', 'og:type', 'og:site_name', 'parsely-metadata',
