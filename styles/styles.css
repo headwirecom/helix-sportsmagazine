@@ -195,6 +195,23 @@ main > .section > div:nth-child(4) p {
   margin-bottom: 60px;
 }
 
+.a-Rubric {
+  margin-right: 14px;
+  background-color: #263238;
+  color: #fff;
+  font-family: chivo-black,Georgia,serif;
+  font-size: 9px;
+  letter-spacing: 1px;
+  padding: 9px 15px;
+  text-align: center;
+  text-transform: uppercase;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
 
 .o-ArticleByline {
   display: flex;

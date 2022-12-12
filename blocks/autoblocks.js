@@ -8,6 +8,18 @@ function loadBlock(block, name) {
     });
 }
 
+function buildRubric(main, metadata) {
+    const rubricText = metadata.rubric;
+    if (rubricText) {
+        const h1 = main.querySelector('h1');
+        const rubric = `<span>${rubricText}</span>`;
+        const el = document.createElement('p');
+        el.setAttribute('class', 'a-Rubric');
+        el.innerHTML = rubric;
+        h1.before(el);
+    }
+}
+
 function buildBylineBlock(main, metadata) {
     const h1 = main.querySelector('h1');
     const byline = bylineTemplate(metadata);
@@ -35,6 +47,7 @@ function buildShareBlock(main) {
 }
 
 export default function decorate(main, metadata) {
+    buildRubric(main, metadata);
     buildBylineBlock(main, metadata);
     buildEmbedBlocks(main);
     buildShareBlock(main);
