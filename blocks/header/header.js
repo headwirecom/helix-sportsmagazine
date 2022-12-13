@@ -252,8 +252,21 @@ function decorateMainMenuLevel(listEl, level) {
   });
 }
 
+function isArticle() {
+  const path = window.location.pathname;
+  return (path.includes('/article/') || path.includes('/story/'));
+}
+
+function isSubNavVisible(section) {
+  return !isArticle();
+}
+
 function decorateSubNav(section) {
   const subNav = document.querySelector('.o-Header__a-SubNav');
+  if (!isSubNavVisible()) {
+    subNav.remove();
+    return;
+  }
   subNav.innerHTML = `
   <ul>
         <li class="active">
