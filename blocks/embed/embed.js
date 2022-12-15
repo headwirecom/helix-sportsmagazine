@@ -51,6 +51,11 @@ const loadScript = (url, callback, type) => {
     loadScript('https://platform.twitter.com/widgets.js');
     return embedHTML;
   };
+
+  const embedBrightcove = (url) => {
+    const embedHTML = `<iframe src='${url.href}' allowfullscreen frameborder=0></iframe>`;
+    return embedHTML;
+  }
   
   const loadEmbed = (block, link) => {
     if (block.classList.contains('embed-is-loaded')) {
@@ -69,6 +74,10 @@ const loadScript = (url, callback, type) => {
       {
         match: ['twitter'],
         embed: embedTwitter,
+      },
+      {
+        match: ['brightcove'],
+        embed: embedBrightcove,
       },
     ];
   

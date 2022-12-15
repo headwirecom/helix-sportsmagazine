@@ -29,7 +29,7 @@ function buildBylineBlock(main, metadata) {
 }
 
 function buildEmbedBlocks(main) {
-    const EMBEDS = ['youtube', 'twitter'];
+    const EMBEDS = ['youtube', 'twitter', 'brightcove'];
     const links = main.getElementsByTagName('a');
     for (let link of links) {
         let url = link.innerHTML;
