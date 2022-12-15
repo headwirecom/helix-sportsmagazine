@@ -54,11 +54,16 @@ export default {
       document, url, html, params,
     }) => {
       
+      const articleHero = document.querySelector('.o-ArticleHero');
       const articleTitle = document.querySelector('.o-AssetTitle');
       const articleBody = document.querySelector('.articleBody');
       const main = document.createElement('main');
       
-      main.append(articleTitle);
+      if (articleHero) {
+        main.append(articleHero);
+      } else {
+        main.append(articleTitle);
+      }
       main.append(articleBody);
 
       const tweets = articleBody.querySelectorAll('.tweetEmbed');
@@ -82,7 +87,10 @@ export default {
       const publicationDate = getPublicationDate(document);
       console.log(`Author: ${author}. Publication Date: ${publicationDate}`);
 
-      const rubric = getRubric(document);
+      let rubric = getRubric(document);
+      if (articleHero && !rubric) {
+        rubric = getRubric(articleHero);
+      }
 
       // const metadataBlock = WebImporter.Blocks.getMetadataBlock(document, {});
       // alert(metadataBlock.outerHTML);
