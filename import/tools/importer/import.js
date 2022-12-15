@@ -1,8 +1,6 @@
 function replaceEmbed(el, url) {
-  const a = document.createElement('a');
-  a.href = url;
-  a.innerHTML = url;
-  el.replaceWith(a);
+  el.insertAdjacentHTML('beforebegin', `<a href=${url}>${url}</a>`);
+  el.remove();
 }
 
 function getAttributionName(document) {
@@ -80,6 +78,15 @@ export default {
         if(frame && frame.src.toLowerCase().includes('youtube.')) {
           replaceEmbed(el, frame.src);
         }
+      });
+
+      articleBody.querySelectorAll('.brightcoveVideoEmbed').forEach(el => {
+        const videoEl = el.querySelector('video-js');
+        const acct = videoEl.getAttribute('data-account');
+        const player = videoEl.getAttribute('data-player');
+        const videoId = videoEl.getAttribute('data-video-id');
+        const src = `https://players.brightcove.net/${acct}/${player}_default/index.html?videoId=${videoId}`;
+        replaceEmbed(el,src);
       });
 
       const author = getAttributionName(document);
