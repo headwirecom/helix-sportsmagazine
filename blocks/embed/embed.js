@@ -53,7 +53,13 @@ const loadScript = (url, callback, type) => {
   };
 
   const embedBrightcove = (url) => {
-    const embedHTML = `<iframe src='${url.href}' allowfullscreen frameborder=0></iframe>`;
+    const embedHTML = `
+      <div class="brightcoveVideoEmbed">
+        <div class="golf-video-wrapper"><div class="brightcoveVideoEmbed">
+          <iframe src='${url.href}' allowfullscreen frameborder=0 width="740" height="460"></iframe>
+        <div>
+      </div>
+      `;
     return embedHTML;
   }
   
