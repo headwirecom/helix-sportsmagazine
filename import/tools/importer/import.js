@@ -53,6 +53,7 @@ export default {
     }) => {
       
       const articleHero = document.querySelector('.o-ArticleHero');
+      const imageEmbed = document.querySelector('.o-ImageEmbed');
       const articleTitle = document.querySelector('.o-AssetTitle');
       const articleBody = document.querySelector('.articleBody');
       const main = document.createElement('main');
@@ -61,6 +62,9 @@ export default {
         main.append(articleHero);
       } else {
         main.append(articleTitle);
+        if(imageEmbed) {
+          main.append(imageEmbed);
+        }
       }
       main.append(articleBody);
 
