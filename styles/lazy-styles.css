@@ -641,6 +641,26 @@
     color: #fff
 }
 
+.o-NavMenu__m-Bottom .m-PlusLink--overtitle {
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #1f2022;
+    margin-bottom: 10px;
+}
+
+.o-NavMenu__m-Bottom .m-PlusLink {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
 .o-NavMenu .m-ProfileInfo__a-Nickname {
     margin: 18px 0;
     display: block

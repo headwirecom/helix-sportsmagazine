@@ -1,6 +1,12 @@
 import { bylineTemplate, shareTemplate } from "./templates.js";
 import { loadCSS } from "../scripts/scripts.js"
 
+function loadStyles(main, metadata) {
+    if (metadata.rubric === 'The Loop') {
+        loadCSS(`${window.hlx.codeBasePath}/styles/loop-article-styles.css`);
+    }
+}
+
 function loadBlock(block, name) {
     import(`${window.hlx.codeBasePath}/blocks/${name}/${name}.js`).then(mod => {
         loadCSS(`${window.hlx.codeBasePath}/blocks/${name}/${name}.css`);
@@ -47,6 +53,7 @@ function buildShareBlock(main) {
 }
 
 export default function decorate(main, metadata) {
+    loadStyles(main, metadata);
     buildRubric(main, metadata);
     buildBylineBlock(main, metadata);
     buildEmbedBlocks(main);

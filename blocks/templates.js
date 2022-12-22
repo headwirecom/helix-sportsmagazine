@@ -1,23 +1,33 @@
 import { createTagFromString } from "../../utils/utils.js";
 
+function getAttributionHTML(data) {
+    let attribution = '';
+    if (data.author_url && data.author) {
+        attribution = `
+        <div class="o-Attribution">
+        <div class="o-Attribution__m-Body">
+            <div class="o-Attribution__m-TextWrap">
+                <div class="o-Attribution__a-Author">
+                    <span class="o-Attribution__a-Author--Label">By</span>
+                    <span class="o-Attribution__a-Author--Prefix">
+                    <span class="o-Attribution__a-Name">
+                        <a href="${data.author_url}">${data.author}</a>
+                        </span>
+                    </span>
+                </div>      
+            </div>       
+        </div>        
+        </div>`;
+    }
+    return attribution;
+}
+
 export function bylineTemplate(data) {
+    const attributionHTML = getAttributionHTML(data);
     let template = 
         `<div class="o-ArticleByline">
                 <div class="attribution">
-                    <div class="o-Attribution">
-                        <div class="o-Attribution__m-Body">
-                            <div class="o-Attribution__m-TextWrap">
-                                <div class="o-Attribution__a-Author">
-                                    <span class="o-Attribution__a-Author--Label">By</span>
-                                    <span class="o-Attribution__a-Author--Prefix">
-                                    <span class="o-Attribution__a-Name">
-                                        <a href="${data.author_url}">${data.author}</a>
-                                        </span>
-                                    </span>
-                                </div>      
-                            </div>       
-                        </div>        
-                    </div>
+                   ${attributionHTML}
                 </div>
                 <div class="publishDate">
                     <span style="display: none" class="clicktracking"></span>
