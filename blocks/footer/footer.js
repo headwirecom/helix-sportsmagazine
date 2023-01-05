@@ -1,11 +1,4 @@
-import { readBlockConfig, decorateIcons, loadCSS } from '../../scripts/scripts.js';
-
-function loadBlock(block, name) {
-    import(`${window.hlx.codeBasePath}/blocks/${name}/${name}.js`).then(mod => {
-        loadCSS(`${window.hlx.codeBasePath}/blocks/${name}/${name}.css`);
-        mod.default(block);
-    });
-}
+import { readBlockConfig, decorateIcons } from '../../scripts/scripts.js';
 
 function decoratePicture(picture) {
   const container = document.createElement('div');
@@ -61,7 +54,6 @@ function decorateSocial(socialBlock) {
       </ul>`;
   socialBlock.insertAdjacentHTML('beforebegin',socialHTML);
   socialBlock.remove();
-    //loadBlock(socialBlock, 'share');
 }
 
 function decorateSection(section) {
