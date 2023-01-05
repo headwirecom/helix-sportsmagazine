@@ -170,6 +170,38 @@
   height: 100%;
 }
 
+.footer .socialLinks {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  list-style: none;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start
+}
+
+.footer .socialLinks li {
+  white-space: nowrap;
+  margin-right: 10px
+}
+
+.footer .socialLinks li:last-of-type {
+  margin-right: 0
+}
+
+.footer .socialLinks svg {
+  width: 25px;
+  height: 25px
+}
+
+.footer .socialLinks svg path {
+  stroke: #fff
+}
+
 .footer > div {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
