@@ -213,22 +213,9 @@
   grid-column: 1 / -1;
 }
 
-footer {
-  padding: 2rem;
-  background-color: var(--off-black);
-  font-size: var(--body-font-size-s);
-  color: white;
-}
-
 footer .footer {
   max-width: var(--main-container-width);
   margin: auto;
-}
-
-.footer .disclaimer, .copyright {
-  margin-top: 15px;
-  margin: 1;
-  text-align: center;
 }
 
 .footer .disclaimer a {
