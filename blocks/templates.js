@@ -24,6 +24,7 @@ function getAttributionHTML(data) {
 
 export function bylineTemplate(data) {
     const attributionHTML = getAttributionHTML(data);
+    const publishDate = (data.publication_date) ? data.publication_date : '';
     let template = 
         `<div class="o-ArticleByline">
                 <div class="attribution">
@@ -31,7 +32,7 @@ export function bylineTemplate(data) {
                 </div>
                 <div class="publishDate">
                     <span style="display: none" class="clicktracking"></span>
-                    <div class="o-AssetPublishDate">${data.publication_date}</div>
+                    <div class="o-AssetPublishDate">${publishDate}</div>
                 </div>
                 <div class="share block">
                     <div class="socialSharing">
