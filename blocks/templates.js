@@ -281,3 +281,24 @@ export function fullBleedArticleHero(data) {
     el.classList.add('articleHero');
     return el;
 }
+
+export function imageEmbed(data) {
+    const template = `
+    <div class="imageEmbedWrap center-block">
+        <div class="imageEmbed center-block landscape">
+            <div class="imageEmbed-MediaWrap">
+                <div class="imageEmbed-Media">
+                ${data.pictureHTML}
+            </div>
+        </div>
+        <div class="imageEmbed-TextWrap">
+            <p class="imageEmbedCredit">${data.imageEmbedCreditLine}</p>
+        </div>
+    </div>
+    `;
+    const el = createTagFromString(template.trim());
+    el.classList.add('imageEmbed');
+    el.classList.add('image');
+    el.classList.add('section');
+    return el;
+}

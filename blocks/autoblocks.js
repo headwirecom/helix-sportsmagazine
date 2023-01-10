@@ -1,4 +1,4 @@
-import { bylineTemplate, shareTemplate, fullBleedArticleHero } from "./templates.js";
+import { bylineTemplate, shareTemplate, fullBleedArticleHero, imageEmbed } from "./templates.js";
 import { loadCSS, getMetadata } from "../scripts/scripts.js"
 
 const articleStyles = {
@@ -31,7 +31,7 @@ function buildArticleHero(main, metadata) {
     const renderData = {
         rubric : metadata.rubric,
         articleTitle: titleEl.innerHTML,
-        imageEmbedCreditLine: getMetadata('hero-image-credit')
+        imageEmbedCreditLine: getMetadata('image-credit')
     };
     if (picture) {
         let tmpEl = document.createElement('div');
@@ -45,6 +45,23 @@ function buildArticleHero(main, metadata) {
     titleEl.before(articleHero);
     titleEl.remove();
     return articleHero;
+}
+
+function buildArticleLead(main, metadata) {
+    const picture = main.querySelector('picture');
+    const renderData = {
+        imageEmbedCreditLine: getMetadata('image-credit')
+    };
+    const el = document.createElement('div');
+    el.classList.add('article-lead');
+    if (picture) {
+        let tmpEl = document.createElement('div');
+        tmpEl.append(picture);
+        renderData.pictureHTML = tmpEl.innerHTML;
+        const imgEmbed = imageEmbed(renderData);
+        el.append(imgEmbed);
+    }
+    return el;
 }
 
 function buildRubric(main, metadata) {
@@ -110,6 +127,8 @@ function decorateDefaultArticle(main, metadata) {
     main.querySelector('.article-body').before(headline);
     const byline = buildBylineBlock(main, metadata);
     main.querySelector('.article-body').before(byline);
+    const lead = buildArticleLead(main, metadata);
+    main.querySelector('.article-body').before(lead);
     buildEmbedBlocks(main);
     buildShareBlock(main);
 }

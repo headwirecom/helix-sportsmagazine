@@ -128,7 +128,7 @@ export default {
       appendMetadata(metadata, "Article Style", articleStyle);
       appendMetadata(metadata, 'Rubric', rubric);
       if (imageEmbedCredit) {
-        appendMetadata(metadata, 'Image Embed Credit', imageEmbedCredit.innerHTML);
+        appendMetadata(metadata, 'Image Credit', imageEmbedCredit.innerHTML);
         imageEmbedCredit.remove();
       }
 
@@ -136,7 +136,7 @@ export default {
         const heroImageCredit = articleHero.querySelector('.o-ImageEmbed__a-Credit');
         const heroImageCreditTxt = (heroImageCredit) ? heroImageCredit.innerHTML : '';
         if (heroImageCredit) heroImageCredit.remove();
-        appendMetadata(metadata, "Hero Image Credit", heroImageCreditTxt);
+        appendMetadata(metadata, "Image Credit", heroImageCreditTxt);
       }
 
       const metaMatchFilter = [ 'msapplication-TileColor', 'msapplication-TileImage', 'keywords', 'news_keywords', 
