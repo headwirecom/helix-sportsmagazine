@@ -1,3 +1,11 @@
+const articleStyles = {
+  Default:"DefaultArticle",
+  FullBleed:"FullBleed",
+  LongForm:"LongForm",
+  OpenArticle:"OpenArticle",
+  LiveStream:"LiveStream"
+};
+
 function replaceEmbed(el, url) {
   el.insertAdjacentHTML('beforebegin', `<a href=${url}>${url}</a>`);
   el.remove();
@@ -23,7 +31,11 @@ function getPublicationDate(document) {
 
 function getRubric(document) {
   const el = document.querySelector('.a-Rubric');
-  if (el) return el.innerHTML.trim();
+  if (el) {
+    const text = el.innerHTML.trim();
+    el.remove();
+    return text;
+  }
 }
 
 function createMetadataBlock(document, main) {
@@ -54,11 +66,15 @@ export default {
       
       const articleHero = document.querySelector('.o-ArticleHero');
       const imageEmbed = document.querySelector('.o-ImageEmbed');
+      const imageEmbedCredit = document.querySelector('.o-ImageEmbed__a-Credit');
       const articleTitle = document.querySelector('.o-AssetTitle');
       const articleBody = document.querySelector('.articleBody');
       const main = document.createElement('main');
       
+      let articleStyle = articleStyles.Default;
+
       if (articleHero) {
+        articleStyle = articleStyles.FullBleed;
         main.append(articleHero);
       } else {
         main.append(articleTitle);
@@ -109,7 +125,19 @@ export default {
       appendMetadata(metadata, 'Author', author);
       appendMetadata(metadata, 'Author URL', authorURL);
       appendMetadata(metadata, 'Publication Date', publicationDate);
+      appendMetadata(metadata, "Article Style", articleStyle);
       appendMetadata(metadata, 'Rubric', rubric);
+      if (imageEmbedCredit) {
+        appendMetadata(metadata, 'Image Embed Credit', imageEmbedCredit.innerHTML);
+        imageEmbedCredit.remove();
+      }
+
+      if (articleHero) {
+        const heroImageCredit = articleHero.querySelector('.o-ImageEmbed__a-Credit');
+        const heroImageCreditTxt = (heroImageCredit) ? heroImageCredit.innerHTML : '';
+        if (heroImageCredit) heroImageCredit.remove();
+        appendMetadata(metadata, "Hero Image Credit", heroImageCreditTxt);
+      }
 
       const metaMatchFilter = [ 'msapplication-TileColor', 'msapplication-TileImage', 'keywords', 'news_keywords', 
                           'fb:app_id', 'fb:admins', 'twitter:domain', 'og:type', 'og:site_name', 'parsely-metadata',

@@ -643,6 +643,7 @@ function buildAutoBlocks(main) {
     metadata.author_url = getMetadata('author-url');
     metadata.publication_date = getMetadata('publication-date');
     metadata.rubric = getMetadata('rubric');
+    metadata.articleStyle = getMetadata('article-style');
     import('../blocks/autoblocks.js').then(mod => {
       mod.default(main, metadata);
     });

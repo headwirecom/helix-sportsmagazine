@@ -5,3 +5,5 @@ node_modules/*
 
 helix-importer-ui
 import/docs/*
+
+**/.DS_Store

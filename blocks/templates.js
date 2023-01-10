@@ -26,29 +26,29 @@ export function bylineTemplate(data) {
     const attributionHTML = getAttributionHTML(data);
     const publishDate = (data.publication_date) ? data.publication_date : '';
     let template = 
-        `<div class="o-ArticleByline">
-                <div class="attribution">
-                   ${attributionHTML}
+        `<div class="attribution">
+            ${attributionHTML}
+        </div>
+        <div class="publishDate">
+            <span style="display: none" class="clicktracking"></span>
+            <div class="o-AssetPublishDate">${publishDate}</div>
+        </div>
+        <div class="share block">
+            <div class="socialSharing">
+                <span style="display: none" class="clicktracking"></span>
+                <div class="o-SocialShare">
+                    <ul>
+                        <li>Share Story</li>
+                        <li>Facebook</li>
+                        <li>Twitter</li>
+                        <li>Linkedin</li>
+                    </ul>
                 </div>
-                <div class="publishDate">
-                    <span style="display: none" class="clicktracking"></span>
-                    <div class="o-AssetPublishDate">${publishDate}</div>
-                </div>
-                <div class="share block">
-                    <div class="socialSharing">
-                        <span style="display: none" class="clicktracking"></span>
-                        <div class="o-SocialShare">
-                            <ul>
-                                <li>Share Story</li>
-                                <li>Facebook</li>
-                                <li>Twitter</li>
-                                <li>Linkedin</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>`
-    return createTagFromString(template.trim());
+            </div>
+        </div>`
+    let el = createTagFromString(template.trim());
+    el.classList.add('articleByline');
+    return el;
 }
 
 export function shareTemplate() {
@@ -246,4 +246,38 @@ export function headerSchoolsIconTemplate(data) {
   </defs>
   </svg>`;
   return template.trim();
+}
+
+export function fullBleedArticleHero(data) {
+    const template = `
+        <div class="articleHeroContent">
+            <p class="rubric">
+                <span>${data.rubric}</span>
+            </p>
+            <div class="assetTitle">
+                <section class="assetTitle">
+                <h1 class="assetTitleHeadline">
+                    <span class="assetTitleHeadlineText">${data.articleTitle}</span>
+                </h1>
+                </section>
+            </div>   
+        </div>           
+        <div class="article-lead">
+            <div class="imageEmbed image section">
+                <div class="imageEmbedWrap center-block">
+                    <div class="imageEmbed center-block landscape">
+                        <div class="imageEmbed-MediaWrap">
+                            <div class="imageEmbed-Media">
+                            ${data.pictureHTML}
+                        </div>
+                    </div>
+                    <div class="imageEmbed-TextWrap">
+                        <p class="imageEmbedCredit">${data.imageEmbedCreditLine}</p>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    const el = createTagFromString(template.trim());
+    el.classList.add('articleHero');
+    return el;
 }
