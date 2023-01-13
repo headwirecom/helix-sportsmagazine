@@ -6,7 +6,9 @@ const articleStyles = {
     FullBleed:"FullBleed",
     LongForm:"LongForm",
     OpenArticle:"OpenArticle",
-    LiveStream:"LiveStream"
+    LiveStream:"LiveStream",
+    Gallery:"Gallery",
+    GalleryListicle:"Gallery Listicle"
 };
 
 function loadStyles(main, metadata) {
@@ -157,6 +159,14 @@ export default function decorate(main, metadata) {
     switch(metadata.articleStyle) {
         case articleStyles.FullBleed:
             decorateFullBleedArticle(main, metadata);
+            break;
+        case articleStyles.LongForm:
+            break;
+        case articleStyles.OpenArticle:
+            break;
+        case articleStyles.Gallery:
+            break;
+        case articleStyles.GalleryListicle:
             break;
         default:
             decorateDefaultArticle(main, metadata);
