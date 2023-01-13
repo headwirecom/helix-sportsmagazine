@@ -121,8 +121,22 @@ export default {
             }
           });
         } else {
-          gallery.querySelectorAll('.asset-info').forEach(info => {
-            addEl(main, info);
+          let slideInfos = gallery.querySelectorAll('.asset-info');
+          let blockCount = 0;
+          gallery.querySelectorAll('.rsSlide').forEach(slide => {
+            let block = createBlockTable(document, main, 'GalleryImage');
+            let media = slide.querySelector('.share-frame');
+            appendToBlock(block, 'Image', media.innerHTML)
+
+            if (blockCount < slideInfos.length) {
+              let slideInfo = slideInfos.item(blockCount);
+              let promoHeadline = slideInfo.querySelector('.o-PhotoGalleryPromo__a-HeadlineText');
+              appendToBlock(block, 'Promo Headline', promoHeadline.innerHTML);
+
+              let promoDescription = slideInfo.querySelector('.o-PhotoGalleryPromo__a-Description');
+              appendToBlock(block, 'Promo Description', promoDescription.innerHTML);
+            }
+            blockCount++;
           });
         }
       }
