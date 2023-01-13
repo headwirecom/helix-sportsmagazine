@@ -252,13 +252,18 @@ function decorateMainMenuLevel(listEl, level) {
   });
 }
 
-function isArticle() {
+function isArticlePage() {
   const path = window.location.pathname;
   return (path.includes('/article/') || path.includes('/story/'));
 }
 
+function isGalleryPage() {
+  const path = window.location.pathname;
+  return path.includes('/gallery/');
+}
+
 function isSubNavVisible(section) {
-  return !isArticle();
+  return !isArticlePage() && !isGalleryPage;
 }
 
 function decorateSubNav(section) {
