@@ -123,7 +123,7 @@ export default {
         } else {
           let slideInfos = gallery.querySelectorAll('.asset-info');
           let blockCount = 0;
-          gallery.querySelectorAll('.rsSlide').forEach(slide => {
+          gallery.querySelectorAll('.m-Slide').forEach(slide => {
             let block = createBlockTable(document, main, 'GalleryImage');
             let media = slide.querySelector('.share-frame');
             appendToBlock(block, 'Image', media.innerHTML)
