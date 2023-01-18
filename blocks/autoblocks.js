@@ -135,6 +135,22 @@ function decorateDefaultArticle(main, metadata) {
     buildShareBlock(main);
 }
 
+function decorateGallery(main, metadata) {
+    const rubric = buildRubric(main, metadata);
+    main.querySelector('.article-body').before(rubric);
+    const headline = buildArticleHeadline(main);
+    main.querySelector('.article-body').before(headline);
+    const byline = buildBylineBlock(main, metadata);
+    main.querySelector('.article-body').before(byline);
+
+    const first = main.querySelector('.default-content-wrapper').firstChild;
+    byline.before(first);
+    // const lead = buildArticleLead(main, metadata);
+    // main.querySelector('.article-body').before(lead);
+    //buildEmbedBlocks(main);
+    //buildShareBlock(main);
+}
+
 function decorateMain(main) {
     main.classList.add('container-site');
     const container = document.createElement('div');
@@ -165,8 +181,10 @@ export default function decorate(main, metadata) {
         case articleStyles.OpenArticle:
             break;
         case articleStyles.Gallery:
+            decorateGallery(main, metadata) 
             break;
         case articleStyles.GalleryListicle:
+            decorateGallery(main, metadata) 
             break;
         default:
             decorateDefaultArticle(main, metadata);
