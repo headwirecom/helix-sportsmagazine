@@ -295,7 +295,9 @@ export function decorateSections($main) {
  * @param {Element} main The container element
  */
 export function updateSectionsStatus(main) {
-  const sections = [...main.querySelectorAll(':scope > div.section')];
+  // articleBody is golfdigest markup specific
+  const articleBody = main.querySelector('.article-body');
+  const sections = (articleBody) ? [...articleBody.querySelectorAll(':scope > div.section')] : [...main.querySelectorAll(':scope > div.section')];
   for (let i = 0; i < sections.length; i += 1) {
     const section = sections[i];
     const status = section.getAttribute('data-section-status');
