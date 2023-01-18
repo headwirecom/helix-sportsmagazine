@@ -1,4 +1,4 @@
-.galleryimage {
+.galleryimage-wrapper {
     counter-increment: blockCounter;
 }
 
@@ -35,7 +35,7 @@
     font-size: 16px;
 }
 
-.promo-headline > div:before {
+.promo-headline:before {
     -ms-flex-negative: 0;
     flex-shrink: 0;
     content: counter(blockCounter);
