@@ -1,3 +1,5 @@
+import { getMetadata } from "../scripts/scripts.js"
+
 const PRODUCTS_URL = '/products/test-product-list-ballmarker.json';
 const PRODUCTS_REQUEST_LIMIT = 1000;
 const productsCache = [];
@@ -35,6 +37,20 @@ function isCached(products) {
 
 function findProduct(products, productID) {
     return products.find(p => p['Product ID'] === productID);
+}
+
+export const articleStyles = {
+    Default:"DefaultArticle",
+    FullBleed:"FullBleed",
+    LongForm:"LongForm",
+    OpenArticle:"OpenArticle",
+    LiveStream:"LiveStream",
+    Gallery:"Gallery",
+    GalleryListicle:"Gallery Listicle"
+};
+
+export function getArticleStyle() {
+    return getMetadata('article-style');
 }
 
 export async function loadJsonData(url) {

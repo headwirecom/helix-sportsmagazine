@@ -1,15 +1,6 @@
 import { bylineTemplate, shareTemplate, fullBleedArticleHero, imageEmbed } from "./templates.js";
 import { loadCSS, getMetadata } from "../scripts/scripts.js"
-
-const articleStyles = {
-    Default:"DefaultArticle",
-    FullBleed:"FullBleed",
-    LongForm:"LongForm",
-    OpenArticle:"OpenArticle",
-    LiveStream:"LiveStream",
-    Gallery:"Gallery",
-    GalleryListicle:"Gallery Listicle"
-};
+import { articleStyles, createTag } from "../utils/utils.js";
 
 function loadStyles(main, metadata) {
     if (metadata.rubric === 'The Loop') {
@@ -17,6 +8,9 @@ function loadStyles(main, metadata) {
     }
     if (metadata.articleStyle == articleStyles.FullBleed) {
         loadCSS(`${window.hlx.codeBasePath}/styles/fullbleed-article-styles.css`);
+    }
+    if (metadata.articleStyle == articleStyles.Gallery) {
+        loadCSS('https://golfdigest.sports.sndimg.com/etc/clientlibs/golfdigestcom/dist/photoGalleryPage.md5-c51fd0710d7ab2a6a2f540aad15984d7.css');
     }
 }
 
@@ -67,7 +61,7 @@ function buildArticleLead(main, metadata) {
 }
 
 function buildRubric(main, metadata) {
-    const rubricText = (metadata.rubric) ? metadata.rubric : '';
+    const rubricText = (metadata.rubric && metadata.rubric != 'undefined') ? metadata.rubric : '';
     const rubric = `<span>${rubricText}</span>`;
     const el = document.createElement('p');
     el.setAttribute('class', 'rubric');
@@ -135,6 +129,31 @@ function decorateDefaultArticle(main, metadata) {
     buildShareBlock(main);
 }
 
+function slideshowContainerHTML() {
+    const template = 
+    `
+    <div class="slideshow-overflow rsOverflow" style="width: 1000px; height: 667px">
+    <div
+      class="slideshow-container rsContainer"
+      style="
+        transition-duration: 0ms;
+        transform: translate3d(0px, 0px, 0px);
+        transition-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+      "
+    ></div>
+    <div class="rsArrow rsArrowLeft rsArrowDisabled" role="button" aria-label="Previous photo" style="display: block">
+      <div class="rsArrowIcn"></div>
+    </div>
+    <div class="rsArrow rsArrowRight" role="button" aria-label="Next photo" style="display: block">
+      <div class="rsArrowIcn"></div>
+    </div>
+  </div>
+  <div class="slideshow-counter rsSlideCount">
+    <span class="counter-display rsCurr">1/7</span>
+  </div>
+    `;
+    return template
+}
 function decorateGallery(main, metadata) {
     const rubric = buildRubric(main, metadata);
     main.querySelector('.article-body').before(rubric);
@@ -144,11 +163,46 @@ function decorateGallery(main, metadata) {
     main.querySelector('.article-body').before(byline);
 
     const first = main.querySelector('.default-content-wrapper').firstChild;
+    if (first) {
+        byline.before(first);
+    }
+
+    const slideshowContainer = createTag(
+        'div', 
+        {
+            class: "slideshow-wrapper",
+            style: "height: 666.667px"
+        },
+        slideshowContainerHTML()); // document.createElement('div');
+    slideshowContainer.classList.add('slideshow-wrapper');
+    main.querySelector('.article-body').after(slideshowContainer);
+    main.querySelectorAll('.galleryimage-wrapper').forEach(el => { slideshowContainer.querySelector('.slideshow-container').append(el); });
+
+    const slideBtnPrev = document.createElement('div');
+    slideBtnPrev.classList.add('slide-btn');
+    slideBtnPrev.classList.add('slide-btn-prev');
+    slideshowContainer.append(slideBtnPrev);
+
+    const slideBtnNext = document.createElement('div');
+    slideBtnNext.classList.add('slide-btn');
+    slideBtnNext.classList.add('slide-btn-next');
+    slideshowContainer.append(slideBtnNext);
+
+    // just tmp placeholder text to test the UI
+    slideBtnNext.innerHTML = "Next";
+    slideBtnPrev.innerHTML = "Prev";
+}
+
+function decorateGalleryListicle(main, metadata) {
+    const rubric = buildRubric(main, metadata);
+    main.querySelector('.article-body').before(rubric);
+    const headline = buildArticleHeadline(main);
+    main.querySelector('.article-body').before(headline);
+    const byline = buildBylineBlock(main, metadata);
+    main.querySelector('.article-body').before(byline);
+
+    const first = main.querySelector('.default-content-wrapper').firstChild;
     byline.before(first);
-    // const lead = buildArticleLead(main, metadata);
-    // main.querySelector('.article-body').before(lead);
-    //buildEmbedBlocks(main);
-    //buildShareBlock(main);
 }
 
 function decorateMain(main) {
@@ -184,7 +238,7 @@ export default function decorate(main, metadata) {
             decorateGallery(main, metadata) 
             break;
         case articleStyles.GalleryListicle:
-            decorateGallery(main, metadata) 
+            decorateGalleryListicle(main, metadata) 
             break;
         default:
             decorateDefaultArticle(main, metadata);
