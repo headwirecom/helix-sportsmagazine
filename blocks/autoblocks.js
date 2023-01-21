@@ -141,12 +141,8 @@ function slideshowContainerHTML() {
         transition-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
       "
     ></div>
-    <div class="rsArrow rsArrowLeft rsArrowDisabled" role="button" aria-label="Previous photo" style="display: block">
-      <div class="rsArrowIcn"></div>
-    </div>
-    <div class="rsArrow rsArrowRight" role="button" aria-label="Next photo" style="display: block">
-      <div class="rsArrowIcn"></div>
-    </div>
+    <div class="slide-btn slide-btn-prev"></div>
+    <div class="slide-btn slide-btn-next"></div>
   </div>
   <div class="slideshow-counter rsSlideCount">
     <span class="counter-display rsCurr">1/7</span>
@@ -177,20 +173,6 @@ function decorateGallery(main, metadata) {
     slideshowContainer.classList.add('slideshow-wrapper');
     main.querySelector('.article-body').after(slideshowContainer);
     main.querySelectorAll('.galleryimage-wrapper').forEach(el => { slideshowContainer.querySelector('.slideshow-container').append(el); });
-
-    const slideBtnPrev = document.createElement('div');
-    slideBtnPrev.classList.add('slide-btn');
-    slideBtnPrev.classList.add('slide-btn-prev');
-    slideshowContainer.append(slideBtnPrev);
-
-    const slideBtnNext = document.createElement('div');
-    slideBtnNext.classList.add('slide-btn');
-    slideBtnNext.classList.add('slide-btn-next');
-    slideshowContainer.append(slideBtnNext);
-
-    // just tmp placeholder text to test the UI
-    slideBtnNext.innerHTML = "Next";
-    slideBtnPrev.innerHTML = "Prev";
 }
 
 function decorateGalleryListicle(main, metadata) {
