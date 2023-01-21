@@ -9,9 +9,6 @@ function loadStyles(main, metadata) {
     if (metadata.articleStyle == articleStyles.FullBleed) {
         loadCSS(`${window.hlx.codeBasePath}/styles/fullbleed-article-styles.css`);
     }
-    if (metadata.articleStyle == articleStyles.Gallery) {
-        loadCSS('https://golfdigest.sports.sndimg.com/etc/clientlibs/golfdigestcom/dist/photoGalleryPage.md5-c51fd0710d7ab2a6a2f540aad15984d7.css');
-    }
 }
 
 function loadBlock(block, name) {
@@ -132,9 +129,9 @@ function decorateDefaultArticle(main, metadata) {
 function slideshowContainerHTML() {
     const template = 
     `
-    <div class="slideshow-overflow rsOverflow" style="width: 1000px; height: 667px">
+    <div class="slideshow-overflow" style="width: 1000px; height: 667px">
     <div
-      class="slideshow-container rsContainer"
+      class="slideshow-container"
       style="
         transition-duration: 0ms;
         transform: translate3d(0px, 0px, 0px);
@@ -144,8 +141,8 @@ function slideshowContainerHTML() {
     <div class="slide-btn slide-btn-prev"></div>
     <div class="slide-btn slide-btn-next"></div>
   </div>
-  <div class="slideshow-counter rsSlideCount">
-    <span class="counter-display rsCurr">1/7</span>
+  <div class="slideshow-counter">
+    <span class="counter-display">1/7</span>
   </div>
     `;
     return template
