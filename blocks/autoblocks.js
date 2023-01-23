@@ -144,6 +144,7 @@ function slideshowContainerHTML() {
   <div class="slideshow-counter">
     <span class="counter-display">1/7</span>
   </div>
+  <div class="slideshow-slide-info"><span>Slide info here.<span></div> 
     `;
     return template
 }

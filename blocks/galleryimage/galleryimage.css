@@ -2,6 +2,10 @@
     counter-increment: blockCounter;
 }
 
+.slideshow-wrapper .galleryimage-wrapper {
+    display: none;
+}
+
 .galleryimage-wrapper > .carousel {
     display: none;
     background-color: #f2f2f2;
@@ -14,6 +18,16 @@
 }
 
 .galleryimage-wrapper .carousel p {
+    display: inline;
+}
+
+.slideshow-slide-info > div {
+    margin-top: 20px;
+    display: inline;
+    float: left;
+}
+
+.slideshow-slide-info p {
     display: inline;
 }
 
@@ -34,7 +48,7 @@
 .slideshow-wrapper .carousel {
     display: -webkit-box;
     display: -ms-flexbox;
-    display: flex;
+    display: block;
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
@@ -78,7 +92,7 @@
 }
 
 .slideshow-counter > .counter-display {
-    margin-top: 20px;
+    margin-top: 10px;
     float: right;
 }
 

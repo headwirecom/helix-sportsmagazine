@@ -1,4 +1,4 @@
-import { articleStyles, getArticleStyle } from "../../utils/utils.js";
+import { articleStyles, getArticleStyle, createTag } from "../../utils/utils.js";
 
 let imageBlockCount = 0;
 let currentIndex = 0;
@@ -7,17 +7,25 @@ function getRowClassName(field) {
     return field.trim().replace(' ', '-').toLowerCase();
 }
 
-function decorateRow(row) {
+function decorateRow(row, container) {
     const field = row.querySelector('div');
     const className = getRowClassName(field.innerHTML);
     row.classList.add(className);
     field.remove();
+    if (container && className != 'image') {
+        container.append(row);
+    }
 }
 
 function showSlide(i) {
-    let slides = document.getElementsByClassName("carousel");
+    let slides = document.getElementsByClassName("galleryimage-wrapper");
     slides[currentIndex].style.display = "none";
     slides[i].style.display = "block";
+    let slideContent = slides[i].querySelector('.slide-info').innerHTML;
+    let slideInfoDiv = document.querySelector('.slideshow-slide-info');
+    if (slideInfoDiv) {
+        slideInfoDiv.innerHTML = slideContent;
+    }
     currentIndex = i;
     updateCounter();
     updateNav();
@@ -65,14 +73,21 @@ function currentSlide() {
 export default function decorate(block) {
     const style = getArticleStyle();
     block.classList.add('gallery-slide');
-    block.querySelectorAll(':scope > div').forEach(row => decorateRow(row));
     if (style === articleStyles.GalleryListicle) {
         block.classList.add('listicle');
+        block.querySelectorAll(':scope > div').forEach(row => decorateRow(row));
     } else {
         block.classList.add('carousel');
+        let slideInfoContainer = document.createElement('div');
+        slideInfoContainer.classList.add('slide-info');
+        block.append(slideInfoContainer);
+        block.querySelectorAll(':scope > div').forEach(row => { 
+            if (!row.classList.contains('slide-info')) {
+                decorateRow(row, slideInfoContainer);
+            }
+        });
         if (imageBlockCount === 0) {
-            // show 1st slide and register event listeners
-            block.style.display = "block";
+            showSlide(0);
             document.querySelector('.slide-btn-prev').addEventListener('click', previousSlide);
             document.querySelector('.slide-btn-next').addEventListener('click', nextSlide);
             setTimeout(updateCounter, 500);
