@@ -164,12 +164,15 @@ function decorateGallery(main, metadata) {
         'div', 
         {
             class: "slideshow-wrapper",
-            style: "height: 666.667px"
+            style: "height: 667px"
         },
         slideshowContainerHTML()); // document.createElement('div');
     slideshowContainer.classList.add('slideshow-wrapper');
     main.querySelector('.article-body').after(slideshowContainer);
-    main.querySelectorAll('.galleryimage-wrapper').forEach(el => { slideshowContainer.querySelector('.slideshow-container').append(el); });
+    main.querySelectorAll('.galleryimage-wrapper').forEach(el => { 
+        el.querySelector('img').style.height = '667px';
+        slideshowContainer.querySelector('.slideshow-container').append(el); 
+    });
 }
 
 function decorateGalleryListicle(main, metadata) {
