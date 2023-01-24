@@ -11,18 +11,6 @@ function replaceEmbed(el, url) {
   el.remove();
 }
 
-function getAttributionName(document) {
-  const el = document.querySelector('.o-Attribution__a-Name');
-  if (el) return el.querySelector('a').innerHTML.trim();
-  return '';
-}
-
-function getAttributionURL(document) {
-  const el = document.querySelector('.o-Attribution__a-Name');
-  if (el) return el.querySelector('a').href;
-  return '';
-}
-
 function getPublicationDate(document) {
   const el = document.querySelector('.o-AssetPublishDate');
   if (el) return el.innerHTML.trim();
@@ -160,16 +148,17 @@ export default {
         }
       }
 
-      const author = getAttributionName(document);
-      const authorURL = getAttributionURL(document);
       const publicationDate = getPublicationDate(document);
       const rubric = getRubric(document);
 
       const metadata = createMetadataBlock(document, main);
-      appendMetadata(metadata, 'Author', author);
-      appendMetadata(metadata, 'Author URL', authorURL);
+      document.querySelectorAll('.o-Attribution__a-Name').forEach(el => {
+        appendMetadata(metadata, 'Author', el.innerHTML.trim());
+      });
       appendMetadata(metadata, 'Publication Date', publicationDate);
-      appendMetadata(metadata, 'Rubric', rubric);
+      if (rubric) {
+        appendMetadata(metadata, 'Rubric', rubric);
+      }
       appendMetadata(metadata, 'og:type', 'gallery');
       appendMetadata(metadata, 'Article Style', articleStyle);
 
