@@ -71,6 +71,23 @@ function addEl(main, el) {
   }
 }
 
+function getImage(slide) {
+  const host = 'https://golfdigest.sports.sndimg.com';
+  const suffix = '.rend.hgtvcom.616.822.suffix/1573470070814.jpeg';
+
+  const el = slide.querySelector('.m-ResponsiveImage');
+  if (el) {
+    const dataAttr = el.getAttribute('data-photo-box-params');
+    let sourcePath = JSON.parse(dataAttr).assetId;
+    let sourceUrl = `${host}${sourcePath}${suffix}`;
+    let image = document.createElement('img');
+    image.setAttribute('src', sourceUrl);
+    let div = document.createElement('div');
+    div.append(image);
+    return div;
+  }
+}
+
 export default {
     /**
      * Apply DOM operations to the provided document and return
@@ -125,7 +142,9 @@ export default {
           let blockCount = 0;
           gallery.querySelectorAll('.m-Slide').forEach(slide => {
             let block = createBlockTable(document, main, 'GalleryImage');
-            let media = slide.querySelector('.share-frame');
+            // let media = slide.querySelector('.share-frame');
+            // alert(slide.innerHTML);
+            let media = getImage(slide);
             appendToBlock(block, 'Image', media.innerHTML)
 
             if (blockCount < slideInfos.length) {
