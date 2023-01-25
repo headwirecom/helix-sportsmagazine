@@ -1,8 +1,31 @@
 import { createTagFromString } from "../../utils/utils.js";
 
+function getAttributionNameHTML(author, author_url) {
+    const names = author.split(',');
+    const urls = author_url.split(',');
+    
+    let template = '';
+    for (let i=0; i<names.length; i++) {
+        let htm = null;
+        if (i<urls.length) {
+            htm = `<span class="o-Attribution__a-Name"><a href="${urls[i]}">${names[i]}</a></span>`;
+        } else {
+            htm = `<span class="o-Attribution__a-Name">${names[i]}</span>`;
+        }
+
+        if (template.length > 0) {
+            template = template + ' and ' + htm;
+        } else {
+            template = htm;
+        }
+    }
+    return template;
+}
+
 function getAttributionHTML(data) {
     let attribution = '';
     if (data.author_url && data.author) {
+        let attributionName = getAttributionNameHTML(data.author, data.author_url);
         attribution = `
         <div class="o-Attribution">
         <div class="o-Attribution__m-Body">
@@ -10,9 +33,7 @@ function getAttributionHTML(data) {
                 <div class="o-Attribution__a-Author">
                     <span class="o-Attribution__a-Author--Label">By</span>
                     <span class="o-Attribution__a-Author--Prefix">
-                    <span class="o-Attribution__a-Name">
-                        <a href="${data.author_url}">${data.author}</a>
-                        </span>
+                    ${attributionName}
                     </span>
                 </div>      
             </div>       

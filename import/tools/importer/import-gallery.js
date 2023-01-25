@@ -11,6 +11,40 @@ function replaceEmbed(el, url) {
   el.remove();
 }
 
+function getAttributionName(document) {
+  let ret = '';
+  document.querySelectorAll('.o-Attribution__a-Name').forEach(el => {
+    let val = el.innerHTML.trim();
+    let link = el.querySelector('a');
+    if (link) {
+      val = link.innerHTML.trim();
+    }
+    if (ret.length === 0) {
+      ret = val;
+    } else {
+      ret = ret + ',' + val;
+    }
+  });
+  return ret;
+}
+
+function getAttributionURL(document) {
+  let ret = '';
+  document.querySelectorAll('.o-Attribution__a-Name').forEach(el => {
+    let val = '';
+    let link = el.querySelector('a');
+    if (link) {
+      val = link.href;
+    }
+    if (ret.length === 0) {
+      ret = val;
+    } else {
+      ret = ret + ',' + val;
+    }
+  });
+  return ret;
+}
+
 function getPublicationDate(document) {
   const el = document.querySelector('.o-AssetPublishDate');
   if (el) return el.innerHTML.trim();
@@ -148,13 +182,15 @@ export default {
         }
       }
 
+      const author = getAttributionName(document);
+      const authorURL = getAttributionURL(document);
       const publicationDate = getPublicationDate(document);
       const rubric = getRubric(document);
 
       const metadata = createMetadataBlock(document, main);
-      document.querySelectorAll('.o-Attribution__a-Name').forEach(el => {
-        appendMetadata(metadata, 'Author', el.innerHTML.trim());
-      });
+      
+      appendMetadata(metadata, 'Author', author);
+      appendMetadata(metadata, 'Author URL', authorURL);
       appendMetadata(metadata, 'Publication Date', publicationDate);
       if (rubric) {
         appendMetadata(metadata, 'Rubric', rubric);
