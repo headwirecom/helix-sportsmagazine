@@ -23,6 +23,7 @@
 
 .slideshow-slide-info > div {
     margin-top: 20px;
+    margin-left: 10px;
     display: inline;
     float: left;
 }
@@ -96,6 +97,9 @@
     float: right;
 }
 
+.share-wrapper {
+    margin-top: 80px;
+}
 .listicle .promo-credit {
     margin: 0;
     font-family: Gotham,arial,sans-serif;

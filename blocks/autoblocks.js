@@ -97,8 +97,8 @@ function buildEmbedBlocks(main) {
     }
 }
 
-function buildShareBlock(main) {
-    const defaultContent = main.querySelector('.default-content-wrapper');
+function buildShareBlock(main, selector) {
+    const defaultContent = (selector) ? main.querySelector(selector) : main.querySelector('.default-content-wrapper');
     const shareBlock = shareTemplate();
     defaultContent.append(shareBlock);
     loadBlock(shareBlock, 'share');
@@ -174,6 +174,10 @@ function decorateGallery(main, metadata) {
         el.querySelector('img').style.height = '667px';
         slideshowContainer.querySelector('.slideshow-container').append(el); 
     });
+    
+    const shareContainer = createTag('div', { class: 'share-wrapper'});
+    main.querySelector('.slideshow-wrapper').after(shareContainer);
+    buildShareBlock(main, '.share-wrapper');
 }
 
 function decorateGalleryListicle(main, metadata) {
