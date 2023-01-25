@@ -82,6 +82,9 @@ function buildBylineBlock(main, metadata) {
     const shareBlock = byline.querySelector('.share');
     loadBlock(shareBlock, 'share');
     const par = document.createElement('p');
+    if (!byline.querySelector('.o-Attribution') && byline.querySelector('.byline-divider')) {
+        byline.querySelector('.byline-divider').remove();
+    }
     par.append(byline);
     return par;
 }

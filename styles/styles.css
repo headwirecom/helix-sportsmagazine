@@ -332,12 +332,12 @@ main > .section > div:nth-child(4) p {
   color: var(--grey);
 }
 
-.publishDate:before {
+.byline-divider {
   content: '';
   display: block;
   border-left: 2px solid var(--off-white-dark);
   height: 14px;
-  margin: 0 5px;
+  margin: 3px 5px;
 }
 
 .articleByline .share {

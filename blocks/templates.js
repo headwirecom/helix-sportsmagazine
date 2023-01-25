@@ -50,6 +50,7 @@ export function bylineTemplate(data) {
         `<div class="attribution">
             ${attributionHTML}
         </div>
+        <span class="byline-divider"></span>
         <div class="publishDate">
             <span style="display: none" class="clicktracking"></span>
             <div class="o-AssetPublishDate">${publishDate}</div>
