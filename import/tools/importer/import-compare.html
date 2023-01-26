@@ -6,6 +6,10 @@
                 width: 49%;
                 margin-top: 10px;
             }
+            .url-display > a {
+                color: black;
+                text-decoration: none;
+            }
             .frames {
                 width: 100%;
             }
@@ -77,10 +81,21 @@
                 }
                 return f;
             }
+            function setUrlDisplay(container, url) {
+                const a = document.createElement('a');
+                a.innerHTML = url;
+                a.href = url;
+                a.target = '_blank';
+                const c = document.createElement('div');
+                c.append(a);
+                container.innerHTML = c.innerHTML;
+            }
             function updateDisplay() {
                 const path = data[currentIndex];
-                document.getElementById('currentRemoteURL').innerHTML = `${remoteHost}${path}`;
-                document.getElementById('currentImportedURL').innerHTML = getImportedUrl(path);
+                setUrlDisplay(document.getElementById('currentRemoteURL'), `${remoteHost}${path}`);
+                setUrlDisplay(document.getElementById('currentImportedURL'), getImportedUrl(path));
+                //document.getElementById('currentRemoteURL').innerHTML = `${remoteHost}${path}`;
+                //document.getElementById('currentImportedURL').innerHTML = getImportedUrl(path);
                 document.getElementById('frame1').src = getRemoteUrl(path);
                 document.getElementById('frame2').src = getImportedUrl(path);
             }
