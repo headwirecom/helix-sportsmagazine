@@ -1,0 +1,119 @@
+<html>
+    <head>
+        <title>Compare Tool</title>
+        <style>
+            .url-display {
+                width: 49%;
+                margin-top: 10px;
+            }
+            .frames {
+                width: 100%;
+            }
+            .frame {
+                width: 49%;
+                height: 100%;
+                border: none;
+                zoom: 0.71; 
+                -moz-transform: scale(0.75); 
+                -moz-transform-origin: 0 0;
+            }
+        </style>
+        <script>
+            /*
+            let focusFrameId = null;
+            function scrollFrame(frameId, x, y) {
+                const f = document.getElementById(frameId);
+                f.contentWindow.scrollTo(x, y);
+            }
+            function onscroll() {
+                console.log('in onscroll');
+                let frame1 = document.getElementById('frame2');
+                alert(frame1);
+                frame1.addEventListener('scroll', e => {
+                    console.log("frame: " + e);
+                });
+                frame1.contentWindow.addEventListener('scroll', e => {
+                    console.log("contentWindow: " + e);
+                });
+
+            }
+            function setFrameId(frameId) {
+                console.log(frameId);
+                focusFrameId = frameId;
+            }
+            setTimeout(onscroll, 500);*/
+
+            const dataFile = '/tools/importer/urls.json';
+            const remoteHost = 'https://www.golfdigest.com';
+            const myHost = (location.port !== 80) ? `${location.protocol}//${location.hostname}:3000` : `${location.protocol}//${location.hostname}`;
+            const proxyHost = `${location.protocol}//${location.hostname}:3001`;
+            const importRoot = '/import-test';
+
+            let data = [];
+            let currentIndex = 0; 
+            async function fetchData() {
+                const resp = await fetch(dataFile);
+                if (resp.ok) {
+                    const json = await resp.json();
+                    data = json;
+                    updateDisplay();
+                } else {
+                    alert('error fetching url data file');
+                }
+            }
+            function getRemoteUrl(path) {
+                let rh = encodeURIComponent(remoteHost);
+                return `${proxyHost}${path}?host=${rh}`;
+            }
+            function getImportedUrl(path) {
+                let importedPath = path.replace(/\/content\/golfdigest-com\/en/, '').replace(fileName(path), fileName(path, '_', '-')).replace(/\.html$/, '');
+                return `${myHost}${importRoot}${importedPath}`;
+            }
+            function fileName(path, replaceStr, replaceWith) {
+                const parts = path.split('/');
+                let f = parts[parts.length-1];
+                if (replaceStr && replaceWith) {
+                    f = f.replaceAll(replaceStr, replaceWith);
+                }
+                return f;
+            }
+            function updateDisplay() {
+                const path = data[currentIndex];
+                document.getElementById('currentRemoteURL').innerHTML = `${remoteHost}${path}`;
+                document.getElementById('currentImportedURL').innerHTML = getImportedUrl(path);
+                document.getElementById('frame1').src = getRemoteUrl(path);
+                document.getElementById('frame2').src = getImportedUrl(path);
+            }
+            function next() {
+                if (currentIndex < data.length-1) {
+                    currentIndex++;
+                    updateDisplay();
+                }
+            }
+            function prev() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateDisplay();
+                }
+            }
+            fetchData();
+        </script>
+    </head>
+    <body>
+        <div class="main">
+            <div class="comapre-form">
+                <span id="currentURL"></span>
+                <button id="prev-btn" onclick="prev()">Previous</button>
+                <button id="next-btn" onclick="next()">Next</button>
+            </div>
+            <div style="display: flex">
+                <div id="currentRemoteURL" class="url-display"></div>
+                <div id="currentImportedURL" class="url-display"></div>
+            </div>
+            <div class="frames">
+                <iframe onfocus="setFrameId('frame1')" id="frame1" class="frame" src="http://localhost:3001/gallery/gw_usopen_covers2?host=https%3A%2F%2Fwww.golfdigest.com"></iframe>
+                <iframe onfocus="setFrameId('frame2')" id="frame2" class="frame" src="http://localhost:3000/import-test/golf-news-tours/_default/gallery/2007/6/gw-usopen-covers2"></iframe>
+            </div>
+        </div>
+    </body>
+</html>
