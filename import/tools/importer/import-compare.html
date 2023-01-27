@@ -3,8 +3,10 @@
         <title>Compare Tool</title>
         <style>
             .url-display {
-                width: 49%;
+                width: 50%;
                 margin-top: 10px;
+                border: ridge;
+                padding: 5px 2px 5px 10px
             }
             .url-display > a {
                 color: black;
@@ -12,14 +14,24 @@
             }
             .frames {
                 width: 100%;
+                height: 100%;
+                display: flex;
             }
-            .frame {
-                width: 49%;
+            .frame-box {
+                width: 50%;
                 height: 100%;
                 border: none;
-                zoom: 0.71; 
-                -moz-transform: scale(0.75); 
-                -moz-transform-origin: 0 0;
+                margin: 0;
+                padding: 0;
+                border: inset;
+            }
+            .frame {
+                width: 200%;
+                height: 200%;
+                border: none;
+                margin: 0;
+                padding: 0;
+                transform: scale(0.5) translate(-50%, -50%);
             }
         </style>
         <script>
@@ -117,7 +129,6 @@
     <body>
         <div class="main">
             <div class="comapre-form">
-                <span id="currentURL"></span>
                 <button id="prev-btn" onclick="prev()">Previous</button>
                 <button id="next-btn" onclick="next()">Next</button>
             </div>
@@ -126,8 +137,12 @@
                 <div id="currentImportedURL" class="url-display"></div>
             </div>
             <div class="frames">
-                <iframe onfocus="setFrameId('frame1')" id="frame1" class="frame" src="http://localhost:3001/gallery/gw_usopen_covers2?host=https%3A%2F%2Fwww.golfdigest.com"></iframe>
-                <iframe onfocus="setFrameId('frame2')" id="frame2" class="frame" src="http://localhost:3000/import-test/golf-news-tours/_default/gallery/2007/6/gw-usopen-covers2"></iframe>
+                <div class="frame-box">
+                    <iframe onfocus="setFrameId('frame1')" id="frame1" class="frame" src="http://localhost:3001/gallery/gw_usopen_covers2?host=https%3A%2F%2Fwww.golfdigest.com"></iframe>
+                </div>
+                <div class="frame-box">
+                    <iframe onfocus="setFrameId('frame2')" id="frame2" class="frame" src="http://localhost:3000/import-test/golf-news-tours/_default/gallery/2007/6/gw-usopen-covers2"></iframe>
+                </div>
             </div>
         </div>
     </body>
