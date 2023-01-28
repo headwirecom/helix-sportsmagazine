@@ -1,15 +1,22 @@
-const [$urls, $operation, submit, log] = [...document.querySelectorAll('.id')];
+let [$urls, $operation, submit, log] = [...document.querySelectorAll('.id')];
 
 console.log(log);
 
 const append = (string) => { 
-  const p = document.createElement('p'); 
-  p.textContent = string; 
-  log.append(p);
+  if (log) {
+    const p = document.createElement('p'); 
+    p.textContent = string;
+    log.append(p);
+  }
+  console.log(string);
 }
 
+const bulk = async (urls, operation, logger) => {
+  if (logger) {
 
-submit.addEventListener(('click'), () => {
+    log = logger;
+  }
+
   let counter = 0;
 
   const executeOperation = async (url) => {
@@ -28,16 +35,20 @@ submit.addEventListener(('click'), () => {
   const dequeue = async () => {
     while (urls.length) {
       const url = urls.shift();
-      await executeOperation(url);    
+      await executeOperation(url);   
     }
   };
-  
-  const operation = $operation.value;
+
   const concurrency = operation === 'live' ? 40 : 5;
-  const urls = $urls.value.split('\n').map(e => e.trim());
   const total = urls.length;
-  append(`URLs: ${urls.length}`);
+  append(`${operation} URLs: ${urls.length}`);
   for (let i = 0; i < concurrency; i += 1) {
     dequeue();
   }
+};
+
+submit.addEventListener(('click'), () => {
+  const operation = $operation.value;
+  const urls = $urls.value.split('\n').map(e => e.trim());
+  bulk(urls, operation);
 });
