@@ -33,7 +33,20 @@
                 padding: 0;
                 transform: scale(0.5) translate(-50%, -50%);
             }
+            .publish-ui {
+                margin-top: 20px;
+            }
+            .publish-logger-container {
+                border: none;
+                display: none;
+            }
+            .publish-logger {
+                border: none;
+                width: 100%;
+                margin-bottom: 10;
+            }
         </style>
+        <script src="./bulk.js" defer></script>
         <script>
             /*
             let focusFrameId = null;
@@ -59,11 +72,13 @@
             }
             setTimeout(onscroll, 500);*/
 
+            // const dataFile = '/tools/importer/urls.json';
             const dataFile = '/tools/importer/urls.json';
             const remoteHost = 'https://www.golfdigest.com';
             const myHost = (location.port !== 80) ? `${location.protocol}//${location.hostname}:3000` : `${location.protocol}//${location.hostname}`;
             const proxyHost = `${location.protocol}//${location.hostname}:3001`;
-            const importRoot = '/import-test';
+            const importRoot = 'https://sportsmagazine-poc--helix-sportsmagazine--headwirecom.hlx.page/import-test';
+            const liveImportRoot = 'https://sportsmagazine-poc--helix-sportsmagazine--headwirecom.hlx.live/import-test';
 
             let data = [];
             let currentIndex = 0; 
@@ -83,7 +98,9 @@
             }
             function getImportedUrl(path) {
                 let importedPath = path.replace(/\/content\/golfdigest-com\/en/, '').replace(fileName(path), fileName(path, '_', '-')).replace(/\.html$/, '');
-                return `${myHost}${importRoot}${importedPath}`;
+                const operation = document.querySelector('.publish-op').value;
+                let rootURL = (operation === 'live') ? liveImportRoot : importRoot;
+                return `${rootURL}${importedPath}`;
             }
             function fileName(path, replaceStr, replaceWith) {
                 const parts = path.split('/');
@@ -106,8 +123,6 @@
                 const path = data[currentIndex];
                 setUrlDisplay(document.getElementById('currentRemoteURL'), `${remoteHost}${path}`);
                 setUrlDisplay(document.getElementById('currentImportedURL'), getImportedUrl(path));
-                //document.getElementById('currentRemoteURL').innerHTML = `${remoteHost}${path}`;
-                //document.getElementById('currentImportedURL').innerHTML = getImportedUrl(path);
                 document.getElementById('frame1').src = getRemoteUrl(path);
                 document.getElementById('frame2').src = getImportedUrl(path);
             }
@@ -124,13 +139,61 @@
                 }
             }
             fetchData();
+
+            function getPublishLogger() {
+                logger = document.querySelector('.publish-logger');
+                return logger.contentDocument.body;
+            }
+            function showLogger(show) {
+                document.querySelector('.publish-logger-container').style.display = (show) ? 'block' : 'none';
+                document.querySelector('.hide-log-btn').style.display = (show) ? 'block' : 'none';
+            }
+            function appendLog(string) {
+                let logger = getPublishLogger();
+                if (logger) {
+                    let line = document.createElement('p');
+                    line.textContent = string;
+                    logger.append(line);
+                }
+                console.log(string);
+            }
+            function clearLog() {
+                let logger = getPublishLogger();
+                logger.innerHTML = '';
+            }
+            function startBulk(operation) {
+                let urls = [];
+                for (let i = 0; i < data.length; i++) {
+                    let url = getImportedUrl(data[i]);
+                    urls.push(url);
+                }
+                clearLog();
+                showLogger(true);
+                appendLog('Publishing ...')
+                bulk(urls, operation, getPublishLogger());
+            }
+            function publish() {
+                const operation = document.querySelector('.publish-op');
+                //alert(operation.value);
+                startBulk(operation.value);
+            }
+
         </script>
     </head>
     <body>
         <div class="main">
             <div class="comapre-form">
+                <select class="publish-op">
+                    <option value="preview">preview</option>
+                    <option value="live">publish</option>
+                </select>
+                <button class="publish-btn" onclick="publish()">Publish</button>
                 <button id="prev-btn" onclick="prev()">Previous</button>
                 <button id="next-btn" onclick="next()">Next</button>
+            </div>
+            <div class="publish-logger-container" style="display: none;">
+                <iframe class="publish-logger"></iframe>
+                <button class="hide-log-btn" onclick="showLogger(false)">Hide Log</button>
             </div>
             <div style="display: flex">
                 <div id="currentRemoteURL" class="url-display"></div>
@@ -143,6 +206,17 @@
                 <div class="frame-box">
                     <iframe onfocus="setFrameId('frame2')" id="frame2" class="frame" src="http://localhost:3000/import-test/golf-news-tours/_default/gallery/2007/6/gw-usopen-covers2"></iframe>
                 </div>
+            </div>
+        </div>
+        <div class="publish-ui" style="display: none">
+            <textarea class="id" style="display: none"></textarea>
+            <select class="id" style="display: none">
+                <option value="preview">preview</option>
+                <option value="live">publish</option>
+            </select>
+            <button class="id" style="display: none">start</button>
+            <div class="id logger">
+
             </div>
         </div>
     </body>
