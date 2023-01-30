@@ -29,7 +29,11 @@ const bulk = async (urls, operation, logger) => {
     const text = await resp.text();
     console.log(text);
     counter += 1;
-    append(`${counter}/${total}: ${adminURL}`);
+    if (resp.ok) {
+      append(`${counter}/${total}: ${adminURL}`);
+    } else {
+      append(`${counter}/${total}: FAILED ${adminURL}: ${text}`);
+    }
   }
 
   const dequeue = async () => {

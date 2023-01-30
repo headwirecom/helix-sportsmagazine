@@ -2,6 +2,10 @@
     <head>
         <title>Compare Tool</title>
         <style>
+            .form {
+                padding-bottom: 5;
+                text-align: center;
+            }
             .url-display {
                 width: 50%;
                 margin-top: 10px;
@@ -45,6 +49,25 @@
                 width: 100%;
                 margin-bottom: 10;
             }
+            .url {
+                margin-left: 0;
+            }
+            .url input {
+                border: 0;
+            }
+            .publish-op {
+                margin-left: 50;
+            }
+            .log-btn {
+                display: none;
+                align-self: center;
+            }
+            #prev-btn {
+                margin-left: 50;
+            }
+            #url-text {
+                width: 95%;
+            }
         </style>
         <script src="./bulk.js" defer></script>
         <script>
@@ -73,7 +96,7 @@
             setTimeout(onscroll, 500);*/
 
             // const dataFile = '/tools/importer/urls.json';
-            const dataFile = '/tools/importer/urls.json';
+            // const dataFile = '/tools/importer/urls.json';
             const remoteHost = 'https://www.golfdigest.com';
             const myHost = (location.port !== 80) ? `${location.protocol}//${location.hostname}:3000` : `${location.protocol}//${location.hostname}`;
             const proxyHost = `${location.protocol}//${location.hostname}:3001`;
@@ -83,10 +106,13 @@
             let data = [];
             let currentIndex = 0; 
             async function fetchData() {
+                const pageType = (document.querySelector('.page-type')) ? document.querySelector('.page-type').value : 'article';
+                const dataFile = `./${pageType}-urls.json`;
                 const resp = await fetch(dataFile);
                 if (resp.ok) {
                     const json = await resp.json();
                     data = json;
+                    currentIndex = 0;
                     updateDisplay();
                 } else {
                     alert('error fetching url data file');
@@ -119,9 +145,19 @@
                 c.append(a);
                 container.innerHTML = c.innerHTML;
             }
-            function updateDisplay() {
-                const path = data[currentIndex];
-                setUrlDisplay(document.getElementById('currentRemoteURL'), `${remoteHost}${path}`);
+            function compareUrl(url) {
+                if(url) {
+                    let path = url.replace('https://www.golfdigest.com/', '/');
+                    updateDisplay(path);
+                }
+            }
+            function updateDisplay(displayPath) {
+                const path = (displayPath) ? displayPath : data[currentIndex];
+                const url = `${remoteHost}${path}`;
+                if (url !== document.getElementById('url-text').value.trim()) {
+                    document.getElementById('url-text').value = url;
+                }
+                // setUrlDisplay(document.getElementById('currentRemoteURL'), url);
                 setUrlDisplay(document.getElementById('currentImportedURL'), getImportedUrl(path));
                 document.getElementById('frame1').src = getRemoteUrl(path);
                 document.getElementById('frame2').src = getImportedUrl(path);
@@ -147,6 +183,7 @@
             function showLogger(show) {
                 document.querySelector('.publish-logger-container').style.display = (show) ? 'block' : 'none';
                 document.querySelector('.hide-log-btn').style.display = (show) ? 'block' : 'none';
+                document.querySelector('.show-log-btn').style.display = (show) ? 'none' : 'block';
             }
             function appendLog(string) {
                 let logger = getPublishLogger();
@@ -182,10 +219,19 @@
     </head>
     <body>
         <div class="main">
-            <div class="comapre-form">
-                <select class="publish-op">
+            <!--
+            <div class="form">
+                <span class="url"><input id="url-text" type="text" size="100"><button onclick="compareUrl( document.getElementById('url-text').value.trim() )">Compare</button></span>
+            </div> -->
+            <div class="form">
+                Page Type:
+                <select class="page-type" onchange="fetchData()">
+                    <option value="article">Article</option>
+                    <option value="gallery">Gallery</option>
+                </select>
+                <select class="publish-op" onchange="updateDisplay()">
                     <option value="preview">preview</option>
-                    <option value="live">publish</option>
+                    <option value="live">live</option>
                 </select>
                 <button class="publish-btn" onclick="publish()">Publish</button>
                 <button id="prev-btn" onclick="prev()">Previous</button>
@@ -193,18 +239,26 @@
             </div>
             <div class="publish-logger-container" style="display: none;">
                 <iframe class="publish-logger"></iframe>
-                <button class="hide-log-btn" onclick="showLogger(false)">Hide Log</button>
+            </div>
+            <div class="form">
+                <span style="align-self: center;">
+                <button class="show-log-btn log-btn" onclick="showLogger(true)">Show Publish Log</button>
+                <button class="hide-log-btn log-btn" onclick="showLogger(false)">Hide Publish Log</button>
+                </span>
             </div>
             <div style="display: flex">
-                <div id="currentRemoteURL" class="url-display"></div>
+                <!--<div id="currentRemoteURL" class="url-display"></div>-->
+                <div class="url-display">
+                    <span class="url"><input id="url-text" type="text" ><button style="float: right;" onclick="compareUrl( document.getElementById('url-text').value.trim() )">></button></span>
+                </div>
                 <div id="currentImportedURL" class="url-display"></div>
             </div>
             <div class="frames">
                 <div class="frame-box">
-                    <iframe onfocus="setFrameId('frame1')" id="frame1" class="frame" src="http://localhost:3001/gallery/gw_usopen_covers2?host=https%3A%2F%2Fwww.golfdigest.com"></iframe>
+                    <iframe onfocus="setFrameId('frame1')" id="frame1" class="frame" src=""></iframe>
                 </div>
                 <div class="frame-box">
-                    <iframe onfocus="setFrameId('frame2')" id="frame2" class="frame" src="http://localhost:3000/import-test/golf-news-tours/_default/gallery/2007/6/gw-usopen-covers2"></iframe>
+                    <iframe onfocus="setFrameId('frame2')" id="frame2" class="frame" src=""></iframe>
                 </div>
             </div>
         </div>
