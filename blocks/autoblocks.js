@@ -133,6 +133,7 @@ function slideshowContainerHTML() {
     const template = 
     `
     <div class="slideshow-overflow" style="width: 1000px; height: 667px">
+    <div class="start-slideshow-btn" role="button"><div class="start-slideshow-txt" role="presentation">View The Gallery</div></div>
     <div
       class="slideshow-container"
       style="

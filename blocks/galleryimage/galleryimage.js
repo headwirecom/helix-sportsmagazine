@@ -70,6 +70,15 @@ function currentSlide() {
     return slides[currentIndex];
 }
 
+function decorateSlideshowStart() {
+    const btn = document.querySelector('.start-slideshow-btn');
+    if (btn) {
+        btn.addEventListener('click', () => {
+            btn.remove();
+        });
+    }
+}
+
 export default function decorate(block) {
     const style = getArticleStyle();
     block.classList.add('gallery-slide');
@@ -88,6 +97,7 @@ export default function decorate(block) {
         });
         if (imageBlockCount === 0) {
             showSlide(0);
+            decorateSlideshowStart();
             document.querySelector('.slide-btn-prev').addEventListener('click', previousSlide);
             document.querySelector('.slide-btn-next').addEventListener('click', nextSlide);
             setTimeout(updateCounter, 500);
