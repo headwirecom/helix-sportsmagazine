@@ -151,6 +151,11 @@
                     updateDisplay(path);
                 }
             }
+
+            function updateComapreFrame(orgPath) {
+                const newPath = getImportedUrl(orgPath);
+                document.getElementById('frame2').src = newPath;
+            }
             function updateDisplay(displayPath) {
                 const path = (displayPath) ? displayPath : data[currentIndex];
                 const url = `${remoteHost}${path}`;
@@ -159,8 +164,13 @@
                 }
                 // setUrlDisplay(document.getElementById('currentRemoteURL'), url);
                 setUrlDisplay(document.getElementById('currentImportedURL'), getImportedUrl(path));
-                document.getElementById('frame1').src = getRemoteUrl(path);
-                document.getElementById('frame2').src = getImportedUrl(path);
+
+                const orgFrame = document.getElementById('frame1');
+                orgFrame.src = getRemoteUrl(path);
+                setTimeout(() => {
+                    let pagePath = orgFrame.contentDocument.body.getAttribute("data-page-path");
+                    updateComapreFrame(pagePath);
+                }, 500);
             }
             function next() {
                 if (currentIndex < data.length-1) {
