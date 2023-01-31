@@ -37,7 +37,8 @@
     line-height: 16px;
     letter-spacing: .3em;
     text-align: left;
-    text-transform: uppercase
+    text-transform: uppercase;
+    margin-inline-end: 20px;
 }
 
 .o-SocialShare__m-IconWrap {
