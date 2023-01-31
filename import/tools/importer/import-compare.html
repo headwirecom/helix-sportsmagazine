@@ -199,6 +199,9 @@
                 logger.innerHTML = '';
             }
             function startBulk(operation) {
+                if (!window.confirm(`Publishing \"${operation}\" ${data.length} pages!`)) {
+                    return;
+                }
                 let urls = [];
                 for (let i = 0; i < data.length; i++) {
                     let url = getImportedUrl(data[i]);
