@@ -166,6 +166,23 @@
                 const newPath = getImportedUrl(orgPath);
                 document.getElementById('frame2').src = newPath;
             }
+            function waitToLoad() {
+                // console.log('waiting to load update page');
+                let docBody = document.getElementById('frame1').contentDocument.body;
+                let pagePath = (docBody) ? docBody.getAttribute("data-page-path") : null;
+                console.log('waiting to load update page. Page path ' + pagePath);
+                if (pagePath) {
+                    let currentUrl = document.getElementById('url-text').value;
+                    let urlFileName = fileName(currentUrl, '.html', '');
+                    let pathFileName = fileName(pagePath);
+                    if (urlFileName === pathFileName) {
+                        setUrlDisplay(document.getElementById('currentImportedURL'), getImportedUrl(pagePath));
+                        updateComapreFrame(pagePath);
+                    }
+                } else {
+                    setTimeout(waitToLoad, 100);
+                }
+            }
             function updateDisplay(displayPath) {
                 const path = (displayPath) ? displayPath : data[currentIndex];
                 const url = `${remoteHost}${path}`;
@@ -179,11 +196,7 @@
                     setUrlDisplay(document.getElementById('currentImportedURL'), getImportedUrl(path));
                     updateComapreFrame(path);
                 } else {
-                    setTimeout(() => {
-                        let pagePath = orgFrame.contentDocument.body.getAttribute("data-page-path");
-                        setUrlDisplay(document.getElementById('currentImportedURL'), getImportedUrl(path));
-                        updateComapreFrame(pagePath);
-                    }, 500);
+                    waitToLoad();
                 }
             }
             function next() {
