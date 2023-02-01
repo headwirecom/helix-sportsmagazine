@@ -106,16 +106,26 @@
             let data = [];
             let currentIndex = 0; 
             async function fetchData() {
-                const pageType = (document.querySelector('.page-type')) ? document.querySelector('.page-type').value : 'article';
+                let pagePath = window.location.hash.trim();
+                if (pagePath && pagePath.length > 0) {
+                    pagePath = pagePath.replace('#','').replace('https://www.golfdigest.com/', '/');
+                } else {
+                    pagePath = null;
+                }
+
+                const pageType = (document.querySelector('.page-type')) ? document.querySelector('.page-type').value : 'gallery';
                 const dataFile = `./${pageType}-urls.json`;
                 const resp = await fetch(dataFile);
                 if (resp.ok) {
                     const json = await resp.json();
                     data = json;
                     currentIndex = 0;
-                    updateDisplay();
+                    updateDisplay(pagePath);
                 } else {
                     alert('error fetching url data file');
+                    if (pagePath) {
+                        updateDisplay(pagePath);
+                    }
                 }
             }
             function getRemoteUrl(path) {
@@ -162,15 +172,19 @@
                 if (url !== document.getElementById('url-text').value.trim()) {
                     document.getElementById('url-text').value = url;
                 }
-                // setUrlDisplay(document.getElementById('currentRemoteURL'), url);
-                setUrlDisplay(document.getElementById('currentImportedURL'), getImportedUrl(path));
-
                 const orgFrame = document.getElementById('frame1');
                 orgFrame.src = getRemoteUrl(path);
-                setTimeout(() => {
-                    let pagePath = orgFrame.contentDocument.body.getAttribute("data-page-path");
-                    updateComapreFrame(pagePath);
-                }, 500);
+                
+                if (path.startsWith('/content/golfdigest-com/en/')) {
+                    setUrlDisplay(document.getElementById('currentImportedURL'), getImportedUrl(path));
+                    updateComapreFrame(path);
+                } else {
+                    setTimeout(() => {
+                        let pagePath = orgFrame.contentDocument.body.getAttribute("data-page-path");
+                        setUrlDisplay(document.getElementById('currentImportedURL'), getImportedUrl(path));
+                        updateComapreFrame(pagePath);
+                    }, 500);
+                }
             }
             function next() {
                 if (currentIndex < data.length-1) {
@@ -239,8 +253,8 @@
             <div class="form">
                 Page Type:
                 <select class="page-type" onchange="fetchData()">
-                    <option value="article">Article</option>
                     <option value="gallery">Gallery</option>
+                    <option value="article">Article</option>
                 </select>
                 <select class="publish-op" onchange="updateDisplay()">
                     <option value="preview">preview</option>
