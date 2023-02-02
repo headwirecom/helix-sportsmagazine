@@ -6,6 +6,11 @@
                 padding-bottom: 5;
                 text-align: center;
             }
+            .manual-form {
+                border-bottom: solid;
+                margin-bottom: 5px;
+                display: none;
+            }
             .url-display {
                 width: 50%;
                 margin-top: 10px;
@@ -105,7 +110,7 @@
 
             let data = [];
             let currentIndex = 0; 
-            async function fetchData() {
+            async function fetchFromDataFile(pageType) {
                 let pagePath = window.location.hash.trim();
                 if (pagePath && pagePath.length > 0) {
                     pagePath = pagePath.replace('#','').replace('https://www.golfdigest.com/', '/');
@@ -113,7 +118,6 @@
                     pagePath = null;
                 }
 
-                const pageType = (document.querySelector('.page-type')) ? document.querySelector('.page-type').value : 'gallery';
                 const dataFile = `./${pageType}-urls.json`;
                 const resp = await fetch(dataFile);
                 if (resp.ok) {
@@ -126,6 +130,31 @@
                     if (pagePath) {
                         updateDisplay(pagePath);
                     }
+                }
+            }
+            async function fetchData() {
+                const pageType = (document.querySelector('.page-type')) ? document.querySelector('.page-type').value : 'gallery';
+                if (pageType === 'manual') {
+                    let userData = document.getElementById('url-list').value.trim();
+                    let lines = userData.split('\n');
+                    if (lines.length > 0) {
+                        let updatedData = [];
+                        for(line of lines) {
+                            console.log(`user entered url ${line}`);
+                            // ignore empty lines
+                            let nextLine = line.trim();
+                            if (nextLine.length > 0) {
+                                updatedData.push(line.trim().replace('https://www.golfdigest.com/', '/'));
+                            }
+                        }
+                        if (updatedData.length >0) {
+                            data = updatedData;
+                            currentIndex = 0;
+                            updateDisplay();
+                        }
+                    }
+                } else {
+                    fetchFromDataFile(pageType);
                 }
             }
             function getRemoteUrl(path) {
@@ -257,6 +286,21 @@
                 startBulk(operation.value);
             }
 
+            function pageTypeChange() {
+                const pageType = document.querySelector('.page-type').value;
+                if (pageType === 'manual') {
+                    document.querySelector('.manual-form').style.display = 'block';
+                } else {
+                    document.querySelector('.manual-form').style.display = 'none';
+                    fetchData();
+                }
+            }
+
+            function toggleManualForm(show) {
+                const display = show ? 'block' : 'none';
+                document.getElementById('url-list-container').style.display = display;
+            }
+
             setTimeout(()=>{
                 document.getElementById('url-text').addEventListener('keyup', ({key})=>{
                     if (key.toLowerCase() === 'enter') {
@@ -268,15 +312,24 @@
     </head>
     <body>
         <div class="main">
-            <!--
-            <div class="form">
-                <span class="url"><input id="url-text" type="text" size="100"><button onclick="compareUrl( document.getElementById('url-text').value.trim() )">Compare</button></span>
-            </div> -->
+            <div class="form manual-form">
+                <div>
+                    <label>Enter a list of URLs (one per line) and click Submit.</label>
+                    <input id="manual-form-toggle" type="checkbox" onchange="toggleManualForm(this.checked)" checked/>
+                </div>
+                <div id="url-list-container">
+                <textarea id="url-list" rows="20" cols="150">
+
+                </textarea>
+                <p><button id="manual-submit-btn" onclick="fetchData()">Submit</button></p>
+                </div>
+            </div>
             <div class="form">
                 Page Type:
-                <select class="page-type" onchange="fetchData()">
+                <select class="page-type" onchange="pageTypeChange()">
                     <option value="gallery">Gallery</option>
                     <option value="article">Article</option>
+                    <option value="manual">Manual Entry</option>
                 </select>
                 <select class="publish-op" onchange="updateDisplay()">
                     <option value="preview">preview</option>
