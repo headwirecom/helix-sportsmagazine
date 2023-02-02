@@ -164,6 +164,7 @@
 
             function updateComapreFrame(orgPath) {
                 const newPath = getImportedUrl(orgPath);
+                setUrlDisplay(document.getElementById('currentImportedURL'), newPath);
                 document.getElementById('frame2').src = newPath;
             }
             function waitToLoad() {
@@ -175,9 +176,10 @@
                     let currentUrl = document.getElementById('url-text').value;
                     let urlFileName = fileName(currentUrl, '.html', '');
                     let pathFileName = fileName(pagePath);
-                    if (urlFileName === pathFileName) {
-                        setUrlDisplay(document.getElementById('currentImportedURL'), getImportedUrl(pagePath));
+                    if (urlFileName == pathFileName) {
                         updateComapreFrame(pagePath);
+                    } else {
+                        setTimeout(waitToLoad, 100);
                     }
                 } else {
                     setTimeout(waitToLoad, 100);
