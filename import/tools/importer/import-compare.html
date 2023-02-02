@@ -257,6 +257,13 @@
                 startBulk(operation.value);
             }
 
+            setTimeout(()=>{
+                document.getElementById('url-text').addEventListener('keyup', ({key})=>{
+                    if (key.toLowerCase() === 'enter') {
+                        compareUrl( document.getElementById('url-text').value.trim() );
+                    }
+                });
+            },200);
         </script>
     </head>
     <body>
