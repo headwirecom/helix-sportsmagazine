@@ -72,6 +72,11 @@ function appendToBlock(block, key, value) {
   block.insertAdjacentHTML('beforeend', row);
 }
 
+function appendElementToBlock(block, key, el) {
+  const val = (el) ? el.innerHTML : '';
+  appendToBlock(block, key, val);
+}
+
 function appendToValueBlock(block, value) {
   const row = `<tr><td>${value}</td></tr>`;
   block.insertAdjacentHTML('beforeend', row);
@@ -100,7 +105,9 @@ function getImage(slide) {
   const el = slide.querySelector('.m-ResponsiveImage');
   if (el) {
     const dataAttr = el.getAttribute('data-photo-box-params');
-    let sourcePath = JSON.parse(dataAttr).assetId;
+    console.log(`Parsing data attribute '${dataAttr}'`);
+    const json = JSON.parse(dataAttr);
+    let sourcePath = json.assetId;
     let sourceUrl = `${host}${sourcePath}${suffix}`;
     let image = document.createElement('img');
     image.setAttribute('src', sourceUrl);
@@ -143,21 +150,19 @@ export default {
           gallery.querySelectorAll('.m-Slide').forEach(slide => {
             let block = createBlockTable(document, main, 'GalleryImage');
             let media = slide.querySelector('.m-MediaBlock__m-MediaWrap');
-            appendToBlock(block, 'Image', media.innerHTML);
+            appendElementToBlock(block, 'Image', media);
 
             let promoCredit = slide.querySelector('.o-PhotoGalleryPromo__a-Credit');
-            appendToBlock(block, 'Promo Credit', promoCredit.innerHTML);
+            appendElementToBlock(block, 'Promo Credit', promoCredit);
 
             let promoHeadline = slide.querySelector('.o-PhotoGalleryPromo__a-HeadlineText');
-            appendToBlock(block, 'Promo Headline', promoHeadline.innerHTML);
+            appendElementToBlock(block, 'Promo Headline', promoHeadline);
 
             let promoDescription = slide.querySelector('.o-PhotoGalleryPromo__a-Description');
-            appendToBlock(block, 'Promo Description', promoDescription.innerHTML);
+            appendElementToBlock(block, 'Promo Description', promoDescription);
 
             let attribution = slide.querySelector('.o-Attribution');
-            if (attribution) {
-              appendToBlock(block, 'Attribution', attribution.innerHTML);
-            }
+            appendElementToBlock(block, 'Attribution', attribution);
           });
         } else {
           let slideInfos = gallery.querySelectorAll('.asset-info');
@@ -167,15 +172,15 @@ export default {
             // let media = slide.querySelector('.share-frame');
             // alert(slide.innerHTML);
             let media = getImage(slide);
-            appendToBlock(block, 'Image', media.innerHTML)
+            appendElementToBlock(block, 'Image', media)
 
             if (blockCount < slideInfos.length) {
               let slideInfo = slideInfos.item(blockCount);
               let promoHeadline = slideInfo.querySelector('.o-PhotoGalleryPromo__a-HeadlineText');
-              appendToBlock(block, 'Promo Headline', promoHeadline.innerHTML);
+              appendElementToBlock(block, 'Promo Headline', promoHeadline);
 
               let promoDescription = slideInfo.querySelector('.o-PhotoGalleryPromo__a-Description');
-              appendToBlock(block, 'Promo Description', promoDescription.innerHTML);
+              appendElementToBlock(block, 'Promo Description', promoDescription);
             }
             blockCount++;
           });
