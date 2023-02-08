@@ -45,7 +45,7 @@ const bulk = async (urls, operation, logger) => {
 
   const concurrency = operation === 'live' ? 40 : 5;
   const total = urls.length;
-  append(`${operation} URLs: ${urls.length}`);
+  append(`URLs: ${urls.length}`);
   for (let i = 0; i < concurrency; i += 1) {
     dequeue();
   }
