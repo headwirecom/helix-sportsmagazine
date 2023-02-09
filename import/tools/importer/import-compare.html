@@ -167,15 +167,19 @@
                 let rh = encodeURIComponent(remoteHost);
                 return `${proxyHost}${path}?host=${rh}`;
             }
-            function getImportedUrl(path, op) {
+            function mapToImportedPath(path) {
                 let fn = fileName(path, '_', '-').replaceAll('--','-').replace(/^-/,'').toLowerCase();
                 let importedPath = path.replace(/\/content\/golfdigest-com\/en/, '').replace(fileName(path), fn).replace(/\.html$/, '').replace(/-$/,'');
+                return importedPath;
+            }
+            function getImportedUrl(path, op) {
+                let importedPath = mapToImportedPath(path);
                 const operation = (op) ? op : document.querySelector('.publish-op').value;
                 let rootURL = (operation === 'live') ? `${liveImportHost}${importRoot}` : `${previewImportHost}${importRoot}`;
                 return `${rootURL}${importedPath}`;
             }
             function getImportedProxyUrl(path, op) {
-                let importedPath = path.replace(/\/content\/golfdigest-com\/en/, '').replace(fileName(path), fileName(path, '_', '-')).replace(/\.html$/, '');
+                let importedPath = mapToImportedPath(path);
                 const operation = (op) ? op : document.querySelector('.publish-op').value;
                 let host = encodeURIComponent( (operation === 'live') ? liveImportHost : previewImportHost );
                 return `${proxyHost}${importRoot}${importedPath}?host=${host}`;
@@ -302,8 +306,8 @@
             function publish() {
                 const operation = document.querySelector('.publish-op');
                 const clearCache = document.querySelector('#clear-cache-toggle');
-                const started = startBulk(operation.value);
-                if (operation.value == 'live' && (starte && clearCache)) {
+                const started = startBulk(operation.value, true);
+                if (operation.value == 'live' && (started && clearCache)) {
                     startBulk('cache', false);
                 }
             }
@@ -314,7 +318,7 @@
                 document.querySelector('.publish-test-btn').disabled = true;
                 document.querySelector('.clear-log-btn').disabled = true;
                 const failedURLs = [];
-                const op = (document.querySelector('.page-type').value === 'live') ? 'live' : "preview";
+                const op = (document.querySelector('.publish-op').value === 'live') ? 'live' : "preview";
 
                 appendLog(`Checking publish status in '${op}' mode for ${data.length} pages.`);
                 for (let i = 0; i < data.length; i++) {
