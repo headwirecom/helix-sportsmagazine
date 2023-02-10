@@ -180,5 +180,11 @@ export default {
     generateDocumentPath: ({
       // eslint-disable-next-line no-unused-vars
       document, url, html, params,
-    }) => new URL(url).pathname.replace(/\.html$/, '').replace(/\/$/, '').replace(/\/content\/golfdigest-com\/en/, ''),
+    }) => {
+      let contentPath = document.body.getAttribute('data-page-path');
+      if (contentPath) {
+        return contentPath.replace(/\/content\/golfdigest-com\/en/, '');
+      }
+      return new URL(url).pathname.replace(/\.html$/, '').replace(/\/$/, '').replace(/\/content\/golfdigest-com\/en/, '');
+    },
   };
