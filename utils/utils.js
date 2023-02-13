@@ -46,7 +46,8 @@ export const articleStyles = {
     OpenArticle:"OpenArticle",
     LiveStream:"LiveStream",
     Gallery:"Gallery",
-    GalleryListicle:"Gallery Listicle"
+    GalleryListicle:"Gallery Listicle",
+    ProductListing: "Product Listing"
 };
 
 export function getArticleStyle() {
