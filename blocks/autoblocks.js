@@ -160,6 +160,15 @@ function decorateGallery(main, metadata) {
     const byline = buildBylineBlock(main, metadata);
     main.querySelector('.article-body').before(byline);
 
+    const shareLabel = byline.querySelector('.o-SocialShare__a-ShareLabel');
+    if (shareLabel) {
+        console.log('removing share label');
+        // byline share block does not have label on Gallery pages
+        shareLabel.remove();
+    } else {
+        console.log('no share label?');
+    }
+
     const first = main.querySelector('.default-content-wrapper').firstChild;
     if (first) {
         byline.before(first);
@@ -196,6 +205,10 @@ function decorateGalleryListicle(main, metadata) {
     byline.before(first);
 }
 
+function decorateProductPage(main) {
+
+}
+
 function decorateMain(main) {
     main.classList.add('container-site');
     const container = document.createElement('div');
@@ -230,6 +243,9 @@ export default function decorate(main, metadata) {
             break;
         case articleStyles.GalleryListicle:
             decorateGalleryListicle(main, metadata) 
+            break;
+        case articleStyles.ProductListing:
+            decorateProductPage(main);
             break;
         default:
             decorateDefaultArticle(main, metadata);
