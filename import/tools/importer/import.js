@@ -53,6 +53,11 @@ function appendMetadata(metadata, key, value) {
 }
 
 function appendPageMetadata(document, metadata) {
+  const pageTitle = document.querySelector('title');
+  if (pageTitle) {
+    appendMetadata(metadata, 'PageTitle', pageTitle.innerHTML);
+  }
+  
   const metaMatchFilter = [ 'msapplication-TileColor', 'msapplication-TileImage', 'keywords', 'news_keywords', 
                       'fb:app_id', 'fb:admins', 'twitter:domain', 'og:type', 'og:site_name', 'parsely-metadata',
                       'tp:initialize', 'tp:PreferredRuntimes', 'fb:app_id' ];
