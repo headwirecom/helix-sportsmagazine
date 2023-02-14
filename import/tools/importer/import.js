@@ -52,9 +52,64 @@ function appendMetadata(metadata, key, value) {
   metadata.insertAdjacentHTML('beforeend', row);
 }
 
+function appendPageMetadata(document, metadata) {
+  const metaMatchFilter = [ 'msapplication-TileColor', 'msapplication-TileImage', 'keywords', 'news_keywords', 
+                      'fb:app_id', 'fb:admins', 'twitter:domain', 'og:type', 'og:site_name', 'parsely-metadata',
+                      'tp:initialize', 'tp:PreferredRuntimes', 'fb:app_id' ];
+
+  document.querySelectorAll('meta').forEach(metaEl => {
+    let key = metaEl.getAttribute('name');
+    if (!key) key = metaEl.getAttribute('property');
+    let name = metaMatchFilter.find((m) => { if (m.match(key)) { return m } } );
+    let value = metaEl.getAttribute('content');
+    if (name && value) appendMetadata(metadata, name, value);
+  });
+}
+
 function addEl(main, el) {
   if (el) {
     main.append(el);
+  }
+}
+
+function createBlockTable(document, main, blockName) {
+  const table = document.createElement('table');
+  table.innerHTML = `<tr><th colspan="2">${blockName}</th></tr>`;
+  main.append(table);
+  return table;
+}
+
+function appendToBlock(block, key, value) {
+  const row = `<tr><td>${key}</td><td>${value}</td></tr>`;
+  block.insertAdjacentHTML('beforeend', row);
+}
+
+function appendElementToBlock(block, key, el) {
+  const val = (el) ? el.innerHTML : '';
+  appendToBlock(block, key, val);
+}
+
+function copyElementToBlock(block, docEl, selector, blockKey) {
+  const el = docEl.querySelector(selector);
+  appendElementToBlock(block, blockKey, el);
+}
+
+function getGallerySlideImage(slide) {
+  const host = 'https://golfdigest.sports.sndimg.com';
+  const suffix = '.rend.hgtvcom.616.822.suffix/1573470070814.jpeg';
+
+  const el = slide.querySelector('.m-ResponsiveImage');
+  if (el) {
+    const dataAttr = el.getAttribute('data-photo-box-params');
+    console.log(`Parsing data attribute '${dataAttr}'`);
+    const json = JSON.parse(dataAttr);
+    let sourcePath = json.assetId;
+    let sourceUrl = `${host}${sourcePath}${suffix}`;
+    let image = document.createElement('img');
+    image.setAttribute('src', sourceUrl);
+    let div = document.createElement('div');
+    div.append(image);
+    return div;
   }
 }
 
@@ -134,16 +189,7 @@ function transformArticleDOM(document) {
     appendMetadata(metadata, "Image Credit", heroImageCreditTxt);
   }
 
-  const metaMatchFilter = [ 'msapplication-TileColor', 'msapplication-TileImage', 'keywords', 'news_keywords', 
-                      'fb:app_id', 'fb:admins', 'twitter:domain', 'og:type', 'og:site_name', 'parsely-metadata',
-                      'tp:initialize', 'tp:PreferredRuntimes', 'fb:app_id' ];
-  document.querySelectorAll('meta').forEach(metaEl => {
-    let key = metaEl.getAttribute('name');
-    if (!key) key = metaEl.getAttribute('property');
-    let name = metaMatchFilter.find((m) => { if (m.match(key)) { return m } } );
-    let value = metaEl.getAttribute('content');
-    if (name && value) appendMetadata(metadata, name, value);
-  });
+  appendPageMetadata(document, metadata);
   return main;
 }
 
@@ -187,7 +233,7 @@ function transformGalleryDOM(document) {
         let block = createBlockTable(document, main, 'GalleryImage');
         // let media = slide.querySelector('.share-frame');
         // alert(slide.innerHTML);
-        let media = getImage(slide);
+        let media = getGallerySlideImage(slide);
         appendElementToBlock(block, 'Image', media)
 
         if (blockCount < slideInfos.length) {
@@ -218,47 +264,37 @@ function transformGalleryDOM(document) {
   }
   appendMetadata(metadata, 'og:type', 'gallery');
   appendMetadata(metadata, 'Article Style', articleStyle);
-
-  const metaMatchFilter = [ 'msapplication-TileColor', 'msapplication-TileImage', 'keywords', 'news_keywords', 
-                      'fb:app_id', 'fb:admins', 'twitter:domain', 'og:type', 'og:site_name', 'parsely-metadata',
-                      'tp:initialize', 'tp:PreferredRuntimes', 'fb:app_id' ];
-
-  document.querySelectorAll('meta').forEach(metaEl => {
-    let key = metaEl.getAttribute('name');
-    if (!key) key = metaEl.getAttribute('property');
-    let name = metaMatchFilter.find((m) => { if (m.match(key)) { return m } } );
-    let value = metaEl.getAttribute('content');
-    if (name && value) appendMetadata(metadata, name, value);
-  });
-
+  appendPageMetadata(document, metadata);
   return main;
 }
 
 function transformProductDOM(document) {
   const main = document.createElement('main');
   const productContent = document.querySelector('.main');
+
+  productContent.querySelectorAll('.o-GolfClubReviewContent').forEach(el => {
+    let block = createBlockTable(document, main, 'ProductListing');
+    copyElementToBlock(block, el, '.productTitle', 'Title');
+    copyElementToBlock(block, el, '.o-GolfClubReviewContent__m-TextWrap__a-AwardContainer', 'Awards');
+    copyElementToBlock(block, el, '.o-GolfClubReviewContent__m-TextWrap__a-Description', 'Description');
+    copyElementToBlock(block, el, '.price', 'Price');
+    copyElementToBlock(block, el, '.a-Advertiser', 'Advertiser');
+    copyElementToBlock(block, el, '.m-LinkContainer__a-BuyLink', 'BuyLink');
+    copyElementToBlock(block, el, '.o-GolfClubReviewContent__m-TextWrap__a-Disclaimer', 'Disclaimer');
+    copyElementToBlock(block, el, '.o-GolfClubReviewContent__m-MediaWrap', 'Image');
+  });
+
+  /*
   const refList = productContent.querySelector('.referenceList');
   if (refList) {
     refList.parentElement.remove();
   }
   main.append(productContent);
-
+  */
   const metadata = createMetadataBlock(document, main);
   appendMetadata(metadata, 'og:type', 'product');
   appendMetadata(metadata, 'Article Style', articleStyles.ProductListing);
-
-  const metaMatchFilter = [ 'msapplication-TileColor', 'msapplication-TileImage', 'keywords', 'news_keywords', 
-                      'fb:app_id', 'fb:admins', 'twitter:domain', 'og:type', 'og:site_name', 'parsely-metadata',
-                      'tp:initialize', 'tp:PreferredRuntimes', 'fb:app_id' ];
-
-  document.querySelectorAll('meta').forEach(metaEl => {
-    let key = metaEl.getAttribute('name');
-    if (!key) key = metaEl.getAttribute('property');
-    let name = metaMatchFilter.find((m) => { if (m.match(key)) { return m } } );
-    let value = metaEl.getAttribute('content');
-    if (name && value) appendMetadata(metadata, name, value);
-  });
-
+  appendPageMetadata(document, metadata);
   return main;
 }
 
