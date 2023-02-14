@@ -57,7 +57,7 @@ function appendPageMetadata(document, metadata) {
   if (pageTitle) {
     appendMetadata(metadata, 'PageTitle', pageTitle.innerHTML);
   }
-  
+
   const metaMatchFilter = [ 'msapplication-TileColor', 'msapplication-TileImage', 'keywords', 'news_keywords', 
                       'fb:app_id', 'fb:admins', 'twitter:domain', 'og:type', 'og:site_name', 'parsely-metadata',
                       'tp:initialize', 'tp:PreferredRuntimes', 'fb:app_id' ];
@@ -101,7 +101,6 @@ function copyElementToBlock(block, docEl, selector, blockKey) {
 
 function getGallerySlideImage(slide) {
   const host = 'https://golfdigest.sports.sndimg.com';
-  const suffix = '.rend.hgtvcom.616.822.suffix/1573470070814.jpeg';
 
   const el = slide.querySelector('.m-ResponsiveImage');
   if (el) {
@@ -109,7 +108,7 @@ function getGallerySlideImage(slide) {
     console.log(`Parsing data attribute '${dataAttr}'`);
     const json = JSON.parse(dataAttr);
     let sourcePath = json.assetId;
-    let sourceUrl = `${host}${sourcePath}${suffix}`;
+    let sourceUrl = `${host}${sourcePath}`;
     let image = document.createElement('img');
     image.setAttribute('src', sourceUrl);
     let div = document.createElement('div');
@@ -279,12 +278,12 @@ function transformProductDOM(document) {
 
   productContent.querySelectorAll('.o-GolfClubReviewContent').forEach(el => {
     let block = createBlockTable(document, main, 'ProductListing');
+    copyElementToBlock(block, el, '.brand', 'Brand');
     copyElementToBlock(block, el, '.productTitle', 'Title');
-    copyElementToBlock(block, el, '.o-GolfClubReviewContent__m-TextWrap__a-AwardContainer', 'Awards');
     copyElementToBlock(block, el, '.o-GolfClubReviewContent__m-TextWrap__a-Description', 'Description');
     copyElementToBlock(block, el, '.price', 'Price');
     copyElementToBlock(block, el, '.a-Advertiser', 'Advertiser');
-    copyElementToBlock(block, el, '.m-LinkContainer__a-BuyLink', 'BuyLink');
+    copyElementToBlock(block, el, '.m-LinkContainer', 'Links');
     copyElementToBlock(block, el, '.o-GolfClubReviewContent__m-TextWrap__a-Disclaimer', 'Disclaimer');
     copyElementToBlock(block, el, '.o-GolfClubReviewContent__m-MediaWrap', 'Image');
   });
