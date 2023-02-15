@@ -29,7 +29,6 @@ function decorateRow(row, container, textContainer, mediaContainer) {
         row.remove();
     } else if (className === 'price') {
         let priceWrapper = getOrCreatePriceWrapper(textContainer);
-        let priceEl = createTag('span', {class:'price'}, row.querySelector('div').innerHTML);
         priceWrapper.append(createTag('span', {class:'price'}, row.querySelector('div').innerHTML));
         priceWrapper.append(createTag('span', {class:'separator'}, '|'));
         row.remove();

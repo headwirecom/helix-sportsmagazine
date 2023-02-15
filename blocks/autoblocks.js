@@ -9,6 +9,9 @@ function loadStyles(main, metadata) {
     if (metadata.articleStyle == articleStyles.FullBleed) {
         loadCSS(`${window.hlx.codeBasePath}/styles/fullbleed-article-styles.css`);
     }
+    if (metadata.articleStyle == articleStyles.ProductListing) {
+        loadCSS(`${window.hlx.codeBasePath}/styles/product-page-styles.css`);
+    }
 }
 
 function loadBlock(block, name) {
