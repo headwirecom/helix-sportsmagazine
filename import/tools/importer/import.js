@@ -59,7 +59,7 @@ function appendPageMetadata(document, metadata) {
   }
 
   const metaMatchFilter = [ 'msapplication-TileColor', 'msapplication-TileImage', 'keywords', 'news_keywords', 
-                      'fb:app_id', 'fb:admins', 'twitter:domain', 'og:type', 'og:site_name', 'parsely-metadata',
+                      'fb:app_id', 'fb:admins', 'twitter:domain', 'og:title', 'og:type', 'og:site_name', 'parsely-metadata',
                       'tp:initialize', 'tp:PreferredRuntimes', 'fb:app_id' ];
 
   document.querySelectorAll('meta').forEach(metaEl => {
