@@ -16,9 +16,15 @@ function decorateRow(row, container, textContainer, mediaContainer) {
     const field = row.querySelector('div');
     const className = getRowClassName(field.innerHTML);
     field.remove();
-    if (className === 'title') {
+    if (className === 'brand') {
+        let brandText = row.querySelector('div').innerHTML.trim();
+        if (brandText && brandText.length > 0) {
+            let brandEl = createTag('h2', {class:'brand'}, row.querySelector('div').innerHTML);
+            textContainer.append(brandEl);
+        }
+        row.remove();
+    } else if (className === 'title') {
         let titleEl = createTag('h1', {class:'productTitle'}, row.querySelector('div').innerHTML);
-        row.replaceWith(titleEl);
         textContainer.append(titleEl);
         row.remove();
     } else if (className === 'price') {
