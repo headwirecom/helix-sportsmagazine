@@ -107,6 +107,13 @@ function buildShareBlock(main, selector) {
     loadBlock(shareBlock, 'share');
 }
 
+function decorateDocumentTitle(document) {
+    const titleMetadata = getMetadata('pagetitle');
+    if (titleMetadata && titleMetadata.length > 0) {
+        document.querySelector('title').innerText = titleMetadata;
+    }
+}
+
 function decorateFullBleedArticle(main, metadata) {
     const articleHero = buildArticleHero(main, metadata);
     const byline = buildBylineBlock(main, metadata);
@@ -228,6 +235,7 @@ function decorateMain(main) {
 }
 
 export default function decorate(main, metadata) {
+    decorateDocumentTitle(document);
     loadStyles(main, metadata);
     decorateMain(main);
     switch(metadata.articleStyle) {
