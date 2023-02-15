@@ -108,7 +108,7 @@ function getImage(slide) {
     console.log(`Parsing data attribute '${dataAttr}'`);
     const json = JSON.parse(dataAttr);
     let sourcePath = json.assetId;
-    let sourceUrl = `${host}${sourcePath}${suffix}`;
+    let sourceUrl = `${host}${sourcePath}`;
     let image = document.createElement('img');
     image.setAttribute('src', sourceUrl);
     let div = document.createElement('div');
