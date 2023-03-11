@@ -30,7 +30,7 @@
 
                 let showCount = document.getElementById('show-count-btn').checked;
                 document.querySelector('.form').style.display = 'none';
-                parseSitemap(sitemap, showCount);
+                parseSitemap(sitemap, showCount, document.getElementById('bulk-import-btn').checked);
             }
 
             // setTimeout(()=>{parseSitemap(sitemap)}, 500);
@@ -47,6 +47,7 @@
                 <textarea id="url-list" rows="20" cols="150"></textarea>
                 <p>
                     <label>Show Counter</label><input type="checkbox" id="show-count-btn" checked>
+                    <label>Update Importer</label><input type="checkbox" id="bulk-import-btn">
                     <button id="start-btn">Start</button>
                 </p>
             </div>

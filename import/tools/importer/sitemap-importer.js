@@ -1,4 +1,4 @@
-import importJs from "./import.js"
+const BULK_URLS_STORAGE_ID = "option-field-import-urls";
 
 let counter = 0;
 
@@ -17,6 +17,22 @@ function append(s) {
     document.querySelector('.log').append(el);
 }
 
+function addToBulkImport(url) {
+    //console.log(`Add ${url} to importer localStorage`);
+    let urls = localStorage.getItem(BULK_URLS_STORAGE_ID);
+    if (urls) {
+        urls = urls + "\n" + url; 
+    } else {
+        urls = url;
+    }
+    localStorage.setItem(BULK_URLS_STORAGE_ID, urls);
+}
+
+function clearBulkImport() {
+    //console.log(`Clearing ${BULK_URLS_STORAGE_ID} from localStorage`);
+    localStorage.removeItem(BULK_URLS_STORAGE_ID);
+}
+
 async function decompress(blob) {
     const ds = new DecompressionStream("gzip");
     const decompressedStream = blob.stream().pipeThrough(ds);
@@ -25,7 +41,11 @@ async function decompress(blob) {
 
 export const urlsFilter = [];
 
-export async function parseSitemap(path, showCount) {
+export async function parseSitemap(path, showCount, updateImporter) {
+    if (updateImporter && counter == 0) {
+        clearBulkImport();
+    }
+
     const resp = await fetch(path);
     if (!resp.ok) {
         return null;
@@ -44,7 +64,7 @@ export async function parseSitemap(path, showCount) {
 
     doc.querySelectorAll('sitemap').forEach(async (sitemap) => {
         const url = sitemap.querySelector('loc').childNodes[0].nodeValue;
-        await parseSitemap(url, showCount);
+        await parseSitemap(url, showCount, updateImporter);
     });
 
     doc.querySelectorAll('url').forEach(el => {
@@ -53,6 +73,9 @@ export async function parseSitemap(path, showCount) {
             counter++;
             if(showCount) append(`${counter} ${url}`);
             else append(`${url}`);
+            if (updateImporter) {
+                addToBulkImport(url);
+            }
         }
     });
 }
