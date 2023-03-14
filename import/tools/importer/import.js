@@ -15,15 +15,37 @@ function replaceEmbed(el, url) {
 }
 
 function getAttributionName(document) {
-  const el = document.querySelector('.o-Attribution__a-Name');
-  if (el) return el.querySelector('a').innerHTML.trim();
-  return '';
+  let ret = '';
+  document.querySelectorAll('.o-Attribution__a-Name').forEach(el => {
+    let val = el.innerHTML.trim();
+    let link = el.querySelector('a');
+    if (link) {
+      val = link.innerHTML.trim();
+    }
+    if (ret.length === 0) {
+      ret = val;
+    } else {
+      ret = ret + ',' + val;
+    }
+  });
+  return ret;
 }
 
 function getAttributionURL(document) {
-  const el = document.querySelector('.o-Attribution__a-Name');
-  if (el) return el.querySelector('a').href;
-  return '';
+  let ret = '';
+  document.querySelectorAll('.o-Attribution__a-Name').forEach(el => {
+    let val = '';
+    let link = el.querySelector('a');
+    if (link) {
+      val = link.href;
+    }
+    if (ret.length === 0) {
+      ret = val;
+    } else {
+      ret = ret + ',' + val;
+    }
+  });
+  return ret;
 }
 
 function getPublicationDate(document) {
