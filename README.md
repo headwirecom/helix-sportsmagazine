@@ -46,17 +46,19 @@ The [Franklin Importer - UI](https://github.com/adobe/helix-importer-ui) was use
 To access content compare tool go to http://localhost:3001/tools/importer/import-compare.html.
 The original content is displayed on the left and content in left frame.
 
-There are several way to view content:
-1. Loaded from JSON files `{repo}/import/tools/importer/gallery-urls.json` or `{repo}/import/tools/importer/article-urls.json` if Page Type is Gallery or Article. Use Previous and Next buttons to compare these predefined pages.
+There are several ways to view content:
+1. Loaded from JSON files `{repo}/import/tools/importer/gallery-urls.json` or `{repo}/import/tools/importer/article-urls.json` if Page Type is Gallery or Article. Use Previous and Next buttons to compare these predefined pages. This is the default.
 2. Manually enter a list for URLs. Change Page Type to 'Manual Enrtry', enter a list of golfdigest.com URLs and click Submit. Use Previous and Next buttons.
-3. Change the URL in the left frame and press Enter of click '>' to view a specific.
-4. Pass a specific URL as hash parameter to the compare tool. Example: http://localhost:3001/tools/importer/import-compare.html#https://www.golfdigest.com/gallery/samwoods    
-5. To open the compare tool from any golfdigest.com page create a [Bookmarklet](https://en.wikipedia.org/wiki/Bookmarklet) with the following code as URL: javascript:window.open(\`http\:\/\/localhost:3001/tools/importer/import-compare.html#https\:\/\/www.golfdigest.com${window.location.pathname}\`);
+3. Change the URL in the left frame and press Enter of click '>' to view a specific page.
+4. Pass original Golfdigest URL as hash parameter to the compare tool. Example: http://localhost:3001/tools/importer/import-compare.html#https://www.golfdigest.com/gallery/samwoods    
+5. To open the compare tool from any golfdigest.com page create a [Bookmarklet](https://en.wikipedia.org/wiki/Bookmarklet) with the following code as URL: ```javascript:window.open(\`http\:\/\/localhost:3001/tools/importer/import-compare.html#https\:\/\/www.golfdigest.com${window.location.pathname}\`);```
+
+The compare tool supports both long form AEM URLs and their shortened versions.
 
 ## Sitemap
 
 To list URLs from https://www.golfdigest.com/ (with Franklin importer running) go to http://localhost:3001/tools/importer/sitemap.html
-Click Start to list all URLs. You can enter a list of root path in `Root URLs to import`. For example `/products/` will list only product pages under https://www.golfdigest.com/products/.
+Click Start to list all URLs. You can enter a list of root paths in `Root URLs to import`. For example `/products/` will list only product pages under https://www.golfdigest.com/products/.
 
 This can be used to get a list of pages to import vi [Franklin Importer - UI](https://github.com/adobe/helix-importer-ui).
 
