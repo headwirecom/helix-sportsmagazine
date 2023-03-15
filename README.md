@@ -44,7 +44,7 @@ The [Franklin Importer - UI](https://github.com/adobe/helix-importer-ui) was use
 ## Content Compare
 
 To access content compare tool go to http://localhost:3001/tools/importer/import-compare.html.
-The original content is displayed on the left and content in left frame.
+The original content is displayed in the left and imported content in the right frame.
 
 There are several ways to view content:
 1. Loaded from JSON files `{repo}/import/tools/importer/gallery-urls.json` or `{repo}/import/tools/importer/article-urls.json` if Page Type is Gallery or Article. Use Previous and Next buttons to compare these predefined pages. This is the default.
@@ -62,4 +62,4 @@ Click Start to list all URLs. You can enter a list of root paths in `Root URLs t
 
 This can be used to get a list of pages to import vi [Franklin Importer - UI](https://github.com/adobe/helix-importer-ui).
 
-Chacking `Update Importer` will cause URLs in `Import - Bulk` page of the Importer to be updated with the list of URLs from the Sitemap. Open or refresh http://localhost:3001/tools/importer/helix-importer-ui/index.html and click on `Import - Bulk`.
+Checking `Update Importer` will cause URLs in `Import - Bulk` page of the Importer to be updated with the list of URLs from the Sitemap. Open or refresh http://localhost:3001/tools/importer/helix-importer-ui/index.html and click on `Import - Bulk`.
