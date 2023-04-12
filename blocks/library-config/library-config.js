@@ -34,6 +34,18 @@ async function loadList(type, content, list) {
   }
 }
 
+function localizeLibrary(origin, library) {
+  const blocks = library.blocks;
+  if(blocks && blocks.data) {
+    blocks.data.forEach( block => {
+      const url = new URL(block.path);
+      const pathname = url.pathname;
+      block.path = `${origin}${pathname}`;
+    });
+  }
+  return library;
+}
+
 async function fetchLibrary(domain) {
   const { searchParams } = new URL(window.location.href);
   const suppliedLibrary = searchParams.get('library');
@@ -41,6 +53,12 @@ async function fetchLibrary(domain) {
 
   const resp = await fetch(library);
   if (!resp.ok) return null;
+
+  // Local dev
+  if (domain.includes("localhost")) {
+    return localizeLibrary(domain, await resp.json());
+  }
+
   return resp.json();
 }
 
