@@ -1,4 +1,4 @@
-import { createTag } from '../../scripts/scripts.js';
+import { createTag } from '../../utils/utils.js';
 
 const LIBRARY_PATH = '/block-library/library.json';
 

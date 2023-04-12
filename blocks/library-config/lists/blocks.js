@@ -1,4 +1,4 @@
-import { createTag } from '../../../scripts/scripts.js';
+import { createTag } from '../../../utils/utils.js';
 import createCopy from '../library-utils.js';
 
 function getAuthorName(block) {
