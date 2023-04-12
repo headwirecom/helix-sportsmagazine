@@ -632,6 +632,14 @@ function loadFooter(footer) {
 }
 
 /**
+ * Determine if we are serving content for the block-library, if so don't load the header or footer
+ * @returns {boolean} True if we are loading block library content
+ */
+function isBlockLibrary() {
+  return window.location.pathname.includes('block-library');
+}
+
+/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
@@ -662,7 +670,9 @@ function buildAutoBlocks(main) {
 export function decorateMain(main) {
   // hopefully forward compatible button decoration
   decorateIcons(main);
-  buildAutoBlocks(main);
+  if (!isBlockLibrary()) {
+    buildAutoBlocks(main);
+  }
   decorateSections(main);
   decorateBlocks(main);
 }
@@ -690,14 +700,14 @@ async function loadLazy(doc) {
   const element = hash ? main.querySelector(hash) : false;
   if (hash && element) element.scrollIntoView();
 
-  const header = doc.querySelector('header');
-  const footer = doc.querySelector('footer');
-
-  loadHeader(header);
-  loadFooter(footer);
-
-  await loadBlocks(header);
-  await loadBlocks(footer);
+  if (!isBlockLibrary()) {
+    const header = doc.querySelector('header');
+    const footer = doc.querySelector('footer');
+    loadHeader(header);
+    loadFooter(footer);
+    await loadBlocks(header);
+    await loadBlocks(footer);
+  }
   
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
