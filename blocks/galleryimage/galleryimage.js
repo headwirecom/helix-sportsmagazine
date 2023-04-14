@@ -1,4 +1,5 @@
 import { articleStyles, getArticleStyle, createTag } from "../../utils/utils.js";
+import { isBlockLibrary } from "../../scripts/scripts.js";
 
 let imageBlockCount = 0;
 let currentIndex = 0;
@@ -44,24 +45,29 @@ function previousSlide() {
 }
 
 function updateCounter() {
-    document.querySelector('.slideshow-counter > .counter-display').innerHTML = `${currentIndex+1}/${imageBlockCount}`;
+    let counterEl = document.querySelector('.slideshow-counter > .counter-display');
+    if (counterEl) {
+        counterEl.innerHTML = `${currentIndex+1}/${imageBlockCount}`;
+    }
 }
 
 function updateNav() {
     const btnPrev = document.querySelector('.slide-btn-prev');
     const btnNext = document.querySelector('.slide-btn-next');
-    switch(currentIndex) {
-        case 0:
-            btnPrev.style.display = 'none';
-            btnNext.style.display = 'block';
-            break;
-        case imageBlockCount-1:
-            btnPrev.style.display = 'block';
-            btnNext.style.display = 'none';
-            break;
-        default:
-            btnPrev.style.display = 'block';
-            btnNext.style.display = 'block';
+    if (btnPrev && btnNext) {
+        switch(currentIndex) {
+            case 0:
+                btnPrev.style.display = 'none';
+                btnNext.style.display = 'block';
+                break;
+            case imageBlockCount-1:
+                btnPrev.style.display = 'block';
+                btnNext.style.display = 'none';
+                break;
+            default:
+                btnPrev.style.display = 'block';
+                btnNext.style.display = 'block';
+        }
     }
 }
 
@@ -79,10 +85,19 @@ function decorateSlideshowStart() {
     }
 }
 
+function addButtonListeners() {
+    const btnPrev = document.querySelector('.slide-btn-prev');
+    const btnNext = document.querySelector('.slide-btn-next');
+    if (btnPrev && btnNext) {
+        btnPrev.addEventListener('click', previousSlide);
+        btnNext.addEventListener('click', nextSlide);
+    }
+}
+
 export default function decorate(block) {
     const style = getArticleStyle();
     block.classList.add('gallery-slide');
-    if (style === articleStyles.GalleryListicle) {
+    if (style === articleStyles.GalleryListicle || isBlockLibrary()) {
         block.classList.add('listicle');
         block.querySelectorAll(':scope > div').forEach(row => decorateRow(row));
     } else {
@@ -98,8 +113,7 @@ export default function decorate(block) {
         if (imageBlockCount === 0) {
             showSlide(0);
             decorateSlideshowStart();
-            document.querySelector('.slide-btn-prev').addEventListener('click', previousSlide);
-            document.querySelector('.slide-btn-next').addEventListener('click', nextSlide);
+            addButtonListeners();
             setTimeout(updateCounter, 500);
             setTimeout(updateNav, 500);
         }
