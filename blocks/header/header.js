@@ -232,7 +232,8 @@ function decorateMainMenuLevel(listEl, level) {
       listItem.style.display = 'block';
     }
     let menuLink = listItem.querySelector('a');
-    let link = createTag('a', {class: 'expand-title'}, menuLink.innerHTML);
+    let linkHref = (menuLink.href) ? menuLink.href : '';
+    let link = createTag('a', {class: 'expand-title', href: linkHref}, menuLink.innerHTML);
     let menuItemDiv = createTag('div', { class: `o-NavMenu__a-NavLink ${navLevel}`});
     menuItemDiv.append(link);
     menuLink.replaceWith(menuItemDiv);
