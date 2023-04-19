@@ -24,10 +24,11 @@ function loadBlock(block, name) {
 function buildArticleHero(main, metadata) {
     const titleEl = main.querySelector('h1');
     const picture = main.querySelector('picture');
+    const credit = getMetadata('image-credit');
     const renderData = {
         rubric : metadata.rubric,
         articleTitle: titleEl.innerHTML,
-        imageEmbedCreditLine: getMetadata('image-credit')
+        imageEmbedCreditLine: (credit) ? credit : ''
     };
     if (picture) {
         let tmpEl = document.createElement('div');
@@ -45,8 +46,9 @@ function buildArticleHero(main, metadata) {
 
 function buildArticleLead(main, metadata) {
     const picture = main.querySelector('picture');
+    const credit = getMetadata('image-credit');
     const renderData = {
-        imageEmbedCreditLine: getMetadata('image-credit')
+        imageEmbedCreditLine: (credit) ? credit : ''
     };
     const el = document.createElement('div');
     el.classList.add('article-lead');
