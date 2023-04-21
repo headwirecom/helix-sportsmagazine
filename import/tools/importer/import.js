@@ -345,7 +345,7 @@ export default {
       
       if(pageClass === 'articlePage') {
         main = transformArticleDOM(document);
-      } else if(pageClass === 'photoGalleryPromo') {
+      } else if(pageClass === 'photoGalleryPromo' || pageClass === 'photoGalleryPage') {
         main = transformGalleryDOM(document);
       } else if(pageClass === 'productListingPage') {
         main = transformProductDOM(document);
