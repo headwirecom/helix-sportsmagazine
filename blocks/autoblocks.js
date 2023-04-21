@@ -213,8 +213,11 @@ function decorateGalleryListicle(main, metadata) {
     const byline = buildBylineBlock(main, metadata);
     main.querySelector('.article-body').before(byline);
 
-    const first = main.querySelector('.default-content-wrapper').firstChild;
-    byline.before(first);
+    const defaultContent = main.querySelector('.default-content-wrapper');
+    const first = defaultContent.firstChild;
+    if (first) {
+        byline.before(first);
+    }
 }
 
 function decorateProductPage(main) {

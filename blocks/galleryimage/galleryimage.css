@@ -1,5 +1,14 @@
+.article-body {
+    width: 100%;
+}
+
+.galleryimage-container {
+    width: 100%;
+}
+
 .galleryimage-wrapper {
     counter-increment: blockCounter;
+    width: 100%;
 }
 
 .slideshow-wrapper .galleryimage-wrapper {
@@ -218,4 +227,8 @@
 
 .listicle .attribution {
     display: none;
+}
+
+.listicle img {
+    width: 100%;
 }
