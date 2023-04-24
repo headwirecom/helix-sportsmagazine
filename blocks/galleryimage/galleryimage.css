@@ -6,7 +6,7 @@
     width: 100%;
 }
 
-.galleryimage-wrapper {
+.galleryimage-wrapper .promo-headline {
     counter-increment: blockCounter;
     width: 100%;
 }
@@ -30,6 +30,11 @@
     display: inline;
 }
 
+.galleryimage-wrapper a {
+    color: #000;
+    text-decoration: none;
+    font-weight: normal;
+}
 .slideshow-slide-info > div {
     margin-top: 20px;
     margin-left: 10px;
