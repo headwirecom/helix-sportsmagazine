@@ -112,7 +112,7 @@ function appendToBlock(block, key, value) {
 }
 
 function appendElementToBlock(block, key, el) {
-  const val = (el) ? el.innerHTML : '';
+  const val = (el && el.innerHTML) ? el.innerHTML.trim().replace(/\n/g, "") : '';
   appendToBlock(block, key, val);
 }
 
@@ -244,7 +244,9 @@ function transformGalleryDOM(document) {
         appendElementToBlock(block, 'Promo Credit', promoCredit);
 
         let promoHeadline = slide.querySelector('.o-PhotoGalleryPromo__a-HeadlineText');
-        appendElementToBlock(block, 'Promo Headline', promoHeadline);
+        if (promoHeadline) {
+          appendElementToBlock(block, 'Promo Headline', promoHeadline);
+        }
 
         let promoDescription = slide.querySelector('.o-PhotoGalleryPromo__a-Description');
         appendElementToBlock(block, 'Promo Description', promoDescription);
@@ -265,8 +267,10 @@ function transformGalleryDOM(document) {
         if (blockCount < slideInfos.length) {
           let slideInfo = slideInfos.item(blockCount);
           let promoHeadline = slideInfo.querySelector('.o-PhotoGalleryPromo__a-HeadlineText');
-          appendElementToBlock(block, 'Promo Headline', promoHeadline);
-
+          if (promoHeadline) { 
+            appendElementToBlock(block, 'Promo Headline', promoHeadline);
+          }
+          
           let promoDescription = slideInfo.querySelector('.o-PhotoGalleryPromo__a-Description');
           appendElementToBlock(block, 'Promo Description', promoDescription);
         }
