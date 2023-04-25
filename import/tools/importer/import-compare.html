@@ -112,6 +112,7 @@
             const proxyHost = `${location.protocol}//${location.hostname}:3001`;
             const previewImportHost = 'https://sportsmagazine-poc--helix-sportsmagazine--headwirecom.hlx.page';
             const liveImportHost = 'https://sportsmagazine-poc--helix-sportsmagazine--headwirecom.hlx.live';
+            const localDevHost = 'http://localhost:3000';
             const importRoot = '/import-test';
 
             let data = [];
@@ -176,7 +177,10 @@
                 let importedPath = mapToImportedPath(path);
                 const operation = (op) ? op : document.querySelector('.publish-op').value;
                 let rootURL = (operation === 'live') ? `${liveImportHost}${importRoot}` : `${previewImportHost}${importRoot}`;
-                return `${rootURL}${importedPath}`;
+                if (operation === 'dev') {
+                    rootURL = `${localDevHost}${importRoot}`;
+                }
+                return `${rootURL}${importedPath}`;;
             }
             function getImportedProxyUrl(path, op) {
                 let importedPath = mapToImportedPath(path);
@@ -410,6 +414,7 @@
                 <select class="publish-op" onchange="publishOpChange()">
                     <option value="preview" selected>preview</option>
                     <option value="live">live</option>
+                    <option value="dev">local development</option>
                 </select>
                 <span class="clear-cache-check" style="display: none;">
                 <label>Clear Cache</label>
@@ -449,6 +454,7 @@
             <select class="id" style="display: none">
                 <option value="preview">preview</option>
                 <option value="live">publish</option>
+                <option value="dev">local development</option>
             </select>
             <button class="id" style="display: none">start</button>
             <div class="id logger">
