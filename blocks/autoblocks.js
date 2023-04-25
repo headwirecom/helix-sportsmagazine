@@ -12,6 +12,9 @@ function loadStyles(main, metadata) {
     if (metadata.articleStyle == articleStyles.ProductListing) {
         loadCSS(`${window.hlx.codeBasePath}/styles/product-page-styles.css`);
     }
+    if (metadata.articleStyle == articleStyles.Gallery || metadata.articleStyle == articleStyles.GalleryListicle) {
+        loadCSS(`${window.hlx.codeBasePath}/styles/gallery-styles.css`);
+    }
 }
 
 function loadBlock(block, name) {
