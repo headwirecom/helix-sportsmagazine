@@ -217,9 +217,8 @@ function decorateGalleryListicle(main, metadata) {
     main.querySelector('.article-body').before(byline);
 
     const defaultContent = main.querySelector('.default-content-wrapper');
-    const first = defaultContent.firstChild;
-    if (first) {
-        byline.before(first);
+    if (defaultContent) {
+        byline.before(defaultContent);
     }
 }
 

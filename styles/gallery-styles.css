@@ -7,3 +7,21 @@
     font-size: 40px;
     line-height: 44px;
 }
+
+.default-content-wrapper p {
+    margin: 0;
+    font-size: 18px;
+    line-height: 30px;
+    font-family: GothamGD,arial,sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: 0;
+}
+
+.articleByline {
+    margin-bottom: 50px;
+}
+
+.default-content-wrapper a {
+    text-decoration: none;
+}
