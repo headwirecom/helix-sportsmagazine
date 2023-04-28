@@ -295,7 +295,9 @@ export function decorateSections($main) {
  * @param {Element} main The container element
  */
 export function updateSectionsStatus(main) {
-  const sections = [...main.querySelectorAll(':scope > div.section')];
+  // articleBody is golfdigest markup specific
+  const articleBody = main.querySelector('.article-body');
+  const sections = (articleBody) ? [...articleBody.querySelectorAll(':scope > div.section')] : [...main.querySelectorAll(':scope > div.section')];
   for (let i = 0; i < sections.length; i += 1) {
     const section = sections[i];
     const status = section.getAttribute('data-section-status');
@@ -630,12 +632,31 @@ function loadFooter(footer) {
 }
 
 /**
+ * Determine if we are serving content for the block-library, if so don't load the header or footer
+ * @returns {boolean} True if we are loading block library content
+ */
+function isBlockLibrary() {
+  return window.location.pathname.includes('block-library');
+}
+
+/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
 function buildAutoBlocks(main) {
   try {
     buildHeroBlock(main);
+
+    // Golf Magazine auto blocks
+    const metadata = {};
+    metadata.author = getMetadata('author');
+    metadata.author_url = getMetadata('author-url');
+    metadata.publication_date = getMetadata('publication-date');
+    metadata.rubric = getMetadata('rubric');
+    metadata.articleStyle = getMetadata('article-style');
+    import('../blocks/autoblocks.js').then(mod => {
+      mod.default(main, metadata);
+    });
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -648,9 +669,10 @@ function buildAutoBlocks(main) {
  */
 export function decorateMain(main) {
   // hopefully forward compatible button decoration
-  decorateButtons(main);
   decorateIcons(main);
-  buildAutoBlocks(main);
+  if (!isBlockLibrary()) {
+    buildAutoBlocks(main);
+  }
   decorateSections(main);
   decorateBlocks(main);
 }
@@ -678,9 +700,15 @@ async function loadLazy(doc) {
   const element = hash ? main.querySelector(hash) : false;
   if (hash && element) element.scrollIntoView();
 
-  loadHeader(doc.querySelector('header'));
-  loadFooter(doc.querySelector('footer'));
-
+  if (!isBlockLibrary()) {
+    const header = doc.querySelector('header');
+    const footer = doc.querySelector('footer');
+    loadHeader(header);
+    loadFooter(footer);
+    await loadBlocks(header);
+    await loadBlocks(footer);
+  }
+  
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
   sampleRUM('lazy');

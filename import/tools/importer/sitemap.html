@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <title>Golfdigest Sitemap Test</title>
+        <style>
+        
+        </style>
+        <script type="module">
+            import { urlsFilter, parseSitemap } from "./sitemap-importer.js";
+
+            const sitemap = 'https://www.golfdigest.com/sitemaps/sitemap_golfdigest_index.xml';
+            
+            export function start() {
+                let userData = document.getElementById('url-list').value.trim();
+                let lines = userData.split('\n');
+                if (lines.length > 0) {
+                    for(let line of lines) {
+                        console.log(`user entered url ${line}`);
+                        // ignore empty lines and only accept strings that start with / or https://www.golfdigest.com/
+                        let nextLine = line.trim();
+
+                        if (nextLine.startsWith('/')) {
+                            nextLine = nextLine.replace('/', 'https://www.golfdigest.com/');
+                        }
+
+                        if (nextLine.length > 0 && nextLine.startsWith('https://www.golfdigest.com/')) {
+                            urlsFilter.push(nextLine);
+                        }
+                    }
+                }
+
+                let showCount = document.getElementById('show-count-btn').checked;
+                document.querySelector('.form').style.display = 'none';
+                parseSitemap(sitemap, showCount, document.getElementById('bulk-import-btn').checked);
+            }
+
+            // setTimeout(()=>{parseSitemap(sitemap)}, 500);
+            setTimeout(()=>{
+                document.getElementById('start-btn').addEventListener('click', start);
+            }, 300)
+        </script>
+    </head>
+    <body>
+        <main class="main">
+            <div class="form">
+                <h2>Sitemap Import</h2>
+                <div><label>Root URLs to import (full import if no URLs are entered):</label></div>
+                <textarea id="url-list" rows="20" cols="150"></textarea>
+                <p>
+                    <label>Show Counter</label><input type="checkbox" id="show-count-btn" checked>
+                    <label>Update Importer</label><input type="checkbox" id="bulk-import-btn">
+                    <button id="start-btn">Start</button>
+                </p>
+            </div>
+            <div class="log"></div>
+        </main>
+    </body>
+</html>

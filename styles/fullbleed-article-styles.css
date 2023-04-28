@@ -1,0 +1,102 @@
+.articleHero {
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    color: #000
+}
+
+@media (min-width:769px) {
+    .articleHero {
+        color: #fff;
+        height: 680px;
+        max-height: 680px
+    }
+
+    .articleHero:after {
+        z-index: 1;
+        background: linear-gradient(.01deg, #151517 .22%, rgba(21, 21, 23, 0) 99.99%);
+        content: "";
+        display: inline-block;
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 100%
+    }
+}
+
+@media (min-width:769px) {
+    .articleHero .imageEmbed {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 1
+    }
+}
+
+.articleHero .imageEmbed-TextWrap {
+    border: none;
+    text-align: left;
+    padding: 15px
+}
+
+@media (max-width:768px) {
+    .articleHero {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: reverse;
+        -ms-flex-direction: column-reverse;
+        flex-direction: column-reverse
+    }
+}
+
+.articleHero img {
+    width: 100%
+}
+
+.articleHeroContent {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    z-index: 2;
+    -ms-flex-preferred-size: 100%;
+    flex-basis: 100%;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    height: 100%;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    width: 100%;
+    max-width: 1024px;
+    margin: 0 auto;
+    position: relative;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    text-align: left;
+    padding: 0 18px
+}
+
+@media (min-width:769px) {
+    .articleHeroContent {
+        padding: 30px 18px;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        text-align: center;
+        margin: 0 auto
+    }
+}
+
+@media (min-width:769px) {
+    .articleHero .a-Rubric svg .gd-text {
+        fill: #fff
+    }
+}

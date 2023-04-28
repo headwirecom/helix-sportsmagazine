@@ -1,0 +1,465 @@
+<html>
+    <head>
+        <title>Compare Tool</title>
+        <style>
+            .form {
+                padding-bottom: 5;
+                text-align: center;
+            }
+            .manual-form {
+                border-bottom: solid;
+                margin-bottom: 5px;
+                display: none;
+            }
+            .url-display {
+                width: 50%;
+                margin-top: 10px;
+                border: ridge;
+                padding: 5px 2px 5px 10px
+            }
+            .url-display > a {
+                color: black;
+                text-decoration: none;
+            }
+            .frames {
+                width: 100%;
+                height: 100%;
+                display: flex;
+            }
+            .frame-box {
+                width: 50%;
+                height: 100%;
+                border: none;
+                margin: 0;
+                padding: 0;
+                border: inset;
+            }
+            .frame {
+                width: 200%;
+                height: 200%;
+                border: none;
+                margin: 0;
+                padding: 0;
+                transform: scale(0.5) translate(-50%, -50%);
+            }
+            .publish-ui {
+                margin-top: 20px;
+            }
+            .publish-logger-container {
+                border: none;
+                display: none;
+            }
+            .publish-logger {
+                border: none;
+                width: 100%;
+                margin-bottom: 10;
+            }
+            .url {
+                margin-left: 0;
+            }
+            .url input {
+                border: 0;
+            }
+            .publish-op {
+                margin-left: 50;
+            }
+            .log-btn {
+                display: none;
+                align-self: center;
+                margin-left: 5px;
+            }
+            .log-bottons {
+                display: flex;
+                flex-direction: row;
+            }
+            #prev-btn {
+                margin-left: 50;
+            }
+            #url-text {
+                width: 95%;
+            }
+        </style>
+        <script src="./bulk.js" defer></script>
+        <script>
+            /*
+            let focusFrameId = null;
+            function scrollFrame(frameId, x, y) {
+                const f = document.getElementById(frameId);
+                f.contentWindow.scrollTo(x, y);
+            }
+            function onscroll() {
+                console.log('in onscroll');
+                let frame1 = document.getElementById('frame2');
+                alert(frame1);
+                frame1.addEventListener('scroll', e => {
+                    console.log("frame: " + e);
+                });
+                frame1.contentWindow.addEventListener('scroll', e => {
+                    console.log("contentWindow: " + e);
+                });
+
+            }
+            function setFrameId(frameId) {
+                console.log(frameId);
+                focusFrameId = frameId;
+            }
+            setTimeout(onscroll, 500);*/
+
+            // const dataFile = '/tools/importer/urls.json';
+            // const dataFile = '/tools/importer/urls.json';
+            const remoteHost = 'https://www.golfdigest.com';
+            const myHost = (location.port !== 80) ? `${location.protocol}//${location.hostname}:3000` : `${location.protocol}//${location.hostname}`;
+            const proxyHost = `${location.protocol}//${location.hostname}:3001`;
+            const previewImportHost = 'https://sportsmagazine-poc--helix-sportsmagazine--headwirecom.hlx.page';
+            const liveImportHost = 'https://sportsmagazine-poc--helix-sportsmagazine--headwirecom.hlx.live';
+            const localDevHost = 'http://localhost:3000';
+            const importRoot = '/import-test';
+
+            let data = [];
+            let currentIndex = 0; 
+            async function fetchFromDataFile(pageType) {
+                let pagePath = window.location.hash.trim();
+                if (pagePath && pagePath.length > 0) {
+                    pagePath = pagePath.replace('#','').replace('https://www.golfdigest.com/', '/');
+                } else {
+                    pagePath = null;
+                }
+
+                const dataFile = `./${pageType}-urls.json`;
+                const resp = await fetch(dataFile);
+                if (resp.ok) {
+                    const json = await resp.json();
+                    data = json;
+                    currentIndex = 0;
+                    updateDisplay(pagePath);
+                } else {
+                    alert('error fetching url data file');
+                    if (pagePath) {
+                        updateDisplay(pagePath);
+                    }
+                }
+            }
+            async function fetchData() {
+                const pageType = (document.querySelector('.page-type')) ? document.querySelector('.page-type').value : 'gallery';
+                if (pageType === 'manual') {
+                    let userData = document.getElementById('url-list').value.trim();
+                    let lines = userData.split('\n');
+                    if (lines.length > 0) {
+                        let updatedData = [];
+                        for(line of lines) {
+                            console.log(`user entered url ${line}`);
+                            // ignore empty lines
+                            let nextLine = line.trim();
+                            if (nextLine.length > 0) {
+                                updatedData.push(line.trim().replace('https://www.golfdigest.com/', '/'));
+                            }
+                        }
+                        if (updatedData.length >0) {
+                            data = updatedData;
+                            currentIndex = 0;
+                            updateDisplay();
+                        }
+                    }
+                } else {
+                    fetchFromDataFile(pageType);
+                }
+            }
+            function getRemoteUrl(path) {
+                let rh = encodeURIComponent(remoteHost);
+                return `${proxyHost}${path}?host=${rh}`;
+            }
+            function mapToImportedPath(path) {
+                let fn = fileName(path, '_', '-').replaceAll('--','-').replace(/^-/,'').toLowerCase();
+                let importedPath = path.replace(/\/content\/golfdigest-com\/en/, '').replace(fileName(path), fn).replace(/\.html$/, '').replace(/-$/,'');
+                return importedPath;
+            }
+            function getImportedUrl(path, op) {
+                let importedPath = mapToImportedPath(path);
+                const operation = (op) ? op : document.querySelector('.publish-op').value;
+                let rootURL = (operation === 'live') ? `${liveImportHost}${importRoot}` : `${previewImportHost}${importRoot}`;
+                if (operation === 'dev') {
+                    rootURL = `${localDevHost}${importRoot}`;
+                }
+                return `${rootURL}${importedPath}`;;
+            }
+            function getImportedProxyUrl(path, op) {
+                let importedPath = mapToImportedPath(path);
+                const operation = (op) ? op : document.querySelector('.publish-op').value;
+                let host = encodeURIComponent( (operation === 'live') ? liveImportHost : previewImportHost );
+                return `${proxyHost}${importRoot}${importedPath}?host=${host}`;
+            }
+            function fileName(path, replaceStr, replaceWith) {
+                const parts = path.split('/');
+                let f = parts[parts.length-1];
+                if (replaceStr && replaceWith) {
+                    f = f.replaceAll(replaceStr, replaceWith);
+                }
+                return f;
+            }
+            function setUrlDisplay(container, url) {
+                const a = document.createElement('a');
+                a.innerHTML = url;
+                a.href = url;
+                a.target = '_blank';
+                const c = document.createElement('div');
+                c.append(a);
+                container.innerHTML = c.innerHTML;
+            }
+            function compareUrl(url) {
+                if(url) {
+                    let path = url.replace('https://www.golfdigest.com/', '/');
+                    updateDisplay(path);
+                }
+            }
+
+            function updateComapreFrame(orgPath) {
+                const newPath = getImportedUrl(orgPath);
+                setUrlDisplay(document.getElementById('currentImportedURL'), newPath);
+                document.getElementById('frame2').src = newPath;
+            }
+            function waitToLoad() {
+                // console.log('waiting to load update page');
+                let docBody = document.getElementById('frame1').contentDocument.body;
+                let pagePath = (docBody) ? docBody.getAttribute("data-page-path") : null;
+                console.log('waiting to load update page. Page path ' + pagePath);
+                if (pagePath) {
+                    let currentUrl = document.getElementById('url-text').value;
+                    let urlFileName = fileName(currentUrl, '.html', '');
+                    let pathFileName = fileName(pagePath);
+                    if (urlFileName == pathFileName) {
+                        updateComapreFrame(pagePath);
+                    } else {
+                        setTimeout(waitToLoad, 100);
+                    }
+                } else {
+                    setTimeout(waitToLoad, 100);
+                }
+            }
+            function updateDisplay(displayPath) {
+                const path = (displayPath) ? displayPath : data[currentIndex];
+                const url = `${remoteHost}${path}`;
+                if (url !== document.getElementById('url-text').value.trim()) {
+                    document.getElementById('url-text').value = url;
+                }
+                const orgFrame = document.getElementById('frame1');
+                orgFrame.src = getRemoteUrl(path);
+                
+                if (path.startsWith('/content/golfdigest-com/en/')) {
+                    setUrlDisplay(document.getElementById('currentImportedURL'), getImportedUrl(path));
+                    updateComapreFrame(path);
+                } else {
+                    waitToLoad();
+                }
+            }
+            function next() {
+                if (currentIndex < data.length-1) {
+                    currentIndex++;
+                    updateDisplay();
+                }
+            }
+            function prev() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateDisplay();
+                }
+            }
+            fetchData();
+
+            function getPublishLogger() {
+                logger = document.querySelector('.publish-logger');
+                return logger.contentDocument.body;
+            }
+            function showLogger(show) {
+                document.querySelector('.publish-logger-container').style.display = (show) ? 'block' : 'none';
+                document.querySelector('.hide-log-btn').style.display = (show) ? 'block' : 'none';
+                document.querySelector('.show-log-btn').style.display = (show) ? 'none' : 'block';
+                document.querySelector('.clear-log-btn').style.display = (show) ? 'block' : 'none';
+            }
+            function appendLog(string) {
+                let logger = getPublishLogger();
+                if (logger) {
+                    let line = document.createElement('p');
+                    line.innerHTML = string;
+                    logger.append(line);
+                }
+                console.log(string);
+            }
+            function clearLog(clearAndHide) {
+                let logger = getPublishLogger();
+                logger.innerHTML = '';
+                if (clearAndHide) {
+                    document.querySelector('.publish-logger-container').style.display = 'none';
+                    document.querySelectorAll('.log-btn').forEach(el => {el.style.display = 'none';});
+                }
+            }
+            function startBulk(operation, doConfirm) {
+                if (doConfirm && !window.confirm(`Publishing \"${operation}\" ${data.length} pages!`)) {
+                    return false;
+                }
+                let urls = [];
+                for (let i = 0; i < data.length; i++) {
+                    let url = getImportedUrl(data[i]);
+                    urls.push(url);
+                }
+                clearLog();
+                showLogger(true);
+                appendLog('Publishing ...')
+                bulk(urls, operation, getPublishLogger());
+                return true;
+            }
+            function publish() {
+                const operation = document.querySelector('.publish-op');
+                const clearCache = document.querySelector('#clear-cache-toggle');
+                const started = startBulk(operation.value, true);
+                if (operation.value == 'live' && (started && clearCache)) {
+                    startBulk('cache', false);
+                }
+            }
+
+            async function publishTest() {
+                clearLog();
+                showLogger(true);
+                document.querySelector('.publish-test-btn').disabled = true;
+                document.querySelector('.clear-log-btn').disabled = true;
+                const failedURLs = [];
+                const op = (document.querySelector('.publish-op').value === 'live') ? 'live' : "preview";
+
+                appendLog(`Checking publish status in '${op}' mode for ${data.length} pages.`);
+                for (let i = 0; i < data.length; i++) {
+                    let url = getImportedProxyUrl(data[i], op);
+                    let importedUrl = getImportedUrl(data[i], op);
+                    let logMsg = '';
+                    
+                    console.log(`Testing ${url}`);
+                    let resp = await fetch(url);
+                    let respCode = resp.status;
+                    let count = i + 1;
+                    if (resp.ok) {
+                        logMsg = `[${count}/${data.length}] ${importedUrl} published successfully!`;
+                    } else {
+                        console.log(`${url}: [${resp.status}] ${resp.statusText}`);
+                        logMsg = `[${count}/${data.length}] The page ${importedUrl}: [${resp.status}] ${resp.statusText}`;
+                        failedURLs.push(importedUrl);
+                    }
+                    appendLog(logMsg);
+                }
+
+                if (failedURLs.length > 0) {
+                    let s = "";
+                    for (let failedurl of failedURLs) {
+                        s = s + '<br>' +failedurl;
+                    }
+                    appendLog(`These pages are not published:<br>${s}`);
+                } else {
+                    appendLog('All pages have been published.');
+                }
+
+                document.querySelector('.publish-test-btn').disabled = false;
+                document.querySelector('.clear-log-btn').disabled = false;
+                // showLogger(false);
+            }
+
+            function pageTypeChange() {
+                const pageType = document.querySelector('.page-type').value;
+                if (pageType === 'manual') {
+                    document.querySelector('.manual-form').style.display = 'block';
+                } else {
+                    document.querySelector('.manual-form').style.display = 'none';
+                    fetchData();
+                }
+            }
+
+            function publishOpChange() {
+                const op = document.querySelector('.publish-op').value;
+                const clearCacheCheckbox = document.querySelector(".clear-cache-check");
+                clearCacheCheckbox.style.display = (op === 'live') ? 'inline' : 'none';
+                updateDisplay();
+            }
+
+            function toggleManualForm(show) {
+                const display = show ? 'block' : 'none';
+                document.getElementById('url-list-container').style.display = display;
+            }
+
+            setTimeout(()=>{
+                document.getElementById('url-text').addEventListener('keyup', ({key})=>{
+                    if (key.toLowerCase() === 'enter') {
+                        compareUrl( document.getElementById('url-text').value.trim() );
+                    }
+                });
+            },200);
+        </script>
+    </head>
+    <body>
+        <div class="main">
+            <div class="form manual-form">
+                <div>
+                    <label>Enter a list of URLs (one per line) and click Submit.</label>
+                    <input id="manual-form-toggle" type="checkbox" onchange="toggleManualForm(this.checked)" checked/>
+                </div>
+                <div id="url-list-container">
+                <textarea id="url-list" rows="20" cols="150">
+
+                </textarea>
+                <p><button id="manual-submit-btn" onclick="fetchData()">Submit</button></p>
+                </div>
+            </div>
+            <div class="form">
+                Page Type:
+                <select class="page-type" onchange="pageTypeChange()">
+                    <option value="gallery">Gallery</option>
+                    <option value="article">Article</option>
+                    <option value="manual">Manual Entry</option>
+                </select>
+                <select class="publish-op" onchange="publishOpChange()">
+                    <option value="preview" selected>preview</option>
+                    <option value="live">live</option>
+                    <option value="dev">local development</option>
+                </select>
+                <span class="clear-cache-check" style="display: none;">
+                <label>Clear Cache</label>
+                <input id="clear-cache-toggle" type="checkbox" checked/>
+                </span>
+                <button class="publish-btn" onclick="publish()">Publish</button>
+                <button class="publish-test-btn" onclick="publishTest()">Publish Check</button>
+                <button id="prev-btn" onclick="prev()">Previous</button>
+                <button id="next-btn" onclick="next()">Next</button>
+            </div>
+            <div class="publish-logger-container" style="display: none;">
+                <iframe class="publish-logger"></iframe>
+            </div>
+            <div class="form log-bottons">
+                <button class="show-log-btn log-btn" onclick="showLogger(true)">Show Publish Log</button>
+                <button class="hide-log-btn log-btn" onclick="showLogger(false)">Hide Publish Log</button>
+                <button class="clear-log-btn log-btn" onclick="clearLog(true)">Clear Publish Log</button>
+            </div>
+            <div style="display: flex">
+                <!--<div id="currentRemoteURL" class="url-display"></div>-->
+                <div class="url-display">
+                    <span class="url"><input id="url-text" type="text" ><button style="float: right;" onclick="compareUrl( document.getElementById('url-text').value.trim() )">></button></span>
+                </div>
+                <div id="currentImportedURL" class="url-display"></div>
+            </div>
+            <div class="frames">
+                <div class="frame-box">
+                    <iframe onfocus="setFrameId('frame1')" id="frame1" class="frame" src=""></iframe>
+                </div>
+                <div class="frame-box">
+                    <iframe onfocus="setFrameId('frame2')" id="frame2" class="frame" src=""></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="publish-ui" style="display: none">
+            <textarea class="id" style="display: none"></textarea>
+            <select class="id" style="display: none">
+                <option value="preview">preview</option>
+                <option value="live">publish</option>
+                <option value="dev">local development</option>
+            </select>
+            <button class="id" style="display: none">start</button>
+            <div class="id logger">
+
+            </div>
+        </div>
+    </body>
+</html>
