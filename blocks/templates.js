@@ -3,7 +3,7 @@ import { createTagFromString } from "../../utils/utils.js";
 function getAttributionNameHTML(author, author_url) {
     const names = author.split(',');
     const urls = author_url.split(',');
-    
+
     let template = '';
     for (let i=0; i<names.length; i++) {
         let htm = null;
@@ -46,7 +46,7 @@ function getAttributionHTML(data) {
 export function bylineTemplate(data) {
     const attributionHTML = getAttributionHTML(data);
     const publishDate = (data.publication_date) ? data.publication_date : '';
-    let template = 
+    let template =
         `<div class="attribution">
             ${attributionHTML}
         </div>
@@ -75,7 +75,7 @@ export function bylineTemplate(data) {
 
 export function shareTemplate() {
     const template = `
-                <div class="share block">
+                <div class="share block" data-block-name="share">
                     <div class="socialSharing">
                         <span style="display: none" class="clicktracking"></span>
                         <div class="o-SocialShare">
@@ -210,7 +210,7 @@ export function headerTemplate(data) {
 </div>
 </header>`;
     return template.trim();
-} 
+}
 
 export function headerSchoolsIconTemplate(data) {
     let template = `<svg xmlns="http://www.w3.org/2000/svg" width="123" height="34" viewBox="0 0 123 34" fill="none" role="img" aria-label="${data.title}">
