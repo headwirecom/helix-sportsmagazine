@@ -8,8 +8,8 @@ function addToProductsCache(products) {
     if (isCached(products)) return;
     if (productsCache.length === 0) {
         console.log('Register DOMContentLoaded listener');
-        document.addEventListener('DOMContentLoaded', function (e) { 
-            console.log('DOM Loaded. Clearing cache'); 
+        document.addEventListener('DOMContentLoaded', function (e) {
+            console.log('DOM Loaded. Clearing cache');
         });
     }
     productsCache.push(products);
@@ -87,7 +87,7 @@ export async function getProduct(productID) {
         const raw = productID.split('-')[1];
         return loadProductRaw(raw);
     }
-    
+
     var p = findProductInCache(productID);
     if (p) {
         return p;
@@ -98,7 +98,7 @@ export async function getProduct(productID) {
     if(!json.data) return;
     var totalRecords = json.total;
     var count = 0;
-    
+
     do {
         addToProductsCache(json.data, productID);
         let p = findProduct(json.data, productID);
@@ -159,4 +159,8 @@ export function jsonp(url) {
         }
         document.body.append(scriptTag);
     });
+}
+
+export function createDOMFromString(template) {
+    return document.createRange().createContextualFragment(template).firstChild;
 }

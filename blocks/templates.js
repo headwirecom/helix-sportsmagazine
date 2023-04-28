@@ -1,4 +1,4 @@
-import { createTagFromString } from "../../utils/utils.js";
+import { createTagFromString, createDOMFromString } from "../../utils/utils.js";
 
 function getAttributionNameHTML(author, author_url) {
     const names = author.split(',');
@@ -88,7 +88,7 @@ export function shareTemplate() {
                         </div>
                     </div>
                 </div>`;
-    return createTagFromString(template.trim());
+    return createDOMFromString(template.trim());
 }
 
 export function leaderboardTemplate(data) {
