@@ -31,13 +31,23 @@ function showSlide(i) {
     updateNav();
 }
 
-function nextSlide() {
+function startGallery(btn = document.querySelector('.start-slideshow-btn')) {
+    if (btn) {
+        btn.remove();
+    }
+}
+
+function nextSlide(event) {
+    event.stopPropagation();
+    startGallery();
     if (currentIndex < imageBlockCount-1) {
         showSlide(currentIndex + 1);
     }
 }
 
-function previousSlide() {
+function previousSlide(event) {
+    event.stopPropagation();
+    startGallery();
     if (currentIndex > 0) {
         showSlide(currentIndex - 1);
     }
@@ -73,8 +83,9 @@ function currentSlide() {
 function decorateSlideshowStart() {
     const btn = document.querySelector('.start-slideshow-btn');
     if (btn) {
-        btn.addEventListener('click', () => {
-            btn.remove();
+        btn.addEventListener('click', (event) => {
+            event.stopPropagation();
+            startGallery(btn);
         });
     }
 }
@@ -100,6 +111,7 @@ export default function decorate(block) {
             decorateSlideshowStart();
             document.querySelector('.slide-btn-prev').addEventListener('click', previousSlide);
             document.querySelector('.slide-btn-next').addEventListener('click', nextSlide);
+            document.querySelector('.slideshow-wrapper').addEventListener('click', nextSlide);
             setTimeout(updateCounter, 500);
             setTimeout(updateNav, 500);
         }

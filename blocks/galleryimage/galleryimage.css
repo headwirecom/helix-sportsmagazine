@@ -164,6 +164,8 @@
 .slideshow-counter > .counter-display {
     margin-top: 10px;
     float: right;
+    font-weight: 500;
+    font-size: 14px;
 }
 
 .share-wrapper {
