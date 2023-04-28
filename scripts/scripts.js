@@ -651,6 +651,8 @@ function buildAutoBlocks(main) {
     const metadata = {};
     metadata.author = getMetadata('author');
     metadata.author_url = getMetadata('author-url');
+    metadata.photographer = getMetadata('photographer');
+    metadata.photographer_url = getMetadata('photographer-url');
     metadata.publication_date = getMetadata('publication-date');
     metadata.rubric = getMetadata('rubric');
     metadata.articleStyle = getMetadata('article-style');
@@ -708,7 +710,7 @@ async function loadLazy(doc) {
     await loadBlocks(header);
     await loadBlocks(footer);
   }
-  
+
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
   sampleRUM('lazy');

@@ -35,15 +35,30 @@
     text-decoration: none;
     font-weight: normal;
 }
+
+.slideshow-slide-info {
+    font-family: Gotham,arial,sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 19px;
+}
+
 .slideshow-slide-info > div {
-    margin-top: 20px;
+    margin-top: 8px;
     margin-left: 10px;
     display: inline;
     float: left;
 }
 
 .slideshow-slide-info p {
-    display: inline;
+    margin: 0;
+}
+
+.slideshow-slide-info .promo-headline {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 23px;
+    margin-bottom: 10px;
 }
 
 .slideshow-wrapper {
@@ -154,6 +169,11 @@
 .share-wrapper {
     margin-top: 80px;
 }
+
+.slideshow-slide-info {
+    display: flex;
+}
+
 .listicle .promo-credit {
     margin: 0;
     font-family: Gotham,arial,sans-serif;
@@ -236,4 +256,8 @@
 
 .listicle img {
     width: 100%;
+}
+
+.galleryimage.carousel .image img {
+    object-fit: contain;
 }

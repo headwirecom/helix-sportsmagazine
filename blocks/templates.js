@@ -3,7 +3,7 @@ import { createTagFromString } from "../../utils/utils.js";
 function getAttributionNameHTML(author, author_url) {
     const names = author.split(',');
     const urls = author_url.split(',');
-    
+
     let template = '';
     for (let i=0; i<names.length; i++) {
         let htm = null;
@@ -40,13 +40,29 @@ function getAttributionHTML(data) {
         </div>        
         </div>`;
     }
+    if (data.photographer_url && data.photographer) {
+        let attributionName = getAttributionNameHTML(data.photographer, data.photographer_url);
+        attribution += `
+        <div class="o-Attribution">
+        <div class="o-Attribution__m-Body">
+            <div class="o-Attribution__m-TextWrap">
+                <div class="o-Attribution__a-Author">
+                    <span class="o-Attribution__a-Author--Label">Photos by</span>
+                    <span class="o-Attribution__a-Author--Prefix">
+                    ${attributionName}
+                    </span>
+                </div>      
+            </div>       
+        </div>        
+        </div>`;
+    }
     return attribution;
 }
 
 export function bylineTemplate(data) {
     const attributionHTML = getAttributionHTML(data);
     const publishDate = (data.publication_date) ? data.publication_date : '';
-    let template = 
+    let template =
         `<div class="attribution">
             ${attributionHTML}
         </div>
@@ -210,7 +226,7 @@ export function headerTemplate(data) {
 </div>
 </header>`;
     return template.trim();
-} 
+}
 
 export function headerSchoolsIconTemplate(data) {
     let template = `<svg xmlns="http://www.w3.org/2000/svg" width="123" height="34" viewBox="0 0 123 34" fill="none" role="img" aria-label="${data.title}">

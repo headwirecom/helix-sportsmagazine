@@ -70,7 +70,6 @@ div {
   padding: 0;
   border: 0;
   font-size: 100%;
-  font: inherit;
   vertical-align: baseline
 }
 
@@ -114,7 +113,7 @@ main input {
   max-width: 50rem;
   display: block;
   margin-bottom: 1rem;
-  padding: 0.75rem 0.6rem;    
+  padding: 0.75rem 0.6rem;
   border-radius: 0.25rem;
   box-sizing: border-box;
   border: 1px solid var(--text-color);
@@ -150,10 +149,10 @@ main .section[data-section-status='initialized'] {
 main > .section {
   padding: 15px;
   display: grid;
-  grid-template: 
+  grid-template:
   "hed "
   "by  "
-  "img " 
+  "img "
   "body"
   "side"
   /100%
@@ -162,7 +161,7 @@ main > .section {
 @media (min-width: 600px) {
   main > .section {
     grid-template-columns: auto 136px 776px 512px auto;
-    grid-template-areas: 
+    grid-template-areas:
     "...  hed   hed   side  ..."
     "...  by    by    side  ..."
     "...  img   img   side  ..."
@@ -373,7 +372,7 @@ h2 {
   margin: 0;
   text-align: center;
   align-self: center;
-} 
+}
 
 @font-face {
   font-family: 'Tungsten';
@@ -391,63 +390,63 @@ h2 {
 }
 @font-face {
   font-family: 'Tungsten';
-  src: url('/styles/fonts/Tungsten/Tungsten-Semibold_Web.woff2') format('woff2'); 
+  src: url('/styles/fonts/Tungsten/Tungsten-Semibold_Web.woff2') format('woff2');
   font-display: fallback;
   font-weight: 600;
   font-style: normal;
 }
 @font-face {
   font-family: 'Tungsten';
-  src: url('/styles/fonts/Tungsten/Tungsten-Bold_Web.woff2') format('woff2'); 
+  src: url('/styles/fonts/Tungsten/Tungsten-Bold_Web.woff2') format('woff2');
   font-display: fallback;
   font-weight: 700;
   font-style: normal;
 }
 @font-face {
   font-family: 'Tungsten';
-  src: url('/styles/fonts/Tungsten/Tungsten-Black_Web.woff2') format('woff2'); 
+  src: url('/styles/fonts/Tungsten/Tungsten-Black_Web.woff2') format('woff2');
   font-display: fallback;
   font-weight: 800;
   font-style: normal;
 }
 @font-face {
   font-family: 'Gotham';
-  src: url('/styles/fonts/Gotham/Gotham-Book_Web.woff2') format('woff2'); 
+  src: url('/styles/fonts/Gotham/Gotham-Book_Web.woff2') format('woff2');
   font-display: fallback;
   font-weight: 400;
   font-style: normal;
 }
 @font-face {
   font-family: 'Gotham';
-  src: url('/styles/fonts/Gotham/Gotham-BookItalic_Web.woff2') format('woff2'); 
+  src: url('/styles/fonts/Gotham/Gotham-BookItalic_Web.woff2') format('woff2');
   font-display: fallback;
   font-weight: 400;
   font-style: italic;
 }
 @font-face {
   font-family: 'Gotham';
-  src: url('/styles/fonts/Gotham/Gotham-Medium_Web.woff2') format('woff2'); 
+  src: url('/styles/fonts/Gotham/Gotham-Medium_Web.woff2') format('woff2');
   font-display: fallback;
   font-weight: 500;
   font-style: normal;
 }
 @font-face {
   font-family: 'Gotham';
-  src: url('/styles/fonts/Gotham/Gotham-MediumItalic_Web.woff2') format('woff2'); 
+  src: url('/styles/fonts/Gotham/Gotham-MediumItalic_Web.woff2') format('woff2');
   font-display: fallback;
   font-weight: 500;
   font-style: italic;
 }
 @font-face {
   font-family: 'Gotham';
-  src: url('/styles/fonts/Gotham/Gotham-Bold_Web.woff2') format('woff2'); 
+  src: url('/styles/fonts/Gotham/Gotham-Bold_Web.woff2') format('woff2');
   font-display: fallback;
   font-weight: 700;
   font-style: normal;
 }
 @font-face {
   font-family: 'Gotham';
-  src: url('/styles/fonts/Gotham/Gotham-BoldItalic_Web.woff2') format('woff2'); 
+  src: url('/styles/fonts/Gotham/Gotham-BoldItalic_Web.woff2') format('woff2');
   font-display: fallback;
   font-weight: 700;
   font-style: italic;

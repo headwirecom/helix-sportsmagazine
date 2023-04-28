@@ -21,10 +21,10 @@ function showSlide(i) {
     let slides = document.getElementsByClassName("galleryimage-wrapper");
     slides[currentIndex].style.display = "none";
     slides[i].style.display = "block";
-    let slideContent = slides[i].querySelector('.slide-info').innerHTML;
+    let slideContent = slides[i].querySelector('.slide-info');
     let slideInfoDiv = document.querySelector('.slideshow-slide-info');
     if (slideInfoDiv) {
-        slideInfoDiv.innerHTML = slideContent;
+        slideInfoDiv.innerHTML = slideContent.outerHTML;
     }
     currentIndex = i;
     updateCounter();
@@ -34,7 +34,7 @@ function showSlide(i) {
 function nextSlide() {
     if (currentIndex < imageBlockCount-1) {
         showSlide(currentIndex + 1);
-    } 
+    }
 }
 
 function previousSlide() {
@@ -90,7 +90,7 @@ export default function decorate(block) {
         let slideInfoContainer = document.createElement('div');
         slideInfoContainer.classList.add('slide-info');
         block.append(slideInfoContainer);
-        block.querySelectorAll(':scope > div').forEach(row => { 
+        block.querySelectorAll(':scope > div').forEach(row => {
             if (!row.classList.contains('slide-info')) {
                 decorateRow(row, slideInfoContainer);
             }
