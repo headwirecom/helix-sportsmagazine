@@ -292,22 +292,43 @@
                     document.querySelectorAll('.log-btn').forEach(el => {el.style.display = 'none';});
                 }
             }
-            function startBulk(operation, doConfirm) {
+            async function startBulk(operation, doConfirm) {
                 if (doConfirm && !window.confirm(`Publishing \"${operation}\" ${data.length} pages!`)) {
                     return false;
                 }
-                let urls = [];
-                for (let i = 0; i < data.length; i++) {
-                    let url = getImportedUrl(data[i]);
-                    urls.push(url);
-                }
+
                 clearLog();
                 showLogger(true);
+
+                let urls = [];
+                for (let i = 0; i < data.length; i++) {
+                    let origUrl = data[i];
+                    let url = await mapFromOriginalPath(origUrl);
+                    urls.push(url);
+                }
+        
                 appendLog('Publishing ...')
-                bulk(urls, operation, getPublishLogger());
+                await bulk(urls, operation, getPublishLogger());
                 return true;
             }
-            function publish() {
+            async function mapFromOriginalPath(origPath) {
+                if (!origPath.startsWith('/content/')) {
+                    appendLog(`Getting long path for ${origPath}`);
+                    const longPath = await fetchLongUrl(`${remoteHost}${origPath}`);
+                    return getImportedUrl(longPath);
+                }
+                return getImportedUrl(origPath);
+            }
+            async function fetchLongUrl(documentURL) {
+                console.log(`Fetching long URL from ${documentURL}`);
+                const resp = await fetch(documentURL);
+                const html = await resp.text();
+                const document = (new DOMParser()).parseFromString(html, 'text/html');
+                const url = document.body.getAttribute("data-page-path");
+                console.log(`Fetched long content URL ${url}`);
+                return url;
+            }
+            async function publish() {
                 const operation = document.querySelector('.publish-op');
                 const clearCache = document.querySelector('#clear-cache-toggle');
                 const started = startBulk(operation.value, true);
@@ -326,8 +347,9 @@
 
                 appendLog(`Checking publish status in '${op}' mode for ${data.length} pages.`);
                 for (let i = 0; i < data.length; i++) {
-                    let url = getImportedProxyUrl(data[i], op);
-                    let importedUrl = getImportedUrl(data[i], op);
+                    let documentPath = (data[i].startsWith('/content/')) ? data[i] : await fetchLongUrl(`${remoteHost}${data[i]}`);
+                    let url = getImportedProxyUrl(documentPath, op);
+                    let importedUrl = getImportedUrl(documentPath, op);
                     let logMsg = '';
                     
                     console.log(`Testing ${url}`);
