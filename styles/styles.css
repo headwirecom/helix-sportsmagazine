@@ -114,7 +114,7 @@ main input {
   max-width: 50rem;
   display: block;
   margin-bottom: 1rem;
-  padding: 0.75rem 0.6rem;    
+  padding: 0.75rem 0.6rem;
   border-radius: 0.25rem;
   box-sizing: border-box;
   border: 1px solid var(--text-color);
@@ -150,10 +150,10 @@ main .section[data-section-status='initialized'] {
 main > .section {
   padding: 15px;
   display: grid;
-  grid-template: 
+  grid-template:
   "hed "
   "by  "
-  "img " 
+  "img "
   "body"
   "side"
   /100%
@@ -162,7 +162,7 @@ main > .section {
 @media (min-width: 600px) {
   main > .section {
     grid-template-columns: auto 136px 776px 512px auto;
-    grid-template-areas: 
+    grid-template-areas:
     "...  hed   hed   side  ..."
     "...  by    by    side  ..."
     "...  img   img   side  ..."
@@ -289,14 +289,14 @@ main > .section > div:nth-child(4) p {
   text-align: center
 }
 
-.rubric {
+.article-content .rubric {
   font-family: Gotham,arial,sans-serif;
   font-style: normal;
-  font-weight: 500;
-  letter-spacing: .1em;
+  letter-spacing: .25em;
   text-transform: uppercase;
   margin-bottom: 15px;
-  font-size: 12px;
+  font-weight: 600;
+  font-size: 10px;
   line-height: 11.48px;
   color: #adb4b7;
 }
@@ -340,6 +340,10 @@ main > .section > div:nth-child(4) p {
   margin: 3px 5px;
 }
 
+.byline-divider:has(+ .publishDate .o-AssetPublishDate:empty) {
+  display: none;
+}
+
 .articleByline .share {
   flex-grow: 1;
 }
@@ -352,6 +356,41 @@ main > .section > div:nth-child(4) p {
   justify-content: flex-end;
 }
 
+.article-default p {
+  font-family: Gotham,arial,sans-serif;
+  font-style: normal;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 30px;
+}
+
+.article-default .article-body p:not(:empty):nth-child(1)::first-letter ,
+.article-default .article-body p:not(:empty):nth-child(2)::first-letter {
+  font-family: GothamGD,arial,sans-serif;
+  color: #000;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%;
+  letter-spacing: 0;
+  float: left;
+  margin-right: 15px;
+  font-size: 68px;
+}
+
+@media (min-width: 1025px) {
+  .article-default .article-body p {
+    margin-bottom: 60px;
+  }
+}
+
+@media (min-width: 769px) {
+  .article-default .article-body p:not(:empty):nth-child(1)::first-letter ,
+  .article-default .article-body p:not(:empty):nth-child(2)::first-letter {
+    font-size: 150px;
+    line-height: 85%;
+  }
+}
+
 a {
   color: inherit;
   font-weight: 500;
@@ -361,19 +400,33 @@ a:hover {
   color: var(--news);
 }
 
+.article-default h1 .assetTitle-HeadlineText {
+  font-size: 40px;
+  line-height: 50px;
+}
+
 h2 {
-  display: inline;
+  display: block;
   font-family: var(--font-tungsten);
   font-size: 37px;
   font-style: normal;
   font-weight: 600;
   line-height: 38px;
   letter-spacing: 0.05em;
-  border-bottom: 2px solid var(--news);
+  text-decoration: underline;
+  text-decoration-color: var(--news);
+  text-underline-offset: 10px;
+  text-decoration-thickness: 2px;
   margin: 0;
   text-align: center;
   align-self: center;
-} 
+}
+
+@media (min-width: 1025px) {
+  h2 {
+    margin-bottom: 60px;
+  }
+}
 
 @font-face {
   font-family: 'Tungsten';
@@ -391,63 +444,63 @@ h2 {
 }
 @font-face {
   font-family: 'Tungsten';
-  src: url('/styles/fonts/Tungsten/Tungsten-Semibold_Web.woff2') format('woff2'); 
+  src: url('/styles/fonts/Tungsten/Tungsten-Semibold_Web.woff2') format('woff2');
   font-display: fallback;
   font-weight: 600;
   font-style: normal;
 }
 @font-face {
   font-family: 'Tungsten';
-  src: url('/styles/fonts/Tungsten/Tungsten-Bold_Web.woff2') format('woff2'); 
+  src: url('/styles/fonts/Tungsten/Tungsten-Bold_Web.woff2') format('woff2');
   font-display: fallback;
   font-weight: 700;
   font-style: normal;
 }
 @font-face {
   font-family: 'Tungsten';
-  src: url('/styles/fonts/Tungsten/Tungsten-Black_Web.woff2') format('woff2'); 
+  src: url('/styles/fonts/Tungsten/Tungsten-Black_Web.woff2') format('woff2');
   font-display: fallback;
   font-weight: 800;
   font-style: normal;
 }
 @font-face {
   font-family: 'Gotham';
-  src: url('/styles/fonts/Gotham/Gotham-Book_Web.woff2') format('woff2'); 
+  src: url('/styles/fonts/Gotham/Gotham-Book_Web.woff2') format('woff2');
   font-display: fallback;
   font-weight: 400;
   font-style: normal;
 }
 @font-face {
   font-family: 'Gotham';
-  src: url('/styles/fonts/Gotham/Gotham-BookItalic_Web.woff2') format('woff2'); 
+  src: url('/styles/fonts/Gotham/Gotham-BookItalic_Web.woff2') format('woff2');
   font-display: fallback;
   font-weight: 400;
   font-style: italic;
 }
 @font-face {
   font-family: 'Gotham';
-  src: url('/styles/fonts/Gotham/Gotham-Medium_Web.woff2') format('woff2'); 
+  src: url('/styles/fonts/Gotham/Gotham-Medium_Web.woff2') format('woff2');
   font-display: fallback;
   font-weight: 500;
   font-style: normal;
 }
 @font-face {
   font-family: 'Gotham';
-  src: url('/styles/fonts/Gotham/Gotham-MediumItalic_Web.woff2') format('woff2'); 
+  src: url('/styles/fonts/Gotham/Gotham-MediumItalic_Web.woff2') format('woff2');
   font-display: fallback;
   font-weight: 500;
   font-style: italic;
 }
 @font-face {
   font-family: 'Gotham';
-  src: url('/styles/fonts/Gotham/Gotham-Bold_Web.woff2') format('woff2'); 
+  src: url('/styles/fonts/Gotham/Gotham-Bold_Web.woff2') format('woff2');
   font-display: fallback;
   font-weight: 700;
   font-style: normal;
 }
 @font-face {
   font-family: 'Gotham';
-  src: url('/styles/fonts/Gotham/Gotham-BoldItalic_Web.woff2') format('woff2'); 
+  src: url('/styles/fonts/Gotham/Gotham-BoldItalic_Web.woff2') format('woff2');
   font-display: fallback;
   font-weight: 700;
   font-style: italic;
