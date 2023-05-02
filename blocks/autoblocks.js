@@ -132,6 +132,7 @@ function decorateFullBleedArticle(main, metadata) {
 }
 
 function decorateDefaultArticle(main, metadata) {
+    main.querySelector('article').classList.add('article-default');
     const rubric = buildRubric(main, metadata);
     main.querySelector('.article-body').before(rubric);
     const headline = buildArticleHeadline(main);
@@ -145,7 +146,7 @@ function decorateDefaultArticle(main, metadata) {
 }
 
 function slideshowContainerHTML() {
-    const template = 
+    const template =
     `
     <div class="slideshow-overflow" style="width: 1000px; height: 667px">
     <div class="start-slideshow-btn" role="button"><div class="start-slideshow-txt" role="presentation">View The Gallery</div></div>
@@ -190,7 +191,7 @@ function decorateGallery(main, metadata) {
     }
 
     const slideshowContainer = createTag(
-        'div', 
+        'div',
         {
             class: "slideshow-wrapper",
             style: "height: 667px"
@@ -198,11 +199,11 @@ function decorateGallery(main, metadata) {
         slideshowContainerHTML()); // document.createElement('div');
     slideshowContainer.classList.add('slideshow-wrapper');
     main.querySelector('.article-body').after(slideshowContainer);
-    main.querySelectorAll('.galleryimage-wrapper').forEach(el => { 
+    main.querySelectorAll('.galleryimage-wrapper').forEach(el => {
         el.querySelector('img').style.height = '667px';
-        slideshowContainer.querySelector('.slideshow-container').append(el); 
+        slideshowContainer.querySelector('.slideshow-container').append(el);
     });
-    
+
     const shareContainer = createTag('div', { class: 'share-wrapper'});
     main.querySelector('.slideshow-wrapper').after(shareContainer);
     buildShareBlock(main, '.share-wrapper');
@@ -257,10 +258,10 @@ export default function decorate(main, metadata) {
         case articleStyles.OpenArticle:
             break;
         case articleStyles.Gallery:
-            decorateGallery(main, metadata) 
+            decorateGallery(main, metadata)
             break;
         case articleStyles.GalleryListicle:
-            decorateGalleryListicle(main, metadata) 
+            decorateGalleryListicle(main, metadata)
             break;
         case articleStyles.ProductListing:
             decorateProductPage(main);
