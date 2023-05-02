@@ -402,11 +402,6 @@
                 updateDisplay();
             }
 
-            function toggleManualForm(show) {
-                const display = show ? 'block' : 'none';
-                document.getElementById('url-list-container').style.display = display;
-            }
-
             function envChange() {
                 environment = document.querySelector('.env-op').value;
                 if (environment === 'dev') {
@@ -419,6 +414,11 @@
                     liveImportHost = `https://${environment}--${projectHost}.live`;
                 }
                 updateDisplay();
+            }
+
+            function toggleManualForm(show) {
+                const display = show ? 'block' : 'none';
+                document.getElementById('url-list-container').style.display = display;
             }
 
             setTimeout(()=>{
