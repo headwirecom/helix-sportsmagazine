@@ -60,7 +60,7 @@
             .url input {
                 border: 0;
             }
-            .publish-op {
+            .env-op-label {
                 margin-left: 50;
             }
             .log-btn {
@@ -110,10 +110,14 @@
             const remoteHost = 'https://www.golfdigest.com';
             const myHost = (location.port !== 80) ? `${location.protocol}//${location.hostname}:3000` : `${location.protocol}//${location.hostname}`;
             const proxyHost = `${location.protocol}//${location.hostname}:3001`;
-            const previewImportHost = 'https://sportsmagazine-poc--helix-sportsmagazine--headwirecom.hlx.page';
-            const liveImportHost = 'https://sportsmagazine-poc--helix-sportsmagazine--headwirecom.hlx.live';
+            const projectHost = 'helix-sportsmagazine--headwirecom.hlx';
+            
             const localDevHost = 'http://localhost:3000';
             const importRoot = '/import-test';
+
+            let environment = 'main';
+            let previewImportHost = `https://${environment}--${projectHost}.page`;
+            let liveImportHost = `https://${environment}--${projectHost}.live`;
 
             let data = [];
             let currentIndex = 0; 
@@ -177,7 +181,7 @@
                 let importedPath = mapToImportedPath(path);
                 const operation = (op) ? op : document.querySelector('.publish-op').value;
                 let rootURL = (operation === 'live') ? `${liveImportHost}${importRoot}` : `${previewImportHost}${importRoot}`;
-                if (operation === 'dev') {
+                if (environment === 'dev') {
                     rootURL = `${localDevHost}${importRoot}`;
                 }
                 return `${rootURL}${importedPath}`;;
@@ -403,6 +407,20 @@
                 document.getElementById('url-list-container').style.display = display;
             }
 
+            function envChange() {
+                environment = document.querySelector('.env-op').value;
+                if (environment === 'dev') {
+                    document.querySelector('.publish-btn').disabled = true;
+                    document.querySelector('.publish-test-btn').disabled = true;
+                } else {
+                    document.querySelector('.publish-btn').disabled = false;
+                    document.querySelector('.publish-test-btn').disabled = false;
+                    previewImportHost = `https://${environment}--${projectHost}.page`;
+                    liveImportHost = `https://${environment}--${projectHost}.live`;
+                }
+                updateDisplay();
+            }
+
             setTimeout(()=>{
                 document.getElementById('url-text').addEventListener('keyup', ({key})=>{
                     if (key.toLowerCase() === 'enter') {
@@ -434,10 +452,15 @@
                     <option value="product">Producs</option>
                     <option value="manual">Manual Entry</option>
                 </select>
+                <label class="env-op-label" for="env-op">Environment:</label>
+                <select class="env-op" onchange="envChange()">
+                    <option value="main" selected>main</option>
+                    <option value="sportsmagazine-poc">sportsmagazine-poc</option>
+                    <option value="dev">local development</option>
+                </select>
                 <select class="publish-op" onchange="publishOpChange()">
                     <option value="preview" selected>preview</option>
                     <option value="live">live</option>
-                    <option value="dev">local development</option>
                 </select>
                 <span class="clear-cache-check" style="display: none;">
                 <label>Clear Cache</label>
