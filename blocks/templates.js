@@ -1,4 +1,4 @@
-import { createTagFromString } from "../../utils/utils.js";
+import { createTagFromString, createDOMFromString } from "../../utils/utils.js";
 
 function getAttributionNameHTML(author, author_url) {
     const names = author.split(',');
@@ -91,7 +91,7 @@ export function bylineTemplate(data) {
 
 export function shareTemplate() {
     const template = `
-                <div class="share block">
+                <div class="share block" data-block-name="share">
                     <div class="socialSharing">
                         <span style="display: none" class="clicktracking"></span>
                         <div class="o-SocialShare">
@@ -104,7 +104,7 @@ export function shareTemplate() {
                         </div>
                     </div>
                 </div>`;
-    return createTagFromString(template.trim());
+    return createDOMFromString(template.trim());
 }
 
 export function leaderboardTemplate(data) {

@@ -1,5 +1,5 @@
 import { bylineTemplate, shareTemplate, fullBleedArticleHero, imageEmbed } from "./templates.js";
-import { loadCSS, getMetadata } from "../scripts/scripts.js"
+import { loadCSS, getMetadata, loadBlock } from "../scripts/scripts.js"
 import { articleStyles, createTag } from "../utils/utils.js";
 
 function loadStyles(main, metadata) {
@@ -15,13 +15,6 @@ function loadStyles(main, metadata) {
     if (metadata.articleStyle == articleStyles.Gallery || metadata.articleStyle == articleStyles.GalleryListicle) {
         loadCSS(`${window.hlx.codeBasePath}/styles/gallery-styles.css`);
     }
-}
-
-function loadBlock(block, name) {
-    import(`${window.hlx.codeBasePath}/blocks/${name}/${name}.js`).then(mod => {
-        loadCSS(`${window.hlx.codeBasePath}/blocks/${name}/${name}.css`);
-        mod.default(block);
-    });
 }
 
 function buildArticleHero(main, metadata) {
@@ -88,7 +81,9 @@ function buildArticleHeadline(main) {
 function buildBylineBlock(main, metadata) {
     const byline = bylineTemplate(metadata);
     const shareBlock = byline.querySelector('.share');
-    loadBlock(shareBlock, 'share');
+    shareBlock.setAttribute('data-block-name', 'share');
+    loadBlock(shareBlock);
+
     const par = document.createElement('p');
     if (!byline.querySelector('.o-Attribution') && byline.querySelector('.byline-divider')) {
         byline.querySelector('.byline-divider').remove();
@@ -103,7 +98,9 @@ function buildEmbedBlocks(main) {
     for (let link of links) {
         let url = link.innerHTML;
         if (EMBEDS.some(match => url.includes(match))) {
-            loadBlock(link.parentElement, 'embed');
+            const embed = link.parentElement;
+            embed.setAttribute('data-block-name', 'embed');
+            loadBlock(embed);
         }
     }
 }
@@ -112,7 +109,7 @@ function buildShareBlock(main, selector) {
     const defaultContent = (selector) ? main.querySelector(selector) : main.querySelector('.default-content-wrapper');
     const shareBlock = shareTemplate();
     defaultContent.append(shareBlock);
-    loadBlock(shareBlock, 'share');
+    loadBlock(shareBlock);
 }
 
 function decorateDocumentTitle(document) {
@@ -132,6 +129,7 @@ function decorateFullBleedArticle(main, metadata) {
 }
 
 function decorateDefaultArticle(main, metadata) {
+    main.querySelector('article').classList.add('article-default');
     const rubric = buildRubric(main, metadata);
     main.querySelector('.article-body').before(rubric);
     const headline = buildArticleHeadline(main);
@@ -147,7 +145,7 @@ function decorateDefaultArticle(main, metadata) {
 function slideshowContainerHTML() {
     const template =
     `
-    <div class="slideshow-overflow" style="width: 912px; height: 667px">
+    <div class="slideshow-overflow" style="width: 1000px; height: 667px">
     <div class="start-slideshow-btn" role="button"><div class="start-slideshow-txt" role="presentation">View The Gallery</div></div>
     <div
       class="slideshow-container"
@@ -162,7 +160,8 @@ function slideshowContainerHTML() {
   </div>
   <div class="slideshow-counter">
     <span class="counter-display">1/7</span>
-  </div> 
+  </div>
+  <div class="slideshow-slide-info"><span>Slide info here.<span></div> 
     `;
     return template
 }
@@ -188,12 +187,6 @@ function decorateGallery(main, metadata) {
         byline.before(first);
     }
 
-    const slideshow = createTag(
-      'div',
-      {
-          class: "slideshow"
-      });
-
     const slideshowContainer = createTag(
         'div',
         {
@@ -201,24 +194,15 @@ function decorateGallery(main, metadata) {
             style: "height: 667px"
         },
         slideshowContainerHTML()); // document.createElement('div');
-
-    main.querySelector('.article-body').after(slideshow);
+    slideshowContainer.classList.add('slideshow-wrapper');
+    main.querySelector('.article-body').after(slideshowContainer);
     main.querySelectorAll('.galleryimage-wrapper').forEach(el => {
         el.querySelector('img').style.height = '667px';
         slideshowContainer.querySelector('.slideshow-container').append(el);
     });
-    slideshow.append(slideshowContainer);
-
-    const slideshowInfo = createTag(
-      'div',
-      {
-          class: "slideshow-slide-info"
-      });
-    slideshow.append(slideshowInfo);
 
     const shareContainer = createTag('div', { class: 'share-wrapper'});
-    slideshow.append(shareContainer);
-
+    main.querySelector('.slideshow-wrapper').after(shareContainer);
     buildShareBlock(main, '.share-wrapper');
 }
 

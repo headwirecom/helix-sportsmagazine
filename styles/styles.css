@@ -288,14 +288,14 @@ main > .section > div:nth-child(4) p {
   text-align: center
 }
 
-.rubric {
+.article-content .rubric {
   font-family: Gotham,arial,sans-serif;
   font-style: normal;
-  font-weight: 500;
-  letter-spacing: .1em;
+  letter-spacing: .25em;
   text-transform: uppercase;
   margin-bottom: 15px;
-  font-size: 12px;
+  font-weight: 600;
+  font-size: 10px;
   line-height: 11.48px;
   color: #adb4b7;
 }
@@ -339,9 +339,19 @@ main > .section > div:nth-child(4) p {
   margin: 3px 5px;
 }
 
+.byline-divider:has(+ .publishDate .o-AssetPublishDate:empty) {
+  display: none;
+}
+
 .articleByline .share {
+  display: none;
   flex-grow: 1;
 }
+
+.articleByline .share:has(svg) {
+  display: block;
+}
+
 .articleByline .o-SocialShare {
   display: flex;
   margin: 0;
@@ -349,6 +359,41 @@ main > .section > div:nth-child(4) p {
 .articleByline .m-SocialIcons {
   display: flex;
   justify-content: flex-end;
+}
+
+.article-default p {
+  font-family: Gotham,arial,sans-serif;
+  font-style: normal;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 30px;
+}
+
+.article-default .article-body p:not(:empty):nth-child(1)::first-letter ,
+.article-default .article-body p:not(:empty):nth-child(2)::first-letter {
+  font-family: GothamGD,arial,sans-serif;
+  color: #000;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%;
+  letter-spacing: 0;
+  float: left;
+  margin-right: 15px;
+  font-size: 68px;
+}
+
+@media (min-width: 1025px) {
+  .article-default .article-body p {
+    margin-bottom: 60px;
+  }
+}
+
+@media (min-width: 769px) {
+  .article-default .article-body p:not(:empty):nth-child(1)::first-letter ,
+  .article-default .article-body p:not(:empty):nth-child(2)::first-letter {
+    font-size: 150px;
+    line-height: 85%;
+  }
 }
 
 a {
@@ -360,18 +405,32 @@ a:hover {
   color: var(--news);
 }
 
+.article-default h1 .assetTitle-HeadlineText {
+  font-size: 40px;
+  line-height: 50px;
+}
+
 h2 {
-  display: inline;
+  display: block;
   font-family: var(--font-tungsten);
   font-size: 37px;
   font-style: normal;
   font-weight: 600;
   line-height: 38px;
   letter-spacing: 0.05em;
-  border-bottom: 2px solid var(--news);
+  text-decoration: underline;
+  text-decoration-color: var(--news);
+  text-underline-offset: 10px;
+  text-decoration-thickness: 2px;
   margin: 0;
   text-align: center;
   align-self: center;
+}
+
+@media (min-width: 1025px) {
+  h2 {
+    margin-bottom: 60px;
+  }
 }
 
 @font-face {
