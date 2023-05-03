@@ -1,5 +1,5 @@
 import createCopy from '../library-utils.js';
-import { createTag } from '../../../scripts/scripts.js';
+import { createTag } from '../../../utils/utils.js';
 
 function buildLink(href) {
   return createTag('a', { href }, href).outerHTML;

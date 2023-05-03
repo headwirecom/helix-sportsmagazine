@@ -2,18 +2,17 @@ let [$urls, $operation, submit, log] = [...document.querySelectorAll('.id')];
 
 console.log(log);
 
-const append = (string) => { 
+const append = (string) => {
   if (log) {
-    const p = document.createElement('p'); 
+    const p = document.createElement('p');
     p.textContent = string;
     log.append(p);
   }
   console.log(string);
-}
+};
 
 const bulk = async (urls, operation, logger) => {
   if (logger) {
-
     log = logger;
   }
 
@@ -24,8 +23,8 @@ const bulk = async (urls, operation, logger) => {
     const [branch, repo, owner] = hostname.split('.')[0].split('--');
     const adminURL = `https://admin.hlx.page/${operation}/${owner}/${repo}/${branch}${pathname}`;
     const resp = await fetch(adminURL, {
-        method: 'POST',
-    }); 
+      method: 'POST',
+    });
     const text = await resp.text();
     console.log(text);
     counter += 1;
@@ -34,12 +33,12 @@ const bulk = async (urls, operation, logger) => {
     } else {
       append(`${counter}/${total}: FAILED ${adminURL}: ${text}`);
     }
-  }
+  };
 
   const dequeue = async () => {
     while (urls.length) {
       const url = urls.shift();
-      await executeOperation(url);   
+      await executeOperation(url);
     }
   };
 
@@ -53,6 +52,6 @@ const bulk = async (urls, operation, logger) => {
 
 submit.addEventListener(('click'), () => {
   const operation = $operation.value;
-  const urls = $urls.value.split('\n').map(e => e.trim());
+  const urls = $urls.value.split('\n').map((e) => e.trim());
   bulk(urls, operation);
 });
