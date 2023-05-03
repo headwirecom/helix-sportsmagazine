@@ -1,5 +1,5 @@
 import { bylineTemplate, shareTemplate, fullBleedArticleHero, imageEmbed } from "./templates.js";
-import { loadCSS, getMetadata } from "../scripts/scripts.js"
+import { loadCSS, getMetadata, loadBlock } from "../scripts/scripts.js"
 import { articleStyles, createTag } from "../utils/utils.js";
 
 function loadStyles(main, metadata) {
@@ -15,13 +15,6 @@ function loadStyles(main, metadata) {
     if (metadata.articleStyle == articleStyles.Gallery || metadata.articleStyle == articleStyles.GalleryListicle) {
         loadCSS(`${window.hlx.codeBasePath}/styles/gallery-styles.css`);
     }
-}
-
-function loadBlock(block, name) {
-    import(`${window.hlx.codeBasePath}/blocks/${name}/${name}.js`).then(mod => {
-        loadCSS(`${window.hlx.codeBasePath}/blocks/${name}/${name}.css`);
-        mod.default(block);
-    });
 }
 
 function buildArticleHero(main, metadata) {
@@ -88,7 +81,9 @@ function buildArticleHeadline(main) {
 function buildBylineBlock(main, metadata) {
     const byline = bylineTemplate(metadata);
     const shareBlock = byline.querySelector('.share');
-    loadBlock(shareBlock, 'share');
+    shareBlock.setAttribute('data-block-name', 'share');
+    loadBlock(shareBlock);
+
     const par = document.createElement('p');
     if (!byline.querySelector('.o-Attribution') && byline.querySelector('.byline-divider')) {
         byline.querySelector('.byline-divider').remove();
@@ -103,7 +98,9 @@ function buildEmbedBlocks(main) {
     for (let link of links) {
         let url = link.innerHTML;
         if (EMBEDS.some(match => url.includes(match))) {
-            loadBlock(link.parentElement, 'embed');
+            const embed = link.parentElement;
+            embed.setAttribute('data-block-name', 'embed');
+            loadBlock(embed);
         }
     }
 }
@@ -112,7 +109,7 @@ function buildShareBlock(main, selector) {
     const defaultContent = (selector) ? main.querySelector(selector) : main.querySelector('.default-content-wrapper');
     const shareBlock = shareTemplate();
     defaultContent.append(shareBlock);
-    loadBlock(shareBlock, 'share');
+    loadBlock(shareBlock);
 }
 
 function decorateDocumentTitle(document) {
