@@ -129,6 +129,7 @@ function decorateFullBleedArticle(main, metadata) {
 }
 
 function decorateDefaultArticle(main, metadata) {
+    main.querySelector('article').classList.add('article-default');
     const rubric = buildRubric(main, metadata);
     main.querySelector('.article-body').before(rubric);
     const headline = buildArticleHeadline(main);
