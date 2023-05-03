@@ -40,6 +40,22 @@ function getAttributionHTML(data) {
         </div>        
         </div>`;
     }
+    if (data.photographer_url && data.photographer) {
+        let attributionName = getAttributionNameHTML(data.photographer, data.photographer_url);
+        attribution += `
+        <div class="o-Attribution">
+        <div class="o-Attribution__m-Body">
+            <div class="o-Attribution__m-TextWrap">
+                <div class="o-Attribution__a-Author">
+                    <span class="o-Attribution__a-Author--Label">Photos by</span>
+                    <span class="o-Attribution__a-Author--Prefix">
+                    ${attributionName}
+                    </span>
+                </div>      
+            </div>       
+        </div>        
+        </div>`;
+    }
     return attribution;
 }
 

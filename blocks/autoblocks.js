@@ -145,7 +145,7 @@ function decorateDefaultArticle(main, metadata) {
 function slideshowContainerHTML() {
     const template =
     `
-    <div class="slideshow-overflow" style="width: 1000px; height: 667px">
+    <div class="slideshow-overflow" style="width: 912px; height: 667px">
     <div class="start-slideshow-btn" role="button"><div class="start-slideshow-txt" role="presentation">View The Gallery</div></div>
     <div
       class="slideshow-container"
@@ -160,8 +160,7 @@ function slideshowContainerHTML() {
   </div>
   <div class="slideshow-counter">
     <span class="counter-display">1/7</span>
-  </div>
-  <div class="slideshow-slide-info"><span>Slide info here.<span></div> 
+  </div> 
     `;
     return template
 }
@@ -187,6 +186,11 @@ function decorateGallery(main, metadata) {
         byline.before(first);
     }
 
+    const slideshow = createTag(
+      'div',
+      {
+          class: "slideshow"
+      });
     const slideshowContainer = createTag(
         'div',
         {
@@ -194,16 +198,24 @@ function decorateGallery(main, metadata) {
             style: "height: 667px"
         },
         slideshowContainerHTML()); // document.createElement('div');
-    slideshowContainer.classList.add('slideshow-wrapper');
-    main.querySelector('.article-body').after(slideshowContainer);
-    main.querySelectorAll('.galleryimage-wrapper').forEach(el => {
-        el.querySelector('img').style.height = '667px';
-        slideshowContainer.querySelector('.slideshow-container').append(el);
-    });
 
-    const shareContainer = createTag('div', { class: 'share-wrapper'});
-    main.querySelector('.slideshow-wrapper').after(shareContainer);
-    buildShareBlock(main, '.share-wrapper');
+        main.querySelector('.article-body').after(slideshow);
+        main.querySelectorAll('.galleryimage-wrapper').forEach(el => {
+            el.querySelector('img').style.height = '667px';
+            slideshowContainer.querySelector('.slideshow-container').append(el);
+        });
+        slideshow.append(slideshowContainer);
+
+        const slideshowInfo = createTag(
+          'div',
+          {
+              class: "slideshow-slide-info"
+          });
+        slideshow.append(slideshowInfo);
+
+        const shareContainer = createTag('div', { class: 'share-wrapper'});
+        slideshow.append(shareContainer);
+        buildShareBlock(main, '.share-wrapper');
 }
 
 function decorateGalleryListicle(main, metadata) {

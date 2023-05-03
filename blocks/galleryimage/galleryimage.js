@@ -21,23 +21,33 @@ function showSlide(i) {
     let slides = document.getElementsByClassName("galleryimage-wrapper");
     slides[currentIndex].style.display = "none";
     slides[i].style.display = "block";
-    let slideContent = slides[i].querySelector('.slide-info').innerHTML;
+    let slideContent = slides[i].querySelector('.slide-info');
     let slideInfoDiv = document.querySelector('.slideshow-slide-info');
     if (slideInfoDiv) {
-        slideInfoDiv.innerHTML = slideContent;
+        slideInfoDiv.innerHTML = slideContent.outerHTML;
     }
     currentIndex = i;
     updateCounter();
     updateNav();
 }
 
-function nextSlide() {
-    if (currentIndex < imageBlockCount-1) {
-        showSlide(currentIndex + 1);
-    } 
+function startGallery(btn = document.querySelector('.start-slideshow-btn')) {
+    if (btn) {
+        btn.remove();
+    }
 }
 
-function previousSlide() {
+function nextSlide(event) {
+    event.stopPropagation();
+    startGallery();
+    if (currentIndex < imageBlockCount-1) {
+        showSlide(currentIndex + 1);
+    }
+}
+
+function previousSlide(event) {
+    event.stopPropagation();
+    startGallery();
     if (currentIndex > 0) {
         showSlide(currentIndex - 1);
     }
@@ -73,8 +83,9 @@ function currentSlide() {
 function decorateSlideshowStart() {
     const btn = document.querySelector('.start-slideshow-btn');
     if (btn) {
-        btn.addEventListener('click', () => {
-            btn.remove();
+        btn.addEventListener('click', (event) => {
+            event.stopPropagation();
+            startGallery(btn);
         });
     }
 }
@@ -90,7 +101,7 @@ export default function decorate(block) {
         let slideInfoContainer = document.createElement('div');
         slideInfoContainer.classList.add('slide-info');
         block.append(slideInfoContainer);
-        block.querySelectorAll(':scope > div').forEach(row => { 
+        block.querySelectorAll(':scope > div').forEach(row => {
             if (!row.classList.contains('slide-info')) {
                 decorateRow(row, slideInfoContainer);
             }
@@ -100,6 +111,7 @@ export default function decorate(block) {
             decorateSlideshowStart();
             document.querySelector('.slide-btn-prev').addEventListener('click', previousSlide);
             document.querySelector('.slide-btn-next').addEventListener('click', nextSlide);
+            document.querySelector('.slideshow-wrapper').addEventListener('click', nextSlide);
             setTimeout(updateCounter, 500);
             setTimeout(updateNav, 500);
         }

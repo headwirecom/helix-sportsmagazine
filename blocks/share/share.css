@@ -1,21 +1,14 @@
 .o-SocialShare {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
     flex-direction: column;
     margin-bottom: 28px
 }
 
 .o-SocialShare,
 .o-SocialShare .m-SocialIcons {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex
 }
 
 .o-SocialShare .m-SocialIcons {
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     padding: 0;
     margin: 0
@@ -42,8 +35,6 @@
 }
 
 .o-SocialShare__m-IconWrap {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-pack: center;
     -ms-flex-pack: center;
@@ -53,7 +44,7 @@
     align-items: center;
     width: 35px;
     height: 35px;
-    margin-right: 17.5px;
+    margin-right: 6px;
     background: #2c2c2c
 }
 
@@ -84,7 +75,5 @@
 }
 
 .share-wrapper .o-SocialShare__a-ShareLabel {
-    -webkit-box-flex: 1;
-    -ms-flex-positive: 1;
     flex-grow: 1
 }
