@@ -52,13 +52,13 @@ function decorateSocial(socialBlock) {
           </a>
         </li>
       </ul>`;
-  socialBlock.insertAdjacentHTML('beforebegin',socialHTML);
+  socialBlock.insertAdjacentHTML('beforebegin', socialHTML);
   socialBlock.remove();
 }
 
 function decorateSection(section) {
   section.classList.add('footer-column');
-  section.querySelectorAll('picture').forEach(pic => {
+  section.querySelectorAll('picture').forEach((pic) => {
     const parent = pic.parentElement;
     if (parent && parent.tagName === 'A') {
       decoratePicture(parent);
@@ -66,7 +66,7 @@ function decorateSection(section) {
       decoratePicture(pic);
     }
   });
-  section.querySelectorAll('.social').forEach(el => {
+  section.querySelectorAll('.social').forEach((el) => {
     decorateSocial(el);
   });
 }
@@ -76,9 +76,9 @@ function decorateFooter(footer) {
   const container = document.createElement('div');
   container.classList.add('footer-container');
   if (sections) {
-    for (let i=0; i<sections.length; i++) {
-      let section = sections[i];
-      if (i === (sections.length-1)) {
+    for (let i = 0; i < sections.length; i += 1) {
+      const section = sections[i];
+      if (i === (sections.length - 1)) {
         section.classList.add('footer-info');
       } else {
         decorateSection(section);
