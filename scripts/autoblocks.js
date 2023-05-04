@@ -261,7 +261,8 @@ function decorateMain(main) {
   });
 }
 
-document.addEventListener('hlx-autoblocks', ({ detail: { main, metadata } }) => {
+document.addEventListener('hlx-sections-loaded', () => {
+  const { main, metadata } = document;
   decorateDocumentTitle(document);
   loadStyles(main, metadata);
   decorateMain(main);
@@ -285,4 +286,4 @@ document.addEventListener('hlx-autoblocks', ({ detail: { main, metadata } }) => 
     default:
       decorateDefaultArticle(main, metadata);
   }
-});
+}, { once: true });
