@@ -34,6 +34,7 @@ function clearBulkImport() {
 }
 
 async function decompress(blob) {
+  /* eslint-disable no-undef */
   const ds = new DecompressionStream('gzip');
   const decompressedStream = blob.stream().pipeThrough(ds);
   return await new Response(decompressedStream).text();

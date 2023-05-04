@@ -176,10 +176,12 @@ function decorateGallery(main, metadata) {
 
   const shareLabel = byline.querySelector('.o-SocialShare__a-ShareLabel');
   if (shareLabel) {
+    /* eslint-disable no-console */
     console.log('removing share label');
     // byline share block does not have label on Gallery pages
     shareLabel.remove();
   } else {
+    /* eslint-disable no-console */
     console.log('no share label?');
   }
 

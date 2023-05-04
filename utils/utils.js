@@ -7,12 +7,15 @@ function addToProductsCache(products) {
   // could use window.sessionStorage
   if (isCached(products)) return;
   if (productsCache.length === 0) {
+    /* eslint-disable no-console */
     console.log('Register DOMContentLoaded listener');
     document.addEventListener('DOMContentLoaded', () => {
+      /* eslint-disable no-console */
       console.log('DOM Loaded. Clearing cache');
     });
   }
   productsCache.push(products);
+  /* eslint-disable no-console */
   console.log(`products added to chache: ${productsCache.length + 1}`);
 }
 
@@ -20,6 +23,7 @@ function findProductInCache(productID) {
   for (let i in productsCache) {
     let p = findProduct(productsCache[i], productID);
     if (p) {
+      /* eslint-disable no-console */
       console.log(`found in cheche: ${productID}`);
       return p;
     }
@@ -82,6 +86,7 @@ export async function loadProducts(url = PRODUCTS_URL, offset = 0) {
 }
 
 export async function getProduct(productID) {
+  /* eslint-disable no-console */
   console.log(`getting product id ${productID}`);
   if (productID.startsWith('raw-')) {
     const raw = productID.split('-')[1];

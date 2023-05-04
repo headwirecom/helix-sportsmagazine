@@ -1,5 +1,6 @@
 let [$urls, $operation, submit, log] = [...document.querySelectorAll('.id')];
 
+/* eslint-disable no-console */
 console.log(log);
 
 const append = (string) => {
@@ -8,6 +9,7 @@ const append = (string) => {
     p.textContent = string;
     log.append(p);
   }
+  /* eslint-disable no-console */
   console.log(string);
 };
 
@@ -26,6 +28,7 @@ const bulk = async (urls, operation, logger) => {
       method: 'POST',
     });
     const text = await resp.text();
+    /* eslint-disable no-console */
     console.log(text);
     counter += 1;
     append(`${counter}/${total}: ${adminURL}`);

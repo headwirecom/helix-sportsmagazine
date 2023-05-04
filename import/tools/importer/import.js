@@ -64,6 +64,7 @@ function getRubric(document) {
 }
 
 function createMetadataBlock(document, main) {
+  /* eslint-disable no-undef */
   const block = WebImporter.Blocks.getMetadataBlock(document, {});
   main.append(block);
   return block;
@@ -127,6 +128,7 @@ function getGallerySlideImage(slide) {
   const el = slide.querySelector('.m-ResponsiveImage');
   if (el) {
     const dataAttr = el.getAttribute('data-photo-box-params');
+    /* eslint-disable no-console */
     console.log(`Parsing data attribute '${dataAttr}'`);
     const json = JSON.parse(dataAttr);
     const sourcePath = json.assetId;
@@ -188,6 +190,7 @@ function transformArticleDOM(document) {
   const author = getAttributionName(document);
   const authorURL = getAttributionURL(document);
   const publicationDate = getPublicationDate(document);
+  /* eslint-disable no-console */
   console.log(`Author: ${author}. Publication Date: ${publicationDate}`);
 
   let rubric = getRubric(document);

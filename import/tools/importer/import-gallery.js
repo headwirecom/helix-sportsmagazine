@@ -83,6 +83,7 @@ function appendElementToBlock(block, key, el) {
 // }
 
 function createMetadataBlock(document, main) {
+  /* eslint-disable no-undef */
   const block = WebImporter.Blocks.getMetadataBlock(document, {});
   main.append(block);
   return block;
@@ -105,6 +106,7 @@ function getImage(slide) {
   const el = slide.querySelector('.m-ResponsiveImage');
   if (el) {
     const dataAttr = el.getAttribute('data-photo-box-params');
+    /* eslint-disable no-console */
     console.log(`Parsing data attribute '${dataAttr}'`);
     const json = JSON.parse(dataAttr);
     const sourcePath = json.assetId;
