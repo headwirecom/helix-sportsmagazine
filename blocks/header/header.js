@@ -1,5 +1,5 @@
 import { readBlockConfig } from '../../scripts/scripts.js';
-import { leaderboardTemplate, headerTemplate, headerSchoolsIconTemplate } from '../templates.js';
+import { leaderboardTemplate, headerTemplate, headerSchoolsIconTemplate } from '../../scripts/templates.js';
 import { loadJsonData, createTag } from '../../utils/utils.js';
 
 const LEADERBOARD_URL = '/bin/leaderboard/leaders.json';

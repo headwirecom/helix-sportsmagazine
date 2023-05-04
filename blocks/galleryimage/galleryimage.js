@@ -1,4 +1,5 @@
-import { articleStyles, getArticleStyle } from '../../utils/utils.js';
+import { articleStyles } from '../../utils/utils.js';
+import { getMetadata } from '../../scripts/scripts.js';
 
 let imageBlockCount = 0;
 let currentIndex = 0;
@@ -86,7 +87,7 @@ function decorateSlideshowStart() {
 }
 
 export default function decorate(block) {
-  const style = getArticleStyle();
+  const style = getMetadata('article-style');
   block.classList.add('gallery-slide');
   if (style === articleStyles.GalleryListicle) {
     block.classList.add('listicle');

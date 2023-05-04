@@ -1,7 +1,7 @@
 import {
   bylineTemplate, shareTemplate, fullBleedArticleHero, imageEmbed,
 } from './templates.js';
-import { loadCSS, getMetadata, loadBlock } from '../scripts/scripts.js';
+import { loadCSS, getMetadata, loadBlock } from './scripts.js';
 import { articleStyles, createTag } from '../utils/utils.js';
 
 function loadStyles(main, metadata) {
@@ -261,7 +261,7 @@ function decorateMain(main) {
   });
 }
 
-export default function decorate(main, metadata) {
+document.addEventListener('hlx-autoblocks', ({ detail: { main, metadata } }) => {
   decorateDocumentTitle(document);
   loadStyles(main, metadata);
   decorateMain(main);
@@ -285,4 +285,4 @@ export default function decorate(main, metadata) {
     default:
       decorateDefaultArticle(main, metadata);
   }
-}
+});
