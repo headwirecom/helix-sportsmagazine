@@ -54,12 +54,12 @@
 }
 
 body {
-  display: none;
+  color: transparent;
   margin: 0
 }
 
 body.appear {
-  display: unset;
+  color: unset;
 }
 
 body > header {
