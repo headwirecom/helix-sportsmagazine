@@ -54,6 +54,7 @@
 }
 
 body {
+  display: none;
   margin: 0
 }
 
