@@ -19,6 +19,20 @@
     margin-bottom: 10px
 }
 
+.o-SocialShare__m-IconWrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    margin-right: 6px;
+    background: #2c2c2c
+}
+
+.o-SocialShare__m-IconWrap:hover {
+    background-color: #ed3e49
+}
+
 .o-SocialShare .m-SocialIcons li:last-child .o-SocialShare__m-IconWrap {
     margin-right: 0
 }
@@ -32,24 +46,6 @@
     text-align: left;
     text-transform: uppercase;
     margin-inline-end: 20px;
-}
-
-.o-SocialShare__m-IconWrap {
-    display: flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    width: 35px;
-    height: 35px;
-    margin-right: 6px;
-    background: #2c2c2c
-}
-
-.o-SocialShare__m-IconWrap:hover {
-    background-color: #ed3e49
 }
 
 .o-SocialShare .a-Icon {
