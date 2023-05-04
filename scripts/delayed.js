@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-cycle
 import { sampleRUM } from './scripts.js';
-import { clearProductCache } from "../../utils/utils.js";
+import { clearProductCache } from '../utils/utils.js';
 
 // Core Web Vitals RUM collection
 sampleRUM('cwv');

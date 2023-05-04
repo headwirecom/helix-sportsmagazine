@@ -35,11 +35,11 @@ async function loadList(type, content, list) {
 }
 
 function localizeLibrary(origin, library) {
-  const blocks = library.blocks;
-  if(blocks && blocks.data) {
-    blocks.data.forEach( block => {
+  const { blocks } = library;
+  if (blocks && blocks.data) {
+    blocks.data.forEach((block) => {
       const url = new URL(block.path);
-      const pathname = url.pathname;
+      const { pathname } = url;
       block.path = `${origin}${pathname}`;
     });
   }
@@ -55,7 +55,7 @@ async function fetchLibrary(domain) {
   if (!resp.ok) return null;
 
   // Local dev
-  if (domain.includes("localhost")) {
+  if (domain.includes('localhost')) {
     return localizeLibrary(domain, await resp.json());
   }
 

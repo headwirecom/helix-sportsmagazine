@@ -16,20 +16,12 @@
 
 .o-Leaderboard__m-Players,
 .o-Leaderboard__m-Players__m-Player {
-  -webkit-box-flex: 1;
-  -ms-flex-positive: 1;
   flex-grow: 1;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex
 }
 
 .o-Leaderboard__m-Players__m-Player {
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
   justify-content: space-between;
   background-color: #fff;
   padding: 5px 10px;
@@ -52,11 +44,7 @@
 }
 
 .o-Leaderboard__m-Players__m-PlayerMain__a-Name {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
   color: #151517;
   margin-bottom: 5px
@@ -118,15 +106,8 @@
 .o-Leaderboard__m-EventInfo,
 .o-Leaderboard__m-LinkContainer {
   padding: 16px 20px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
   justify-content: center
 }
 
@@ -150,26 +131,15 @@
 
 @media (min-width:1281px) {
   .o-Leaderboard__m-LinkContainer {
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: row;
     flex-direction: row;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
-    -webkit-box-pack: justify;
-    -ms-flex-pack: justify;
     justify-content: space-between
   }
 }
 
 @media (max-width:1280px) {
   .o-Leaderboard__m-LinkContainer {
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
     justify-content: center
   }
 }
@@ -192,15 +162,8 @@
   .o-Leaderboard__m-LinkContainer {
     grid-area: c;
     border-top: 1px solid #e6e6e6;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: row;
     flex-direction: row;
-    -webkit-box-pack: justify;
-    -ms-flex-pack: justify;
     justify-content: space-between;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center
   }
 

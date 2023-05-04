@@ -1,32 +1,32 @@
-import { createTagFromString, createDOMFromString } from "../../utils/utils.js";
+import { createTagFromString, createDOMFromString } from '../utils/utils.js';
 
-function getAttributionNameHTML(author, author_url) {
-    const names = author.split(',');
-    const urls = author_url.split(',');
+function getAttributionNameHTML(author, authorUrl) {
+  const names = author.split(',');
+  const urls = authorUrl.split(',');
 
-    let template = '';
-    for (let i=0; i<names.length; i++) {
-        let htm = null;
-        if (i<urls.length) {
-            htm = `<span class="o-Attribution__a-Name"><a href="${urls[i]}">${names[i]}</a></span>`;
-        } else {
-            htm = `<span class="o-Attribution__a-Name">${names[i]}</span>`;
-        }
-
-        if (template.length > 0) {
-            template = template + ' and ' + htm;
-        } else {
-            template = htm;
-        }
+  let template = '';
+  for (let i = 0; i < names.length; i++) {
+    let htm = null;
+    if (i < urls.length) {
+      htm = `<span class="o-Attribution__a-Name"><a href="${urls[i]}">${names[i]}</a></span>`;
+    } else {
+      htm = `<span class="o-Attribution__a-Name">${names[i]}</span>`;
     }
-    return template;
+
+    if (template.length > 0) {
+      template = `${template} and ${htm}`;
+    } else {
+      template = htm;
+    }
+  }
+  return template;
 }
 
 function getAttributionHTML(data) {
-    let attribution = '';
-    if (data.author_url && data.author) {
-        let attributionName = getAttributionNameHTML(data.author, data.author_url);
-        attribution = `
+  let attribution = '';
+  if (data.author_url && data.author) {
+    let attributionName = getAttributionNameHTML(data.author, data.author_url);
+    attribution = `
         <div class="o-Attribution">
         <div class="o-Attribution__m-Body">
             <div class="o-Attribution__m-TextWrap">
@@ -39,10 +39,10 @@ function getAttributionHTML(data) {
             </div>       
         </div>        
         </div>`;
-    }
-    if (data.photographer_url && data.photographer) {
-        let attributionName = getAttributionNameHTML(data.photographer, data.photographer_url);
-        attribution += `
+  }
+  if (data.photographer_url && data.photographer) {
+    let attributionName = getAttributionNameHTML(data.photographer, data.photographer_url);
+    attribution += `
         <div class="o-Attribution">
         <div class="o-Attribution__m-Body">
             <div class="o-Attribution__m-TextWrap">
@@ -55,15 +55,14 @@ function getAttributionHTML(data) {
             </div>       
         </div>        
         </div>`;
-    }
-    return attribution;
+  }
+  return attribution;
 }
 
 export function bylineTemplate(data) {
-    const attributionHTML = getAttributionHTML(data);
-    const publishDate = (data.publication_date) ? data.publication_date : '';
-    let template =
-        `<div class="attribution">
+  const attributionHTML = getAttributionHTML(data);
+  const publishDate = (data.publication_date) ? data.publication_date : '';
+  let template = `<div class="attribution">
             ${attributionHTML}
         </div>
         <span class="byline-divider"></span>
@@ -83,14 +82,14 @@ export function bylineTemplate(data) {
                     </ul>
                 </div>
             </div>
-        </div>`
-    let el = createTagFromString(template.trim());
-    el.classList.add('articleByline');
-    return el;
+        </div>`;
+  let el = createTagFromString(template.trim());
+  el.classList.add('articleByline');
+  return el;
 }
 
 export function shareTemplate() {
-    const template = `
+  const template = `
                 <div class="share block" data-block-name="share">
                     <div class="socialSharing">
                         <span style="display: none" class="clicktracking"></span>
@@ -104,11 +103,11 @@ export function shareTemplate() {
                         </div>
                     </div>
                 </div>`;
-    return createDOMFromString(template.trim());
+  return createDOMFromString(template.trim());
 }
 
-export function leaderboardTemplate(data) {
-    const template = `
+export function leaderboardTemplate() {
+  const template = `
     <div class="leaderboard"><span style="display: none" class="clicktracking" data-resource-type="golfdigestcom/components/general/leaderboard"></span>
     <div class="o-Leaderboard" data-module="leaderboard" id="mod-leaderboard-1" style="display: flex;">
         <div class="o-Leaderboard__a-Data hidden" data-year="2023" data-partner="pga" data-event-id="R2023521" data-event-title="The CJ Cup"></div>
@@ -130,12 +129,12 @@ export function leaderboardTemplate(data) {
             </a>
         </div>
     </div>
-    `
-    return template.trim();
+    `;
+  return template.trim();
 }
 
-export function headerTemplate(data) {
-    let template = `<header class="o-Header" data-module="golf-header">
+export function headerTemplate() {
+  let template = `<header class="o-Header" data-module="golf-header">
 <span style="display: none" class="clicktracking" data-resource-type="golfdigestcom/components/hidden/header"></span>
 <script type="text/x-config">
 {
@@ -225,11 +224,11 @@ export function headerTemplate(data) {
     </button>
 </div>
 </header>`;
-    return template.trim();
+  return template.trim();
 }
 
 export function headerSchoolsIconTemplate(data) {
-    let template = `<svg xmlns="http://www.w3.org/2000/svg" width="123" height="34" viewBox="0 0 123 34" fill="none" role="img" aria-label="${data.title}">
+  let template = `<svg xmlns="http://www.w3.org/2000/svg" width="123" height="34" viewBox="0 0 123 34" fill="none" role="img" aria-label="${data.title}">
     <title>${data.title}</title>
   <mask id="path-1-inside-1" fill="white">
   <path d="M68.5228 16.8418C68.9298 17.1315 69.2127 17.435 69.3713 17.7454C69.53 18.0558 69.6059 18.4628 69.6059 18.9595V20.9531C69.6059 22.4707 68.8471 23.2226 67.3364 23.2226H66.5155C65.0117 23.2226 64.2598 22.4707 64.2598 20.9669V18.3801H66.0809V20.8979C66.0809 21.367 66.3223 21.5946 66.7983 21.5946H67.0397C67.5157 21.5946 67.7571 21.3601 67.7571 20.8979V19.2216C67.7571 18.8146 67.5847 18.4835 67.2329 18.2283L65.3428 16.8487C64.9358 16.5589 64.653 16.2554 64.4943 15.9381C64.3356 15.6208 64.2598 15.2207 64.2598 14.7309V13.0547C64.2598 11.5371 65.0186 10.7852 66.5293 10.7852H67.3157C68.8195 10.7852 69.5714 11.5371 69.5714 13.0409V15.2621H67.7364V13.1098C67.7364 12.6408 67.5019 12.4131 67.0397 12.4131H66.8121C66.343 12.4131 66.1154 12.6477 66.1154 13.1098V14.4619C66.1154 14.8827 66.2878 15.2138 66.6396 15.4552L68.5228 16.8418Z"></path>
@@ -287,7 +286,7 @@ export function headerSchoolsIconTemplate(data) {
 }
 
 export function fullBleedArticleHero(data) {
-    const template = `
+  const template = `
         <div class="articleHeroContent">
             <p class="rubric">
                 <span>${data.rubric}</span>
@@ -315,13 +314,13 @@ export function fullBleedArticleHero(data) {
                 </div>
             </div>
         </div>`;
-    const el = createTagFromString(template.trim());
-    el.classList.add('articleHero');
-    return el;
+  const el = createTagFromString(template.trim());
+  el.classList.add('articleHero');
+  return el;
 }
 
 export function imageEmbed(data) {
-    const template = `
+  const template = `
     <div class="imageEmbedWrap center-block">
         <div class="imageEmbed center-block landscape">
             <div class="imageEmbed-MediaWrap">
@@ -334,9 +333,9 @@ export function imageEmbed(data) {
         </div>
     </div>
     `;
-    const el = createTagFromString(template.trim());
-    el.classList.add('imageEmbed');
-    el.classList.add('image');
-    el.classList.add('section');
-    return el;
+  const el = createTagFromString(template.trim());
+  el.classList.add('imageEmbed');
+  el.classList.add('image');
+  el.classList.add('section');
+  return el;
 }
