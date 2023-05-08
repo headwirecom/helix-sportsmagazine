@@ -216,7 +216,26 @@ function transformArticleDOM(document) {
   }
 
   appendPageMetadata(document, metadata);
-  return main;
+  return {
+    element: main,
+    report: {
+      title: document.title
+    }
+  };
+}
+
+function galleryUpdateToOriginalRendition(media) {
+  const img = media.querySelector('img');
+  let imgSrc = img.getAttribute('src');
+  imgSrc = (imgSrc.includes('.rend.')) ? imgSrc.split('.rend.')[0] : imgSrc;
+  img.setAttribute('src', imgSrc);
+}
+
+function isGif(media) {
+  const img = media.querySelector('img');
+  let imgSrc = img.getAttribute('src');
+  console.log(`Checking if ${imgSrc} is a GIF`);
+  return (imgSrc && imgSrc.toLowerCase().endsWith('.gif'));
 }
 
 function transformGalleryDOM(document) {
@@ -226,6 +245,7 @@ function transformGalleryDOM(document) {
   const gallery = document.querySelector('.photoGalleryPromo');
 
   let articleStyle = articleStyles.Gallery;
+  let gifCount = 0;
 
   addEl(main, assetTitle);
   addEl(main, articleBody);
@@ -238,6 +258,14 @@ function transformGalleryDOM(document) {
       gallery.querySelectorAll('.m-Slide').forEach(slide => {
         let block = createBlockTable(document, main, 'GalleryImage');
         let media = slide.querySelector('.m-MediaBlock__m-MediaWrap');
+
+        // import original image
+        galleryUpdateToOriginalRendition(media);
+
+        if (isGif(media)) {
+          gifCount += 1;
+        }
+
         appendElementToBlock(block, 'Image', media);
 
         let promoCredit = slide.querySelector('.o-PhotoGalleryPromo__a-Credit');
@@ -262,6 +290,14 @@ function transformGalleryDOM(document) {
         // let media = slide.querySelector('.share-frame');
         // alert(slide.innerHTML);
         let media = getGallerySlideImage(slide);
+
+        // import original image
+        galleryUpdateToOriginalRendition(media);
+
+        if (isGif(media)) {
+          gifCount += 1;
+        }
+
         appendElementToBlock(block, 'Image', media)
 
         if (blockCount < slideInfos.length) {
@@ -295,7 +331,13 @@ function transformGalleryDOM(document) {
   appendMetadata(metadata, 'og:type', 'gallery');
   appendMetadata(metadata, 'Article Style', articleStyle);
   appendPageMetadata(document, metadata);
-  return main;
+  return {
+    element: main,
+    report: {
+      title: document.title,
+      gifCount: gifCount
+    }
+  };
 }
 
 function transformProductDOM(document) {
@@ -325,7 +367,20 @@ function transformProductDOM(document) {
   appendMetadata(metadata, 'og:type', 'product');
   appendMetadata(metadata, 'Article Style', articleStyles.ProductListing);
   appendPageMetadata(document, metadata);
-  return main;
+  return {
+    element: main,
+    report: {
+      title: document.title
+    }
+  };
+}
+
+function mapToDocumentPath(document, url) {
+  let contentPath = document.body.getAttribute('data-page-path');
+  if (contentPath) {
+    return contentPath.replace(/\/content\/golfdigest-com\/en/, '');
+  }
+  return new URL(url).pathname.replace(/\.html$/, '').replace(/\/$/, '').replace(/\/content\/golfdigest-com\/en/, '');
 }
 
 export default {
@@ -338,43 +393,35 @@ export default {
      * @param {object} params Object containing some parameters given by the import process.
      * @returns {HTMLElement} The root element to be transformed
      */
-    transformDOM: ({
+    transform: ({
       // eslint-disable-next-line no-unused-vars
       document, url, html, params,
     }) => {
       
       const pageClass = document.body.getAttribute('class');
+      const docPath = mapToDocumentPath(document, url);
 
       let main = document.querySelector('.main');
-      
+
+      let retObj = {
+        element: main,
+        report: {
+          title: document.title
+        }
+      };
+
       if(pageClass === 'articlePage') {
-        main = transformArticleDOM(document);
+        retObj = transformArticleDOM(document);
       } else if(pageClass === 'photoGalleryPromo' || pageClass === 'photoGalleryPage') {
-        main = transformGalleryDOM(document);
+        retObj = transformGalleryDOM(document);
       } else if(pageClass === 'productListingPage') {
-        main = transformProductDOM(document);
+        retObj = transformProductDOM(document);
       }
 
-      return main;
-    },
-  
-    /**
-     * Return a path that describes the document being transformed (file name, nesting...).
-     * The path is then used to create the corresponding Word document.
-     * @param {HTMLDocument} document The document
-     * @param {string} url The url of the page imported
-     * @param {string} html The raw html (the document is cleaned up during preprocessing)
-     * @param {object} params Object containing some parameters given by the import process.
-     * @return {string} The path
-     */
-    generateDocumentPath: ({
-      // eslint-disable-next-line no-unused-vars
-      document, url, html, params,
-    }) => {
-      let contentPath = document.body.getAttribute('data-page-path');
-      if (contentPath) {
-        return contentPath.replace(/\/content\/golfdigest-com\/en/, '');
-      }
-      return new URL(url).pathname.replace(/\.html$/, '').replace(/\/$/, '').replace(/\/content\/golfdigest-com\/en/, '');
+      return [{
+        element: retObj.element,
+        path: docPath,
+        report: retObj.report
+      }];
     },
   };
