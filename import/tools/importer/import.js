@@ -222,8 +222,8 @@ function transformArticleDOM(document) {
   return {
     element: main,
     report: {
-      title: document.title
-    }
+      title: document.title,
+    },
   };
 }
 
@@ -257,8 +257,8 @@ function transformGalleryDOM(document) {
   if (gallery) {
     const postcards = gallery.querySelector('.photocards');
     if (postcards) {
-      articleStyle = articleStyles.GalleryListicle; 
-      gallery.querySelectorAll('.m-Slide').forEach(slide => {
+      articleStyle = articleStyles.GalleryListicle;
+      gallery.querySelectorAll('.m-Slide').forEach((slide) => {
         let block = createBlockTable(document, main, 'GalleryImage');
         let media = slide.querySelector('.m-MediaBlock__m-MediaWrap');
 
@@ -300,8 +300,8 @@ function transformGalleryDOM(document) {
           gifCount += 1;
         }
 
-        appendElementToBlock(block, 'Image', media)
-        
+        appendElementToBlock(block, 'Image', media);
+
         if (blockCount < slideInfos.length) {
           const slideInfo = slideInfos.item(blockCount);
           const promoHeadline = slideInfo.querySelector('.o-PhotoGalleryPromo__a-HeadlineText');
@@ -337,8 +337,8 @@ function transformGalleryDOM(document) {
     element: main,
     report: {
       title: document.title,
-      gifCount: gifCount
-    }
+      gifCount,
+    },
   };
 }
 
@@ -372,8 +372,8 @@ function transformProductDOM(document) {
   return {
     element: main,
     report: {
-      title: document.title
-    }
+      title: document.title,
+    },
   };
 }
 
@@ -395,35 +395,34 @@ export default {
      * @param {object} params Object containing some parameters given by the import process.
      * @returns {HTMLElement} The root element to be transformed
      */
-    transform: ({
-      // eslint-disable-next-line no-unused-vars
-      document, url, html, params,
-    }) => {
-      
-      const pageClass = document.body.getAttribute('class');
-      const docPath = mapToDocumentPath(document, url);
+  transform: ({
+    // eslint-disable-next-line no-unused-vars
+    document, url, html, params,
+  }) => {
+    const pageClass = document.body.getAttribute('class');
+    const docPath = mapToDocumentPath(document, url);
 
-      let main = document.querySelector('.main');
+    let main = document.querySelector('.main');
 
-      let retObj = {
-        element: main,
-        report: {
-          title: document.title
-        }
-      };
+    let retObj = {
+      element: main,
+      report: {
+        title: document.title,
+      },
+    };
 
-      if(pageClass === 'articlePage') {
-        retObj = transformArticleDOM(document);
-      } else if(pageClass === 'photoGalleryPromo' || pageClass === 'photoGalleryPage') {
-        retObj = transformGalleryDOM(document);
-      } else if(pageClass === 'productListingPage') {
-        retObj = transformProductDOM(document);
-      }
+    if (pageClass === 'articlePage') {
+      retObj = transformArticleDOM(document);
+    } else if (pageClass === 'photoGalleryPromo' || pageClass === 'photoGalleryPage') {
+      retObj = transformGalleryDOM(document);
+    } else if (pageClass === 'productListingPage') {
+      retObj = transformProductDOM(document);
+    }
 
-      return [{
-        element: retObj.element,
-        path: docPath,
-        report: retObj.report
-      }];
-    },
-  };
+    return [{
+      element: retObj.element,
+      path: docPath,
+      report: retObj.report,
+    }];
+  },
+};
