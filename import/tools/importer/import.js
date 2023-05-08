@@ -1,12 +1,12 @@
 const articleStyles = {
-  Default:"DefaultArticle",
-  FullBleed:"FullBleed",
-  LongForm:"LongForm",
-  OpenArticle:"OpenArticle",
-  LiveStream:"LiveStream",
-  Gallery:"Gallery",
-  GalleryListicle: "Gallery Listicle",
-  ProductListing: "Product Listing"
+  Default: 'DefaultArticle',
+  FullBleed: 'FullBleed',
+  LongForm: 'LongForm',
+  OpenArticle: 'OpenArticle',
+  LiveStream: 'LiveStream',
+  Gallery: 'Gallery',
+  GalleryListicle: 'Gallery Listicle',
+  ProductListing: 'Product Listing',
 };
 
 function replaceEmbed(el, url) {
@@ -16,16 +16,16 @@ function replaceEmbed(el, url) {
 
 function getAttributionName(document) {
   let ret = '';
-  document.querySelectorAll('.o-Attribution__a-Name').forEach(el => {
+  document.querySelectorAll('.o-Attribution__a-Name').forEach((el) => {
     let val = el.innerHTML.trim();
-    let link = el.querySelector('a');
+    const link = el.querySelector('a');
     if (link) {
       val = link.innerHTML.trim();
     }
     if (ret.length === 0) {
       ret = val;
     } else {
-      ret = ret + ',' + val;
+      ret = `${ret},${val}`;
     }
   });
   return ret;
@@ -33,16 +33,16 @@ function getAttributionName(document) {
 
 function getAttributionURL(document) {
   let ret = '';
-  document.querySelectorAll('.o-Attribution__a-Name').forEach(el => {
+  document.querySelectorAll('.o-Attribution__a-Name').forEach((el) => {
     let val = '';
-    let link = el.querySelector('a');
+    const link = el.querySelector('a');
     if (link) {
       val = link.href;
     }
     if (ret.length === 0) {
       ret = val;
     } else {
-      ret = ret + ',' + val;
+      ret = `${ret},${val}`;
     }
   });
   return ret;
@@ -64,6 +64,7 @@ function getRubric(document) {
 }
 
 function createMetadataBlock(document, main) {
+  /* eslint-disable no-undef */
   const block = WebImporter.Blocks.getMetadataBlock(document, {});
   main.append(block);
   return block;
@@ -80,15 +81,15 @@ function appendPageMetadata(document, metadata) {
     appendMetadata(metadata, 'PageTitle', pageTitle.innerHTML);
   }
 
-  const metaMatchFilter = [ 'msapplication-TileColor', 'msapplication-TileImage', 'keywords', 'news_keywords', 
-                      'fb:app_id', 'fb:admins', 'twitter:domain', 'og:title', 'og:type', 'og:site_name', 'parsely-metadata',
-                      'tp:initialize', 'tp:PreferredRuntimes', 'fb:app_id' ];
+  const metaMatchFilter = ['msapplication-TileColor', 'msapplication-TileImage', 'keywords', 'news_keywords',
+    'fb:app_id', 'fb:admins', 'twitter:domain', 'og:title', 'og:type', 'og:site_name', 'parsely-metadata',
+    'tp:initialize', 'tp:PreferredRuntimes', 'fb:app_id'];
 
-  document.querySelectorAll('meta').forEach(metaEl => {
+  document.querySelectorAll('meta').forEach((metaEl) => {
     let key = metaEl.getAttribute('name');
     if (!key) key = metaEl.getAttribute('property');
-    let name = metaMatchFilter.find((m) => { if (m.match(key)) { return m } } );
-    let value = metaEl.getAttribute('content');
+    const name = metaMatchFilter.find((m) => { if (m.match(key)) { return m; } });
+    const value = metaEl.getAttribute('content');
     if (name && value) appendMetadata(metadata, name, value);
   });
 }
@@ -112,7 +113,7 @@ function appendToBlock(block, key, value) {
 }
 
 function appendElementToBlock(block, key, el) {
-  const val = (el && el.innerHTML) ? el.innerHTML.trim().replace(/\n/g, "") : '';
+  const val = (el && el.innerHTML) ? el.innerHTML.trim().replace(/\n/g, '') : '';
   appendToBlock(block, key, val);
 }
 
@@ -127,13 +128,14 @@ function getGallerySlideImage(slide) {
   const el = slide.querySelector('.m-ResponsiveImage');
   if (el) {
     const dataAttr = el.getAttribute('data-photo-box-params');
+    /* eslint-disable no-console */
     console.log(`Parsing data attribute '${dataAttr}'`);
     const json = JSON.parse(dataAttr);
-    let sourcePath = json.assetId;
-    let sourceUrl = `${host}${sourcePath}`;
-    let image = document.createElement('img');
+    const sourcePath = json.assetId;
+    const sourceUrl = `${host}${sourcePath}`;
+    const image = document.createElement('img');
     image.setAttribute('src', sourceUrl);
-    let div = document.createElement('div');
+    const div = document.createElement('div');
     div.append(image);
     return div;
   }
@@ -146,7 +148,7 @@ function transformArticleDOM(document) {
   const articleTitle = document.querySelector('.o-AssetTitle');
   const articleBody = document.querySelector('.articleBody');
   const main = document.createElement('main');
-  
+
   let articleStyle = articleStyles.Default;
 
   if (articleHero) {
@@ -154,7 +156,7 @@ function transformArticleDOM(document) {
     main.append(articleHero);
   } else {
     main.append(articleTitle);
-    if(imageEmbed) {
+    if (imageEmbed) {
       main.append(imageEmbed);
     }
   }
@@ -169,25 +171,26 @@ function transformArticleDOM(document) {
     }
   });
 
-  articleBody.querySelectorAll('.iframe').forEach(el => {
+  articleBody.querySelectorAll('.iframe').forEach((el) => {
     const frame = el.querySelector('iframe');
-    if(frame && frame.src.toLowerCase().includes('youtube.')) {
+    if (frame && frame.src.toLowerCase().includes('youtube.')) {
       replaceEmbed(el, frame.src);
     }
   });
 
-  articleBody.querySelectorAll('.brightcoveVideoEmbed').forEach(el => {
+  articleBody.querySelectorAll('.brightcoveVideoEmbed').forEach((el) => {
     const videoEl = el.querySelector('video-js');
     const acct = videoEl.getAttribute('data-account');
     const player = videoEl.getAttribute('data-player');
     const videoId = videoEl.getAttribute('data-video-id');
     const src = `https://players.brightcove.net/${acct}/${player}_default/index.html?videoId=${videoId}`;
-    replaceEmbed(el,src);
+    replaceEmbed(el, src);
   });
 
   const author = getAttributionName(document);
   const authorURL = getAttributionURL(document);
   const publicationDate = getPublicationDate(document);
+  /* eslint-disable no-console */
   console.log(`Author: ${author}. Publication Date: ${publicationDate}`);
 
   let rubric = getRubric(document);
@@ -201,7 +204,7 @@ function transformArticleDOM(document) {
   appendMetadata(metadata, 'Author', author);
   appendMetadata(metadata, 'Author URL', authorURL);
   appendMetadata(metadata, 'Publication Date', publicationDate);
-  appendMetadata(metadata, "Article Style", articleStyle);
+  appendMetadata(metadata, 'Article Style', articleStyle);
   appendMetadata(metadata, 'Rubric', rubric);
   if (imageEmbedCredit) {
     appendMetadata(metadata, 'Image Credit', imageEmbedCredit.innerHTML);
@@ -212,7 +215,7 @@ function transformArticleDOM(document) {
     const heroImageCredit = articleHero.querySelector('.o-ImageEmbed__a-Credit');
     const heroImageCreditTxt = (heroImageCredit) ? heroImageCredit.innerHTML : '';
     if (heroImageCredit) heroImageCredit.remove();
-    appendMetadata(metadata, "Image Credit", heroImageCreditTxt);
+    appendMetadata(metadata, 'Image Credit', heroImageCreditTxt);
   }
 
   appendPageMetadata(document, metadata);
@@ -252,7 +255,7 @@ function transformGalleryDOM(document) {
 
   // addEl(main, gallery);
   if (gallery) {
-    let postcards = gallery.querySelector('.photocards');
+    const postcards = gallery.querySelector('.photocards');
     if (postcards) {
       articleStyle = articleStyles.GalleryListicle; 
       gallery.querySelectorAll('.m-Slide').forEach(slide => {
@@ -268,27 +271,26 @@ function transformGalleryDOM(document) {
 
         appendElementToBlock(block, 'Image', media);
 
-        let promoCredit = slide.querySelector('.o-PhotoGalleryPromo__a-Credit');
+        const promoCredit = slide.querySelector('.o-PhotoGalleryPromo__a-Credit');
         appendElementToBlock(block, 'Promo Credit', promoCredit);
 
-        let promoHeadline = slide.querySelector('.o-PhotoGalleryPromo__a-HeadlineText');
+        const promoHeadline = slide.querySelector('.o-PhotoGalleryPromo__a-HeadlineText');
         if (promoHeadline) {
           appendElementToBlock(block, 'Promo Headline', promoHeadline);
         }
 
-        let promoDescription = slide.querySelector('.o-PhotoGalleryPromo__a-Description');
+        const promoDescription = slide.querySelector('.o-PhotoGalleryPromo__a-Description');
         appendElementToBlock(block, 'Promo Description', promoDescription);
 
-        let attribution = slide.querySelector('.o-Attribution');
+        const attribution = slide.querySelector('.o-Attribution');
         appendElementToBlock(block, 'Attribution', attribution);
       });
     } else {
-      let slideInfos = gallery.querySelectorAll('.asset-info');
+      const slideInfos = gallery.querySelectorAll('.asset-info');
       let blockCount = 0;
-      gallery.querySelectorAll('.m-Slide').forEach(slide => {
-        let block = createBlockTable(document, main, 'GalleryImage');
+      gallery.querySelectorAll('.m-Slide').forEach((slide) => {
+        const block = createBlockTable(document, main, 'GalleryImage');
         // let media = slide.querySelector('.share-frame');
-        // alert(slide.innerHTML);
         let media = getGallerySlideImage(slide);
 
         // import original image
@@ -299,15 +301,15 @@ function transformGalleryDOM(document) {
         }
 
         appendElementToBlock(block, 'Image', media)
-
+        
         if (blockCount < slideInfos.length) {
-          let slideInfo = slideInfos.item(blockCount);
-          let promoHeadline = slideInfo.querySelector('.o-PhotoGalleryPromo__a-HeadlineText');
-          if (promoHeadline) { 
+          const slideInfo = slideInfos.item(blockCount);
+          const promoHeadline = slideInfo.querySelector('.o-PhotoGalleryPromo__a-HeadlineText');
+          if (promoHeadline) {
             appendElementToBlock(block, 'Promo Headline', promoHeadline);
           }
-          
-          let promoDescription = slideInfo.querySelector('.o-PhotoGalleryPromo__a-Description');
+
+          const promoDescription = slideInfo.querySelector('.o-PhotoGalleryPromo__a-Description');
           appendElementToBlock(block, 'Promo Description', promoDescription);
         }
         blockCount++;
@@ -321,7 +323,7 @@ function transformGalleryDOM(document) {
   const rubric = getRubric(document);
 
   const metadata = createMetadataBlock(document, main);
-  
+
   appendMetadata(metadata, 'Author', author);
   appendMetadata(metadata, 'Author URL', authorURL);
   appendMetadata(metadata, 'Publication Date', publicationDate);
@@ -344,8 +346,8 @@ function transformProductDOM(document) {
   const main = document.createElement('main');
   const productContent = document.querySelector('.main');
 
-  productContent.querySelectorAll('.o-GolfClubReviewContent').forEach(el => {
-    let block = createBlockTable(document, main, 'ProductListing');
+  productContent.querySelectorAll('.o-GolfClubReviewContent').forEach((el) => {
+    const block = createBlockTable(document, main, 'ProductListing');
     copyElementToBlock(block, el, '.brand', 'Brand');
     copyElementToBlock(block, el, '.productTitle', 'Title');
     copyElementToBlock(block, el, '.o-GolfClubReviewContent__m-TextWrap__a-Description', 'Description');
@@ -384,7 +386,7 @@ function mapToDocumentPath(document, url) {
 }
 
 export default {
-    /**
+  /**
      * Apply DOM operations to the provided document and return
      * the root element to be then transformed to Markdown.
      * @param {HTMLDocument} document The document
