@@ -401,9 +401,13 @@ export async function loadBlocks(main) {
   updateSectionsStatus(main);
   const blocks = [...main.querySelectorAll('div.block')];
   for (let i = 0; i < blocks.length; i += 1) {
-    // eslint-disable-next-line no-await-in-loop
-    await loadBlock(blocks[i]);
-    updateSectionsStatus(main);
+    if (blocks[i].classList.contains('galleryimage') && !blocks[i].classList.contains('delay')) {
+      blocks[i].classList.add('delay');
+    } else {
+      // eslint-disable-next-line no-await-in-loop
+      await loadBlock(blocks[i]);
+      updateSectionsStatus(main);
+    }
   }
 }
 

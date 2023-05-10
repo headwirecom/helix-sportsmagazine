@@ -1,7 +1,9 @@
 import {
   bylineTemplate, shareTemplate, fullBleedArticleHero, imageEmbed,
 } from './templates.js';
-import { loadCSS, getMetadata, loadBlock } from './scripts.js';
+import {
+  loadCSS, getMetadata, loadBlock, loadBlocks,
+} from './scripts.js';
 import { articleStyles, createTag } from '../utils/utils.js';
 
 function loadStyles(main, metadata) {
@@ -286,4 +288,6 @@ document.addEventListener('hlx-sections-loaded', () => {
     default:
       decorateDefaultArticle(main, metadata);
   }
+
+  loadBlocks(main);
 }, { once: true });
