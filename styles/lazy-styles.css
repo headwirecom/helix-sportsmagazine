@@ -4,7 +4,7 @@
 @font-face {
     font-family: Tungsten;
     src: url('/styles/fonts/Tungsten/Tungsten-Book_Web.woff2') format('woff2');
-    font-display: fallback;
+    font-display: swap;
     font-weight: 400;
     font-style: normal;
 }
@@ -12,7 +12,7 @@
 @font-face {
     font-family: Tungsten;
     src: url('/styles/fonts/Tungsten/Tungsten-Medium_Web.woff2') format('woff2');
-    font-display: fallback;
+    font-display: swap;
     font-weight: 500;
     font-style: normal;
 }
@@ -20,7 +20,7 @@
 @font-face {
     font-family: Tungsten;
     src: url('/styles/fonts/Tungsten/Tungsten-Semibold_Web.woff2') format('woff2');
-    font-display: fallback;
+    font-display: swap;
     font-weight: 600;
     font-style: normal;
 }
@@ -28,7 +28,7 @@
 @font-face {
     font-family: Tungsten;
     src: url('/styles/fonts/Tungsten/Tungsten-Bold_Web.woff2') format('woff2');
-    font-display: fallback;
+    font-display: swap;
     font-weight: 700;
     font-style: normal;
 }
@@ -36,7 +36,7 @@
 @font-face {
     font-family: Tungsten;
     src: url('/styles/fonts/Tungsten/Tungsten-Black_Web.woff2') format('woff2');
-    font-display: fallback;
+    font-display: swap;
     font-weight: 800;
     font-style: normal;
 }
@@ -44,7 +44,7 @@
 @font-face {
     font-family: Gotham;
     src: url('/styles/fonts/Gotham/Gotham-Book_Web.woff2') format('woff2');
-    font-display: fallback;
+    font-display: swap;
     font-weight: 400;
     font-style: normal;
 }
@@ -52,7 +52,7 @@
 @font-face {
     font-family: Gotham;
     src: url('/styles/fonts/Gotham/Gotham-BookItalic_Web.woff2') format('woff2');
-    font-display: fallback;
+    font-display: swap;
     font-weight: 400;
     font-style: italic;
 }
@@ -60,7 +60,7 @@
 @font-face {
     font-family: Gotham;
     src: url('/styles/fonts/Gotham/Gotham-Medium_Web.woff2') format('woff2');
-    font-display: fallback;
+    font-display: swap;
     font-weight: 500;
     font-style: normal;
 }
@@ -68,7 +68,7 @@
 @font-face {
     font-family: Gotham;
     src: url('/styles/fonts/Gotham/Gotham-MediumItalic_Web.woff2') format('woff2');
-    font-display: fallback;
+    font-display: swap;
     font-weight: 500;
     font-style: italic;
 }
@@ -76,7 +76,7 @@
 @font-face {
     font-family: Gotham;
     src: url('/styles/fonts/Gotham/Gotham-Bold_Web.woff2') format('woff2');
-    font-display: fallback;
+    font-display: swap;
     font-weight: 700;
     font-style: normal;
 }
@@ -84,7 +84,7 @@
 @font-face {
     font-family: Gotham;
     src: url('/styles/fonts/Gotham/Gotham-BoldItalic_Web.woff2') format('woff2');
-    font-display: fallback;
+    font-display: swap;
     font-weight: 700;
     font-style: italic;
 }

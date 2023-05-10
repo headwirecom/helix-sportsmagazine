@@ -12,6 +12,10 @@
 
 :root {
   /* CSS vars */
+  --font-gotham: 'Gotham', helvetica, ubuntu, roboto, noto, sans-serif;
+  --font-tungsten: 'Tungsten', helvetica, ubuntu, roboto, noto, sans-serif;
+  --body-font-family: var(--font-gotham);
+  --heading-font-family: var(--font-tungsten);
 }
 
 body {
