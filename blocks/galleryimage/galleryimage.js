@@ -26,6 +26,7 @@ function showSlide(i) {
   let slideInfoDiv = document.querySelector('.slideshow-slide-info');
   if (slideInfoDiv) {
     slideInfoDiv.innerHTML = slideContent.outerHTML;
+    slideContent.remove();
   }
   currentIndex = i;
   updateCounter();
