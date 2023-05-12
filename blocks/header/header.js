@@ -1,4 +1,5 @@
 import { createTag } from '../../scripts/scripts.js';
+import leaderboard from './leaderboard.js';
 
 const DEFAULT_NAV = '/golf-nav';
 
@@ -444,7 +445,7 @@ async function buildHeader(block, html) {
 
   block.innerHTML = template;
   if (navSections) {
-    for (let i = 0; i < navSections.length; i = +1) {
+    for (let i = 0; i < navSections.length; i += 1) {
       if (i < 2) decorateNavSection(nav, navSections[i], i);
       else decorateNavSection(bottomNav, navSections[i], i);
     }
@@ -459,6 +460,14 @@ async function buildHeader(block, html) {
  * @param {Element} block The header block element
  */
 export default async function decorate(block) {
+  const header = block.closest('.header-wrapper');
+  if (header) {
+    header.classList.add('header');
+    header.setAttribute('data-module', 'golf-header');
+  }
+
+  leaderboard(block);
+  
   const resp = await fetch(`${DEFAULT_NAV}.plain.html`);
   if (resp.ok) {
     const html = await resp.text();
