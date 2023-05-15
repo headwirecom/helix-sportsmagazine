@@ -52,7 +52,13 @@ function createLeaderboardPlayerHTML(data) {
 }
 
 export default function createLeaderboard(block) {
-  block.insertAdjacentHTML('beforebegin', LEADERBOARD_HTML);
+  const headerContainer = block.closest('.header-wrapper');
+  if (headerContainer) {
+    headerContainer.insertAdjacentHTML('beforebegin', LEADERBOARD_HTML);
+  } else {
+    block.insertAdjacentHTML('beforebegin', LEADERBOARD_HTML);
+  }
+
   const playersEl = document.body.querySelector('.o-Leaderboard__m-Players');
   fetchLeaderboard(LEADERBOARD_URL).then((json) => {
     const { data } = json;

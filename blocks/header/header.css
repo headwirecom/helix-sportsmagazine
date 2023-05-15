@@ -21,6 +21,12 @@
     padding: 0;
 }
 
+.header hr {
+    margin: 0;
+    border: none;
+    border-top: 1px solid #ededed;
+}
+
 .header-Logo {
     grid-column: 2;
     -ms-grid-column: 2;
@@ -72,7 +78,7 @@
     height: 0
 }
 
-.header-BottomBar.no-children .o-Header__a-SubChannel,
+.header-BottomBar.no-children .header-SubChannel,
 .header-BottomBar.no-children .separator {
     display: none
 }
@@ -97,6 +103,50 @@
     padding: 0;
     width: 50px;
     transition: transform .3s, opacity .3s, width .3s;
+}
+
+.header-BottomRight {
+    grid-column: 3;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.header .searchForm {
+    background-color: #fff;
+    overflow: hidden;
+    width: 0;
+    transition: transform .3s, opacity .3s, width .3s;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(50px);
+    visibility: hidden;
+}
+
+.header .searchForm.is-Open {
+    pointer-events: all;
+    width: 400px;
+    max-width: 100%;
+    opacity: 1;
+    transform: translateX(0);
+    visibility: visible;
+}
+
+.header .searchForm-Input {
+    border: 1px solid #ededed;
+    box-sizing: border-box;
+    font-family: Gotham, arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 130%;
+    display: flex;
+    align-items: center;
+    width: 350px;
+    height: 40px;
+    padding: 12px 15px;
+    color: #151517;
 }
 
 .header-MenuButton svg {
