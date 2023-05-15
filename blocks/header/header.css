@@ -461,6 +461,19 @@
     padding-right: 20px
 }
 
+.navMenu-NavListItem>.navMenu-NavList {
+    display: none
+}
+
+.navMenu-NavListItem.expanded>.navMenu-NavList {
+    display: block
+}
+
+.navMenu-NavListItem.expanded>.navMenu-NavLink .expand-button svg {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg)
+}
+
 .navMenu-NavListItem.nav-level-0.expanded>.navMenu-NavLink {
     flex-direction: row-reverse;
     justify-content: flex-end

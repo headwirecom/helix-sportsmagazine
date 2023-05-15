@@ -49,9 +49,44 @@ function handleExpand(expandButton) {
   handleRootExpand();
 }
 
+function showSearch(state) {
+  const searchContainer = document.querySelector(config.searchBoxSel);
+  const searchBtn = document.querySelector('[data-type=button-search-toggle]');
+  const mainHeader = document.querySelector(config.headerSelector);
+
+  const outsideClickListener = (event) => {
+    if (!searchContainer.contains(event.target) && !searchBtn.contains(event.target)) {
+      showSearch(false);
+    }
+  };
+
+  if (state) {
+    if (config.highlightHeader) {
+      mainHeader.classList.add(config.searchOpenClass); // used for main header
+      document.body.classList.add(config.fixMenuOpen);
+      // context.broadcast('openSearch');
+    }
+  } else {
+    document.removeEventListener('click', outsideClickListener);
+    document.querySelectorAll(config.searchInputSel).value = '';
+    if (config.highlightHeader) {
+      mainHeader.classList.remove(config.searchOpenClass);
+      document.body.classList.remove(config.fixMenuOpen);
+      // context.broadcast('closeSearch');
+    }
+  }
+  searchContainer.classList.toggle(config.openClass, state);
+  if (state) {
+    document.querySelector(config.searchInputSel).focus();
+    document.addEventListener('click', outsideClickListener);
+  }
+}
+
 function toggleNav(state) {
   menuState = (typeof state === 'undefined') ? !state : state;
-  if (menuState) toggleSearch(false);
+  if (menuState) {
+    showSearch(false);
+  }
   // setNavTop();
   const menuBtn = document.querySelector('.header-MenuButton');
   const menuEl = document.querySelector('.header-NavMenu');
@@ -73,36 +108,11 @@ function toggleNav(state) {
 }
 
 function toggleSearch(state) {
-  const searchContainer = document.querySelector(config.searchBoxSel);
-  const searchBtn = document.querySelector('[data-type=button-search-toggle]');
-  const mainHeader = document.querySelector(config.headerSelector);
-
-  const outsideClickListener = (event) => {
-    if (!searchContainer.contains(event.target) && !searchBtn.contains(event.target)) {
-      toggleSearch(false);
-    }
-  };
-
   if (state) {
     toggleNav(false);
-    if (config.highlightHeader) {
-      mainHeader.classList.add(config.searchOpenClass); // used for main header
-      document.body.classList.add(config.fixMenuOpen);
-      // context.broadcast('openSearch');
-    }
+    showSearch(true);
   } else {
-    document.removeEventListener('click', outsideClickListener);
-    document.querySelectorAll(config.searchInputSel).value = '';
-    if (config.highlightHeader) {
-      mainHeader.classList.remove(config.searchOpenClass);
-      document.body.classList.remove(config.fixMenuOpen);
-      // context.broadcast('closeSearch');
-    }
-  }
-  searchContainer.classList.toggle(config.openClass, state);
-  if (state) {
-    document.querySelector(config.searchInputSel).focus();
-    document.addEventListener('click', outsideClickListener);
+    showSearch(false);
   }
 }
 
