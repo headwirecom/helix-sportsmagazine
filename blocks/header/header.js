@@ -9,9 +9,9 @@ const config = {
   highlightHeader: true,
   useFixedMenus: false, // Area header uses fixed menus
   headerSelector: '.header',
-  openClass: 'is-Open',
+  openClass: 'is-open',
   activeClass: 'is-Active',
-  searchOpenClass: 'has-OpenSearch',
+  searchOpenClass: 'has-open-search',
   fixMenuOpen: 'has-FixedMenu',
   navMenuSel: '[data-module="golf-mobile-nav"]',
   navButtonSel: '[data-type="button-header-nav"]',
@@ -88,11 +88,11 @@ function toggleNav(state) {
     showSearch(false);
   }
   // setNavTop();
-  const menuBtn = document.querySelector('.header-MenuButton');
+  const menuBtn = document.querySelector('.header-menu-button');
   const menuEl = document.querySelector('.header-NavMenu');
   menuBtn.classList.toggle(config.activeClass, menuState);
   menuEl.classList.toggle(config.openClass, menuState);
-  document.querySelector('.header-Overlay').style = `display: ${menuState ? 'block' : 'none'}`;
+  document.querySelector('.header-overlay').style = `display: ${menuState ? 'block' : 'none'}`;
 
   const outsideClickListener = (event) => {
     if (!menuEl.contains(event.target) && !menuBtn.contains(event.target)) {
@@ -141,7 +141,7 @@ function registerRootMenuEvents(rootMenu) {
 
 function registerMenuEvents() {
   roots = Array.from(document.querySelectorAll('li.nav-level-0'));
-  const menuBtn = document.querySelector('.header-MenuButton');
+  const menuBtn = document.querySelector('.header-menu-button');
   const menuCloseBtn = document.querySelector('.header-Close');
   const searchBtn = document.querySelector('[data-type=button-search-toggle]');
   const searchCancelBtn = document.querySelector('[data-type=button-search-cancel]');
@@ -165,7 +165,7 @@ function decorateNavHeader(section) {
   const sectionLink = section.querySelector('a');
   const url = (sectionLink.getAttribute('href')) ? sectionLink.getAttribute('href') : '//www.golfdigest.com';
   const text = sectionLink.innerHTML;
-  const el = createTag('a', { class: 'header-Logo', href: url, 'aria-label': text });
+  const el = createTag('a', { class: 'header-logo', href: url, 'aria-label': text });
   el.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="171.5" height="35.1" viewBox="0 0 171.5 35.1" role="img" aria-label="${text}">
     <title>${text}</title>
     <path d="M68.8 6.5c1.6 0 2.8-1.3 2.8-2.8S70.3.9 68.8.9C67.2.9 66 2.2 66 3.7s1.2 2.8 2.8 2.8M12.7 27.1v-.5C9.9 26 9 21.5 9 14.6c0-7.3 2.2-11.2 5.4-12v-.5C5.7 2.6 0 7.2 0 14.6c0 7.1 5.1 12.1 12.7 12.5m1 0c4.6-.1 7.9-.9 10-1.8v-9.2h-7.9V26c-.5.2-1.4.5-2 .6v.5h-.1zM23.1 8V2.9c-1.7-.5-4.4-.8-7.2-.8v.5c2.9 1.4 5 3 7.2 5.4M34.3 27v-.4c-.3-.1-.7-.4-1-.7-.9-1.1-1-3.2-1-8.4 0-5.1.2-7.3 1-8.3.2-.3.6-.6 1-.7v-.4c-5.4.4-9.9 3.9-9.9 9.4.1 5.6 4.5 9.1 9.9 9.5m1 0c5.4-.4 9.8-3.9 9.8-9.5 0-5.5-4.4-9-9.8-9.4v.4c.3.1.7.3 1 .7.8 1.1 1 3.2 1 8.3 0 5.1-.2 7.3-1 8.4-.2.3-.7.6-1 .7v.4zM46 26.7h7.5V.2L46 .9v25.8z"></path>
