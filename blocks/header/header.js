@@ -26,7 +26,7 @@ let menuState = false;
 
 function handleRootExpand() {
   const anyExpanded = roots.reduce((expanded, current) => expanded || current.classList.contains('expanded'), false);
-  anyExpanded.forEach((root) => {
+  roots.forEach((root) => {
     if (!anyExpanded) {
       root.style.display = 'block';
     } else {
