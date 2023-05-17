@@ -88,11 +88,11 @@ function toggleNav(state) {
     showSearch(false);
   }
   // setNavTop();
-  const menuBtn = document.querySelector('.header-menu-button');
-  const menuEl = document.querySelector('.header-NavMenu');
+  const menuBtn = document.querySelector('.header .header-menu-button');
+  const menuEl = document.querySelector('.header .header-NavMenu');
   menuBtn.classList.toggle(config.activeClass, menuState);
   menuEl.classList.toggle(config.openClass, menuState);
-  document.querySelector('.header-overlay').style = `display: ${menuState ? 'block' : 'none'}`;
+  document.querySelector('.header .header-overlay').style = `display: ${menuState ? 'block' : 'none'}`;
 
   const outsideClickListener = (event) => {
     if (!menuEl.contains(event.target) && !menuBtn.contains(event.target)) {
@@ -140,11 +140,11 @@ function registerRootMenuEvents(rootMenu) {
 }
 
 function registerMenuEvents() {
-  roots = Array.from(document.querySelectorAll('li.nav-level-0'));
-  const menuBtn = document.querySelector('.header-menu-button');
-  const menuCloseBtn = document.querySelector('.header-Close');
-  const searchBtn = document.querySelector('[data-type=button-search-toggle]');
-  const searchCancelBtn = document.querySelector('[data-type=button-search-cancel]');
+  roots = Array.from(document.querySelectorAll('.header li.nav-level-0'));
+  const menuBtn = document.querySelector('.header .header-menu-button');
+  const menuCloseBtn = document.querySelector('.header .header-Close');
+  const searchBtn = document.querySelector('.header [data-type=button-search-toggle]');
+  const searchCancelBtn = document.querySelector('.header [data-type=button-search-cancel]');
   menuBtn.onclick = () => {
     toggleNav();
   };
@@ -224,7 +224,7 @@ function isSubNavVisible() {
 }
 
 function decorateSubNav() {
-  const subNav = document.querySelector('.header-SubNav');
+  const subNav = document.querySelector('.header .header-SubNav');
   if (!isSubNavVisible()) {
     subNav.remove();
     return;
