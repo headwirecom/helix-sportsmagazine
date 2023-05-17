@@ -473,6 +473,7 @@ export default async function decorate(block) {
   const header = block.closest('.header-wrapper');
   if (header) {
     header.classList.add('header');
+    header.setAttribute('data-module', 'golf-header');
   }
 
   leaderboard(block);
