@@ -21,7 +21,7 @@ const config = {
 
 };
 
-let roots = Array.from(document.querySelectorAll('li.nav-level-0'));
+let roots = Array.from(document.querySelectorAll('.header li.nav-level-0'));
 let menuState = false;
 
 function handleRootExpand() {
