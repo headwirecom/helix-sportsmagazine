@@ -184,7 +184,7 @@
 
 .header .header-overlay {
     position: fixed;
-    background: rgba(0, 0, 0, .5);
+    background: rgba(0 0 0 / .5);
     height: 100%;
     top: 0;
     right: 0;
@@ -200,10 +200,6 @@
     margin: 25px
 }
 
-.header.has-open-search .header-sub-nav {
-    opacity: 0
-}
-
 .header .header-sub-nav {
     width: 100%;
     overflow: hidden;
@@ -212,6 +208,10 @@
     grid-column: 2;
     display: flex;
     height: 100%
+}
+
+.header.has-open-search .header-sub-nav {
+    opacity: 0
 }
 
 .header .header-sub-nav.overflow:after {
@@ -245,6 +245,11 @@
     padding-inline-start: 0
 }
 
+.header .nav-menu-bottom>* {
+    padding: 25px 0;
+    border-bottom: .5px solid #e5e5e5
+}
+
 .header .header-sub-nav ul>*+* {
     margin-left: 60px
 }
@@ -274,23 +279,6 @@
     border-bottom: 3px solid #ed3e49
 }
 
-.header .header-sub-nav li.active a {
-    margin-bottom: -3px
-}
-
-.header .nav-menu-nav-list {
-    padding-left: 0;
-    margin: 0
-}
-
-.header .nav-menu-nav-list-item.expanded>.nav-menu-nav-list {
-    display: block
-}
-
-.header .nav-menu-nav-list-item.expanded>.nav-menu-nav-link .expand-button svg {
-    transform: rotate(180deg)
-}
-
 .header .nav-menu a {
     text-decoration: none
 }
@@ -313,6 +301,27 @@
     border-bottom: 1px solid #adb4b7;
     background-origin: padding-box;
     margin-bottom: -1px
+}
+
+.header .nav-menu .social-links a {
+    padding: 14px
+}
+
+.header .header-sub-nav li.active a {
+    margin-bottom: -3px
+}
+
+.header .nav-menu-nav-list {
+    padding-left: 0;
+    margin: 0
+}
+
+.header .nav-menu-nav-list-item>.nav-menu-nav-list {
+    display: none
+}
+
+.header .nav-menu-nav-list-item.expanded>.nav-menu-nav-list {
+    display: block
 }
 
 .header .nav-menu {
@@ -382,11 +391,6 @@
     text-align: left
 }
 
-.header .nav-menu-bottom>* {
-    padding: 25px 0;
-    border-bottom: .5px solid #e5e5e5
-}
-
 .header .nav-menu-nav-link button:hover {
     background-color: #f6f6f6
 }
@@ -410,8 +414,8 @@
     padding-right: 20px
 }
 
-.header .nav-menu-nav-list-item>.nav-menu-nav-list {
-    display: none
+.leaderboard .o-leaderboard-link-container-link svg {
+    margin-left: 10px
 }
 
 .header .nav-menu-nav-list-item.expanded>.nav-menu-nav-list {
@@ -504,7 +508,7 @@
     line-height: 156%;
     text-transform: none;
     letter-spacing: .1em;
-    color: rgba(31, 32, 34, .7)
+    color: rgba(31 32 34 / .7)
 }
 
 .header .nav-menu .nav-level-2 .nav-menu-nav-link.active:not(.has-children) {
@@ -582,10 +586,6 @@
     text-align: center;
     letter-spacing: .1em;
     text-transform: uppercase
-}
-
-.header .nav-menu .social-links a {
-    padding: 14px
 }
 
 .header .nav-menu .social-links a:hover svg path {
@@ -724,10 +724,6 @@
     font-size: 9px;
     text-transform: uppercase;
     font-weight: 500
-  }
-  
-  .leaderboard .o-leaderboard-link-container-link svg {
-    margin-left: 10px
   }
   
   .leaderboard .o-leaderboard-event-info,
