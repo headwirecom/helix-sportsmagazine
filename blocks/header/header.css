@@ -320,10 +320,6 @@
     display: none
 }
 
-.header .nav-menu-nav-list-item.expanded>.nav-menu-nav-list {
-    display: block
-}
-
 .header .nav-menu {
     display: flex;
     flex-direction: column;
