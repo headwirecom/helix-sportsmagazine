@@ -36,7 +36,7 @@ function handleRootExpand() {
 }
 
 function handleExpand(expandButton) {
-  const item = expandButton.closest('.navMenu-NavListItem');
+  const item = expandButton.closest('.nav-menu-nav-list-item');
   const expanded = item.parentNode.querySelector('.expanded');
 
   if (expanded === item) {
@@ -89,7 +89,7 @@ function toggleNav(state) {
   }
   // setNavTop();
   const menuBtn = document.querySelector('.header .header-menu-button');
-  const menuEl = document.querySelector('.header .header-NavMenu');
+  const menuEl = document.querySelector('.header .header-nav-menu');
   menuBtn.classList.toggle(config.activeClass, menuState);
   menuEl.classList.toggle(config.openClass, menuState);
   document.querySelector('.header .header-overlay').style = `display: ${menuState ? 'block' : 'none'}`;
@@ -117,7 +117,7 @@ function toggleSearch(state) {
 }
 
 function registerSubMenuEvents(rootMenu) {
-  const allSubMenus = rootMenu.querySelectorAll('.navMenu-NavList');
+  const allSubMenus = rootMenu.querySelectorAll('.nav-menu-nav-list');
   allSubMenus.forEach((menu) => {
     const buttons = menu.querySelectorAll('.expand-button');
     buttons.forEach((btn) => {
@@ -142,7 +142,7 @@ function registerRootMenuEvents(rootMenu) {
 function registerMenuEvents() {
   roots = Array.from(document.querySelectorAll('.header li.nav-level-0'));
   const menuBtn = document.querySelector('.header .header-menu-button');
-  const menuCloseBtn = document.querySelector('.header .header-Close');
+  const menuCloseBtn = document.querySelector('.header .header-close');
   const searchBtn = document.querySelector('.header [data-type=button-search-toggle]');
   const searchCancelBtn = document.querySelector('.header [data-type=button-search-cancel]');
   menuBtn.onclick = () => {
@@ -179,10 +179,10 @@ function decorateNavHeader(section) {
 function decorateMainMenuLevel(listEl, level) {
   const navLevel = `nav-level-${level}`;
   const nextLevel = level + 1;
-  listEl.classList.add('navMenu-NavList');
+  listEl.classList.add('nav-menu-nav-list');
   listEl.classList.add(navLevel);
   listEl.querySelectorAll(':scope > li').forEach((listItem) => {
-    listItem.classList.add('navMenu-NavListItem');
+    listItem.classList.add('nav-menu-nav-list-item');
     listItem.classList.add(navLevel);
     if (level === 0) {
       listItem.style.display = 'block';
@@ -190,7 +190,7 @@ function decorateMainMenuLevel(listEl, level) {
     const menuLink = listItem.querySelector('a');
     const linkHref = (menuLink.href) ? menuLink.href : '';
     const link = createTag('a', { class: 'expand-title', href: linkHref }, menuLink.innerHTML);
-    const menuItemDiv = createTag('div', { class: `navMenu-NavLink ${navLevel}` });
+    const menuItemDiv = createTag('div', { class: `nav-menu-nav-link ${navLevel}` });
     menuItemDiv.append(link);
     menuLink.replaceWith(menuItemDiv);
     const submenus = listItem.querySelectorAll(':scope > ul');
@@ -224,7 +224,7 @@ function isSubNavVisible() {
 }
 
 function decorateSubNav() {
-  const subNav = document.querySelector('.header .header-SubNav');
+  const subNav = document.querySelector('.header .header-sub-nav');
   if (!isSubNavVisible()) {
     subNav.remove();
     return;
@@ -336,7 +336,7 @@ function decorateSideNav(section, sectionClass) {
   const sectionLinks = section.querySelector('ul');
   el.append(sectionLinks);
   sectionLinks.querySelectorAll('li').forEach((item) => {
-    item.querySelector('a').classList.add('a-NavLink');
+    item.querySelector('a').classList.add('a-nav-link');
   });
   return el;
 }
@@ -348,12 +348,12 @@ function decorateSecondarySideNav(section) {
 function decorateLogin() {
   const el = createTag('ul', { class: 'o-HeaderFresh__m-ProfileInfo' });
   el.innerHTML = `<li data-logged-in="false" style="display: none;">
-    <a class="m-ProfileInfo__a-Nickname" data-social-nickname="" href="//www.golfdigest.com/my-account"></a>
-    <a class="m-ProfileInfo__a-Button--Logout o-Button o-Button--transparent" href="#" data-type="gigya-logout">Log Out</a>
+    <a class="profile-info-nickname" data-social-nickname="" href="//www.golfdigest.com/my-account"></a>
+    <a class="m-ProfileInfo__a-Button--Logout o-button o-button--transparent" href="#" data-type="gigya-logout">Log Out</a>
   </li>
   <li>
-    <a class="m-ProfileInfo__a-Button--Login o-Button" href="#" data-type="gigya-login">Log In</a>
-    <a class="m-ProfileInfo__a-Button--Register o-Button o-Button--no-styles" href="#" data-type="gigya-register">Sign Up</a>
+    <a class="m-ProfileInfo__a-Button--Login o-button" href="#" data-type="gigya-login">Log In</a>
+    <a class="m-ProfileInfo__a-Button--Register o-button o-button--no-styles" href="#" data-type="gigya-register">Sign Up</a>
   </li>`;
   return el;
 }
@@ -411,8 +411,8 @@ function getSocialLinkIconFromURL(url) {
 
 function decorateSocialSideNav(section) {
   const heading = section.querySelector(config.anyHeadingSel);
-  const el = createTag('div', { class: 'o-SocialLinks' }, heading);
-  const iconsWrapper = createTag('div', { class: 'o-SocialLinks__m-IconWrapper' });
+  const el = createTag('div', { class: 'social-links' }, heading);
+  const iconsWrapper = createTag('div', { class: 'social-links-icon-wrapper' });
   el.append(iconsWrapper);
   section.querySelectorAll('a').forEach((link) => {
     const url = link.getAttribute('href');
@@ -448,12 +448,11 @@ async function fetchHeaderTemplate() {
 }
 
 async function buildHeader(block, html) {
-  const template = await fetchHeaderTemplate();
-  const nav = createTag('nav', { class: 'header-NavMenu navMenu', 'data-module': 'golf-mobile-nav', id: 'mod-golf-mobile-nav-1' });
-  const bottomNav = createTag('div', { class: 'navMenu-Bottom' });
+  block.innerHTML = await fetchHeaderTemplate();
+  const nav = block.querySelector('nav');
+  const bottomNav = createTag('div', { class: 'nav-menu-bottom' });
   const navSections = createTag('div', {}, html).children;
 
-  block.innerHTML = template;
   if (navSections) {
     for (let i = 0; i < navSections.length; i += 1) {
       if (i < 2) decorateNavSection(nav, navSections[i], i);
@@ -462,7 +461,6 @@ async function buildHeader(block, html) {
   }
 
   nav.append(bottomNav);
-  block.querySelector('nav').replaceWith(nav);
 }
 
 /**
