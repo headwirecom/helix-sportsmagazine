@@ -411,6 +411,11 @@ async function buildHeader(block, html) {
   nav.append(bottomNav);
 }
 
+function decorateLeaderboard(block) {
+  const leaderboardEl = navTemplateDom.querySelector('.leaderboard');
+  leaderboard(block, leaderboardEl);
+}
+
 /**
  * decorates the header, mainly the nav
  * @param {Element} block The header block element
@@ -422,7 +427,7 @@ export default async function decorate(block) {
     header.setAttribute('data-module', 'golf-header');
   }
 
-  leaderboard(block);
+  decorateLeaderboard(block);
 
   const resp = await fetch(`${DEFAULT_NAV}.plain.html`);
   if (resp.ok) {
