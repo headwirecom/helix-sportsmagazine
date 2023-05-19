@@ -337,10 +337,10 @@ function decorateTertiarySideNav(section) {
 }
 
 function getSocialIcon(url, match) {
-    const template = navTemplateDom.querySelector('[data-type="social-icons"]');
-    const el = template.querySelector(`.social-icon-${match}`);
-    el.setAttribute('href', url);
-    return el;
+  const template = navTemplateDom.querySelector('[data-type="social-icons"]');
+  const el = template.querySelector(`.social-icon-${match}`);
+  el.setAttribute('href', url);
+  return el;
 }
 
 function getSocialLinkIconFromURL(url) {
