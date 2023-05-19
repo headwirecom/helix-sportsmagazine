@@ -266,6 +266,10 @@
     text-align: left;
 }
 
+.leaderboard .o-leaderboard-link-container-link svg {
+    margin-left: 10px
+}
+
 .header .nav-menu-bottom .plus-link svg {
     width: 157.5px;
     height: 30px;
@@ -429,10 +433,6 @@
 
 .header .nav-menu .nav-level-2 .nav-menu-nav-link {
     padding-right: 20px
-}
-
-.leaderboard .o-leaderboard-link-container-link svg {
-    margin-left: 10px
 }
 
 .header .nav-menu-nav-list-item.expanded>.nav-menu-nav-list {
@@ -603,6 +603,7 @@
 .header .is-hidden, [data-logged-in], [data-logged-out] {
     display: none!important;
 }
+
 .header .nav-menu-bottom .profile-info li {
     display: flex;
 }
@@ -629,6 +630,12 @@
 .header .nav-menu .profile-info-nickname {
     margin: 18px 0;
     display: block;
+}
+
+.header .profile-info-button-login {
+    color: #000;
+    display: flex;
+    align-items: center;
 }
 
 .header .nav-menu-bottom .profile-info-button-wrapper .profile-info-button-login {
@@ -680,12 +687,6 @@
     margin-right: 25px;
     display: flex;
     position: relative;
-}
-
-.header .profile-info-button-login {
-    color: #000;
-    display: flex;
-    align-items: center;
 }
 
 /** Leaderboard CSS **/
