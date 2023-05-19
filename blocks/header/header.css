@@ -250,6 +250,27 @@
     border-bottom: .5px solid #e5e5e5
 }
 
+.header .nav-menu-bottom .plus-link {
+    display: flex;
+    flex-direction: column;
+}
+
+.header .nav-menu-bottom .plus-link-overtitle {
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #1f2022;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.header .nav-menu-bottom .plus-link svg {
+    width: 157.5px;
+    height: 30px;
+}
+
 .header .header-sub-nav ul>*+* {
     margin-left: 60px
 }
@@ -543,7 +564,8 @@
 
 .header .nav-menu-bottom ul li {
     display: block;
-    padding-bottom: 18px
+    padding-bottom: 18px;
+    text-align: left;
 }
 
 .header .nav-menu-bottom ul .a-nav-link {
@@ -562,9 +584,55 @@
     color: #fff
 }
 
+.header .nav-menu-bottom .profile-info-wrapper {
+    padding: 0;
+    padding-top: 4px;
+}
+
+.header .nav-menu-bottom .profile-info-top-wrapper {
+    padding: 0;
+}
+
+.header .nav-menu-bottom .profile-info-overtitle {
+    padding: 5px 0;
+    border-bottom: none;
+    text-align: left;
+    font-weight: 500;
+}
+
+.header .is-hidden, [data-logged-in], [data-logged-out] {
+    display: none!important;
+}
+.header .nav-menu-bottom .profile-info li {
+    display: flex;
+}
+
+.header .nav-menu-bottom .profile-info .o-button {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 156%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 8px 0;
+    text-transform: uppercase;
+    letter-spacing: .3em;
+    background: #ed3e49;;
+}
+
+.header .nav-menu-bottom .profile-info .o-button-no-styles {
+    background: none;
+    border: none;
+    color: #000;
+}
+
 .header .nav-menu .profile-info-nickname {
     margin: 18px 0;
-    display: block
+    display: block;
+}
+
+.header .nav-menu-bottom .profile-info-button-wrapper .profile-info-button-login {
+    color: #fff;  
 }
 
 .header .nav-menu .social-links {
