@@ -695,7 +695,7 @@
     background-color: #f6f6f6;
     border-top: 1px solid #e6e6e6;
     position: absolute;
-    top: 0px;
+    top: 0;
     left: 210px;
     z-index: 2;
   }
