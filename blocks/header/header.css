@@ -694,7 +694,9 @@
 .leaderboard {
     background-color: #f6f6f6;
     border-top: 1px solid #e6e6e6;
-    position: relative;
+    position: absolute;
+    top: 0px;
+    left: 210px;
     z-index: 2;
   }
   
