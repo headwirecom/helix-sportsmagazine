@@ -28,7 +28,8 @@ body.appear {
 }
 
 header {
-  /* header height */
+  height: 80px;
+  margin-top: 80px;
 }
 
 .icon {
