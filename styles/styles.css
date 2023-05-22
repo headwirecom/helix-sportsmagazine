@@ -28,7 +28,7 @@ body.appear {
 }
 
 header {
-  /* header height */
+  height: 80px;
 }
 
 .icon {
@@ -40,7 +40,4 @@ header {
 .icon svg {
   height: 100%;
   width: 100%;
-}
-header {
-  height: 80px;
 }
