@@ -60,6 +60,49 @@ function decorateSections(block) {
   }
 }
 
+function createMobileFooter(block) {
+  const desktopEl = block.querySelector('.footer-promo-list');
+  const mobileEl = desktopEl.cloneNode(true);
+  mobileEl.classList.remove('desktop');
+  mobileEl.classList.add('mobile');
+  desktopEl.insertAdjacentElement('afterend', mobileEl);
+  return mobileEl;
+}
+
+function decorateMobileSectionIcon(section) {
+  const heading = section.querySelector(':is(h1, h2, h3)');
+  const icon = templateDom.querySelector('.footer-arrow-icon').cloneNode(true);
+  heading.append(icon);
+  icon.addEventListener('click', () => {
+    icon.closest('.accordion-item').classList.toggle('open');
+  });
+}
+
+function decorateMobileSection(section) {
+  section.classList.add('accordion-item');
+  section.setAttribute('tabindex', '0');
+  section.setAttribute('role', 'button');
+  section.setAttribute('arialabel', 'Open Section Sub Menu');
+  section.setAttribute('aria-expanded', 'false');
+  section.setAttribute('arial-controls', section.querySelector(':is(h1, h2, h3)').innerText);
+  decorateMobileSectionIcon(section);
+}
+
+function decorateMobileFooter(block) {
+  const mobileEl = createMobileFooter(block);
+  const newsletterHeading = mobileEl.querySelector('#newsletter');
+  const signupBtn = mobileEl.querySelector('.signup');
+  mobileEl.insertAdjacentElement('afterbegin', newsletterHeading);
+  newsletterHeading.insertAdjacentElement('afterend', signupBtn);
+  mobileEl.querySelector('.social-links').parentElement.insertAdjacentElement('afterend', mobileEl.querySelector('#magazine').parentElement);
+  mobileEl.querySelectorAll('ul').forEach((listEl) => {
+    const section = listEl.parentElement;
+    if (!section.querySelector('.social-links')) {
+      decorateMobileSection(section);
+    }
+  });
+}
+
 /**
  * decorates the footer
  * @param {Element} block The footer block element
@@ -78,4 +121,5 @@ export default async function decorate(block) {
   const footerContainer = block.querySelector('.footer-container');
   footerContainer.innerHTML = html;
   decorateSections(block);
+  decorateMobileFooter(block);
 }
