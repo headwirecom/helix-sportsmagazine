@@ -261,12 +261,20 @@
   margin: 0 0 20px;
   line-height: 1.4375rem;
   color: #fff;
+  opacity: 0.85;
 }
 
 .footer .footer-info a:hover {
   text-decoration: underline;
   opacity: 1;
   color: #fff;
+}
+
+@media only screen and (min-width: 0) and (max-width: 767px) {
+  .footer .footer-info {
+    border: 0;
+    padding-top: 0;
+  }
 }
 
 .footer .footer-column li {
