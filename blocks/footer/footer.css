@@ -91,6 +91,12 @@
   justify-content: space-between;
 }
 
+@media (min-width: 1025px) {
+  .footer-promo-list.mobile {
+    display: none;
+  }
+}
+
 @media (max-width: 1024px) {
   .footer-promo-list.desktop {
     display: none;
