@@ -84,6 +84,13 @@
   text-align: left;
 }
 
+.footer-column.accordion-item :is(h1, h2, h3) {
+  display: box;
+  display: flexbox;
+  display: flex;
+  justify-content: space-between;
+}
+
 @media (max-width: 1024px) {
   .footer-promo-list.desktop {
     display: none;
