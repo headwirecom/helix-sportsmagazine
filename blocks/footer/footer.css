@@ -181,6 +181,12 @@
   }
 }
 
+@media (max-width: 768px) {
+  .footer .signup a {
+    margin-bottom: 20px;
+  }
+}
+
 .footer .social-links svg {
   width: 25px;
   height: 25px;
