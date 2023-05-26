@@ -3,6 +3,8 @@ import leaderboard from './leaderboard.js';
 
 const DEFAULT_NAV = '/golf-nav';
 
+const LOCATION_PATH_ROOT = '/import-test/';
+
 const config = {
   setNavTop: true,
   searchExposed: false,
@@ -43,6 +45,30 @@ async function fetchHeaderTemplate() {
     return html;
   }
   return '';
+}
+
+function cap(s) {
+  const words = s.split(' ');
+  const returnWords = [''];
+  words.forEach((word, i) => {
+    returnWords[i] = word[0].toUpperCase() + word.substring(1);
+  });
+  return returnWords.join(' ');
+}
+
+function getCurrentChannelInfo() {
+  const channalObj = {};
+  const pathname = window.location.pathname.substring(LOCATION_PATH_ROOT.length);
+  const [mainChannel, subChannel] = pathname.split('/');
+  channalObj.mainChannel = mainChannel;
+  channalObj.mainChannelHref = window.location.origin + LOCATION_PATH_ROOT + channalObj.mainChannel;
+  channalObj.mainChannelText = cap(channalObj.mainChannel.replaceAll('-', ' '));
+  if (subChannel) {
+    channalObj.subChannel = subChannel;
+    channalObj.subChannelHref = `${channalObj.mainChannelHref}/${channalObj.subChannel}`;
+    channalObj.subChannelText = cap(channalObj.subChannel.replaceAll('-', ' '));
+  }
+  return channalObj;
 }
 
 function handleRootExpand() {
@@ -395,8 +421,23 @@ function decorateNavSection(container, section, sectionIndex) {
   container.append(el);
 }
 
+function updateChannelCrumb(block, channelInfo) {
+  const crumbEl = block.querySelector('.header-channel-crumb');
+  const mainChannelEl = crumbEl.querySelector('.header-channel');
+  mainChannelEl.innerHTML = channelInfo.mainChannel;
+  mainChannelEl.setAttribute('href', channelInfo.mainChannelHref);
+  if (channelInfo.subChannelHref) {
+    const subChannelEl = createTag('a', { class: 'header-subchannel header-link', href: channelInfo.subChannelHref }, channelInfo.subChannelText);
+    crumbEl.append(createTag('div', { class: 'separator' }));
+    crumbEl.append(subChannelEl);
+  }
+}
+
 async function buildHeader(block, html) {
+  const channelInfo = getCurrentChannelInfo();
   block.innerHTML = await fetchHeaderTemplate();
+  updateChannelCrumb(block, channelInfo);
+
   const nav = block.querySelector('nav');
   const bottomNav = createTag('div', { class: 'nav-menu-bottom' });
   const navSections = createTag('div', {}, html).children;
