@@ -3,8 +3,6 @@ import leaderboard from './leaderboard.js';
 
 const DEFAULT_NAV = '/golf-nav';
 
-const LOCATION_PATH_ROOT = '/import-test/';
-
 const config = {
   setNavTop: true,
   searchExposed: false,
@@ -22,6 +20,8 @@ const config = {
   anyHeadingSel: 'h1, h2, h3, h4, h5, h6',
 
 };
+
+const channelInfo = {};
 
 let roots = Array.from(document.querySelectorAll('.header li.nav-level-0'));
 let menuState = false;
@@ -45,30 +45,6 @@ async function fetchHeaderTemplate() {
     return html;
   }
   return '';
-}
-
-function cap(s) {
-  const words = s.split(' ');
-  const returnWords = [''];
-  words.forEach((word, i) => {
-    returnWords[i] = word[0].toUpperCase() + word.substring(1);
-  });
-  return returnWords.join(' ');
-}
-
-function getCurrentChannelInfo() {
-  const channalObj = {};
-  const pathname = window.location.pathname.substring(LOCATION_PATH_ROOT.length);
-  const [mainChannel, subChannel] = pathname.split('/');
-  channalObj.mainChannel = mainChannel;
-  channalObj.mainChannelHref = window.location.origin + LOCATION_PATH_ROOT + channalObj.mainChannel;
-  channalObj.mainChannelText = cap(channalObj.mainChannel.replaceAll('-', ' '));
-  if (subChannel) {
-    channalObj.subChannel = subChannel;
-    channalObj.subChannelHref = `${channalObj.mainChannelHref}/${channalObj.subChannel}`;
-    channalObj.subChannelText = cap(channalObj.subChannel.replaceAll('-', ' '));
-  }
-  return channalObj;
 }
 
 function handleRootExpand() {
@@ -230,6 +206,15 @@ function decorateNavHeader(section) {
   return el;
 }
 
+function isChannelMenuURL(url) {
+  const parts = url.split('/');
+  if (parts[parts.length - 1].length === 0) {
+    parts.pop();
+  }
+  const channelPath = parts.pop();
+  return (window.location.pathname.includes(`/${channelPath}`));
+}
+
 function decorateMainMenuLevel(listEl, level) {
   const navLevel = `nav-level-${level}`;
   const nextLevel = level + 1;
@@ -247,6 +232,17 @@ function decorateMainMenuLevel(listEl, level) {
     const menuItemDiv = createTag('div', { class: `nav-menu-nav-link ${navLevel}` });
     menuItemDiv.append(link);
     menuLink.replaceWith(menuItemDiv);
+    if (isChannelMenuURL(linkHref)) {
+      listItem.classList.toggle('expanded');
+      if (level === 0) {
+        channelInfo.mainChannelHref = linkHref;
+        channelInfo.mainChannelText = menuLink.innerHTML;
+      } else if (linkHref !== channelInfo.mainChannelHref
+        && linkHref !== channelInfo.subChannelHref) {
+        channelInfo.subChannelHref = linkHref;
+        channelInfo.subChannelText = menuLink.innerHTML;
+      }
+    }
     const submenus = listItem.querySelectorAll(':scope > ul');
     if (submenus && submenus.length > 0) {
       menuItemDiv.classList.add('has-children');
@@ -421,10 +417,10 @@ function decorateNavSection(container, section, sectionIndex) {
   container.append(el);
 }
 
-function updateChannelCrumb(block, channelInfo) {
+function updateChannelCrumb(block) {
   const crumbEl = block.querySelector('.header-channel-crumb');
   const mainChannelEl = crumbEl.querySelector('.header-channel');
-  mainChannelEl.innerHTML = channelInfo.mainChannel;
+  mainChannelEl.innerHTML = channelInfo.mainChannelText;
   mainChannelEl.setAttribute('href', channelInfo.mainChannelHref);
   if (channelInfo.subChannelHref) {
     const subChannelEl = createTag('a', { class: 'header-subchannel header-link', href: channelInfo.subChannelHref }, channelInfo.subChannelText);
@@ -434,9 +430,7 @@ function updateChannelCrumb(block, channelInfo) {
 }
 
 async function buildHeader(block, html) {
-  const channelInfo = getCurrentChannelInfo();
   block.innerHTML = await fetchHeaderTemplate();
-  updateChannelCrumb(block, channelInfo);
 
   const nav = block.querySelector('nav');
   const bottomNav = createTag('div', { class: 'nav-menu-bottom' });
@@ -448,6 +442,8 @@ async function buildHeader(block, html) {
       else decorateNavSection(bottomNav, navSections[i], i);
     }
   }
+
+  updateChannelCrumb(block);
 
   nav.append(bottomNav);
 }
@@ -475,5 +471,6 @@ export default async function decorate(block) {
     const html = await resp.text();
     await buildHeader(block, html);
     registerMenuEvents();
+    handleRootExpand();
   }
 }
