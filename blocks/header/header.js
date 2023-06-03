@@ -206,15 +206,20 @@ function decorateNavHeader(section) {
   return el;
 }
 
-function isChannelMenuURL(url) {
+function getChannelPathPart(url) {
   const parts = url.split('/');
   if (parts[parts.length - 1].length === 0) {
     parts.pop();
   }
-  const channelPath = parts.pop();
-  return (window.location.pathname.includes(`/${channelPath}`));
+  return parts.pop();
 }
 
+function isActiveMenuURL(url) {
+  const channelPath = getChannelPathPart(url);
+  return (window.location.pathname.lastIndexOf(channelPath) > -1);
+}
+
+let activeItem = null;
 function decorateMainMenuLevel(listEl, level) {
   const navLevel = `nav-level-${level}`;
   const nextLevel = level + 1;
@@ -230,10 +235,23 @@ function decorateMainMenuLevel(listEl, level) {
     const linkHref = (menuLink.href) ? menuLink.href : '';
     const link = createTag('a', { class: 'expand-title', href: linkHref }, menuLink.innerHTML);
     const menuItemDiv = createTag('div', { class: `nav-menu-nav-link ${navLevel}` });
+    const submenus = listItem.querySelectorAll(':scope > ul');
     menuItemDiv.append(link);
     menuLink.replaceWith(menuItemDiv);
-    if (isChannelMenuURL(linkHref)) {
-      listItem.classList.toggle('expanded');
+    if (isActiveMenuURL(linkHref)) {
+      if (activeItem) {
+        activeItem.classList.remove('active');
+        activeItem.querySelector('.nav-menu-nav-link').classList.remove('active');
+        activeItem.querySelector('.nav-menu-nav-link').querySelector('.active-indicator').remove();
+      }
+      listItem.classList.add('active');
+      listItem.querySelector('.nav-menu-nav-link').classList.add('active');
+      listItem.querySelector('.nav-menu-nav-link').append(createTag('span', { class: 'active-indicator' }));
+      channelInfo.submenus = listItem.parentElement;
+      activeItem = listItem;
+      if (submenus && submenus.length > 0) {
+        listItem.classList.add('expanded');
+      }
       if (level === 0) {
         channelInfo.mainChannelHref = linkHref;
         channelInfo.mainChannelText = menuLink.innerHTML;
@@ -243,7 +261,6 @@ function decorateMainMenuLevel(listEl, level) {
         channelInfo.subChannelText = menuLink.innerHTML;
       }
     }
-    const submenus = listItem.querySelectorAll(':scope > ul');
     if (submenus && submenus.length > 0) {
       menuItemDiv.classList.add('has-children');
       menuItemDiv.insertAdjacentHTML('beforeend', `
@@ -259,55 +276,34 @@ function decorateMainMenuLevel(listEl, level) {
   });
 }
 
-function isArticlePage() {
-  const path = window.location.pathname;
-  return (path.includes('/article/') || path.includes('/story/'));
-}
-
-function isGalleryPage() {
-  const path = window.location.pathname;
-  return path.includes('/gallery/');
-}
-
-function isSubNavVisible() {
-  return !isArticlePage() && !isGalleryPage;
-}
-
 function decorateSubNav() {
-  const subNav = document.querySelector('.header .header-sub-nav');
-  if (!isSubNavVisible()) {
-    subNav.remove();
-    return;
+  if (channelInfo.submenus) {
+    const submenusContainer = document.querySelector('.header .header-sub-nav');
+    const submenus = channelInfo.submenus.cloneNode(true);
+    submenus.removeAttribute('class');
+    submenus.querySelectorAll('li').forEach((listItem) => {
+      const linkContainer = listItem.querySelector('div');
+      const link = listItem.querySelector('a');
+      const isActive = listItem.classList.contains('active');
+      listItem.removeAttribute('class');
+      link.removeAttribute('class');
+      if (linkContainer) {
+        listItem.append(link);
+        linkContainer.remove();
+      }
+      listItem.querySelectorAll('ul').forEach((list) => { list.remove(); });
+      if (isActive) {
+        listItem.classList.add('active');
+      }
+    });
+    submenusContainer.append(submenus);
   }
-  subNav.innerHTML = `
-    <ul>
-          <li class="active">
-              <a href="//www.golfdigest.com/play">All</a>
-          </li>
-      
-          <li>
-              <a href="//www.golfdigest.com/play/instruction">Instruction</a>
-          </li>
-      
-          <li>
-              <a href="//www.golfdigest.com/play/equipment">Equipment</a>
-          </li>
-      
-          <li>
-              <a href="//www.golfdigest.com/play/courses">Courses</a>
-          </li>
-      
-          <li>
-              <a href="//www.golfdigest.com/play/instruction/women">Women's Golf</a>
-          </li>
-      </ul>
-    `;
 }
 
 function decorateMainSideNav(section) {
   const main = section.querySelector('ul');
   decorateMainMenuLevel(main, 0);
-  decorateSubNav(section);
+  decorateSubNav();
   return main;
 }
 
@@ -418,6 +414,7 @@ function decorateNavSection(container, section, sectionIndex) {
 }
 
 function updateChannelCrumb(block) {
+  if (!channelInfo.mainChannelHref) return;
   const crumbEl = block.querySelector('.header-channel-crumb');
   const mainChannelEl = crumbEl.querySelector('.header-channel');
   mainChannelEl.innerHTML = channelInfo.mainChannelText;
@@ -444,6 +441,7 @@ async function buildHeader(block, html) {
   }
 
   updateChannelCrumb(block);
+  // decorateChannelNav(block);
 
   nav.append(bottomNav);
 }
