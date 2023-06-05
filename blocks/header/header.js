@@ -39,7 +39,8 @@ async function fetchNavTemplate() {
 await fetchNavTemplate();
 
 async function fetchHeaderTemplate() {
-  const resp = await fetch('/blocks/header/header.html');
+  const templatePath = (window.location.pathname === '/') ? '/blocks/header/homepage-header.html' : '/blocks/header/header.html';
+  const resp = await fetch(templatePath);
   if (resp.ok) {
     const html = await resp.text();
     return html;
@@ -466,6 +467,10 @@ export default async function decorate(block) {
   if (header) {
     header.classList.add('header');
     header.setAttribute('data-module', 'golf-header');
+  }
+
+  if (window.location.pathname === '/') {
+    block.classList.add('homepage-header');
   }
 
   decorateLeaderboard(block);
