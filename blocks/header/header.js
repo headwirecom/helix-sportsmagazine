@@ -238,6 +238,12 @@ function decorateMainMenuLevel(listEl, level) {
     const submenus = listItem.querySelectorAll(':scope > ul');
     menuItemDiv.append(link);
     menuLink.replaceWith(menuItemDiv);
+    if (window.location.pathname === '/' && level === 0) {
+      // get top level menus for horizontal nav on homepage
+      if (!channelInfo.submenus) {
+        channelInfo.submenus = listItem.parentElement;
+      }
+    }
     if (isActiveMenuURL(linkHref)) {
       if (activeItem) {
         activeItem.classList.remove('active');
