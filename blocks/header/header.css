@@ -285,6 +285,12 @@
   flex-direction: column;
 }
 
+@media (max-width: 769px) {
+    .homepage-header .header-top-left .plus-link {
+        display: none;
+    }
+}
+
 .homepage-header .header-top-left .plus-link-overtitle {
   font-weight: 400;
   font-size: 10px;
@@ -721,8 +727,14 @@
   outline-offset: 10px;
 }
 
-.header .header-subscribe {
-  color: #ed3e49;
+@media (min-width: 769px) {
+    .header .header-mobile-subscribe {
+        display: none;
+    }
+}
+
+.header .header-mobile-subscribe {
+  color: #ed3e49!important;
 }
 
 .header .profile-info {
