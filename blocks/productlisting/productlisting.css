@@ -1,0 +1,114 @@
+.productlisting {
+  display: flex;
+  grid-column: 2;
+  margin-bottom: 80px;
+  margin-top: 15px;
+  justify-content: flex-start;
+  align-items: stretch;
+  background: #fff;
+  position: relative;
+}
+
+.productlisting div {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+.productlisting .text-container {
+  margin-left: 5%;
+  width: 45%;
+  margin-top: 40px;
+  text-align: left;
+}
+
+.productlisting .media-container {
+  width: 50%;
+  display: flex;
+  align-items: flex-start;
+}
+
+.productlisting .text-container .product-title {
+  font-weight: 400;
+  margin-bottom: 15px;
+  margin-bottom: 20px;
+  font-family: Tungsten, arial, sans-serif;
+  letter-spacing: 0.05em;
+  margin-top: 0;
+  text-transform: uppercase;
+  font-size: 2.25em;
+}
+
+.productlisting .text-container .description {
+  padding-bottom: 18px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #e6e6e6;
+  line-height: 19px;
+}
+
+.productlisting .text-container .price-wrapper {
+  margin-bottom: 20px;
+}
+
+.productlisting .price-wrapper .separator {
+  margin: 5px;
+}
+
+.productlisting .text-container .links > div {
+  display: flex;
+  align-items: flex-start;
+}
+
+.productlisting .text-container .links > div a {
+  background-color: #ed3e49;
+  color: #fff;
+  border: 0.5px solid #ed3e49;
+  margin-right: 15px;
+}
+
+.productlisting .advertiser {
+  color: #adb4b7;
+}
+
+.productlisting .text-container .buylink {
+  display: flex;
+  column-gap: 25px;
+  flex-flow: row wrap;
+}
+
+.productlisting .text-container .buylink .button-container {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.productlisting .text-container .buylink .button-container a {
+  background-color: #ed3e49;
+  color: #fff;
+  border: 0.5px solid #ed3e49;
+  font-family: GothamGD, arial, sans-serif;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 12px 30px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 130%;
+  white-space: nowrap;
+  transition: all 0.25s;
+}
+
+.productlisting .text-container .disclaimer {
+  font-size: 10px;
+  color: #7d8fa0;
+  margin-bottom: 35px;
+}
