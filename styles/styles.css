@@ -32,6 +32,10 @@ header {
   margin-top: 80px;
 }
 
+main {
+  padding-top: 20px;
+}
+
 .icon {
   display: inline-block;
   height: 24px;
