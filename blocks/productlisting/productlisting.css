@@ -1,3 +1,18 @@
+body.product-listing-theme {
+  background-color: #f6f6f6;
+  font-family: GothamGD, arial, sans-serif;
+}
+
+body.product-listing-theme main {
+  margin-top: 70;
+}
+
+body.product-listing-theme main .productlisting-wrapper {
+  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr min(1440px, 100%) 1fr;
+}
+
 .productlisting {
   display: flex;
   grid-column: 2;
@@ -27,6 +42,13 @@ h1 {
   width: 45%;
   margin-top: 40px;
   text-align: left;
+}
+
+@media (max-width: 1649px) {
+  .productlisting .text-container {
+    margin-left: 7.5%;
+    width: 42.5%;
+  }
 }
 
 .productlisting .media-container {
@@ -111,4 +133,8 @@ h1 {
   font-size: 10px;
   color: #7d8fa0;
   margin-bottom: 35px;
+}
+
+.productlisting .media-container img {
+  width: 100%;
 }
