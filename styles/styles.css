@@ -28,8 +28,12 @@ body.appear {
 }
 
 header {
-  height: 100px;
+  height: 120px;
   margin-top: 80px;
+}
+
+main {
+  padding-top: 20px;
 }
 
 .icon {
