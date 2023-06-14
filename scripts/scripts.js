@@ -87,12 +87,6 @@ async function loadEager(doc) {
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
-    document.body.classList.forEach(async (clazz) => {
-      if (clazz.endsWith('-template')) {
-        const templatePath = getPageTemplatePath(clazz);
-        await decoratePageContent(main, templatePath);
-      }
-    });
     decorateMain(main);
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
@@ -140,6 +134,13 @@ export function createTag(tag, attributes, html) {
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
   await loadBlocks(main);
+
+  document.body.classList.forEach(async (clazz) => {
+    if (clazz.endsWith('-template')) {
+      const templatePath = getPageTemplatePath(clazz);
+      await decoratePageContent(main, templatePath);
+    }
+  });
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
