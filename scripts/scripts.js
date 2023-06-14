@@ -37,18 +37,33 @@ function getPageTemplatePath(templateClass) {
   return `/pages/${name}`;
 }
 
-async function decoratePageContent(main, templatePath) {
+async function fetchPageTemplate(templatePath) {
   const templateHTMLPath = `${templatePath}/page.html`;
+  try {
+    const resp = await fetch(templateHTMLPath);
+    if (resp.ok) {
+      const text = await resp.text();
+      const parser = new DOMParser();
+      return parser.parseFromString(text, 'text/html');
+    }
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(`failed to load page HTML template ${templatePath}`, error);
+  }
+  return null;
+}
+
+async function decoratePageContent(main, templatePath) {
   const templateScriptPath = `${templatePath}/page.js`;
-  const resp = await fetch(templateHTMLPath);
-  if (resp.ok) {
-    const text = await resp.text();
-    const parser = new DOMParser();
-    const template = parser.parseFromString(text, 'text/html');
+  const template = await fetchPageTemplate(templatePath);
+  try {
     const mod = await import(templateScriptPath);
     if (mod.default) {
       mod.default(main, template);
     }
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(`failed to load page template module ${templatePath}`, error);
   }
 }
 
