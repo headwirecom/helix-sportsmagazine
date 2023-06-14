@@ -30,6 +30,28 @@ function buildHeroBlock(main) {
   }
 }
 
+function getPageTemplatePath(templateClass) {
+  const classNameParts = templateClass.split('-');
+  classNameParts.pop();
+  const name = classNameParts.join('');
+  return `/pages/${name}`;
+}
+
+async function decoratePageContent(main, templatePath) {
+  const templateHTMLPath = `${templatePath}/page.html`;
+  const templateScriptPath = `${templatePath}/page.js`;
+  const resp = await fetch(templateHTMLPath);
+  if (resp.ok) {
+    const text = await resp.text();
+    const parser = new DOMParser();
+    const template = parser.parseFromString(text, 'text/html');
+    const mod = await import(templateScriptPath);
+    if (mod.default) {
+      mod.default(main, template);
+    }
+  }
+}
+
 /**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
@@ -49,7 +71,6 @@ function buildAutoBlocks(main) {
  */
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
-  // hopefully forward compatible button decoration
   decorateButtons(main);
   decorateIcons(main);
   buildAutoBlocks(main);
@@ -66,6 +87,12 @@ async function loadEager(doc) {
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
+    document.body.classList.forEach(async (clazz) => {
+      if (clazz.endsWith('-template')) {
+        const templatePath = getPageTemplatePath(clazz);
+        await decoratePageContent(main, templatePath);
+      }
+    });
     decorateMain(main);
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
