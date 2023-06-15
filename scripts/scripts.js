@@ -57,6 +57,7 @@ async function decoratePageContent(main, templatePath) {
   const templateScriptPath = `${templatePath}/page.js`;
   const template = await fetchPageTemplate(templatePath);
   try {
+    loadCSS(`${templatePath}/page.css`);
     const mod = await import(templateScriptPath);
     if (mod.default) {
       mod.default(main, template);
