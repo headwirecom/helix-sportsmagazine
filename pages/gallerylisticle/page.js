@@ -35,6 +35,24 @@ function decorateAttribution(attributionEL) {
   }
 }
 
+function decorateSocialShareList(list) {
+  const url = encodeURIComponent(window.location.href);
+  const uuid = crypto.randomUUID();
+  list.querySelectorAll('.social-share-btn').forEach((btn) => {
+    const network = btn.getAttribute('data-social-share-network');
+    const id = `icon-${network}-${uuid}`;
+    btn.querySelector('symbol').id = id;
+    btn.querySelector('use').setAttribute('xlink:href', `#${id}`);
+    btn.href = `${btn.href}${url}`;
+  });
+}
+
+function decorateSocialShare(main) {
+  main.querySelectorAll('.socialshare-icons').forEach((list) => {
+    decorateSocialShareList(list);
+  });
+}
+
 function decorateMain(main) {
   const defaultContent = main.querySelector('.default-content-wrapper');
   const defaultTitle = defaultContent.querySelector('h1');
@@ -47,6 +65,7 @@ function decorateMain(main) {
   decorateMetadataContent(main.querySelector('.article-topline .rubric span'), 'rubric');
   decorateAttribution(main.querySelector('.attribution-author-prefix'));
   decorateMetadataContent(main.querySelector('.article-byline .publish-date'), 'publication-date');
+  decorateSocialShare(main);
 }
 
 export default function decorate(main, template) {
