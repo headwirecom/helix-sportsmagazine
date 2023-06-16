@@ -1,0 +1,166 @@
+body.gallery {
+    font-family: GothamGD,arial,sans-serif;
+    height: 100%;
+    width: 100%;
+    font-size: 16px;
+    line-height: 1;
+}
+
+a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, body, canvas, caption, center, cite, code, dd, del, details, dfn, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, html, i, iframe, img, ins, kbd, label, legend, li, mark, menu, nav, object, output, p, pre, q, ruby, s, samp, section, small, span, strike, strong, sub, summary, sup, table, tbody, td, tfoot, th, thead, time, tr, tt, u, var, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+}
+
+.gallery .article-header {
+    margin-bottom: 30px;
+    max-width: 1000px;
+}
+
+.gallery .article-topline {
+    display: flex;
+    align-items: center;
+}
+
+.gallery .rubric, .gallery .publish-date {
+    color: #adb4b7;
+}
+
+.gallery .rubric {
+    font-family: GothamGD,arial,sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    font-size: 12px;
+    line-height: 11.48px;
+}
+
+.gallery .site-container {
+    width: 1440px;
+    max-width: 100%;
+    margin-top: 30px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.gallery .site-container .content-row {
+    box-sizing: border-box;
+    display: flex;
+    flex: 0 1 auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-right: -10px;
+    margin-left: -10px;
+}
+
+.gallery acticle {
+    display: block;
+}
+
+@media only screen and (min-width: 1024px) { 
+    .gallery .site-container .left-col {
+        box-sizing: border-box;
+        padding-right: 10px;
+        padding-left: 10px;
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: 71.42857%;
+        max-width: 71.42857%;
+    }
+}
+
+.gallery .article-headerline {
+    margin-bottom: 30px;
+}
+
+.gallery .article-title {
+    text-align: left;
+    margin-top: 0;
+}
+
+.gallery .article-byline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.article-byline  a {
+    text-decoration: none;
+}
+
+.attribution .attribution-author-label, .attribution a {
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0px;
+    font-size: 16px;
+    line-height: 22px;
+    margin-bottom: 10px;
+    color: var(--black);
+}
+
+.attribution-container {
+    font-family: GothamGD,arial,sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0;
+    font-size: 14px;
+    line-height: 20px;
+    margin-right: 3px;
+}
+
+.publish-date-container {
+    display: flex;
+    align-items: baseline;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0px;
+    font-size: 14px;
+    line-height: 22px;
+    flex-grow: 1;
+}
+
+.publish-date {
+    font-family: GothamGD,arial,sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: 0;
+    font-size: 14px;
+    line-height: 22px;
+    margin-left: 3px;
+}
+
+@media (min-width: 769px) {
+    .publish-date {
+        font-size: 14px;
+        line-height: 22px;
+    }
+}
+
+.gallery h1 {
+    font-size: 1.5em;
+    font-weight: 400;
+    margin: .75em 0 .6em;
+}
+
+.gallery p {
+    margin-bottom: 30px;
+}
+
+.gallery h1, .gallery p {
+    line-height: 1.33em;
+}
+
+.gallery .article-title, .gallery .article-title-text {
+    font-family: GothamGD,arial,sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 34px;
+    line-height: 40px;
+}

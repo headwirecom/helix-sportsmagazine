@@ -27,7 +27,7 @@ function decorateAttribution(attributionEL) {
       if (s.length > 0) {
         s = `${s} and ${span}`;
       } else {
-        s = `By ${span}`;
+        s = `${span}`;
       }
       i += 1;
     });
@@ -45,7 +45,7 @@ function decorateMain(main) {
   main.querySelector('.article-lead-description').innerHTML = defaultContent.innerHTML;
   defaultContent.remove();
   decorateMetadataContent(main.querySelector('.article-topline .rubric span'), 'rubric');
-  decorateAttribution(main.querySelector('.article-byline .attribution'));
+  decorateAttribution(main.querySelector('.attribution-author-prefix'));
   decorateMetadataContent(main.querySelector('.article-byline .publish-date'), 'publication-date');
 }
 
@@ -58,4 +58,5 @@ export default function decorate(main, template) {
     main.classList = templateEl.classList;
     decorateMain(main);
   }
+  document.body.classList.add('gallery');
 }
