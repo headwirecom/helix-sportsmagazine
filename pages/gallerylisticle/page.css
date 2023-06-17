@@ -303,3 +303,12 @@ video {
   height: 20px;
   color: #fff;
 }
+
+.social-share-bottom {
+  display: flex;
+  justify-self: start;
+}
+
+.social-share-bottom .social-share-container {
+  margin-top: 30px;
+}
