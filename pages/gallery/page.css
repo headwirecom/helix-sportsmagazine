@@ -2,12 +2,10 @@
 
 .gallery .slideshow-wrapper {
   display: inline-block;
-  height: 667px;
 }
 
 .gallery .slideshow-overflow {
   float: left;
-  width: 1000px;
   height: 667px;
   position: relative;
   overflow: hidden;
