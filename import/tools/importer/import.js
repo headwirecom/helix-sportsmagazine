@@ -306,6 +306,7 @@ function transformGalleryDOM(document) {
       let blockCount = 0;
       gallery.querySelectorAll('.m-Slide').forEach((slide) => {
         const block = createBlockTable(document, main, 'GalleryImage');
+        const photoCredit = slide.querySelector('.pv-photo-credit');
         // let media = slide.querySelector('.share-frame');
         let media = getGallerySlideImage(slide);
 
@@ -327,6 +328,11 @@ function transformGalleryDOM(document) {
 
           const promoDescription = slideInfo.querySelector('.o-PhotoGalleryPromo__a-Description');
           appendElementToBlock(block, 'Promo Description', promoDescription);
+        }
+
+        if (photoCredit) {
+          let name = photoCredit.innerHTML.trim().substring('Photo By: Photo by '.length).trim();
+          appendToBlock(block, 'Photo Credit', name);
         }
         blockCount++;
       });
