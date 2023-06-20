@@ -1,12 +1,23 @@
-const articleStyles = {
-  Default: 'DefaultArticle',
-  FullBleed: 'FullBleed',
-  LongForm: 'LongForm',
-  OpenArticle: 'OpenArticle',
-  LiveStream: 'LiveStream',
-  Gallery: 'Gallery',
-  GalleryListicle: 'Gallery Listicle',
-  ProductListing: 'Product Listing',
+const PAGE_THEMES = {
+  Default: 'Default Article Theme',
+  FullBleed: 'Full Bleed Theme',
+  LongForm: 'Long Form Theme',
+  OpenArticle: 'Open Article Theme',
+  LiveStream: 'Live Stream Theme',
+  Gallery: 'Gallery Theme',
+  GalleryListicle: 'Gallery Listicle Theme',
+  ProductListing: 'Product Listing Theme',
+};
+
+const PAGE_TEMPLATES = {
+  Default: 'Default Article Template',
+  FullBleed: 'Full Bleed Template',
+  LongForm: 'Long Form Template',
+  OpenArticle: 'Open Article  Template',
+  LiveStream: 'Live Stream Template',
+  Gallery: 'Gallery  Template',
+  GalleryListicle: 'Gallery Listicle Template',
+  ProductListing: 'Product Listing  Template',
 };
 
 function replaceEmbed(el, url) {
@@ -149,10 +160,12 @@ function transformArticleDOM(document) {
   const articleBody = document.querySelector('.articleBody');
   const main = document.createElement('main');
 
-  let articleStyle = articleStyles.Default;
+  let template = PAGE_TEMPLATES.Default;
+  let theme =  PAGE_THEMES.Default
 
   if (articleHero) {
-    articleStyle = articleStyles.FullBleed;
+    template = PAGE_TEMPLATES.FullBleed;
+    theme =  PAGE_THEMES.FullBleed
     main.append(articleHero);
   } else {
     main.append(articleTitle);
@@ -204,7 +217,8 @@ function transformArticleDOM(document) {
   appendMetadata(metadata, 'Author', author);
   appendMetadata(metadata, 'Author URL', authorURL);
   appendMetadata(metadata, 'Publication Date', publicationDate);
-  appendMetadata(metadata, 'Article Style', articleStyle);
+  appendMetadata(metadata, 'template', template);
+  appendMetadata(metadata, 'theme', theme);
   appendMetadata(metadata, 'Rubric', rubric);
   if (imageEmbedCredit) {
     appendMetadata(metadata, 'Image Credit', imageEmbedCredit.innerHTML);
@@ -247,7 +261,8 @@ function transformGalleryDOM(document) {
   const articleBody = document.querySelector('.articleBody');
   const gallery = document.querySelector('.photoGalleryPromo');
 
-  let articleStyle = articleStyles.Gallery;
+  let template = PAGE_TEMPLATES.Gallery;
+  let theme = PAGE_THEMES.Gallery
   let gifCount = 0;
 
   addEl(main, assetTitle);
@@ -257,7 +272,8 @@ function transformGalleryDOM(document) {
   if (gallery) {
     const postcards = gallery.querySelector('.photocards');
     if (postcards) {
-      articleStyle = articleStyles.GalleryListicle;
+      template = PAGE_TEMPLATES.GalleryListicle;
+      theme = PAGE_THEMES.GalleryListicle
       gallery.querySelectorAll('.m-Slide').forEach((slide) => {
         let block = createBlockTable(document, main, 'GalleryImage');
         let media = slide.querySelector('.m-MediaBlock__m-MediaWrap');
@@ -331,7 +347,8 @@ function transformGalleryDOM(document) {
     appendMetadata(metadata, 'Rubric', rubric);
   }
   appendMetadata(metadata, 'og:type', 'gallery');
-  appendMetadata(metadata, 'Article Style', articleStyle);
+  appendMetadata(metadata, 'template', template);
+  appendMetadata(metadata, 'theme', theme);
   appendPageMetadata(document, metadata);
   return {
     element: main,
@@ -368,6 +385,8 @@ function transformProductDOM(document) {
   const metadata = createMetadataBlock(document, main);
   appendMetadata(metadata, 'og:type', 'product');
   appendMetadata(metadata, 'Article Style', articleStyles.ProductListing);
+  appendMetadata(metadata, 'template', PAGE_TEMPLATES.ProductListing);
+  appendMetadata(metadata, 'theme', PAGE_THEMES.ProductListing);
   appendPageMetadata(document, metadata);
   return {
     element: main,
