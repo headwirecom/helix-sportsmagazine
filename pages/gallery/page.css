@@ -1,0 +1,120 @@
+@import "/pages/gallerylisticle/page.css";
+
+.gallery .slideshow-wrapper {
+  display: inline-block;
+  height: 667px;
+}
+
+.gallery .slideshow-overflow {
+  float: left;
+  width: 1000px;
+  height: 667px;
+  position: relative;
+  overflow: hidden;
+}
+
+.gallery .start-slideshow-btn {
+  display: flex;
+  position: absolute;
+  z-index: 10;
+  top: 50%;
+  right: -42px;
+  transform: translateY(-50%);
+  min-width: 200px;
+  width: 265px;
+  margin: 0 70px 0 28px;
+  padding-left: 28px;
+  height: 50px;
+  align-items: center;
+  cursor: pointer;
+  text-align: left;
+  box-shadow: none;
+  border: none;
+  color: #fff;
+  border-radius: 3rem;
+  background: rgb(0 0 0 / 40%);
+  background-clip: padding-box;
+}
+
+.gallery .start-slideshow-txt {
+  font-family: GothamGD, arial, sans-serif;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: 0.3em;
+}
+
+.gallery .slide-btn {
+  right: 28px;
+  background-repeat: no-repeat;
+  background-color: rgb(21 21 23 / 50%);
+  border-radius: 50%;
+  width: 49px;
+  height: 49px;
+  top: calc(50% - 24.5px);
+  cursor: pointer;
+  position: absolute;
+  left: auto;
+  z-index: 10;
+  font-size: 40px;
+  opacity: 1;
+  transition: opacity 0.3s linear;
+}
+
+.gallery .slide-btn-next {
+  background-repeat: no-repeat;
+  background-image: url("/blocks/galleryimage/images/next.svg");
+  background-position: 60% 50%;
+  float: right;
+  background-size: 27px;
+}
+
+.gallery .slide-btn-prev {
+  background-repeat: no-repeat;
+  left: 2rem;
+  right: auto;
+  background-image: url("/blocks/galleryimage/images/prev.svg");
+  background-position: 40% 50%;
+  background-size: 27px;
+}
+
+.gallery .slideshow-container {
+  transition-duration: 0ms;
+  transform: translate3d(0, 0, 0);
+  transition-timing-function: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+
+.gallery .slideshow-wrapper .carousel {
+  display: block;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  background-color: #f2f2f2;
+}
+
+.gallery .galleryimage-wrapper > .carousel .image {
+  display: flex;
+  justify-content: center;
+}
+
+.gallery .slideshow-counter > .counter-display {
+  margin-top: 10px;
+  float: right;
+}
+
+.gallery .slideshow-slide-info > div {
+  margin-top: 20px;
+  margin-left: 10px;
+  display: inline;
+  float: left;
+}
+
+.gallery .social-share-bottom .socialshare-share-label {
+  display: block;
+}
+
+.gallery .social-share-bottom {
+  position: relative;
+}
