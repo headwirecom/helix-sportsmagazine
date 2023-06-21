@@ -10,6 +10,27 @@
   max-width: 780px;
 }
 
+.gallery .slideshow-wrapper .pv-photo-info {
+  position: absolute;
+  z-index: 2;
+  bottom: -165.5px;
+  left: 210px;
+  max-width: 80%;
+}
+
+.gallery .slideshow-wrapper .pv-photo-credit {
+  padding: 5px 10.5px;
+  font-family: GothamGD, arial, sans-serif;
+  color: #fff;
+  background: rgb(0 0 0 / 40%);
+  font-size: 12px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0;
+  text-align: left;
+}
+
 .gallery .slideshow-counter {
   font-family: GothamGD, arial, sans-serif;
   font-size: 14px;

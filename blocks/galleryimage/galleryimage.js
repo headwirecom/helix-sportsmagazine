@@ -12,7 +12,7 @@ function decorateRow(row, container) {
   }
   if (className === 'photo-credit') {
     const el = row.querySelector('div');
-    el.innerHTML = `Photo By: ${el.innerHTML}`;
+    el.innerHTML = `Photo By: <span class="photo-credit-name">${el.innerHTML}</span>`;
   }
 }
 
