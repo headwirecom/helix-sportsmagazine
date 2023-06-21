@@ -13,6 +13,10 @@ function decorateRow(row, container) {
   if (container && className !== 'image') {
     container.append(row);
   }
+  if (className === 'photo-credit') {
+    const el = row.querySelector('div');
+    el.innerHTML = `Photo By: ${el.innerHTML}`;
+  }
 }
 
 export default function decorate(block) {

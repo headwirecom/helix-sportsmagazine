@@ -95,6 +95,12 @@
 .gallery .galleryimage-wrapper > .carousel .image {
   display: flex;
   justify-content: center;
+  max-width: 100%;
+}
+
+.gallery .galleryimage-wrapper > .carousel img {
+  max-width: 95%;
+  margin-left: 25px;
 }
 
 .gallery .slideshow-counter > .counter-display {

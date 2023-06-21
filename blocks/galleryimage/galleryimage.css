@@ -1,5 +1,40 @@
 .galleryimage-container {
-    width: 1440px;
-    max-width: 100%;
-    margin-top: 30px;
+  width: 1440px;
+  max-width: 100%;
+  margin-top: 30px;
+}
+
+.gallery .slide-info {
+  padding-top: 20px;
+  padding-left: 20px;
+  max-width: 780px;
+}
+
+.gallery .slideshow-counter {
+  font-family: GothamGD, arial, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  line-height: 13px;
+  letter-spacing: 0;
+  font-weight: 500;
+}
+
+.gallery .slideshow-counter .counter-display {
+  margin-right: 10px;
+}
+
+.gallery .promo-description {
+  font-family: GothamGD, arial, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: 0;
+  text-align: left;
+  margin-bottom: 0;
+}
+
+.gallery .photo-credit {
+  color: #adb4b7;
+  margin: 0;
 }
