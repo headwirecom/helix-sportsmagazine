@@ -1,6 +1,3 @@
-const imageBlockCount = 0;
-let currentIndex = 0;
-
 function getRowClassName(field) {
   return field.trim().replace(' ', '-').toLowerCase();
 }
