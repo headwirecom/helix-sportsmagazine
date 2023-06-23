@@ -4,6 +4,10 @@
   margin-top: 30px;
 }
 
+.galleryimage-wrapper {
+  counter-increment: blockCounter;
+}
+
 .gallery .slide-info {
   padding-top: 20px;
   padding-left: 20px;
@@ -55,7 +59,41 @@
   margin-bottom: 0;
 }
 
+.gallery .promo-description p {
+  font-family: GothamGD, arial, sans-serif;
+  font-size: 18px;
+  font-style: normal;
+  line-height: 30px;
+  letter-spacing: 0;
+  text-align: left;
+  font-weight: 400;
+}
+
 .gallery .photo-credit {
   color: #adb4b7;
   margin: 0;
+}
+
+.galleryimage-wrapper .promo-headline {
+  width: 100%;
+}
+
+.gallery-listicle-theme .promo-headline::before {
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  content: counter(blockCounter);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: flex-start;
+  margin-right: 12px;
+  background-color: #ed3e49;
+  border-radius: 100%;
+  color: #fff;
+  font-family: Gotham, arial, sans-serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  height: 30px;
+  width: 30px;
 }
