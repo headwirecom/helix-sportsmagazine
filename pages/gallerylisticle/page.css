@@ -312,3 +312,13 @@ video {
 .social-share-bottom .social-share-container {
   margin-top: 30px;
 }
+
+.gallery .ad-container {
+  position: relative;
+}
+
+@media (max-width: 1280px) {
+  .gallery .right-col {
+    display: none;
+  }
+}
