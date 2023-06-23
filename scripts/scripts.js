@@ -149,7 +149,6 @@ export function createTag(tag, attributes, html) {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
-  await loadBlocks(main);
 
   document.body.classList.forEach(async (clazz) => {
     if (clazz.endsWith('-template')) {
@@ -157,6 +156,8 @@ async function loadLazy(doc) {
       await decoratePageContent(main, templatePath);
     }
   });
+
+  await loadBlocks(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
