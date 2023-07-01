@@ -56,14 +56,56 @@ function decorateSocialShare(main) {
   });
 }
 
+function getImageDimentions(screenWidth) {
+  const d = [];
+  if (screenWidth < 1395) {
+    const imgWidth = Math.round(screenWidth * 0.7);
+    d.push(imgWidth);
+    d.push(Math.round(imgWidth * 0.6667));
+  } else {
+    const imgWidth = 966;
+    d.push(imgWidth);
+    d.push(Math.round(imgWidth * 0.6667));
+  }
+  return d;
+}
+
+function getImageContainerDimentions(screenWidth, imgWidth, imgHeight) {
+  const d = [];
+  if (screenWidth < 1400) {
+    let w = screenWidth - 40;
+    d.push(w);
+    d.push(Math.round(w * 0.6667));
+  } else if(screenWidth < 1016) {
+    d.push(imgWidth);
+    d.push(imgHeight);
+  } else {
+    d.push(imgWidth + 2);
+    d.push(imgHeight + 10);
+  }
+  return d;
+}
+
 function decorateSlideImgSize() {
   const screenWidth = window.innerWidth || document.documentElement.clientWidth
   || document.body.clientWidth;
-  // Set the width to 966px or 70% of the screen width
-  const imgWidth = (screenWidth < 1395) ? Math.round(screenWidth * 0.7) : 966;
-  // Set height to 2/3 of the width
-  const imgHeight = Math.round(imgWidth * 0.6667);
-  document.querySelectorAll('.galleryimage-wrapper > .carousel img').forEach((img) => {
+  console.log(`Screen Width: ${screenWidth}`);
+  const [imgWidth, imgHeight] = getImageDimentions(screenWidth);
+  const [containerWidth, containerHeight] = getImageContainerDimentions(screenWidth, imgWidth, imgHeight);
+  document.querySelector('.slideshow-overflow').style.width = `${containerWidth}px`;
+  document.querySelector('.slideshow-overflow').style.height = `${containerHeight}px`;
+  document.querySelector('.slideshow-container').style.width = `${containerWidth}px`;
+  document.querySelector('.slideshow-wrapper').style.width = `${containerWidth}px`;
+  document.querySelectorAll('.galleryimage-wrapper').forEach((wrap) => {
+    const slide = wrap.querySelector('.carousel');
+    const img = slide.querySelector('img');
+    const imageDiv = slide.querySelector('.image');
+    wrap.style.width = `${containerWidth}px`;
+    wrap.style.height = `${containerHeight}px`;
+    slide.style.width = `${containerWidth}px`;
+    slide.style.height = `${containerHeight}px`;
+    imageDiv.style.width = `${containerWidth}px`;
+    imageDiv.style.height = `${containerHeight}px`;
     img.style.width = `${imgWidth}px`;
     img.style.height = `${imgHeight}px`;
   });
