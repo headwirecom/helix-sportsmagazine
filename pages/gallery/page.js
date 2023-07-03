@@ -58,27 +58,28 @@ function decorateSocialShare(main) {
 
 function getImageDimentions(screenWidth) {
   const d = [];
-  if (screenWidth < 1395) {
-    const imgWidth = Math.round(screenWidth * 0.7);
-    d.push(imgWidth);
-    d.push(Math.round(imgWidth * 0.6667));
+  let imgWidth = 0;
+  if (screenWidth > 1395 || (screenWidth < 1280 && screenWidth >= 1010)) {
+    imgWidth = 966;
+  } else if (screenWidth < 1010) {
+    imgWidth = Math.round(screenWidth * 0.96);
   } else {
-    const imgWidth = 966;
-    d.push(imgWidth);
-    d.push(Math.round(imgWidth * 0.6667));
+    imgWidth = Math.round(screenWidth * 0.7);
   }
+  d.push(imgWidth);
+  d.push(Math.round(imgWidth * 0.6667));
   return d;
 }
 
 function getImageContainerDimentions(screenWidth, imgWidth, imgHeight) {
   const d = [];
-  if (screenWidth < 1400) {
-    let w = screenWidth - 40;
-    d.push(w);
-    d.push(Math.round(w * 0.6667));
-  } else if(screenWidth < 1016) {
+  if (screenWidth < 1016) {
     d.push(imgWidth);
     d.push(imgHeight);
+  } else if (screenWidth < 1280) {
+    const w = screenWidth - 40;
+    d.push(w);
+    d.push(Math.round(w * 0.6667));
   } else {
     d.push(imgWidth + 2);
     d.push(imgHeight + 10);
@@ -89,9 +90,12 @@ function getImageContainerDimentions(screenWidth, imgWidth, imgHeight) {
 function decorateSlideImgSize() {
   const screenWidth = window.innerWidth || document.documentElement.clientWidth
   || document.body.clientWidth;
-  console.log(`Screen Width: ${screenWidth}`);
   const [imgWidth, imgHeight] = getImageDimentions(screenWidth);
-  const [containerWidth, containerHeight] = getImageContainerDimentions(screenWidth, imgWidth, imgHeight);
+  const [containerWidth, containerHeight] = getImageContainerDimentions(
+    screenWidth,
+    imgWidth,
+    imgHeight,
+  );
   document.querySelector('.slideshow-overflow').style.width = `${containerWidth}px`;
   document.querySelector('.slideshow-overflow').style.height = `${containerHeight}px`;
   document.querySelector('.slideshow-container').style.width = `${containerWidth}px`;
