@@ -85,10 +85,9 @@
 }
 
 .footer-column.accordion-item :is(h1, h2, h3) {
-  display: box;
-  display: flexbox;
   display: flex;
   justify-content: space-between;
+  cursor: pointer;
 }
 
 @media (min-width: 1025px) {
@@ -139,7 +138,7 @@
 
   .footer-promo-list :is(h1, h2, h3) {
     font-weight: 700;
-    font-family: GothamGD, arial, sans-serif;
+    font-family: var(--font-gotham);
     letter-spacing: 0.3em;
     font-size: 16px;
     margin-bottom: 20px;
@@ -175,9 +174,10 @@
   justify-content: center;
   border: 0;
   color: #fff;
-  min-width: 90px;
-  max-width: 90px;
+  min-width: 133px;
+  max-width: 133px;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 @media (max-width: 1024px) {
@@ -206,9 +206,7 @@
   transform: rotate(90deg);
   height: 18px;
   width: 18px;
-  transition: -webkit-transform 0.5s;
   transition: transform 0.5s;
-  transition: transform 0.5s, -webkit-transform 0.5s;
   filter: invert(11%) sepia(100%) saturate(5489%) hue-rotate(342deg) brightness(107%) contrast(108%);
 }
 
@@ -240,7 +238,7 @@
   text-decoration: none;
   color: #fff;
   opacity: 0.7;
-  font-family: GothamGD, arial, sans-serif;
+  font-family: var(--font-gotham);
 }
 
 .footer .disclaimer a:hover {
@@ -284,7 +282,8 @@
 
 .footer .footer-column li {
   list-style-type: none;
-  line-height: 3em;
+  height: 48px;
+  text-align: left;
 }
 
 .footer .footer-column-image-container {

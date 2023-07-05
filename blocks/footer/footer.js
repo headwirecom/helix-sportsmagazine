@@ -73,7 +73,7 @@ function decorateMobileSectionIcon(section) {
   const heading = section.querySelector(':is(h1, h2, h3)');
   const icon = templateDom.querySelector('.footer-arrow-icon').cloneNode(true);
   heading.append(icon);
-  icon.addEventListener('click', () => {
+  heading.addEventListener('click', () => {
     icon.closest('.accordion-item').classList.toggle('open');
   });
 }

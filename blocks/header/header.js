@@ -189,22 +189,32 @@ function decorateNavHeader(section) {
   const sectionLink = section.querySelector('a');
   const url = (sectionLink.getAttribute('href')) ? sectionLink.getAttribute('href') : '//www.golfdigest.com';
   const text = sectionLink.innerHTML;
+  const wrapper = document.createElement('div');
 
   if (navTemplateDom) {
-    const template = navTemplateDom.querySelector('[data-type="nav-title"]');
-    if (template) {
-      template.querySelectorAll('[aria-label]').forEach((el) => el.setAttribute('aria-label', text));
-      const el = template.firstElementChild;
+    const logo = navTemplateDom.querySelector('[data-type="nav-title"]');
+    if (logo) {
+      logo.querySelectorAll('[aria-label]').forEach((el) => el.setAttribute('aria-label', text));
+      const el = logo.firstElementChild;
       el.setAttribute('href', url);
       const titleElem = el.querySelector('title');
       if (titleElem) titleElem.innerHTML = text;
-      return el;
+      wrapper.append(el);
     }
+
+    const search = navTemplateDom.querySelector('[data-type="nav-search"]');
+    if (search) {
+      wrapper.append(search);
+    }
+
+    return wrapper;
   }
 
   const el = createTag('a', { class: 'header-logo', href: url, 'aria-label': text });
   el.innerHTML = text;
-  return el;
+  wrapper.append(el);
+
+  return wrapper;
 }
 
 function getChannelPathPart(url) {
@@ -421,7 +431,7 @@ function decorateNavSection(container, section, sectionIndex) {
   container.append(el);
 }
 
-function updateHeaderLink(block, selector, text, url) {
+function updateHeaderLink(block, selector, text) {
   block.querySelectorAll(selector).forEach((el) => {
     el.innerHTML = text;
     el.setAttribute('href', channelInfo.mainChannelHref);
@@ -433,6 +443,10 @@ function updateChannelCrumb(block) {
   updateHeaderLink(block, '.header-channel', channelInfo.mainChannelText, channelInfo.mainChannelHref);
   if (channelInfo.subChannelHref) {
     updateHeaderLink(block, '.header-subchannel', channelInfo.subChannelText, channelInfo.subChannelHref);
+  } else {
+    const elements = block.querySelectorAll('.header-channel-crumb .header-subchannel, .header-channel-crumb .separator');
+    elements.forEach((element) => element.remove());
+    updateHeaderLink(block, '.header-subchannel', channelInfo.mainChannelText, channelInfo.mainChannelHref);
   }
 }
 
