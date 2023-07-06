@@ -1,6 +1,6 @@
 import { decorateSocialShare, decorateMetadataContent, decorateAttribution } from '../common/common.js';
 
-function decorateMain(main) {
+export function decorateMain(main) {
   const defaultContent = main.querySelector('.default-content-wrapper');
   const defaultTitle = defaultContent.querySelector('h1');
   if (defaultTitle) {

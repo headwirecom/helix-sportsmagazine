@@ -1,4 +1,4 @@
-import { decorateSocialShare, decorateMetadataContent, decorateAttribution } from '../common/common.js';
+import { decorateMain } from '../gallerylisticle/page.js';
 
 let imageBlockCount = 0;
 let currentIndex = 0;
@@ -60,23 +60,6 @@ function decorateSlideImgSize() {
     img.style.width = `${imgWidth}px`;
     img.style.height = `${imgHeight}px`;
   });
-}
-
-function decorateMain(main) {
-  const defaultContent = main.querySelector('.default-content-wrapper');
-  const defaultTitle = defaultContent.querySelector('h1');
-  if (defaultTitle) {
-    main.querySelector('.article-title span').innerHTML = defaultTitle.innerHTML;
-    defaultTitle.remove();
-  }
-  main.querySelector('.article-lead-description').innerHTML = defaultContent.innerHTML;
-  defaultContent.remove();
-  decorateSlideImgSize();
-  window.addEventListener('resize', decorateSlideImgSize);
-  decorateMetadataContent(main.querySelector('.article-topline .rubric span'), 'rubric');
-  decorateAttribution(main.querySelector('.attribution-author-prefix'));
-  decorateMetadataContent(main.querySelector('.article-byline .publish-date'), 'publication-date');
-  decorateSocialShare(main);
 }
 
 function updateCounter() {
@@ -181,6 +164,8 @@ export default function decorate(main, template) {
     main.innerHTML = templateEl.innerHTML;
     main.classList = templateEl.classList;
     decorateMain(main);
+    decorateSlideImgSize();
+    window.addEventListener('resize', decorateSlideImgSize);
     imageBlockCount = main.querySelectorAll('.galleryimage-wrapper').length;
     startSlideshow(main);
   }
