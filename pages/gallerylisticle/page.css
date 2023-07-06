@@ -6,6 +6,11 @@ body.gallery {
   line-height: 1;
 }
 
+.gallery a {
+  color: #000;
+  text-decoration: none;
+}
+
 .gallery .article-header {
   margin-bottom: 30px;
   max-width: 1000px;
