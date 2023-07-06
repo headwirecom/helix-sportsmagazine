@@ -1,9 +1,9 @@
-// const articleStyles = {
-//   Default: 'DefaultArticle',
-//   FullBleed: 'FullBleed',
-//   LongForm: 'LongForm',
-//   OpenArticle: 'OpenArticle',
-//   LiveStream: 'LiveStream',
+// const articleTemplates = {
+//   Default: 'default-article',
+//   FullBleed: 'full-bleed',
+//   LongForm: 'long-form',
+//   OpenArticle: 'open-article',
+//   LiveStream: 'live-stream',
 // };
 
 // function replaceEmbed(el, url) {
@@ -138,7 +138,7 @@ export default {
     const articleBody = document.querySelector('.articleBody');
     const gallery = document.querySelector('.photoGalleryPromo');
 
-    let articleStyle = 'Gallery';
+    let articleTemplate = 'gallery';
 
     addEl(main, assetTitle);
     addEl(main, articleBody);
@@ -147,7 +147,7 @@ export default {
     if (gallery) {
       const postcards = gallery.querySelector('.photocards');
       if (postcards) {
-        articleStyle = 'Gallery Listicle';
+        articleTemplate = 'gallery-listicle';
         gallery.querySelectorAll('.m-Slide').forEach((slide) => {
           const block = createBlockTable(document, main, 'GalleryImage');
           const media = slide.querySelector('.m-MediaBlock__m-MediaWrap');
@@ -202,7 +202,7 @@ export default {
       appendMetadata(metadata, 'Rubric', rubric);
     }
     appendMetadata(metadata, 'og:type', 'gallery');
-    appendMetadata(metadata, 'Article Style', articleStyle);
+    appendMetadata(metadata, 'template', articleTemplate);
 
     const metaMatchFilter = ['msapplication-TileColor', 'msapplication-TileImage', 'keywords', 'news_keywords',
       'fb:app_id', 'fb:admins', 'twitter:domain', 'og:type', 'og:site_name', 'parsely-metadata',

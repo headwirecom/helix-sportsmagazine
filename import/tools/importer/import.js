@@ -1,12 +1,12 @@
-const articleStyles = {
-  Default: 'DefaultArticle',
-  FullBleed: 'FullBleed',
-  LongForm: 'LongForm',
-  OpenArticle: 'OpenArticle',
-  LiveStream: 'LiveStream',
-  Gallery: 'Gallery',
-  GalleryListicle: 'Gallery Listicle',
-  ProductListing: 'Product Listing',
+const articleTemplates = {
+  Default: 'default-article',
+  FullBleed: 'full-bleed',
+  LongForm: 'long-form',
+  OpenArticle: 'open-article',
+  LiveStream: 'live-stream',
+  Gallery: 'gallery',
+  GalleryListicle: 'gallery-listicle',
+  ProductListing: 'product-listing',
 };
 
 function replaceEmbed(el, url) {
@@ -149,10 +149,10 @@ function transformArticleDOM(document) {
   const articleBody = document.querySelector('.articleBody');
   const main = document.createElement('main');
 
-  let articleStyle = articleStyles.Default;
+  let articleTemplate = articleTemplates.Default;
 
   if (articleHero) {
-    articleStyle = articleStyles.FullBleed;
+    articleTemplate = articleTemplates.FullBleed;
     main.append(articleHero);
   } else {
     main.append(articleTitle);
@@ -204,7 +204,7 @@ function transformArticleDOM(document) {
   appendMetadata(metadata, 'Author', author);
   appendMetadata(metadata, 'Author URL', authorURL);
   appendMetadata(metadata, 'Publication Date', publicationDate);
-  appendMetadata(metadata, 'Article Style', articleStyle);
+  appendMetadata(metadata, 'template', articleTemplate);
   appendMetadata(metadata, 'Rubric', rubric);
   if (imageEmbedCredit) {
     appendMetadata(metadata, 'Image Credit', imageEmbedCredit.innerHTML);
@@ -247,7 +247,7 @@ function transformGalleryDOM(document) {
   const articleBody = document.querySelector('.articleBody');
   const gallery = document.querySelector('.photoGalleryPromo');
 
-  let articleStyle = articleStyles.Gallery;
+  let articleTemplate = articleTemplates.Gallery;
   let gifCount = 0;
 
   addEl(main, assetTitle);
@@ -257,7 +257,7 @@ function transformGalleryDOM(document) {
   if (gallery) {
     const postcards = gallery.querySelector('.photocards');
     if (postcards) {
-      articleStyle = articleStyles.GalleryListicle;
+      articleTemplate = articleTemplates.GalleryListicle;
       gallery.querySelectorAll('.m-Slide').forEach((slide) => {
         let block = createBlockTable(document, main, 'GalleryImage');
         let media = slide.querySelector('.m-MediaBlock__m-MediaWrap');
@@ -331,7 +331,7 @@ function transformGalleryDOM(document) {
     appendMetadata(metadata, 'Rubric', rubric);
   }
   appendMetadata(metadata, 'og:type', 'gallery');
-  appendMetadata(metadata, 'Article Style', articleStyle);
+  appendMetadata(metadata, 'template', articleTemplate);
   appendPageMetadata(document, metadata);
   return {
     element: main,
@@ -367,7 +367,7 @@ function transformProductDOM(document) {
   */
   const metadata = createMetadataBlock(document, main);
   appendMetadata(metadata, 'og:type', 'product');
-  appendMetadata(metadata, 'Article Style', articleStyles.ProductListing);
+  appendMetadata(metadata, 'template', articleTemplates.ProductListing);
   appendPageMetadata(document, metadata);
   return {
     element: main,
