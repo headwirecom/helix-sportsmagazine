@@ -164,7 +164,8 @@ export default function decorate(main, template) {
     main.innerHTML = templateEl.innerHTML;
     main.classList = templateEl.classList;
     decorateMain(main);
-    decorateSlideImgSize();
+    // delay dynamic image resizing since it depends on block rendering
+    setTimeout(decorateSlideImgSize, 200);
     window.addEventListener('resize', decorateSlideImgSize);
     imageBlockCount = main.querySelectorAll('.galleryimage-wrapper').length;
     startSlideshow(main);
