@@ -222,7 +222,7 @@ function getChannelPathPart(url) {
   if (parts[parts.length - 1].length === 0) {
     parts.pop();
   }
-  return parts.pop();
+  return `/${parts.pop()}`;
 }
 
 function isActiveMenuURL(url) {
@@ -431,10 +431,10 @@ function decorateNavSection(container, section, sectionIndex) {
   container.append(el);
 }
 
-function updateHeaderLink(block, selector, text) {
+function updateHeaderLink(block, selector, text, url) {
   block.querySelectorAll(selector).forEach((el) => {
     el.innerHTML = text;
-    el.setAttribute('href', channelInfo.mainChannelHref);
+    el.setAttribute('href', url);
   });
 }
 
