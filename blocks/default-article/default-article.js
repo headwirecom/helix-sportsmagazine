@@ -9,7 +9,7 @@ const authorURL = getMetadata('author-url');
 const publicationDate = getMetadata('publication-date');
 const imageCredit = getMetadata('image-credit');
 
-// HTML template in JS to avoid extra waterfall for LCP
+// HTML template in JS to avoid extra waterfall for LCP blocks
 const HTML_TEMPLATE = `
 <div class="container">
   <div class="container-article">
@@ -34,9 +34,7 @@ const HTML_TEMPLATE = `
         </div>
       </div>
       <div class="lead">
-        <div class="image">
-            <slot name="image"></slot>
-        </div>
+        <slot name="image"></slot>
         <div class="credit">
             <span>${imageCredit}</span>
         </div>
@@ -71,19 +69,33 @@ export default async function decorate(block) {
     image.setAttribute('slot', 'image');
   }
 
-  // Build inner blocks
+  // Pre-processing
   const share = buildBlock('social-share', { elems: [] });
   share.setAttribute('slot', 'share');
   block.append(share);
 
+  const embeds = ['youtube', 'twitter', 'brightcove'];
+  block.querySelectorAll(embeds.map((embed) => `a[href*="${embed}"]`).join(',')).forEach((embedLink) => {
+    const parent = embedLink.parentElement;
+    const embed = buildBlock('embed', { elems: [embedLink] });
+    parent.replaceWith(embed);
+  });
+
   // Render template
   render(template, block);
+
+  // Post-processing
+  template.querySelectorAll('p').forEach((p) => {
+    if (p.innerHTML.trim() === '') {
+      p.remove();
+    }
+  });
 
   // Update block with rendered template
   block.innerHTML = '';
   block.append(...template.children);
 
   // Inner block loading
-  block.querySelectorAll('.social-share').forEach((innerBlock) => decorateBlock(innerBlock));
+  block.querySelectorAll('.social-share, .embed').forEach((innerBlock) => decorateBlock(innerBlock));
   loadBlocks(document.querySelector('main'));
 }
