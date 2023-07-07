@@ -1,4 +1,5 @@
 body.gallery {
+  background-color: unset;
   font-family: GothamGD, arial, sans-serif;
   height: 100%;
   width: 100%;
