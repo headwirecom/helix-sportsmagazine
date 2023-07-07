@@ -68,6 +68,15 @@ async function decoratePageContent(main, templatePath) {
   }
 }
 
+async function decorateTemplates(main) {
+  document.body.classList.forEach(async (clazz) => {
+    if (clazz.endsWith('-template')) {
+      const templatePath = getPageTemplatePath(clazz);
+      await decoratePageContent(main, templatePath);
+    }
+  });
+}
+
 /**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
@@ -75,6 +84,7 @@ async function decoratePageContent(main, templatePath) {
 function buildAutoBlocks(main) {
   try {
     buildHeroBlock(main);
+    decorateTemplates(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -150,13 +160,6 @@ export function createTag(tag, attributes, html) {
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
   await loadBlocks(main);
-
-  document.body.classList.forEach(async (clazz) => {
-    if (clazz.endsWith('-template')) {
-      const templatePath = getPageTemplatePath(clazz);
-      await decoratePageContent(main, templatePath);
-    }
-  });
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
