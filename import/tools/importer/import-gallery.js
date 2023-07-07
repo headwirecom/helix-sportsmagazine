@@ -1,9 +1,9 @@
 // const articleTemplates = {
-//   Default: 'default-article',
-//   FullBleed: 'full-bleed',
-//   LongForm: 'long-form',
-//   OpenArticle: 'open-article',
-//   LiveStream: 'live-stream',
+//   Default: 'Default Article',
+//   FullBleed: 'Full Bleed',
+//   LongForm: 'Long Form',
+//   OpenArticle: 'Open Article',
+//   LiveStream: 'Live Stream',
 // };
 
 // function replaceEmbed(el, url) {
@@ -138,7 +138,7 @@ export default {
     const articleBody = document.querySelector('.articleBody');
     const gallery = document.querySelector('.photoGalleryPromo');
 
-    let articleTemplate = 'gallery';
+    let articleTemplate = 'Gallery';
 
     addEl(main, assetTitle);
     addEl(main, articleBody);
@@ -147,7 +147,7 @@ export default {
     if (gallery) {
       const postcards = gallery.querySelector('.photocards');
       if (postcards) {
-        articleTemplate = 'gallery-listicle';
+        articleTemplate = 'Gallery Listicle';
         gallery.querySelectorAll('.m-Slide').forEach((slide) => {
           const block = createBlockTable(document, main, 'GalleryImage');
           const media = slide.querySelector('.m-MediaBlock__m-MediaWrap');

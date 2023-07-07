@@ -1,12 +1,12 @@
 const articleTemplates = {
-  Default: 'default-article',
-  FullBleed: 'full-bleed',
-  LongForm: 'long-form',
-  OpenArticle: 'open-article',
-  LiveStream: 'live-stream',
-  Gallery: 'gallery',
-  GalleryListicle: 'gallery-listicle',
-  ProductListing: 'product-listing',
+  Default: 'Default Article',
+  FullBleed: 'Full Bleed',
+  LongForm: 'Long Form',
+  OpenArticle: 'Open Article',
+  LiveStream: 'Live Stream',
+  Gallery: 'Gallery',
+  GalleryListicle: 'Gallery Listicle',
+  ProductListing: 'Product Listing',
 };
 
 function replaceEmbed(el, url) {
@@ -290,6 +290,7 @@ function transformGalleryDOM(document) {
       let blockCount = 0;
       gallery.querySelectorAll('.m-Slide').forEach((slide) => {
         const block = createBlockTable(document, main, 'GalleryImage');
+        const photoCredit = slide.querySelector('.pv-photo-credit');
         // let media = slide.querySelector('.share-frame');
         let media = getGallerySlideImage(slide);
 
@@ -311,6 +312,11 @@ function transformGalleryDOM(document) {
 
           const promoDescription = slideInfo.querySelector('.o-PhotoGalleryPromo__a-Description');
           appendElementToBlock(block, 'Promo Description', promoDescription);
+        }
+
+        if (photoCredit) {
+          let name = photoCredit.innerHTML.trim().substring('Photo By: Photo by '.length).trim();
+          appendToBlock(block, 'Photo Credit', name);
         }
         blockCount++;
       });
