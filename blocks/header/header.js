@@ -434,7 +434,7 @@ function decorateNavSection(container, section, sectionIndex) {
 function updateHeaderLink(block, selector, text) {
   block.querySelectorAll(selector).forEach((el) => {
     el.innerHTML = text;
-    el.setAttribute('href', url);
+    el.setAttribute('href', channelInfo.mainChannelHref);
   });
 }
 
