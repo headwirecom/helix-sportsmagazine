@@ -17,8 +17,8 @@ function decorateRow(row, container) {
 }
 
 export default function decorate(block) {
-  const isListicle = document.body.classList.contains('gallery-listicle-template');
-  const isGallery = document.body.classList.contains('gallery-template');
+  const isListicle = document.body.classList.contains('gallery-listicle');
+  const isGallery = document.body.classList.contains('gallery');
   if (isListicle) {
     block.classList.add('listicle');
     block.querySelectorAll(':scope > div').forEach((row) => decorateRow(row));

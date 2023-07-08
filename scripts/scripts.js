@@ -13,7 +13,18 @@ import {
   loadCSS,
 } from './lib-franklin.js';
 
-const LCP_BLOCKS = []; // add your LCP blocks to the list
+const ARTICLE_TEMPLATES = {
+  Default: 'default-article',
+  FullBleed: 'full-bleed',
+  LongForm: 'long-form',
+  OpenArticle: 'open-article',
+  LiveStream: 'live-stream',
+  Gallery: 'gallery',
+  GalleryListicle: 'gallery-listicle',
+  ProductListing: 'product-listing',
+};
+
+const LCP_BLOCKS = [...Object.values(ARTICLE_TEMPLATES)]; // add your LCP blocks to the list
 
 /**
  * Builds hero block and prepends to main in a new section.
@@ -32,9 +43,21 @@ function buildHeroBlock(main) {
 
 function getPageTemplatePath(templateClass) {
   const classNameParts = templateClass.split('-');
-  classNameParts.pop();
+  if (templateClass.endsWith('-template')) {
+    classNameParts.pop();
+  }
   const name = classNameParts.join('');
   return `/pages/${name}`;
+}
+
+function isTemplateClass(className) {
+  let isTemplate = false;
+  Object.keys(ARTICLE_TEMPLATES).forEach((key) => {
+    if (ARTICLE_TEMPLATES[key] === className) {
+      isTemplate = true;
+    }
+  });
+  return isTemplate;
 }
 
 async function fetchPageTemplate(templatePath) {
@@ -70,7 +93,7 @@ async function decoratePageContent(main, templatePath) {
 
 async function decorateTemplates(main) {
   document.body.classList.forEach(async (clazz) => {
-    if (clazz.endsWith('-template')) {
+    if (isTemplateClass(clazz)) {
       const templatePath = getPageTemplatePath(clazz);
       await decoratePageContent(main, templatePath);
     }
@@ -83,8 +106,8 @@ async function decorateTemplates(main) {
  */
 function buildAutoBlocks(main) {
   try {
-    buildHeroBlock(main);
     decorateTemplates(main);
+    buildHeroBlock(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);

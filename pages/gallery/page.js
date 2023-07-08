@@ -48,9 +48,9 @@ function decorateSlideImgSize() {
   document.querySelector('.slideshow-container').style.width = `${containerWidth}px`;
   document.querySelector('.slideshow-wrapper').style.width = `${containerWidth}px`;
   document.querySelectorAll('.galleryimage-wrapper').forEach((wrap) => {
-    const slide = wrap.querySelector('.carousel');
+    const slide = wrap.querySelector('.galleryimage');
     const img = slide.querySelector('img');
-    const imageDiv = slide.querySelector('.image');
+    const imageDiv = slide.querySelector('div');
     wrap.style.width = `${containerWidth}px`;
     wrap.style.height = `${containerHeight}px`;
     slide.style.width = `${containerWidth}px`;
@@ -164,8 +164,7 @@ export default function decorate(main, template) {
     main.innerHTML = templateEl.innerHTML;
     main.classList = templateEl.classList;
     decorateMain(main);
-    // delay dynamic image resizing since it depends on block rendering
-    setTimeout(decorateSlideImgSize, 200);
+    decorateSlideImgSize();
     window.addEventListener('resize', decorateSlideImgSize);
     imageBlockCount = main.querySelectorAll('.galleryimage-wrapper').length;
     startSlideshow(main);
