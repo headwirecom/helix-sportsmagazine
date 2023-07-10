@@ -1,0 +1,53 @@
+.social-share {
+    display: flex;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.social-share .label {
+    margin-right: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 16px;
+    letter-spacing: .3em;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.social-share .columns {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 17.5px;
+}
+
+.social-share a {
+    text-decoration: none;
+}
+
+.social-share .icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    background: #2c2c2c;
+}
+
+.social-share a:hover .icon {
+    background-color: #ed3e49;
+}
+
+.social-share svg {
+    margin: 0;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    fill: #fff;
+}
+
+.social-share .icon-label {
+    display: none;
+}
