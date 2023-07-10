@@ -32,7 +32,6 @@
 }
 
 body {
-  background-color: #f6f6f6;
   font-family: var(--body-font-family);
   color: black;
   overflow-x: hidden;

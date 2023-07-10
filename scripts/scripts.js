@@ -26,17 +26,54 @@ const ARTICLE_TEMPLATES = {
 
 const LCP_BLOCKS = [...Object.values(ARTICLE_TEMPLATES)]; // add your LCP blocks to the list
 
+const range = document.createRange();
+
 /**
- * Builds hero block and prepends to main in a new section.
+ * Parse HTML fragment
+ * @returns {DocumentFragment}
+ */
+export function parseFragment(fragmentString) {
+  return range.createContextualFragment(fragmentString);
+}
+
+/**
+ * Update template with slotted elements from fragment
+ */
+export function render(template, fragment) {
+  const slottedElements = fragment.querySelectorAll('[slot]');
+  for (const slottedElement of slottedElements) {
+    const slotName = slottedElement.getAttribute('slot');
+    const slots = template.querySelectorAll(`slot[name="${slotName}"]`);
+    for (const slot of slots) {
+      slot.replaceWith(slottedElement.cloneNode(true));
+    }
+  }
+
+  const defaultSlot = template.querySelector('slot:not([name])');
+  if (defaultSlot) {
+    fragment.querySelectorAll('[slot]').forEach((el) => el.remove());
+    defaultSlot.replaceWith(...fragment.children);
+  }
+}
+
+/**
+ * Checks if current page is a given article type
+ *
+ * @param articleType
+ * @returns {boolean}
+ */
+function isArticleTemplate(articleType) {
+  return document.body.classList.contains(articleType);
+}
+
+/**
+ * Builds default article block.
  * @param {Element} main The container element
  */
-function buildHeroBlock(main) {
-  const h1 = main.querySelector('h1');
-  const picture = main.querySelector('picture');
-  // eslint-disable-next-line no-bitwise
-  if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
+function buildDefaultArticle(main) {
+  if (isArticleTemplate(ARTICLE_TEMPLATES.Default)) {
     const section = document.createElement('div');
-    section.append(buildBlock('hero', { elems: [picture, h1] }));
+    section.append(buildBlock('default-article', { elems: [...main.querySelectorAll(':scope > *')] }));
     main.prepend(section);
   }
 }
@@ -107,7 +144,7 @@ async function decorateTemplates(main) {
 function buildAutoBlocks(main) {
   try {
     decorateTemplates(main);
-    buildHeroBlock(main);
+    buildDefaultArticle(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
