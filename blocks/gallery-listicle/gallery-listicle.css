@@ -1,3 +1,8 @@
+.gallery-listicle.block {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+}
+
 .gallery-listicle.block .container {
     max-width: 1440px;
     margin: 30px auto 0;
