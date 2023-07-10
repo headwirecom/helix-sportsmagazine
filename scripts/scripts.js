@@ -73,7 +73,19 @@ function isArticleTemplate(articleType) {
 function buildDefaultArticle(main) {
   if (isArticleTemplate(ARTICLE_TEMPLATES.Default)) {
     const section = document.createElement('div');
-    section.append(buildBlock('default-article', { elems: [...main.querySelectorAll(':scope > *')] }));
+    section.append(buildBlock('default-article', { elems: [...main.children] }));
+    main.prepend(section);
+  }
+}
+
+/**
+ * Builds gallery listicle block.
+ * @param {Element} main The container element
+ */
+function buildGalleryListicle(main) {
+  if (isArticleTemplate(ARTICLE_TEMPLATES.GalleryListicle)) {
+    const section = document.createElement('div');
+    section.append(buildBlock('gallery-listicle', { elems: [...main.children] }));
     main.prepend(section);
   }
 }
@@ -85,6 +97,7 @@ function buildDefaultArticle(main) {
 function buildAutoBlocks(main) {
   try {
     buildDefaultArticle(main);
+    buildGalleryListicle(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
