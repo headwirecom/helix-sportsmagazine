@@ -17,6 +17,7 @@
 
 .gallery-listicle.block .container-article img {
     width: 100%;
+    height: auto;
     object-fit: contain;
     margin: 65px auto 0;
 }
