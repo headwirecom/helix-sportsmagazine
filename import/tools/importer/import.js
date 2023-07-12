@@ -228,29 +228,167 @@ function transformArticleDOM(document) {
 }
 
 function galleryUpdateToOriginalRendition(media) {
-  const img = media.querySelector('img');
+  const img = (media.tagName === 'IMG') ? media : media.querySelector('img');
   let imgSrc = img.getAttribute('src');
   imgSrc = (imgSrc.includes('.rend.')) ? imgSrc.split('.rend.')[0] : imgSrc;
   img.setAttribute('src', imgSrc);
 }
 
 function isGif(media) {
-  const img = media.querySelector('img');
+  const img = (media.tagName === 'IMG') ? media : media.querySelector('img');
   let imgSrc = img.getAttribute('src');
   console.log(`Checking if ${imgSrc} is a GIF`);
   return (imgSrc && imgSrc.toLowerCase().endsWith('.gif'));
+}
+
+function transformFreeFormGalleryDOM(document) {
+  const main = document.createElement('main');
+  const assetTitle = document.querySelector('.assetTitle');
+
+  let articleTemplate = articleTemplates.Gallery;
+  let gifCount = 0;
+
+  addEl(main, assetTitle);
+  addEl(main, document.querySelector('.gallery-lead'));
+  addEl(main, document.querySelector('.o-Article__m-Description'));
+  addEl(main, document.querySelector('.assetDescription'));
+
+  main.insertAdjacentHTML('beforeend', '<hr/>');
+  
+  const gallery = document.querySelector('.photoGalleryPromo');
+  if (gallery) {
+    const postcards = gallery.querySelector('.photocards');
+    const slides = gallery.querySelectorAll('.m-Slide');
+    const totalSlides = slides.length;
+    let slideCount = 0;
+    if (postcards) {
+      articleTemplate = articleTemplates.GalleryListicle;
+      slides.forEach((slide) => {
+        let media = slide.querySelector('.m-MediaBlock__a-Image');
+
+        // import original image
+        galleryUpdateToOriginalRendition(media);
+
+        if (isGif(media)) {
+          gifCount += 1;
+        }
+        addEl(main, media);
+        addEl(main, slide.querySelector('.m-MediaBlock__m-TextWrap'));
+
+        let block = createBlockTable(document, main, 'Section Metadata');
+        let hasMetadata = false;
+
+        const promoCredit = slide.querySelector('.o-PhotoGalleryPromo__a-Credit');
+        if (promoCredit && promoCredit.innerHTML) {
+          appendElementToBlock(block, 'Promo Credit', promoCredit);
+          hasMetadata = true;
+        }
+
+        const promoHeadline = slide.querySelector('.o-PhotoGalleryPromo__a-HeadlineText');
+        if (promoHeadline) {
+          appendElementToBlock(block, 'Promo Headline', promoHeadline);
+          hasMetadata = true;
+        }
+
+        const attribution = slide.querySelector('.o-Attribution');
+        if (attribution) {
+          appendElementToBlock(block, 'Photo Credit', attribution);
+          hasMetadata = true;
+        }
+
+        if (!hasMetadata) {
+          block.remove();
+        }
+        
+        if (slideCount < totalSlides-1) {
+          main.insertAdjacentHTML('beforeend', '<hr/>');
+        }
+        slideCount += 1;
+      });
+    } else {
+      const slideInfos = gallery.querySelectorAll('.asset-info');
+      slides.forEach((slide) => {
+        let media = getGallerySlideImage(slide);
+
+        // import original image
+        galleryUpdateToOriginalRendition(media);
+
+        if (isGif(media)) {
+          gifCount += 1;
+        }
+        main.insertAdjacentHTML('beforeend', media.innerHTML);
+
+        if (slideCount < slideInfos.length) {
+          const slideInfo = slideInfos.item(slideCount);
+          main.append(slideInfo);
+
+          let block = createBlockTable(document, main, 'Section Metadata');
+          let hasMetadata = false;
+
+          const promoHeadline = slideInfo.querySelector('.o-PhotoGalleryPromo__a-HeadlineText');
+          if (promoHeadline && promoHeadline.innerHTML) {
+            appendElementToBlock(block, 'Promo Headline', promoHeadline);
+            hasMetadata = true;
+          }
+
+          const photoCredit = slideInfo.querySelector('.o-Attribution');
+          if (photoCredit) {
+            let name = photoCredit.innerHTML.trim().substring('Photo By: Photo by '.length).trim();
+            appendToBlock(block, 'Photo Credit', name);
+            photoCredit.remove();
+            hasMetadata = true;
+          }
+
+          if (!hasMetadata) {
+            block.remove();
+          }
+        }
+
+        if (slideCount < totalSlides-1) {
+          main.insertAdjacentHTML('beforeend', '<hr/>');
+        }
+        slideCount += 1;
+      });
+    }
+  }
+
+  const author = getAttributionName(document);
+  const authorURL = getAttributionURL(document);
+  const publicationDate = getPublicationDate(document);
+  const rubric = getRubric(document);
+
+  const metadata = createMetadataBlock(document, main);
+
+  appendMetadata(metadata, 'Author', author);
+  appendMetadata(metadata, 'Author URL', authorURL);
+  appendMetadata(metadata, 'Publication Date', publicationDate);
+  if (rubric) {
+    appendMetadata(metadata, 'Rubric', rubric);
+  }
+  appendMetadata(metadata, 'og:type', 'gallery');
+  appendMetadata(metadata, 'template', articleTemplate);
+  appendPageMetadata(document, metadata);
+  return {
+    element: main,
+    report: {
+      title: document.title,
+      gifCount,
+    },
+  };
 }
 
 function transformGalleryDOM(document) {
   const main = document.createElement('main');
   const assetTitle = document.querySelector('.assetTitle');
   const articleBody = document.querySelector('.articleBody');
+  const galleryLead = document.querySelector('.gallery-lead');
   const gallery = document.querySelector('.photoGalleryPromo');
 
   let articleTemplate = articleTemplates.Gallery;
   let gifCount = 0;
 
   addEl(main, assetTitle);
+  addEl(main, galleryLead);
   addEl(main, articleBody);
 
   // addEl(main, gallery);
@@ -420,7 +558,7 @@ export default {
     if (pageClass === 'articlePage') {
       retObj = transformArticleDOM(document);
     } else if (pageClass === 'photoGalleryPromo' || pageClass === 'photoGalleryPage') {
-      retObj = transformGalleryDOM(document);
+      retObj = transformFreeFormGalleryDOM(document); // transformGalleryDOM(document);
     } else if (pageClass === 'productListingPage') {
       retObj = transformProductDOM(document);
     }
