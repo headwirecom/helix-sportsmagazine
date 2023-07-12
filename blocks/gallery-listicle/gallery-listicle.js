@@ -16,10 +16,9 @@ const HTML_TEMPLATE = `
       <p class="rubric">
         <span>${rubric}</span>
       </p>
-      <div class="title">
+      <div class="headline">
         <slot name="headline"></slot>
       </div>
-      <div class="description"></div>
       <div class="byline">
         <div class="attribution">
             <span>By</span>

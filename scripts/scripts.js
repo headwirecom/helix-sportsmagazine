@@ -10,7 +10,7 @@ import {
   decorateTemplateAndTheme,
   waitForLCP,
   loadBlocks,
-  loadCSS,
+  loadCSS, toClassName,
 } from './lib-franklin.js';
 
 const ARTICLE_TEMPLATES = {
@@ -27,6 +27,24 @@ const ARTICLE_TEMPLATES = {
 const LCP_BLOCKS = [...Object.values(ARTICLE_TEMPLATES)]; // add your LCP blocks to the list
 
 const range = document.createRange();
+
+/**
+ * Returns metadata JSON key:value pairs
+ * @param {HTMLDivElement} metadataElement
+ * @returns {object} JSON
+ */
+export function parseMetadata(metadataElement) {
+  const metadata = {};
+  [...metadataElement.children].forEach((child) => {
+    const key = toClassName(child.firstElementChild.textContent.trim());
+    const value = child.lastElementChild.textContent.trim();
+    metadata[key] = value;
+  });
+
+  metadataElement.remove();
+
+  return metadata;
+}
 
 /**
  * Parse HTML fragment
@@ -90,63 +108,16 @@ function buildGalleryListicle(main) {
   }
 }
 
-function getPageTemplatePath(templateClass) {
-  const classNameParts = templateClass.split('-');
-  if (templateClass.endsWith('-template')) {
-    classNameParts.pop();
+/**
+ * Builds gallery block.
+ * @param {Element} main The container element
+ */
+function buildGallery(main) {
+  if (isArticleTemplate(ARTICLE_TEMPLATES.Gallery)) {
+    const section = document.createElement('div');
+    section.append(buildBlock('gallery', { elems: [...main.children] }));
+    main.prepend(section);
   }
-  const name = classNameParts.join('');
-  return `/pages/${name}`;
-}
-
-function isTemplateClass(className) {
-  let isTemplate = false;
-  Object.keys(ARTICLE_TEMPLATES).forEach((key) => {
-    if (ARTICLE_TEMPLATES[key] === className) {
-      isTemplate = true;
-    }
-  });
-  return isTemplate;
-}
-
-async function fetchPageTemplate(templatePath) {
-  const templateHTMLPath = `${templatePath}/page.html`;
-  try {
-    const resp = await fetch(templateHTMLPath);
-    if (resp.ok) {
-      const text = await resp.text();
-      const parser = new DOMParser();
-      return parser.parseFromString(text, 'text/html');
-    }
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(`failed to load page HTML template ${templatePath}`, error);
-  }
-  return null;
-}
-
-async function decoratePageContent(main, templatePath) {
-  const templateScriptPath = `${templatePath}/page.js`;
-  const template = await fetchPageTemplate(templatePath);
-  try {
-    loadCSS(`${templatePath}/page.css`);
-    const mod = await import(templateScriptPath);
-    if (mod.default) {
-      mod.default(main, template);
-    }
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(`failed to load page template module ${templatePath}`, error);
-  }
-}
-
-async function decorateTemplates(main) {
-  document.body.classList.forEach(async (clazz) => {
-    if (isTemplateClass(clazz)) {
-      const templatePath = getPageTemplatePath(clazz);
-      await decoratePageContent(main, templatePath);
-    }
-  });
 }
 
 /**
@@ -155,9 +126,9 @@ async function decorateTemplates(main) {
  */
 function buildAutoBlocks(main) {
   try {
-    decorateTemplates(main);
     buildDefaultArticle(main);
     buildGalleryListicle(main);
+    buildGallery(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
