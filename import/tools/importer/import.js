@@ -281,25 +281,28 @@ function transformFreeFormGalleryDOM(document) {
         const promoCredit = slide.querySelector('.o-PhotoGalleryPromo__a-Credit');
         if (promoCredit && promoCredit.innerHTML) {
           appendElementToBlock(block, 'Promo Credit', promoCredit);
+          promoCredit.remove();
           hasMetadata = true;
         }
 
         const promoHeadline = slide.querySelector('.o-PhotoGalleryPromo__a-HeadlineText');
         if (promoHeadline) {
           appendElementToBlock(block, 'Promo Headline', promoHeadline);
+          promoHeadline.remove();
           hasMetadata = true;
         }
 
         const attribution = slide.querySelector('.o-Attribution');
         if (attribution) {
           appendElementToBlock(block, 'Photo Credit', attribution);
+          attribution.remove();
           hasMetadata = true;
         }
 
         if (!hasMetadata) {
           block.remove();
         }
-        
+
         if (slideCount < totalSlides-1) {
           main.insertAdjacentHTML('beforeend', '<hr/>');
         }
@@ -328,6 +331,7 @@ function transformFreeFormGalleryDOM(document) {
           const promoHeadline = slideInfo.querySelector('.o-PhotoGalleryPromo__a-HeadlineText');
           if (promoHeadline && promoHeadline.innerHTML) {
             appendElementToBlock(block, 'Promo Headline', promoHeadline);
+            promoHeadline.remove();
             hasMetadata = true;
           }
 
