@@ -11,9 +11,30 @@ function matchUrlsFilter(url) {
   return false;
 }
 
+async function isPageType(url, pageTypeSelector) {
+  if (!pageTypeSelector || pageTypeSelector === 'all') {
+    return true;
+  }
+
+  const resp = await fetch(url);
+  if (!resp.ok) {
+    return false;
+  }
+
+  const text = await resp.text();
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(text, 'text/html');
+  const el = doc.querySelector(pageTypeSelector);
+  if (el) {
+    return true;
+  }
+
+  return false;
+}
+
 function append(s) {
   const el = document.createElement('div');
-  el.innerText = s;
+  el.innerHTML = s;
   document.querySelector('.log').append(el);
 }
 
@@ -42,7 +63,7 @@ async function decompress(blob) {
 
 export const urlsFilter = [];
 
-export async function parseSitemap(path, showCount, updateImporter) {
+export async function parseSitemap(path, showCount, updateImporter, pageTypeSelector) {
   if (updateImporter && counter === 0) {
     clearBulkImport();
   }
@@ -65,15 +86,15 @@ export async function parseSitemap(path, showCount, updateImporter) {
 
   doc.querySelectorAll('sitemap').forEach(async (sitemap) => {
     const url = sitemap.querySelector('loc').childNodes[0].nodeValue;
-    await parseSitemap(url, showCount, updateImporter);
+    await parseSitemap(url, showCount, updateImporter, pageTypeSelector);
   });
 
-  doc.querySelectorAll('url').forEach((el) => {
+  doc.querySelectorAll('url').forEach(async (el) => {
     const url = el.querySelector('loc').childNodes[0].nodeValue;
-    if (matchUrlsFilter(url)) {
+    if (matchUrlsFilter(url) && await isPageType(url, pageTypeSelector)) {
       counter++;
-      if (showCount) append(`${counter} ${url}`);
-      else append(`${url}`);
+      if (showCount) append(`${counter} <a href="${url}" target="_blank">${url}</a>`);
+      else append(`<a href="${url}" target="_blank">${url}</a>`);
       if (updateImporter) {
         addToBulkImport(url);
       }
