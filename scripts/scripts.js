@@ -10,7 +10,7 @@ import {
   decorateTemplateAndTheme,
   waitForLCP,
   loadBlocks,
-  loadCSS,
+  loadCSS, toClassName,
 } from './lib-franklin.js';
 
 const ARTICLE_TEMPLATES = {
@@ -27,6 +27,24 @@ const ARTICLE_TEMPLATES = {
 const LCP_BLOCKS = [...Object.values(ARTICLE_TEMPLATES)]; // add your LCP blocks to the list
 
 const range = document.createRange();
+
+/**
+ * Returns metadata JSON key:value pairs
+ * @param {HTMLDivElement} metadataElement
+ * @returns {object} JSON
+ */
+export function parseMetadata(metadataElement) {
+  const metadata = {};
+  [...metadataElement.children].forEach((child) => {
+    const key = toClassName(child.firstElementChild.textContent.trim());
+    const value = child.lastElementChild.textContent.trim();
+    metadata[key] = value;
+  });
+
+  metadataElement.remove();
+
+  return metadata;
+}
 
 /**
  * Parse HTML fragment
@@ -57,25 +75,33 @@ export function render(template, fragment) {
 }
 
 /**
- * Checks if current page is a given article type
+ * Find the template corresponding to the provided classname
  *
- * @param articleType
- * @returns {boolean}
+ * @param className
+ * @return {string|null}
  */
-function isArticleTemplate(articleType) {
-  return document.body.classList.contains(articleType);
+function findTemplate(className) {
+  return Object.values(ARTICLE_TEMPLATES).find((template) => template === className);
 }
 
 /**
- * Builds default article block.
- * @param {Element} main The container element
+ * Builds a template block if any found
+ *
+ * @param {HTMLElement} main
  */
-function buildDefaultArticle(main) {
-  if (isArticleTemplate(ARTICLE_TEMPLATES.Default)) {
-    const section = document.createElement('div');
-    section.append(buildBlock('default-article', { elems: [...main.querySelectorAll(':scope > *')] }));
-    main.prepend(section);
-  }
+function buildTemplate(main) {
+  [...document.body.classList].some((className) => {
+    const template = findTemplate(className);
+    if (template) {
+      const section = document.createElement('div');
+      section.append(buildBlock(template, { elems: [...main.children] }));
+      main.prepend(section);
+
+      return true;
+    }
+
+    return false;
+  });
 }
 
 /**
@@ -84,7 +110,7 @@ function buildDefaultArticle(main) {
  */
 function buildAutoBlocks(main) {
   try {
-    buildDefaultArticle(main);
+    buildTemplate(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -97,7 +123,6 @@ function buildAutoBlocks(main) {
  */
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
-  // hopefully forward compatible button decoration
   decorateButtons(main);
   decorateIcons(main);
   buildAutoBlocks(main);
