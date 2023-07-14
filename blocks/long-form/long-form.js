@@ -35,7 +35,7 @@ export default async function decorate(block) {
             </div>
             <div class="byline">
               <div class="attribution">
-                  <span>By</span>
+                  <span>By&nbsp;</span>
                   <a href="${authorURL}">${author}</a>
               </div>
               <div class="publication">
@@ -97,6 +97,10 @@ export default async function decorate(block) {
         picture.insertAdjacentHTML('afterend', `<div class="photo-credit">${sectionMetadata.photoCredit}</div>`);
       }
     }
+  });
+
+  block.querySelectorAll(':scope > div > div > div:not(:first-of-type):not(:last-of-type)').forEach((section) => {
+    section.append(document.createElement('hr'));
   });
 
   const share = buildBlock('social-share', { elems: [] });
