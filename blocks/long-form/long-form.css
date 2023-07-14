@@ -52,6 +52,7 @@
 }
 
 .long-form.block .headline .rubric {
+    font-size: 12px;
     margin-bottom: 20px;
     display: block;
     color: #adb4b7;
@@ -204,7 +205,7 @@
     }
 }
 
-@media (max-width: 769px) {
+@media (max-width: 1025px) {
     .long-form.block .attribution {
         display: flex;
         align-items: center;
@@ -252,6 +253,11 @@
 
 .long-form.block .byline .social-share .label {
     display: none;
+}
+
+.long-form.block .lead > .byline .social-share .columns {
+    flex-wrap: wrap;
+    justify-content: flex-end;
 }
 
 .long-form.block .byline .credit {
