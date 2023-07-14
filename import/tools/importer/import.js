@@ -13,7 +13,7 @@ function getAttributionName(document) {
     }
     if (ret.length === 0) {
       ret = val;
-    } else {
+    } else if (!ret.includes(val)) {
       ret = `${ret},${val}`;
     }
   });
@@ -30,7 +30,7 @@ function getAttributionURL(document) {
     }
     if (ret.length === 0) {
       ret = val;
-    } else {
+    } else if (!ret.includes(val)) {
       ret = `${ret},${val}`;
     }
   });
@@ -131,6 +131,8 @@ function getGallerySlideImage(slide) {
 }
 
 function transformArticleDOM(document, templateConfig) {
+  let articleTemplate = templateConfig.template;
+
   const articleHero = document.querySelector('.o-ArticleHero');
   const imageEmbed = document.querySelector('.o-ImageEmbed');
   const imageEmbedCredit = document.querySelector('.o-ImageEmbed__a-Credit');
@@ -138,7 +140,16 @@ function transformArticleDOM(document, templateConfig) {
   const articleBody = document.querySelector('.articleBody');
   const main = document.createElement('main');
 
-  let articleTemplate = templateConfig.template;
+  const author = getAttributionName(document);
+  const authorURL = getAttributionURL(document);
+  const publicationDate = getPublicationDate(document);
+  /* eslint-disable no-console */
+  console.log(`Author: ${author}. Publication Date: ${publicationDate}`);
+
+  let rubric = getRubric(document);
+  if (articleHero && !rubric) {
+    rubric = getRubric(articleHero);
+  }
 
   if (articleHero) {
     main.append(articleHero);
@@ -148,7 +159,16 @@ function transformArticleDOM(document, templateConfig) {
       main.append(imageEmbed);
     }
   }
+
   main.append(articleBody);
+
+  if (main.querySelector('.o-ArticleInfo')) {
+    main.querySelector('.o-ArticleInfo').remove();
+  }
+
+  if (main.querySelector('.o-ArticleHero__a-Info')) {
+    main.querySelector('.o-ArticleHero__a-Info').remove();
+  }
 
   const tweets = articleBody.querySelectorAll('.tweetEmbed');
   tweets.forEach((tweet) => {
@@ -175,19 +195,6 @@ function transformArticleDOM(document, templateConfig) {
     replaceEmbed(el, src);
   });
 
-  const author = getAttributionName(document);
-  const authorURL = getAttributionURL(document);
-  const publicationDate = getPublicationDate(document);
-  /* eslint-disable no-console */
-  console.log(`Author: ${author}. Publication Date: ${publicationDate}`);
-
-  let rubric = getRubric(document);
-  if (articleHero && !rubric) {
-    rubric = getRubric(articleHero);
-  }
-
-  // const metadataBlock = WebImporter.Blocks.getMetadataBlock(document, {});
-  // alert(metadataBlock.outerHTML);
   const metadata = createMetadataBlock(document, main);
   appendMetadata(metadata, 'Author', author);
   appendMetadata(metadata, 'Author URL', authorURL);
