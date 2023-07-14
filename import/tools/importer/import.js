@@ -1,14 +1,3 @@
-const articleTemplates = {
-  Default: 'Default Article',
-  FullBleed: 'Full Bleed',
-  LongForm: 'Long Form',
-  OpenArticle: 'Open Article',
-  LiveStream: 'Live Stream',
-  Gallery: 'Gallery',
-  GalleryListicle: 'Gallery Listicle',
-  ProductListing: 'Product Listing',
-};
-
 function replaceEmbed(el, url) {
   el.insertAdjacentHTML('beforebegin', `<a href=${url}>${url}</a>`);
   el.remove();
@@ -141,7 +130,7 @@ function getGallerySlideImage(slide) {
   }
 }
 
-function transformArticleDOM(document) {
+function transformArticleDOM(document, templateConfig) {
   const articleHero = document.querySelector('.o-ArticleHero');
   const imageEmbed = document.querySelector('.o-ImageEmbed');
   const imageEmbedCredit = document.querySelector('.o-ImageEmbed__a-Credit');
@@ -149,10 +138,9 @@ function transformArticleDOM(document) {
   const articleBody = document.querySelector('.articleBody');
   const main = document.createElement('main');
 
-  let articleTemplate = articleTemplates.Default;
+  let articleTemplate = templateConfig.template;
 
   if (articleHero) {
-    articleTemplate = articleTemplates.FullBleed;
     main.append(articleHero);
   } else {
     main.append(articleTitle);
@@ -228,39 +216,45 @@ function transformArticleDOM(document) {
 }
 
 function galleryUpdateToOriginalRendition(media) {
-  const img = media.querySelector('img');
+  const img = (media.tagName === 'IMG') ? media : media.querySelector('img');
   let imgSrc = img.getAttribute('src');
   imgSrc = (imgSrc.includes('.rend.')) ? imgSrc.split('.rend.')[0] : imgSrc;
   img.setAttribute('src', imgSrc);
 }
 
 function isGif(media) {
-  const img = media.querySelector('img');
+  const img = (media.tagName === 'IMG') ? media : media.querySelector('img');
   let imgSrc = img.getAttribute('src');
   console.log(`Checking if ${imgSrc} is a GIF`);
   return (imgSrc && imgSrc.toLowerCase().endsWith('.gif'));
 }
 
-function transformGalleryDOM(document) {
+function transformGalleryDOM(document, templateConfig) {
   const main = document.createElement('main');
   const assetTitle = document.querySelector('.assetTitle');
-  const articleBody = document.querySelector('.articleBody');
-  const gallery = document.querySelector('.photoGalleryPromo');
 
-  let articleTemplate = articleTemplates.Gallery;
+  let articleTemplate = templateConfig.template;
   let gifCount = 0;
 
   addEl(main, assetTitle);
-  addEl(main, articleBody);
+  addEl(main, document.querySelector('.gallery-lead'));
+  addEl(main, document.querySelector('.o-Article__m-Description'));
+  addEl(main, document.querySelector('.assetDescription'));
 
-  // addEl(main, gallery);
+  main.insertAdjacentHTML('beforeend', '<hr/>');
+  
+  const gallery = document.querySelector('.photoGalleryPromo');
   if (gallery) {
     const postcards = gallery.querySelector('.photocards');
+    const slides = gallery.querySelectorAll('.m-Slide');
+    const totalSlides = slides.length;
+    let slideCount = 0;
     if (postcards) {
-      articleTemplate = articleTemplates.GalleryListicle;
-      gallery.querySelectorAll('.m-Slide').forEach((slide) => {
-        let block = createBlockTable(document, main, 'GalleryImage');
-        let media = slide.querySelector('.m-MediaBlock__m-MediaWrap');
+      slides.forEach((slide) => {
+        const promoCredit = slide.querySelector('.o-PhotoGalleryPromo__a-Credit');
+        const promoHeadline = slide.querySelector('.o-PhotoGalleryPromo__a-HeadlineText');
+        const attribution = slide.querySelector('.o-Attribution');
+        let media = slide.querySelector('.m-MediaBlock__a-Image');
 
         // import original image
         galleryUpdateToOriginalRendition(media);
@@ -268,30 +262,41 @@ function transformGalleryDOM(document) {
         if (isGif(media)) {
           gifCount += 1;
         }
+        addEl(main, media);
+        addEl(main, slide.querySelector('.m-MediaBlock__m-TextWrap'));
 
-        appendElementToBlock(block, 'Image', media);
+        let block = createBlockTable(document, main, 'Section Metadata');
+        let hasMetadata = false;
 
-        const promoCredit = slide.querySelector('.o-PhotoGalleryPromo__a-Credit');
-        appendElementToBlock(block, 'Promo Credit', promoCredit);
-
-        const promoHeadline = slide.querySelector('.o-PhotoGalleryPromo__a-HeadlineText');
-        if (promoHeadline) {
-          appendElementToBlock(block, 'Promo Headline', promoHeadline);
+        if (promoCredit && promoCredit.innerHTML && promoCredit.innerHTML.trim().length > 0) {
+          appendToBlock(block, 'Photo Credit', promoCredit.innerHTML);
+          promoCredit.remove();
+          hasMetadata = true;
         }
 
-        const promoDescription = slide.querySelector('.o-PhotoGalleryPromo__a-Description');
-        appendElementToBlock(block, 'Promo Description', promoDescription);
+        if (promoHeadline) {
+          appendToBlock(block, 'Promo Headline', promoHeadline.innerHTML);
+          promoHeadline.remove();
+          hasMetadata = true;
+        }
 
-        const attribution = slide.querySelector('.o-Attribution');
-        appendElementToBlock(block, 'Attribution', attribution);
+        if (attribution) {
+          attribution.remove();
+          hasMetadata = true;
+        }
+
+        if (!hasMetadata) {
+          block.remove();
+        }
+
+        if (slideCount < totalSlides-1) {
+          main.insertAdjacentHTML('beforeend', '<hr/>');
+        }
+        slideCount += 1;
       });
     } else {
       const slideInfos = gallery.querySelectorAll('.asset-info');
-      let blockCount = 0;
-      gallery.querySelectorAll('.m-Slide').forEach((slide) => {
-        const block = createBlockTable(document, main, 'GalleryImage');
-        const photoCredit = slide.querySelector('.pv-photo-credit');
-        // let media = slide.querySelector('.share-frame');
+      slides.forEach((slide) => {
         let media = getGallerySlideImage(slide);
 
         // import original image
@@ -300,25 +305,39 @@ function transformGalleryDOM(document) {
         if (isGif(media)) {
           gifCount += 1;
         }
+        main.insertAdjacentHTML('beforeend', media.innerHTML);
 
-        appendElementToBlock(block, 'Image', media);
+        if (slideCount < slideInfos.length) {
+          const slideInfo = slideInfos.item(slideCount);
+          main.append(slideInfo);
 
-        if (blockCount < slideInfos.length) {
-          const slideInfo = slideInfos.item(blockCount);
+          let block = createBlockTable(document, main, 'Section Metadata');
+          let hasMetadata = false;
+
           const promoHeadline = slideInfo.querySelector('.o-PhotoGalleryPromo__a-HeadlineText');
-          if (promoHeadline) {
+          if (promoHeadline && promoHeadline.innerHTML) {
             appendElementToBlock(block, 'Promo Headline', promoHeadline);
+            promoHeadline.remove();
+            hasMetadata = true;
           }
 
-          const promoDescription = slideInfo.querySelector('.o-PhotoGalleryPromo__a-Description');
-          appendElementToBlock(block, 'Promo Description', promoDescription);
+          const photoCredit = slideInfo.querySelector('.o-Attribution');
+          if (photoCredit) {
+            let name = photoCredit.innerHTML.trim().substring('Photo By: Photo by '.length).trim();
+            appendToBlock(block, 'Photo Credit', name);
+            photoCredit.remove();
+            hasMetadata = true;
+          }
+
+          if (!hasMetadata) {
+            block.remove();
+          }
         }
 
-        if (photoCredit) {
-          let name = photoCredit.innerHTML.trim().substring('Photo By: Photo by '.length).trim();
-          appendToBlock(block, 'Photo Credit', name);
+        if (slideCount < totalSlides-1) {
+          main.insertAdjacentHTML('beforeend', '<hr/>');
         }
-        blockCount++;
+        slideCount += 1;
       });
     }
   }
@@ -348,7 +367,7 @@ function transformGalleryDOM(document) {
   };
 }
 
-function transformProductDOM(document) {
+function transformProductDOM(document, templateConfig) {
   const main = document.createElement('main');
   const productContent = document.querySelector('.main');
 
@@ -373,7 +392,7 @@ function transformProductDOM(document) {
   */
   const metadata = createMetadataBlock(document, main);
   appendMetadata(metadata, 'og:type', 'product');
-  appendMetadata(metadata, 'template', articleTemplates.ProductListing);
+  appendMetadata(metadata, 'template', templateConfig.template);
   appendPageMetadata(document, metadata);
   return {
     element: main,
@@ -389,6 +408,34 @@ function mapToDocumentPath(document, url) {
     return contentPath.replace(/\/content\/golfdigest-com\/en/, '');
   }
   return new URL(url).pathname.replace(/\.html$/, '').replace(/\/$/, '').replace(/\/content\/golfdigest-com\/en/, '');
+}
+
+const TRANSFORM_CONFIG = {
+  Default: { template: 'Default Article', selector: ".articlePage .content-wall .a-Rubric", transformer: transformArticleDOM },
+  FullBleed: { template: 'Full Bleed', selector: ".articlePage .area .o-ArticleHero", transformer: transformArticleDOM },
+  LongForm: { template: 'Long Form', selector: ".longformPage", transformer: transformArticleDOM },
+  OpenArticle: { template: 'Open Article', selector: ".openArticlePage", transformer: transformArticleDOM },
+  LiveStream: { template: 'Live Stream', selector: ".liveStreamArticlePage", transformer: transformArticleDOM },
+  Gallery: { template: 'Gallery', selector: ".slideshow-wrapper", transformer: transformGalleryDOM },
+  GalleryListicle: { template: 'Gallery Listicle', selector: ".photocards", transformer: transformGalleryDOM },
+  ProductListing: { template: 'Product Listing', selector: ".productListingPage", transformer: transformProductDOM },
+};
+
+function trasformDOM(document) {
+  const templateConfig = Object.values(TRANSFORM_CONFIG).find((conf) => document.querySelector(conf.selector));
+
+  let retObj = {
+    element: document.querySelector('.main'),
+    report: {
+      title: document.title,
+    },
+  };
+
+  if (templateConfig) {
+    retObj = templateConfig.transformer(document, templateConfig);
+  }
+
+  return retObj;
 }
 
 export default {
@@ -407,24 +454,7 @@ export default {
   }) => {
     const pageClass = document.body.getAttribute('class');
     const docPath = mapToDocumentPath(document, url);
-
-    let main = document.querySelector('.main');
-
-    let retObj = {
-      element: main,
-      report: {
-        title: document.title,
-      },
-    };
-
-    if (pageClass === 'articlePage') {
-      retObj = transformArticleDOM(document);
-    } else if (pageClass === 'photoGalleryPromo' || pageClass === 'photoGalleryPage') {
-      retObj = transformGalleryDOM(document);
-    } else if (pageClass === 'productListingPage') {
-      retObj = transformProductDOM(document);
-    }
-
+    const retObj = trasformDOM(document);
     return [{
       element: retObj.element,
       path: docPath,
