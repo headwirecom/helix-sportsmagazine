@@ -1,4 +1,4 @@
-import { parseFragment, parseMetadata, render } from '../../scripts/scripts.js';
+import { parseFragment, parseSectionMetadata, render } from '../../scripts/scripts.js';
 import {
   buildBlock, decorateBlock, getMetadata, loadBlocks,
 } from '../../scripts/lib-franklin.js';
@@ -136,11 +136,11 @@ export default async function decorate(block) {
 
     // Get photo metadata for image credit
     let credit;
-    const photoMetadataEl = item.querySelector('.photo-metadata');
-    if (photoMetadataEl) {
-      const photoMetadata = parseMetadata(photoMetadataEl);
-      if (photoMetadata.credit) {
-        credit = photoMetadata.credit;
+    const metadataEl = item.querySelector('.template-section-metadata');
+    if (metadataEl) {
+      const sectionMetadata = parseSectionMetadata(metadataEl);
+      if (sectionMetadata.photoCredit) {
+        credit = sectionMetadata.photoCredit;
       }
     }
 
