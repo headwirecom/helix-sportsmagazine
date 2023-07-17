@@ -5,13 +5,14 @@ This project is based on [helix-project-boilerplate](https://github.com/adobe/he
 ## Environments
 
 Preview: https://v2--helix-sportsmagazine--headwirecom.hlx.page
-
-Examples:
-- https://v2--helix-sportsmagazine--headwirecom.hlx.page/import-test/play/equipment/apparel/_default/gallery/2020/7/golf-shoes-womens-on-sale-noblocks
-- https://v2--helix-sportsmagazine--headwirecom.hlx.page/import-test/play/equipment/apparel/gallery/2017/3/best-mens-golf-shoes-2017-noblocks
-- https://v2--helix-sportsmagazine--headwirecom.hlx.page/import-test/play/instruction/approach-shots/article/2018/1/get-control-over-your-wedges-like-jason-day
-
 Live: https://v2--helix-sportsmagazine--headwirecom.hlx.live
+
+## Demo
+
+- Default Article: https://v2--helix-sportsmagazine--headwirecom.hlx.page/import-test/play/instruction/approach-shots/article/2018/1/get-control-over-your-wedges-like-jason-day
+- Gallery Listicle: https://v2--helix-sportsmagazine--headwirecom.hlx.page/import-test/play/equipment/apparel/_default/gallery/2020/7/golf-shoes-womens-on-sale-noblocks
+- Gallery: https://v2--helix-sportsmagazine--headwirecom.hlx.page/import-test/play/equipment/apparel/gallery/2017/3/best-mens-golf-shoes-2017-noblocks
+- Long Form: https://v2--helix-sportsmagazine--headwirecom.hlx.page/import-test/play/instruction/short-game/article/2018/2/does-tiger-still-have-the-yips
 
 ## Installation
 
