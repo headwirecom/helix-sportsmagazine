@@ -160,6 +160,13 @@ function transformArticleDOM(document, templateConfig) {
     }
   }
 
+  if (imageEmbedCredit) {
+    const heroImageCreditTxt = (imageEmbedCredit) ? imageEmbedCredit.innerHTML : '';
+    imageEmbedCredit.remove();
+    let sectionBlock = createBlockTable(document, main, 'Section Metadata');
+    appendToBlock(sectionBlock, 'Image Credit', heroImageCreditTxt);
+  }
+
   main.append(document.createElement('hr'));
 
   main.append(articleBody);
@@ -209,13 +216,6 @@ function transformArticleDOM(document, templateConfig) {
   if (imageEmbedCredit) {
     appendMetadata(metadata, 'Image Credit', imageEmbedCredit.innerHTML);
     imageEmbedCredit.remove();
-  }
-
-  if (articleHero) {
-    const heroImageCredit = articleHero.querySelector('.o-ImageEmbed__a-Credit');
-    const heroImageCreditTxt = (heroImageCredit) ? heroImageCredit.innerHTML : '';
-    if (heroImageCredit) heroImageCredit.remove();
-    appendMetadata(metadata, 'Image Credit', heroImageCreditTxt);
   }
 
   appendPageMetadata(document, metadata);
