@@ -160,6 +160,8 @@ function transformArticleDOM(document, templateConfig) {
     }
   }
 
+  main.append(document.createElement('hr'));
+
   main.append(articleBody);
 
   if (main.querySelector('.o-ArticleInfo')) {
@@ -169,6 +171,9 @@ function transformArticleDOM(document, templateConfig) {
   if (main.querySelector('.o-ArticleHero__a-Info')) {
     main.querySelector('.o-ArticleHero__a-Info').remove();
   }
+ 
+  // reinsert original document section separators
+  articleBody.querySelectorAll('.importer-section-separator').forEach(el => { el.replaceWith(document.createElement('hr')); });
 
   const tweets = articleBody.querySelectorAll('.tweetEmbed');
   tweets.forEach((tweet) => {
@@ -428,11 +433,20 @@ const TRANSFORM_CONFIG = {
   ProductListing: { template: 'Product Listing', selector: ".productListingPage", transformer: transformProductDOM },
 };
 
+function findTemplateConfig(document) {
+  return Object.values(TRANSFORM_CONFIG).find((conf) => document.querySelector(conf.selector));
+}
+
+function isArticle(document) {
+  const templateConfig = findTemplateConfig(document);
+  return templateConfig.transformer === transformArticleDOM;
+}
+
 function trasformDOM(document) {
-  const templateConfig = Object.values(TRANSFORM_CONFIG).find((conf) => document.querySelector(conf.selector));
+  const templateConfig = findTemplateConfig(document);
 
   let retObj = {
-    element: document.querySelector('.main'),
+    element: document.querySelector('main'),
     report: {
       title: document.title,
     },
@@ -446,6 +460,19 @@ function trasformDOM(document) {
 }
 
 export default {
+
+  preprocess: ({ document, url, html, params }) => {
+    if (isArticle(document)) {
+      // For articles keep hr tags as section separators.
+      // These are removed by importer preprocessing step. So, use temporary div tags.
+      document.querySelectorAll('hr').forEach(el => { 
+        const tmpEl = document.createElement('div');
+        tmpEl.classList.add('importer-section-separator');
+        el.replaceWith(tmpEl);
+      });
+    }
+  },
+
   /**
      * Apply DOM operations to the provided document and return
      * the root element to be then transformed to Markdown.
@@ -459,7 +486,6 @@ export default {
     // eslint-disable-next-line no-unused-vars
     document, url, html, params,
   }) => {
-    const pageClass = document.body.getAttribute('class');
     const docPath = mapToDocumentPath(document, url);
     const retObj = trasformDOM(document);
     return [{
