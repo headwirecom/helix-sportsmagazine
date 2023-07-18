@@ -1,4 +1,5 @@
 import {
+  assignSlot,
   parseFragment,
   parseSectionMetadata,
   removeEmptyElements,
@@ -72,20 +73,9 @@ export default async function decorate(block) {
   const template = parseFragment(HTML_TEMPLATE);
 
   // Identify slots
-  const heading = block.querySelector('h1');
-  if (heading) {
-    heading.setAttribute('slot', 'heading');
-  }
-
-  const description = block.querySelector('h1 + p');
-  if (description) {
-    description.setAttribute('slot', 'description');
-  }
-
-  const image = block.querySelector('picture');
-  if (image) {
-    image.setAttribute('slot', 'image');
-  }
+  assignSlot(block, 'heading', 'h1');
+  assignSlot(block, 'description', 'h1 + p');
+  assignSlot(block, 'image', 'picture');
 
   // Pre-processing
   block.querySelectorAll('.template-section-metadata').forEach((metadataEl) => {

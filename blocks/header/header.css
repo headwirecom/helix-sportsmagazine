@@ -171,6 +171,13 @@
   height: 0;
 }
 
+.header .separator {
+  border-right: 2px solid #adb4b7;
+  width: 0;
+  padding: 0;
+  height: 1em;
+}
+
 .header .header-bottom-bar.no-children .header-subchannel,
 .header .header-bottom-bar.no-children .separator {
   display: none;

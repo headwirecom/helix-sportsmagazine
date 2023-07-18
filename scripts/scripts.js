@@ -69,6 +69,19 @@ export function parseFragment(fragmentString) {
 }
 
 /**
+ * Assign slot attribute to selected element
+ * @param {HTMLElement} block
+ * @param {string} slot
+ * @param {string} selector
+ */
+export function assignSlot(block, slot, selector) {
+  const el = block.querySelector(selector);
+  if (el) {
+    el.setAttribute('slot', slot);
+  }
+}
+
+/**
  * Update template with slotted elements from fragment
  */
 export function render(template, fragment) {

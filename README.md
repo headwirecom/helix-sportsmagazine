@@ -13,6 +13,7 @@ Live: https://v2--helix-sportsmagazine--headwirecom.hlx.live
 - Gallery Listicle: https://v2--helix-sportsmagazine--headwirecom.hlx.page/import-test/play/equipment/apparel/_default/gallery/2020/7/golf-shoes-womens-on-sale-noblocks
 - Gallery: https://v2--helix-sportsmagazine--headwirecom.hlx.page/import-test/play/equipment/apparel/gallery/2017/3/best-mens-golf-shoes-2017-noblocks
 - Long Form: https://v2--helix-sportsmagazine--headwirecom.hlx.page/import-test/play/instruction/short-game/article/2018/2/does-tiger-still-have-the-yips
+- Product Listing: https://v2--helix-sportsmagazine--headwirecom.hlx.page/import-test/play/equipment/products/2022/09/360-only-divot-tool
 
 ## Installation
 
