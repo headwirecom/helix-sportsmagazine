@@ -49,7 +49,18 @@ function getRubric(document) {
     const text = el.innerHTML.trim();
     el.remove();
     return text;
+  } else {
+    // try getting rubric from page meta tag 
+    const metaTag = document.querySelector('meta[name="parsely-metadata"]');
+    if (metaTag) {
+      const val = metaTag.getAttribute('content');
+      const json = JSON.parse(val);
+      if (json.golfRubric) {
+        return json.golfRubric;
+      }
+    }
   }
+  return '';
 }
 
 function createMetadataBlock(document, main) {
@@ -65,14 +76,13 @@ function appendMetadata(metadata, key, value) {
 }
 
 function appendPageMetadata(document, metadata) {
+  /*
   const pageTitle = document.querySelector('title');
   if (pageTitle) {
     appendMetadata(metadata, 'PageTitle', pageTitle.innerHTML);
-  }
+  }*/
 
-  const metaMatchFilter = ['msapplication-TileColor', 'msapplication-TileImage', 'keywords', 'news_keywords',
-    'fb:app_id', 'fb:admins', 'twitter:domain', 'og:title', 'og:type', 'og:site_name', 'parsely-metadata',
-    'tp:initialize', 'tp:PreferredRuntimes', 'fb:app_id'];
+  const metaMatchFilter = ['description', 'keywords', 'news_keywords', 'og:title', 'og:description', 'og:type'];
 
   document.querySelectorAll('meta').forEach((metaEl) => {
     let key = metaEl.getAttribute('name');
@@ -216,11 +226,8 @@ function transformArticleDOM(document, templateConfig) {
   appendMetadata(metadata, 'Author URL', authorURL);
   appendMetadata(metadata, 'Publication Date', publicationDate);
   appendMetadata(metadata, 'template', articleTemplate);
+  appendMetadata(metadata, 'category', templateConfig.category);
   appendMetadata(metadata, 'Rubric', rubric);
-  if (imageEmbedCredit) {
-    appendMetadata(metadata, 'Image Credit', imageEmbedCredit.innerHTML);
-    imageEmbedCredit.remove();
-  }
 
   appendPageMetadata(document, metadata);
   return {
@@ -373,6 +380,7 @@ function transformGalleryDOM(document, templateConfig) {
   }
   appendMetadata(metadata, 'og:type', 'gallery');
   appendMetadata(metadata, 'template', articleTemplate);
+  appendMetadata(metadata, 'category', templateConfig.category);
   appendPageMetadata(document, metadata);
   return {
     element: main,
@@ -409,6 +417,7 @@ function transformProductDOM(document, templateConfig) {
   const metadata = createMetadataBlock(document, main);
   appendMetadata(metadata, 'og:type', 'product');
   appendMetadata(metadata, 'template', templateConfig.template);
+  appendMetadata(metadata, 'category', templateConfig.category);
   appendPageMetadata(document, metadata);
   return {
     element: main,
@@ -427,14 +436,14 @@ function mapToDocumentPath(document, url) {
 }
 
 const TRANSFORM_CONFIG = {
-  Default: { template: 'Default Article', selector: ".articlePage .content-wall .a-Rubric", transformer: transformArticleDOM },
-  FullBleed: { template: 'Full Bleed', selector: ".articlePage .area .o-ArticleHero", transformer: transformArticleDOM },
-  LongForm: { template: 'Long Form', selector: ".longformPage", transformer: transformArticleDOM },
-  OpenArticle: { template: 'Open Article', selector: ".openArticlePage", transformer: transformArticleDOM },
-  LiveStream: { template: 'Live Stream', selector: ".liveStreamArticlePage", transformer: transformArticleDOM },
-  Gallery: { template: 'Gallery', selector: ".slideshow-wrapper", transformer: transformGalleryDOM },
-  GalleryListicle: { template: 'Gallery Listicle', selector: ".photocards", transformer: transformGalleryDOM },
-  ProductListing: { template: 'Product Listing', selector: ".productListingPage", transformer: transformProductDOM },
+  Default: { template: 'Default Article', selector: ".articlePage .content-wall .a-Rubric", category: "article", transformer: transformArticleDOM },
+  FullBleed: { template: 'Full Bleed', selector: ".articlePage .area .o-ArticleHero", category: "article", transformer: transformArticleDOM },
+  LongForm: { template: 'Long Form', selector: ".longformPage", category: "article", transformer: transformArticleDOM },
+  OpenArticle: { template: 'Open Article', selector: ".openArticlePage",category: "article", transformer: transformArticleDOM },
+  LiveStream: { template: 'Live Stream', selector: ".liveStreamArticlePage", category: "article", transformer: transformArticleDOM },
+  Gallery: { template: 'Gallery', selector: ".slideshow-wrapper", category: "gallery", transformer: transformGalleryDOM },
+  GalleryListicle: { template: 'Gallery Listicle', selector: ".photocards", category: "gallery", transformer: transformGalleryDOM },
+  ProductListing: { template: 'Product Listing', selector: ".productListingPage", category: "product", transformer: transformProductDOM },
 };
 
 function findTemplateConfig(document) {
