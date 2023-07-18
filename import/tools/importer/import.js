@@ -96,6 +96,10 @@ function createBlockTable(document, main, blockName) {
   return table;
 }
 
+function createSectionMetadata(document, main) {
+  return createBlockTable(document, main, 'Section Metadata');
+}
+
 function appendToBlock(block, key, value) {
   const row = `<tr><td>${key}</td><td>${value}</td></tr>`;
   block.insertAdjacentHTML('beforeend', row);
@@ -163,7 +167,7 @@ function transformArticleDOM(document, templateConfig) {
   if (imageEmbedCredit) {
     const heroImageCreditTxt = (imageEmbedCredit) ? imageEmbedCredit.innerHTML : '';
     imageEmbedCredit.remove();
-    let sectionBlock = createBlockTable(document, main, 'Section Metadata');
+    let sectionBlock = createSectionMetadata(document, main);
     appendToBlock(sectionBlock, 'Image Credit', heroImageCreditTxt);
   }
 
@@ -277,7 +281,7 @@ function transformGalleryDOM(document, templateConfig) {
         addEl(main, media);
         addEl(main, slide.querySelector('.m-MediaBlock__m-TextWrap'));
 
-        let block = createBlockTable(document, main, 'Section Metadata');
+        let block = createSectionMetadata(document, main);
         let hasMetadata = false;
 
         if (promoCredit && promoCredit.innerHTML && promoCredit.innerHTML.trim().length > 0) {
@@ -323,7 +327,7 @@ function transformGalleryDOM(document, templateConfig) {
           const slideInfo = slideInfos.item(slideCount);
           main.append(slideInfo);
 
-          let block = createBlockTable(document, main, 'Section Metadata');
+          let block = createSectionMetadata(document, main);
           let hasMetadata = false;
 
           const promoHeadline = slideInfo.querySelector('.o-PhotoGalleryPromo__a-HeadlineText');
@@ -381,27 +385,27 @@ function transformGalleryDOM(document, templateConfig) {
 
 function transformProductDOM(document, templateConfig) {
   const main = document.createElement('main');
-  const productContent = document.querySelector('.main');
+  const productContent = document.querySelectorAll('.main .o-GolfClubReviewContent');
 
-  productContent.querySelectorAll('.o-GolfClubReviewContent').forEach((el) => {
-    const block = createBlockTable(document, main, 'ProductListing');
+  let sectionCount = 0;
+  productContent.forEach((el) => {
+    main.append(el);
+    const media = el.querySelector('.o-GolfClubReviewContent__m-MediaWrap');
+    if (media)  {
+      el.querySelector('.productTitle').insertAdjacentElement('afterend', media);
+    }
+    const block = createSectionMetadata(document, main);
     copyElementToBlock(block, el, '.brand', 'Brand');
-    copyElementToBlock(block, el, '.productTitle', 'Title');
-    copyElementToBlock(block, el, '.o-GolfClubReviewContent__m-TextWrap__a-Description', 'Description');
     copyElementToBlock(block, el, '.price', 'Price');
     copyElementToBlock(block, el, '.a-Advertiser', 'Advertiser');
-    copyElementToBlock(block, el, '.m-LinkContainer', 'Links');
     copyElementToBlock(block, el, '.o-GolfClubReviewContent__m-TextWrap__a-Disclaimer', 'Disclaimer');
-    copyElementToBlock(block, el, '.o-GolfClubReviewContent__m-MediaWrap', 'Image');
+    WebImporter.DOMUtils.remove(el, ['.brand', '.o-GolfClubReviewContent__m-TextWrap__a-StreetPrice', '.o-GolfClubReviewContent__m-TextWrap__a-Disclaimer']);
+    sectionCount += 1;
+    if (sectionCount < productContent.length) {
+      main.append('hr');
+    }
   });
 
-  /*
-  const refList = productContent.querySelector('.referenceList');
-  if (refList) {
-    refList.parentElement.remove();
-  }
-  main.append(productContent);
-  */
   const metadata = createMetadataBlock(document, main);
   appendMetadata(metadata, 'og:type', 'product');
   appendMetadata(metadata, 'template', templateConfig.template);
