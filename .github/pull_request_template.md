@@ -3,5 +3,5 @@ Please always provide the [GitHub issue(s)](../issues) your PR is for, as well a
 Fix #<gh-issue-id>
 
 Test URLs:
-- Before: https://v2--helix-sportsmagazine--headwirecom.hlx.page
+- Before: https://main--helix-sportsmagazine--headwirecom.hlx.page
 - After: https://<branch>--helix-sportsmagazine--headwirecom.hlx.page
