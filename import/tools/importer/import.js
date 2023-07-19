@@ -436,7 +436,7 @@ function mapToDocumentPath(document, url) {
 }
 
 const TRANSFORM_CONFIG = {
-  Default: { template: 'Default Article', selector: ".articlePage .content-wall .a-Rubric", category: "article", transformer: transformArticleDOM },
+  Default: { template: 'Default Article', selector: ".articlePage .article-content .content-well .a-Rubric", category: "article", transformer: transformArticleDOM },
   FullBleed: { template: 'Full Bleed', selector: ".articlePage .area .o-ArticleHero", category: "article", transformer: transformArticleDOM },
   LongForm: { template: 'Long Form', selector: ".longformPage", category: "article", transformer: transformArticleDOM },
   OpenArticle: { template: 'Open Article', selector: ".openArticlePage",category: "article", transformer: transformArticleDOM },
