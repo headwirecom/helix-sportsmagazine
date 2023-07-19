@@ -1,3 +1,7 @@
+main .section.open-article-container {
+  padding: 20px 20px 60px;
+}
+
 main .open-article-container h1 {
   font-size: 40px;
   font-family: Gotham, arial, sans-serif;
@@ -5,6 +9,7 @@ main .open-article-container h1 {
   font-weight: 700;
   letter-spacing: 0.05em;
   text-align: left;
+  margin: 20px 0;
 }
 
 main .open-article-container .open-article.block {

@@ -52,6 +52,12 @@
     display: none;
 }
 
+@media (max-width: 770px) {
+    main .sharing.hide-on-mobile{
+        display: none;
+    }
+}
+
 main .sharing.no-label .social-share > span.label {
     display: none;
 }

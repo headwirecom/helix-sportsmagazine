@@ -29,7 +29,7 @@ export default async function decorate(block) {
           <div class="publication">
               <span>${publicationDate}</span>
           </div>
-          <div class="no-label self-right sharing">
+          <div class="sharing no-label self-right hide-on-mobile">
             <slot name="share"></slot>
           </div>
         </div>
