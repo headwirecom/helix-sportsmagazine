@@ -1,12 +1,16 @@
-import { assignSlot, parseFragment, removeEmptyElements, render } from "../../scripts/scripts.js";
-import { buildBlock, decorateBlock, getMetadata, loadBlocks, loadBlock } from "../../scripts/lib-franklin.js";
+import {
+  assignSlot, parseFragment, removeEmptyElements, render,
+} from '../../scripts/scripts.js';
+import {
+  buildBlock, decorateBlock, getMetadata, loadBlocks,
+} from '../../scripts/lib-franklin.js';
 
 export default async function decorate(block) {
-  const author = getMetadata("author");
-  const authorURL = getMetadata("author-url");
-  const publicationDate = getMetadata("publication-date");
-  const imageCredit = getMetadata("image-credit");
-  const imageCreditUrl = getMetadata("image-credit-url");
+  const author = getMetadata('author');
+  const authorURL = getMetadata('author-url');
+  const publicationDate = getMetadata('publication-date');
+  const imageCredit = getMetadata('image-credit');
+  const imageCreditUrl = getMetadata('image-credit-url');
 
   const HTML_TEMPLATE = `
   <div class="open-article-container">
@@ -46,12 +50,12 @@ export default async function decorate(block) {
   </div>
   `;
 
-  assignSlot(block, "heading", "h1");
-  assignSlot(block, "image", "picture");
+  assignSlot(block, 'heading', 'h1');
+  assignSlot(block, 'image', 'picture');
 
   // Pre-processing
-  const share = buildBlock("social-share", { elems: [] });
-  share.setAttribute("slot", "share");
+  const share = buildBlock('social-share', { elems: [] });
+  share.setAttribute('slot', 'share');
   block.append(share);
 
   const embeds = ['youtube', 'twitter', 'brightcove'];
@@ -70,8 +74,8 @@ export default async function decorate(block) {
   render(template, block);
 
   // Post-processing
-  removeEmptyElements(template, "p");
+  removeEmptyElements(template, 'p');
 
-  block.innerHTML = "";
+  block.innerHTML = '';
   block.append(...template.children);
 }
