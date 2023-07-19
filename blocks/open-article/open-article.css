@@ -46,12 +46,10 @@ main .open-article-container .lead {
   vertical-align: baseline;
 }
 
-main .open-article-container .lead picture,
 main .open-article-container .lead img {
+  width: auto;
+  height: auto;
   max-width: 100%;
-  object-fit: cover;
-  overflow-clip-margin: content-box;
-  overflow: clip;
 }
 
 main .open-article-container .byline {
