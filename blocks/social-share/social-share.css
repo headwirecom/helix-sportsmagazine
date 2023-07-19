@@ -51,3 +51,10 @@
 .social-share .icon-label {
     display: none;
 }
+
+main .sharing.noLabel .social-share > span.label {
+    display: none;
+}
+main .sharing.selfRight {
+    margin-left: auto;
+}

@@ -1,0 +1,77 @@
+main .open-article-container h1 {
+  font-size: 40px;
+  font-family: Gotham, arial, sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-align: left;
+}
+main .open-article-container .open-article.block {
+  max-width: 900px;
+  margin: 0 auto;
+}
+main .open-article-container .article-body p {
+  font-family: Gotham, arial, sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 30px;
+  margin: 0;
+  text-align: left;
+  color: #000;
+  margin-bottom: 30px;
+}
+main .open-article-container .article-body p::first-letter {
+  font-weight: 700;
+  line-height: 100%;
+  letter-spacing: 0;
+  float: left;
+  margin-right: 15px;
+  font-size: 68px;
+}
+@media (min-width: 769px) {
+  main .open-article-container .article-body p:first-letter {
+    font-size: 150px;
+    line-height: 85%;
+  }
+}
+main .open-article-container .lead {
+  overflow: hidden;
+  margin-bottom: 20px;
+  vertical-align: baseline;
+}
+main .open-article-container .lead picture,
+main .open-article-container .lead img {
+  max-width: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  overflow-clip-margin: content-box;
+  overflow: clip;
+}
+main .open-article-container .byline {
+  display: flex;
+  color: black;
+  font-family: Gotham, arial, sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0;
+  font-size: 16px;
+  line-height: 20px;
+  height: 73px;
+}
+main .open-article-container .byline .attribution * {
+  color: black;
+  text-decoration: none;
+}
+main .open-article-container .byline .publication {
+  display: flex;
+  font-weight: 400;
+}
+main .open-article-container .byline .publication:before {
+  content: "";
+  display: block;
+  border-left: 2px solid #e6e6e6;
+  height: 14px;
+  width: 0px;
+  margin: 0 5px;
+}

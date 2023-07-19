@@ -63,3 +63,6 @@ main .embed .embed-placeholder-play button::before {
     top: 4px;
     left: 7px;
 }
+main .embed.block:has(div > iframe, iframe) {
+    max-width: 100%;
+}
