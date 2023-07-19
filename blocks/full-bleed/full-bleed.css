@@ -90,8 +90,11 @@
 }
 
 .full-bleed.block .article-body div > p {
+  margin: 0 auto 30px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
   line-height: 30px;
-  margin-bottom: 20px;
 }
 
 @media (min-width: 769px) {
@@ -192,10 +195,6 @@
   }
 }
 
-.full-bleed.block .lead {
-  position: relative;
-}
-
 .full-bleed.block .lead .image {
   grid-column: 1/-1;
   grid-row: 1;
@@ -226,7 +225,7 @@
   background: linear-gradient(
     0.01deg,
     #151517 0.22%,
-    rgba(21, 21, 23, 0) 99.99%
+    rgb(21 21 23 / 0%) 99.99%
   );
   content: "";
   display: inline-block;
@@ -286,7 +285,7 @@
 .full-bleed.block .article-body {
   max-width: 800px;
   margin: auto;
-  padding: 0 20px 20px 20px;
+  padding: 0 20px 20px;
 }
 
 .full-bleed.block .article-body hr {
@@ -305,20 +304,6 @@
 
 .full-bleed.block .article-body a:hover {
   color: var(--link-hover-color);
-}
-
-.full-bleed .article-body {
-  max-width: 765px;
-  margin-right: 0;
-  margin-left: auto;
-}
-
-.full-bleed .article-body > div p {
-  margin: 0 auto 30px;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 30px;
 }
 
 .article-body > div > div > div:nth-child(2) p:first-of-type::first-letter {
