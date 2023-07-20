@@ -1,503 +1,68 @@
+/*
+ * Copyright 2020 Adobe. All rights reserved.
+ * This file is licensed to you under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License. You may obtain a copy
+ * of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+ * OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
 :root {
-  /* fonts */
-  --font-gotham: 'Gotham', helvetica, ubuntu, roboto, noto, sans-serif;
-  --font-tungsten: 'Tungsten', helvetica, ubuntu, roboto, noto, sans-serif;
+  /* CSS vars */
+  --font-gotham: "Gotham", helvetica, ubuntu, roboto, noto, sans-serif;
+  --font-tungsten: "Tungsten", helvetica, ubuntu, roboto, noto, sans-serif;
   --body-font-family: var(--font-gotham);
   --heading-font-family: var(--font-tungsten);
-  --fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace;
+  --header-height: 120px;
+  --leaderboard-height: 80px;
+  --link-hover-color: #ed3e49;
+}
 
-  /* body sizes */
-  --body-font-size-m: 16px;
-  --body-font-size-s: 16px;
-  --body-font-size-xs: 12px;
+@media (max-width: 768px) {
+  :root {
+    --leaderboard-height: 120px;
+  }
+}
 
-  /* heading sizes */
-  --heading-font-size-xxl: 48px;
-  --heading-font-size-xl: 40px;
-  --heading-font-size-l: 32px;
-  --heading-font-size-m: 24px;
-  --heading-font-size-s: 20px;
-  --heading-font-size-xs: 18px;
+* {
+  box-sizing: border-box;
+}
 
-  /* nav height */
-  --nav-height: 64px;
-  --main-container-width: 1440px;
-  --article-container-width: 912px;
-
-  /* colors */
-  --link-color: #035fe6;
-  --link-hover-color: #136ff6;
-  --background-color: #fff;
-  --overlay-background-color: #eee;
-  --highlight-background-color: #ccc;
-  --text-color: #000;
-
-  --white:               #FFFFFF;
-  --off-white-light:     #F6F6F6;
-  --off-white:           #EDEDED;
-  --off-white-dark:      #E6E6E6;
-  --grey:                #ADB4B7;
-  --ad-grey:             #FAFAFA;
-  --off-black-light:     #1F2022;
-  --off-black:           #151517;
-  --black:               #000000;
-  --play-light:          #13626B;
-  --play:                #105259;
-  --play-dark:           #0B3B40;
-  --news-light:          #ff414d;
-  --news:                #ed3e49;
-  --news-dark:           #d43741;
-  --loop-light:          #FAC852;
-  --loop:                #E8B94D;
-  --loop-dark:           #E0B34A;
-  --longform-divider:    #CBCBCB;
+[hidden] {
+  display: none !important;
 }
 
 body {
+  font-family: var(--body-font-family);
+  color: black;
+  overflow-x: hidden;
+  margin: 0;
   display: none;
-  margin: 0
 }
 
 body.appear {
   display: unset;
 }
 
-body > header {
-  min-height: 203.58px;
+header {
+  height: var(--header-height);
+  margin-top: var(--leaderboard-height);
 }
 
-div {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 100%;
-  vertical-align: baseline
+main {
+  padding-top: 20px;
 }
 
-a {
-  color: inherit;
-  font-weight: 500;
+.icon {
+  display: inline-block;
+  height: 24px;
+  width: 24px;
 }
 
-a:hover {
-  color: var(--news);
-}
-
-.article-default p {
-  font-family: Gotham,arial,sans-serif;
-  font-style: normal;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 30px;
-}
-
-main .image p:last-of-type {
-  color: var(--grey);
-  font-size: var(--body-font-size-xs);
-}
-
-/* Article typography styles */
-main > .section > div:nth-child(4) p {
-  font-family: var(--font-gotham);
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 30px;
-  margin: 0;
-  text-align: left;
-  margin-bottom: 60px;
-}
-
-.default-content-wrapper:first-of-type > p:first-child {
-  color: var(--grey);
-  text-transform: uppercase;
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-align: left;
-}
-
-/* p, dl, ol, ul, pre, blockquote { */
-/*   margin-top :0; */
-/*   margin-bottom: 1em; */
-/* } */
-
-/* buttons */
-a.button:any-link, button {
-  font-family: var(--font-gotham);
-  display: block;
-  flex-direction: row;
-  align-items: center;
-  padding: 10px 28px;
-  background: var(--news);
-  color: var(--white);
-  border: 2px solid var(--news);
-}
-
-a.button:hover, a.button:focus, button:hover, button:focus  {
-  cursor: pointer;
-  background: none;
-  color: var(--news);
-  border: 2px solid var(--news);
-}
-
-main input {
-  font-size: 1.25rem;
+.icon svg {
+  height: 100%;
   width: 100%;
-  max-width: 50rem;
-  display: block;
-  margin-bottom: 1rem;
-  padding: 0.75rem 0.6rem;
-  border-radius: 0.25rem;
-  box-sizing: border-box;
-  border: 1px solid var(--text-color);
-  color: var(--text-color);
-  background-color: var(--background-color);
-}
-
-main input:hover {
-  border: 1px solid var(--text-color);
-}
-
-main img {
-  max-width: 100%;
-  width: auto;
-  height: auto;
-  margin: 0;
-}
-
-.image-wrapper {
-  margin-bottom: 60px;
-}
-
-/* progressive section appearance */
-main .section[data-section-status='loading'],
-main .section[data-section-status='initialized'] {
-  display: none;
-}
-
-main > .section {
-  padding: 15px;
-  display: grid;
-  grid-template:
-  "hed "
-  "by  "
-  "img "
-  "body"
-  "side"
-  /100%
-}
-
-@media (min-width: 600px) {
-  main > .section {
-    grid-template-columns: auto 136px 776px 512px auto;
-    grid-template-areas:
-    "...  hed   hed   side  ..."
-    "...  by    by    side  ..."
-    "...  img   img   side  ..."
-    "...  ...   body  side  ..."
-  }
-}
-
-main > .section > * {
-  grid-column: 1 / -1;
-}
-
-@media (min-width: 600px) {
-  main > .section > * {
-    grid-column: 3 / 4;
-  }
-}
-
-/* Main article content */
-main > .section > div:nth-child(4) {
-  grid-area: body;
-}
-
-.container-site {
-  width: 1440px;
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 20px
-}
-
-@media (min-width:1025px) {
-  .container-site {
-      margin-top: 40px
-  }
-}
-
-.container-article,
-.container-trending {
-    margin-bottom: 30px
-}
-
-@media (min-width:1025px) {
-    .container-article,
-    .container-trending {
-        margin-bottom: 70px
-    }
-}
-
-@media (max-width:768px) {
-    .container-article,
-    .container-trending {
-        display: flex;
-        flex-direction: column
-    }
-
-    .container-article .container-aside,
-    .container-trending .container-aside {
-        margin-top: 40px;
-        margin-right: 10px
-    }
-}
-
-.container-aside {
-    padding-left: 10px
-}
-
-.container-article {
-    display: flex;
-    justify-content: space-between
-}
-
-.article-content {
-    width: 912px;
-    max-width: 100%
-}
-
-.article-body {
-    width: 765px;
-    max-width: 100%;
-    margin-right: 0;
-    margin-left: auto
-}
-
-.assetTitle {
-  color: inherit
-}
-
-.assetTitle-Headline {
-  margin-top: 0;
-  margin-bottom: 20px
-}
-
-.assetTitle-HeadlineText {
-  margin-top: 0;
-  font-family: Gotham, arial, sans-serif;
-  font-size: 34px;
-  line-height: 40px;
-  font-style: normal;
-  font-weight: 700;
-  letter-spacing: .05em;
-  text-align: center
-}
-
-.article-content .rubric {
-  font-family: Gotham,arial,sans-serif;
-  font-style: normal;
-  letter-spacing: .25em;
-  text-transform: uppercase;
-  margin-bottom: 15px;
-  font-weight: 600;
-  font-size: 10px;
-  line-height: 11.48px;
-  color: #adb4b7;
-}
-
-.articleByline {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.articleByline a {
-  text-decoration: none;
-}
-
-.attribution, .attribution a {
-  /* font-family: $font-gotham; */
-  font-style: normal;
-  font-weight: 700;
-  letter-spacing: 0;
-  font-size: 16px;
-  line-height: 22px;
-  margin-bottom: 10px;
-  color: var(--black);
-}
-
-.publishDate {
-  display: flex;
-  align-items: baseline;
-  font-style: normal;
-  font-weight: 700;
-  letter-spacing: 0;
-  font-size: 14px;
-  line-height: 22px;
-  color: var(--grey);
-}
-
-.byline-divider {
-  content: '';
-  display: block;
-  border-left: 2px solid var(--off-white-dark);
-  height: 14px;
-  margin: 3px 5px;
-}
-
-.byline-divider:has(+ .publishDate .o-AssetPublishDate:empty) {
-  display: none;
-}
-
-.articleByline .share {
-  display: none;
-  flex-grow: 1;
-}
-
-.articleByline .share:has(svg) {
-  display: block;
-}
-
-.articleByline .o-SocialShare {
-  display: flex;
-  margin: 0;
-}
-
-.articleByline .m-SocialIcons {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.article-default .article-body p:not(:empty):nth-child(1)::first-letter ,
-.article-default .article-body p:not(:empty):nth-child(2)::first-letter {
-  font-family: GothamGD,arial,sans-serif;
-  color: #000;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 100%;
-  letter-spacing: 0;
-  float: left;
-  margin-right: 15px;
-  font-size: 68px;
-}
-
-@media (min-width: 1025px) {
-  .article-default .article-body p {
-    margin-bottom: 60px;
-  }
-}
-
-@media (min-width: 769px) {
-  .article-default .article-body p:not(:empty):nth-child(1)::first-letter ,
-  .article-default .article-body p:not(:empty):nth-child(2)::first-letter {
-    font-size: 150px;
-    line-height: 85%;
-  }
-}
-
-.article-default h1 .assetTitle-HeadlineText {
-  font-size: 40px;
-  line-height: 50px;
-}
-
-h2 {
-  display: block;
-  font-family: var(--font-tungsten);
-  font-size: 37px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 38px;
-  letter-spacing: 0.05em;
-  text-decoration: underline;
-  text-decoration-color: var(--news);
-  text-underline-offset: 10px;
-  text-decoration-thickness: 2px;
-  margin: 0;
-  text-align: center;
-  align-self: center;
-}
-
-@media (min-width: 1025px) {
-  h2 {
-    margin-bottom: 60px;
-  }
-}
-
-@font-face {
-  font-family: 'Tungsten';
-  src: url('/styles/fonts/Tungsten/Tungsten-Book_Web.woff2') format('woff2');
-  font-display: fallback;
-  font-weight: 400;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Tungsten';
-  src: url('/styles/fonts/Tungsten/Tungsten-Medium_Web.woff2') format('woff2');
-  font-display: fallback;
-  font-weight: 500;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Tungsten';
-  src: url('/styles/fonts/Tungsten/Tungsten-Semibold_Web.woff2') format('woff2');
-  font-display: fallback;
-  font-weight: 600;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Tungsten';
-  src: url('/styles/fonts/Tungsten/Tungsten-Bold_Web.woff2') format('woff2');
-  font-display: fallback;
-  font-weight: 700;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Tungsten';
-  src: url('/styles/fonts/Tungsten/Tungsten-Black_Web.woff2') format('woff2');
-  font-display: fallback;
-  font-weight: 800;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Gotham';
-  src: url('/styles/fonts/Gotham/Gotham-Book_Web.woff2') format('woff2');
-  font-display: fallback;
-  font-weight: 400;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Gotham';
-  src: url('/styles/fonts/Gotham/Gotham-BookItalic_Web.woff2') format('woff2');
-  font-display: fallback;
-  font-weight: 400;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'Gotham';
-  src: url('/styles/fonts/Gotham/Gotham-Medium_Web.woff2') format('woff2');
-  font-display: fallback;
-  font-weight: 500;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Gotham';
-  src: url('/styles/fonts/Gotham/Gotham-MediumItalic_Web.woff2') format('woff2');
-  font-display: fallback;
-  font-weight: 500;
-  font-style: italic;
-}
-@font-face {
-  font-family: 'Gotham';
-  src: url('/styles/fonts/Gotham/Gotham-Bold_Web.woff2') format('woff2');
-  font-display: fallback;
-  font-weight: 700;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Gotham';
-  src: url('/styles/fonts/Gotham/Gotham-BoldItalic_Web.woff2') format('woff2');
-  font-display: fallback;
-  font-weight: 700;
-  font-style: italic;
 }
