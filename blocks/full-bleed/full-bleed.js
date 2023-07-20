@@ -1,4 +1,4 @@
-import { parseFragment, render } from '../../scripts/scripts.js';
+import { assignSlot, parseFragment, render } from '../../scripts/scripts.js';
 import {
   buildBlock,
   decorateBlock,
