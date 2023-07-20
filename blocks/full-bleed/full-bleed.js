@@ -75,15 +75,8 @@ export default async function decorate(block) {
   const template = parseFragment(HTML_TEMPLATE);
 
   // Identify slots
-  const heading = block.querySelector('h1');
-  if (heading) {
-    heading.setAttribute('slot', 'heading');
-  }
-
-  const image = block.querySelector('picture');
-  if (image) {
-    image.setAttribute('slot', 'image');
-  }
+  assignSlot(block, 'heading', 'h1');
+  assignSlot(block, 'image', 'picture');
 
   // Pre-processing
   const share = buildBlock('social-share', { elems: [] });
