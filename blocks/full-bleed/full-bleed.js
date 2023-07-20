@@ -99,15 +99,6 @@ export default async function decorate(block) {
       parent.replaceWith(embed);
     });
 
-  // add horizontal line to article
-  block
-    .querySelectorAll(
-      ':scope > div > div > div:not(:first-of-type):not(:last-of-type)',
-    )
-    .forEach((section) => {
-      section.append(document.createElement('hr'));
-    });
-
   // Render template
   render(template, block);
 

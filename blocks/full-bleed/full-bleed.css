@@ -288,10 +288,6 @@
   padding: 0 20px 20px;
 }
 
-.full-bleed.block .article-body hr {
-  margin: 60px 0;
-}
-
 .full-bleed.block .article-body div > p.highlight {
   font-size: 18px;
   margin-top: 0;
@@ -322,4 +318,14 @@
     font-size: 150px;
     line-height: 85%;
   }
+}
+
+.article-body > div > div > div:nth-child(3) {
+  border-top: 1px solid #a09e9e;
+  padding-top: 50px;
+}
+
+.embed-wrapper {
+  border-top: 1px solid #7a7a7a;
+  padding-top: 50px;
 }
