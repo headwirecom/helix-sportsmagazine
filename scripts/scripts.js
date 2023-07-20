@@ -10,7 +10,8 @@ import {
   decorateTemplateAndTheme,
   waitForLCP,
   loadBlocks,
-  loadCSS, toClassName,
+  loadCSS,
+  toCamelCase,
 } from './lib-franklin.js';
 
 const ARTICLE_TEMPLATES = {
@@ -29,14 +30,27 @@ const LCP_BLOCKS = [...Object.values(ARTICLE_TEMPLATES)]; // add your LCP blocks
 const range = document.createRange();
 
 /**
- * Returns metadata JSON key:value pairs
+ * Remove DOM elements which are empty
+ * @param {DocumentFragment} container
+ * @param {string} selector
+ */
+export function removeEmptyElements(container, selector) {
+  container.querySelectorAll(selector).forEach((el) => {
+    if (el.innerHTML.trim() === '') {
+      el.remove();
+    }
+  });
+}
+
+/**
+ * Returns section metadata JSON key:value pairs
  * @param {HTMLDivElement} metadataElement
  * @returns {object} JSON
  */
-export function parseMetadata(metadataElement) {
+export function parseSectionMetadata(metadataElement) {
   const metadata = {};
   [...metadataElement.children].forEach((child) => {
-    const key = toClassName(child.firstElementChild.textContent.trim());
+    const key = toCamelCase(child.firstElementChild.textContent.trim());
     const value = child.lastElementChild.textContent.trim();
     metadata[key] = value;
   });
@@ -52,6 +66,19 @@ export function parseMetadata(metadataElement) {
  */
 export function parseFragment(fragmentString) {
   return range.createContextualFragment(fragmentString);
+}
+
+/**
+ * Assign slot attribute to selected element
+ * @param {HTMLElement} block
+ * @param {string} slot
+ * @param {string} selector
+ */
+export function assignSlot(block, slot, selector) {
+  const el = block.querySelector(selector);
+  if (el) {
+    el.setAttribute('slot', slot);
+  }
 }
 
 /**
@@ -93,6 +120,10 @@ function buildTemplate(main) {
   [...document.body.classList].some((className) => {
     const template = findTemplate(className);
     if (template) {
+      main.querySelectorAll('.section-metadata').forEach((metadataEl) => {
+        metadataEl.className = 'template-section-metadata';
+      });
+
       const section = document.createElement('div');
       section.append(buildBlock(template, { elems: [...main.children] }));
       main.prepend(section);

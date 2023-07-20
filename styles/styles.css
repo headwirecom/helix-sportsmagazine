@@ -66,10 +66,3 @@ main {
   height: 100%;
   width: 100%;
 }
-
-.separator {
-  border-right: 2px solid #adb4b7;
-  width: 0;
-  padding: 0;
-  height: 1em;
-}
