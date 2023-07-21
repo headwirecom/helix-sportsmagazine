@@ -43,7 +43,7 @@ export default async function decorate(block) {
       <div class="main-text-wrapper">
         <div class="section">${mainCard.author}</div>
         ${!gdPlusCards ? '' : gdPlusIcon}
-        <div class="headline"><spam role="heading">${mainCard.title}</span></div>
+        <div class="headline"><span aria-level="3" role="heading">${mainCard.title}</span></div>
       </div>
     </a>
     <div class="secondary-cards">
@@ -64,7 +64,7 @@ export default async function decorate(block) {
               <div class="small-text-wrapper">
                 <div class="section">${card.author}</div>
                 ${!gdPlusCards ? '' : gdPlusIcon}
-                <div class="headline"><spam role="heading">${card.title}</span></div>
+                <div class="headline"><span aria-level="3" role="heading">${card.title}</span></div>
                 <div class="date-string">${timeSince(convertExcelDate(card.date))}</div>
               </div>
             </a>
