@@ -256,35 +256,35 @@ loadPage();
  * @param {Date} date to compare to.
  */
 export const timeSince = (date) => {
-  var seconds = Math.floor((new Date() - date) / 1000);
-  var interval = seconds / 31536000;
+  const seconds = Math.floor((new Date() - date) / 1000);
+  let interval = seconds / 31536000;
   if (interval > 1) {
-    const value = Math.floor(interval)
-    return `${value} ${value === 1 ? "year" : "years"} ago`;
+    const value = Math.floor(interval);
+    return `${value} ${value === 1 ? 'year' : 'years'} ago`;
   }
   interval = seconds / 2592000;
   if (interval > 1) {
-    const value = Math.floor(interval)
-    return `${value} ${value === 1 ? "month" : "months"} ago`;
+    const value = Math.floor(interval);
+    return `${value} ${value === 1 ? 'month' : 'months'} ago`;
   }
   interval = seconds / 86400;
   if (interval > 1) {
-    const value = Math.floor(interval)
-    return `${value} ${value === 1 ? "day" : "days"} ago`;
+    const value = Math.floor(interval);
+    return `${value} ${value === 1 ? 'day' : 'days'} ago`;
   }
   interval = seconds / 3600;
   if (interval > 1) {
-    const value = Math.floor(interval)
-    return `${value} ${value === 1 ? "hour" : "hours"} ago`;
+    const value = Math.floor(interval);
+    return `${value} ${value === 1 ? 'hour' : 'hours'} ago`;
   }
   interval = seconds / 60;
   if (interval > 1) {
-    const value = Math.floor(interval)
-    return `${value} ${value === 1 ? "minute" : "minutes"} ago`;
+    const value = Math.floor(interval);
+    return `${value} ${value === 1 ? 'minute' : 'minutes'} ago`;
   }
-  const value = Math.floor(interval)
-  return `${value} ${value === 1 ? "second" : "seconds"} ago`;
-}
+  const value = Math.floor(interval);
+  return `${value} ${value === 1 ? 'second' : 'seconds'} ago`;
+};
 
 /**
  * Converts excel date into JS date.
@@ -298,5 +298,5 @@ export const convertExcelDate = (excelDate) => {
   const delta = excelEpochAsUnixTimestamp - missingLeapYearDay;
   const excelTimestampAsUnixTimestamp = excelDate * secondsInDay * 1000;
   const parsed = excelTimestampAsUnixTimestamp + delta;
-  return isNaN(parsed) ? null : new Date(parsed);
-}
+  return Number.isNaN(parsed) ? null : new Date(parsed);
+};
