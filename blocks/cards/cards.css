@@ -1,10 +1,19 @@
+.gd-plus-logo {
+  fill: black;
+}
+
 main .cards-wrapper {
   width: 100%;
 }
 main .cards-wrapper .cards.block {
+  max-width: 1440px;
+  margin: auto;
   height: 720px;
   margin-bottom: 40px;
   overflow: hidden;
+}
+main .cards-wrapper .cards.block .date-string {
+  display: none;
 }
 main .cards-wrapper .cards.block .card-block-wrapper {
   padding: 0 15px;
@@ -24,7 +33,6 @@ main .cards-wrapper .cards.block .card-block-wrapper .small-card {
   flex: 1 1 0px;
 }
 main .cards-wrapper .cards.block .card-block-wrapper .main-card .image-bg {
-  background-color: aquamarine;
   position: absolute;
   width: 100%;
   height: 100%;
@@ -44,6 +52,7 @@ main .cards-wrapper .cards.block .card-block-wrapper .main-card:hover .image-bg 
   transform: scale(1.2);
 }
 main .cards-wrapper .cards.block .card-block-wrapper .main-card .main-text-wrapper {
+  background: linear-gradient(180deg, transparent 50%, #000);
   position: relative;
   width: 100%;
   height: 100%;
@@ -143,6 +152,24 @@ main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-car
   letter-spacing: 0.1em;
   color: #adb4b7;
 }
+@media (max-width: 1280px) {
+  main .cards-wrapper .cards.block {
+    height: auto;
+  }
+  main .cards-wrapper .cards.block .card-block-wrapper {
+    flex-direction: column;
+  }
+  main .cards-wrapper .cards.block .card-block-wrapper.reverse {
+    flex-direction: column;
+  }
+  main .cards-wrapper .cards.block .card-block-wrapper a.main-card {
+    aspect-ratio: 1.29/1;
+    flex: none;
+  }
+  main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card {
+    flex: 1 1 222px;
+  }
+}
 main .cards-wrapper .gd-plus-title {
   padding-bottom: 20px;
   display: flex;
@@ -166,6 +193,22 @@ main .cards-wrapper .gd-plus-title::before {
 main .cards-wrapper .cards.block.gd {
   height: auto;
 }
+main .cards-wrapper .cards.block.gd .date-string {
+  display: block;
+}
+main .cards-wrapper .cards.block.gd .main-card .main-text-wrapper .gd-plus-logo {
+  fill: white;
+}
+main .cards-wrapper .cards.block.gd .card-block-wrapper .main-card {
+  max-width: 693px;
+  max-height: 693px;
+}
+@media (max-width: 1280px) {
+  main .cards-wrapper .cards.block.gd .card-block-wrapper .main-card {
+    max-width: none;
+    max-height: none;
+  }
+}
 main .cards-wrapper .cards.block.gd .secondary-cards {
   padding: 20px 35px 25px 35px;
   box-sizing: border-box;
@@ -186,7 +229,7 @@ main .cards-wrapper .cards.block.gd .secondary-cards .small-card {
 main .cards-wrapper .cards.block.gd .secondary-cards .small-card .image-wrapper {
   width: 186px;
   height: 120px;
-  padding-bottom: 20px;
+  box-sizing: content-box;
 }
 main .cards-wrapper .cards.block.gd .secondary-cards .small-card .small-text-wrapper {
   padding-top: 0;
