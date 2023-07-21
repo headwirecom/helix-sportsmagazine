@@ -33,10 +33,16 @@
   justify-content: center;
   align-items: center;
   height: 100%;
+  padding: 300px;
+}
+
+@media (max-width: 769px) {
+  .hero.block .hero-wrapper-middle .hero-content  {
+    padding: 50px;
+  }
 }
 
 .hero.block .hero-wrapper-middle .hero-content h2 {
-  font-size: 37px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -48,7 +54,8 @@
   color: #fff;
 }
 
-@media (min-width: 769px) and (min-width: 1025px) {
+
+@media (min-width: 1025px) {
   .hero.block .hero-wrapper-middle .hero-content h2 {
     font-size: 50px;
   }
@@ -72,6 +79,14 @@
   transition: background 0.2s;
 }
 
+@media (max-width: 769px) {
+  .arrow-icon {
+    width: 15px;
+    height: 15px;
+    padding: 4px;
+  }
+}
+
 .hero.block .hero-wrapper-middle .button-container:hover .arrow-icon {
   background-color: #000;
 }
@@ -92,4 +107,10 @@
   text-transform: uppercase;
   text-decoration: none;
   color: #fff;
+}
+
+@media (min-width: 1025px) {
+  .hero.block .hero-wrapper-middle .button-container a  {
+    font-size: 14px;
+  }
 }
