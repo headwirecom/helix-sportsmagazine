@@ -1,12 +1,8 @@
-.gd-plus-logo {
-  fill: black;
-}
-
-main .cards-wrapper {
+.landing-page main .cards-wrapper {
   width: 100%;
 }
 
-main .cards-wrapper .cards.block {
+.landing-page main .cards-wrapper .cards.block {
   max-width: 1440px;
   margin: auto;
   height: 720px;
@@ -14,11 +10,11 @@ main .cards-wrapper .cards.block {
   overflow: hidden;
 }
 
-main .cards-wrapper .cards.block .date-string {
+.landing-page main .cards-wrapper .cards.block .date-string {
   display: none;
 }
 
-main .cards-wrapper .cards.block .card-block-wrapper {
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper {
   padding: 0 15px;
   width: 100%;
   height: 100%;
@@ -26,19 +22,19 @@ main .cards-wrapper .cards.block .card-block-wrapper {
   gap: 24px;
 }
 
-main .cards-wrapper .cards.block .card-block-wrapper.reverse {
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper.reverse {
   flex-direction: row-reverse;
 }
 
-main .cards-wrapper .cards.block .card-block-wrapper .main-card,
-main .cards-wrapper .cards.block .card-block-wrapper .small-card {
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .main-card,
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .small-card {
   color: white;
   text-decoration: none;
   position: relative;
   flex: 1 1 0px;
 }
 
-main .cards-wrapper .cards.block .card-block-wrapper .main-card .image-bg {
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .main-card .image-bg {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -48,18 +44,18 @@ main .cards-wrapper .cards.block .card-block-wrapper .main-card .image-bg {
   justify-content: center;
 }
 
-main .cards-wrapper .cards.block .card-block-wrapper .main-card .image-bg > img {
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .main-card .image-bg > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 3s;
 }
 
-main .cards-wrapper .cards.block .card-block-wrapper .main-card:hover .image-bg > img {
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .main-card:hover .image-bg > img {
   transform: scale(1.2);
 }
 
-main .cards-wrapper .cards.block .card-block-wrapper .main-card .main-text-wrapper {
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .main-card .main-text-wrapper {
   background: linear-gradient(180deg, transparent 50%, #000);
   position: relative;
   width: 100%;
@@ -69,8 +65,11 @@ main .cards-wrapper .cards.block .card-block-wrapper .main-card .main-text-wrapp
   flex-direction: column;
   justify-content: flex-end;
 }
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .headline > * {
+  margin: 0;
+}
 
-main .cards-wrapper .cards.block .card-block-wrapper .main-card .main-text-wrapper .headline {
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .main-card .main-text-wrapper .headline {
   margin: 0;
   font-family: Tungsten, arial, sans-serif;
   text-transform: uppercase;
@@ -81,12 +80,12 @@ main .cards-wrapper .cards.block .card-block-wrapper .main-card .main-text-wrapp
 }
 
 @media (min-width: 769px) {
-  main .cards-wrapper .cards.block .card-block-wrapper .main-card .main-text-wrapper .headline {
+  .landing-page main .cards-wrapper .cards.block .card-block-wrapper .main-card .main-text-wrapper .headline {
     font-size: 37px;
   }
 }
 
-main .cards-wrapper .cards.block .card-block-wrapper .main-card .main-text-wrapper .section {
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .main-card .main-text-wrapper .section {
   color: #adb4b7;
   text-transform: uppercase;
   font-weight: 500;
@@ -96,7 +95,7 @@ main .cards-wrapper .cards.block .card-block-wrapper .main-card .main-text-wrapp
   margin-bottom: 10px;
 }
 
-main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards {
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards {
   height: 100%;
   flex: 1 1 0px;
   gap: 24px;
@@ -105,15 +104,16 @@ main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards {
   justify-content: space-between;
 }
 
-main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card {
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card {
   box-sizing: border-box;
   border: 0.5px solid #e5e5e5;
   background-color: white;
   color: black;
   display: flex;
+  flex-wrap: wrap;
 }
 
-main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .image-wrapper > img {
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .image-wrapper > img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -121,12 +121,13 @@ main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-car
   transition: transform 3s;
 }
 
-main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card:hover .image-wrapper > img {
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card:hover .image-wrapper > img {
   transform: scale(1.2);
 }
 
-main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .image-wrapper {
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .image-wrapper {
   width: 322px;
+  height: 100%;
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -135,14 +136,14 @@ main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-car
 }
 
 
-main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .small-text-wrapper {
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .small-text-wrapper {
   flex: 1 1 0px;
   padding: 20px;
   display: flex;
   flex-direction: column;
 }
 
-main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .small-text-wrapper .section {
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .small-text-wrapper .section {
   color: #adb4b7;
   text-transform: uppercase;
   font-weight: 500;
@@ -152,21 +153,21 @@ main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-car
   margin-bottom: 10px;
 }
 
-main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .small-text-wrapper .headline {
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .small-text-wrapper .headline > h3 {
   display: block;
   color: #151517;
-  font-family: Gotham, arial, sans-serif;
+  font-family: Gotham,arial,sans-serif;
   font-style: normal;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 130%;
 }
 
-main .cards-wrapper .cards.block.gd .date-string {
+.landing-page main .cards-wrapper .cards.block.gd .date-string {
   display: block;
 }
 
-main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .small-text-wrapper .date-string {
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .small-text-wrapper .date-string {
   margin-top: 10px;
   font-family: Gotham, arial, sans-serif;
   font-style: normal;
@@ -178,29 +179,94 @@ main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-car
 }
 
 @media (max-width: 1280px) {
-  main .cards-wrapper .cards.block {
+  .landing-page main .cards-wrapper .cards.block {
     height: auto;
   }
 
-  main .cards-wrapper .cards.block .card-block-wrapper {
+  .landing-page main .cards-wrapper .cards.block .card-block-wrapper {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .landing-page main .cards-wrapper .cards.block .card-block-wrapper.reverse {
     flex-direction: column;
   }
 
-  main .cards-wrapper .cards.block .card-block-wrapper.reverse {
-    flex-direction: column;
-  }
-
-  main .cards-wrapper .cards.block .card-block-wrapper a.main-card {
+  .landing-page main .cards-wrapper .cards.block .card-block-wrapper a.main-card {
     aspect-ratio: 1.29/1;
     flex: none;
   }
 
-  main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card {
-    flex: 1 1 222px;
+  .landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card {
+  }
+
+  .landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card {
+    min-height: 224px;
+  }
+  .landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .small-text-wrapper {
+    /* flex: 1;
+    min-width: 300px; */
+  }
+  .landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .image-wrapper {
+    /* flex: 0 0 322px; */
+    /* flex-basis: 322px; */
+    min-width: 322px;
+  }
+
+  
+  .landing-page main .cards-wrapper .cards.block.gd .card-block-wrapper .secondary-cards .small-card .image-wrapper {
+    width: auto;
+    min-width: 186px;
   }
 }
 
-main .cards-wrapper .gd-plus-title {
+@media (max-width: 768px) {
+  .landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards {
+    gap: 0;
+  }
+  .landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card {
+    min-height: 157px;
+  }
+
+  .landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .small-text-wrapper {
+    padding-left: 0;
+  }
+
+  .landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .image-wrapper {
+    max-width: 100%;
+    min-width: 0;
+    height: auto;
+    width: calc(32% - 30px);
+    margin: 15px;
+    aspect-ratio: 1.78/1;
+  }
+
+  .landing-page main .cards-wrapper .cards.block.gd .card-block-wrapper .secondary-cards {
+    padding: 15px;
+  }
+  .landing-page main .cards-wrapper .cards.block.gd .card-block-wrapper .secondary-cards .small-card {
+    height: 149px;
+    gap: 15px;
+  }
+  .landing-page main .cards-wrapper .cards.block.gd .card-block-wrapper .secondary-cards .small-card .image-wrapper {
+    margin: 0;
+  }
+
+  .landing-page main .cards-wrapper .cards.block.gd .secondary-cards .small-card:first-of-type {
+    height: 149px;
+    gap: 15px;
+  }
+  
+  .landing-page main .cards-wrapper .cards.block.gd .secondary-cards a.small-card:first-of-type .image-wrapper {
+    width: 303px;
+    height: 195px;
+    margin: 0;
+  }
+
+}
+
+
+.landing-page main .cards-wrapper .gd-plus-title {
   padding-bottom: 20px;
   display: flex;
   align-items: center;
@@ -213,7 +279,7 @@ main .cards-wrapper .gd-plus-title {
   font-size: 28px;
 }
 
-main .cards-wrapper .gd-plus-title::before {
+.landing-page main .cards-wrapper .gd-plus-title::before {
   content: "";
   display: block;
   width: 5px;
@@ -222,27 +288,24 @@ main .cards-wrapper .gd-plus-title::before {
   background-color: #ed3e49;
 }
 
-main .cards-wrapper .cards.block.gd {
+.landing-page main .cards-wrapper .cards.block.gd {
   height: auto;
 }
 
-main .cards-wrapper .cards.block.gd .main-card .main-text-wrapper .gd-plus-logo {
-  fill: white;
-}
-
-main .cards-wrapper .cards.block.gd .card-block-wrapper .main-card {
+.landing-page main .cards-wrapper .cards.block.gd .card-block-wrapper .main-card {
   max-width: 693px;
-  max-height: 693px;
+  flex-: 1;
+
 }
 
 @media (max-width: 1280px) {
-  main .cards-wrapper .cards.block.gd .card-block-wrapper .main-card {
+  .landing-page main .cards-wrapper .cards.block.gd .card-block-wrapper .main-card {
     max-width: none;
     max-height: none;
   }
 }
 
-main .cards-wrapper .cards.block.gd .secondary-cards {
+.landing-page main .cards-wrapper .cards.block.gd .secondary-cards {
   padding: 20px 35px 25px;
   box-sizing: border-box;
   border: 0.5px solid #e5e5e5;
@@ -251,7 +314,7 @@ main .cards-wrapper .cards.block.gd .secondary-cards {
   height: 100%;
 }
 
-main .cards-wrapper .cards.block.gd .secondary-cards .small-card {
+.landing-page main .cards-wrapper .cards.block.gd .secondary-cards .small-card {
   flex: none;
   flex-wrap: wrap;
   padding-top: 15px;
@@ -261,40 +324,42 @@ main .cards-wrapper .cards.block.gd .secondary-cards .small-card {
   border-bottom: 0.5px solid #e5e5e5;
 }
 
-main .cards-wrapper .cards.block.gd .secondary-cards .small-card .image-wrapper {
+.landing-page main .cards-wrapper .cards.block.gd .secondary-cards .small-card .image-wrapper {
   width: 186px;
   height: 120px;
   box-sizing: content-box;
 }
 
-main .cards-wrapper .cards.block.gd .secondary-cards .small-card .small-text-wrapper {
+.landing-page main .cards-wrapper .cards.block.gd .secondary-cards .small-card .small-text-wrapper {
   padding-top: 0;
   padding-bottom: 0;
   flex: 1 1 0;
 }
 
-main .cards-wrapper .cards.block.gd .secondary-cards .small-card .small-text-wrapper .gd-plus-logo {
-  height: 19;
+.landing-page main .cards-wrapper .cards.block.gd .gd-plus-icon-img {
+  height: 19px;
+  width: 51px;
+  margin-bottom: 4px;
 }
 
-main .cards-wrapper .cards.block.gd .secondary-cards .small-card:first-of-type {
+.landing-page main .cards-wrapper .cards.block.gd .secondary-cards .small-card:first-of-type {
   height: 236px;
   min-height: 130px;
   width: calc(100% + 18px);
   margin-left: -9px;
 }
 
-main .cards-wrapper .cards.block.gd .secondary-cards .small-card:first-of-type .image-wrapper {
+.landing-page main .cards-wrapper .cards.block.gd .secondary-cards .small-card:first-of-type .image-wrapper {
   width: 303px;
   height: 195px;
   padding-bottom: 0;
 }
 
-main .cards-wrapper .cards.block.gd .secondary-cards .small-card:last-of-type {
+.landing-page main .cards-wrapper .cards.block.gd .secondary-cards .small-card:last-of-type {
   padding-bottom: 0;
   border-bottom: none;
 }
 
-main {
+.landing-page main {
   background-color: #f6f6f6;
 }
