@@ -66,3 +66,14 @@ main {
   height: 100%;
   width: 100%;
 }
+
+/* homepage */
+@media (max-width: 1024px) {
+  .home-page header {
+    height: 67px;
+  }
+
+  .home-page main {
+    padding-top: 0;
+  }
+}
