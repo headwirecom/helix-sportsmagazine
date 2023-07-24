@@ -4,8 +4,6 @@ import {
   render,
   convertExcelDate,
   timeSince,
-  gdPlusIcon,
-  gdPlusIconWhite,
 } from '../../scripts/scripts.js';
 
 let cardData;
@@ -49,7 +47,7 @@ export default async function decorate(block) {
       </div>
       <div class="main-text-wrapper">
         <div class="section">${mainCard.author}</div>
-        ${!gdPlusCards ? '' : `<img loading="lazy" src="${gdPlusCards ? gdPlusIconWhite : gdPlusIcon}" class="gd-plus-icon-img" alt="Golf Digest Plus Icon" />`}
+        ${!gdPlusCards ? '' : `<img loading="lazy" src="/icons/${gdPlusCards ? 'gd-plus-light' : 'gd-plus-dark'}.svg" class="gd-plus-icon-img" alt="Golf Digest Plus Icon" />`}
         <div class="headline"><h3>${mainCard.title}</h3></div>
       </div>
     </a>
@@ -65,7 +63,7 @@ export default async function decorate(block) {
               </div>
               <div class="small-text-wrapper">
                 <div class="section">${card.author}</div>
-                ${!gdPlusCards ? '' : `<img loading="lazy" src="${gdPlusIcon}" class="gd-plus-icon-img" alt="Golf Digest Plus Icon" />`}
+                ${!gdPlusCards ? '' : '<img loading="lazy" src="/icons/gd-plus-dark.svg" class="gd-plus-icon-img" alt="Golf Digest Plus Icon" />'}
                 <div class="headline"><h3>${card.title}</h3></div>
                 <div class="date-string">${timeSince(convertExcelDate(card.date))}</div>
               </div>
