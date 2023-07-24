@@ -249,3 +249,54 @@ async function loadPage() {
 }
 
 loadPage();
+
+/**
+ * Converts date into time since string.
+ * Example: X days ago
+ * @param {Date} date to compare to.
+ */
+export const timeSince = (date) => {
+  const seconds = Math.floor((new Date() - date) / 1000);
+  let interval = seconds / 31536000;
+  if (interval > 1) {
+    const value = Math.floor(interval);
+    return `${value} ${value === 1 ? 'year' : 'years'} ago`;
+  }
+  interval = seconds / 2592000;
+  if (interval > 1) {
+    const value = Math.floor(interval);
+    return `${value} ${value === 1 ? 'month' : 'months'} ago`;
+  }
+  interval = seconds / 86400;
+  if (interval > 1) {
+    const value = Math.floor(interval);
+    return `${value} ${value === 1 ? 'day' : 'days'} ago`;
+  }
+  interval = seconds / 3600;
+  if (interval > 1) {
+    const value = Math.floor(interval);
+    return `${value} ${value === 1 ? 'hour' : 'hours'} ago`;
+  }
+  interval = seconds / 60;
+  if (interval > 1) {
+    const value = Math.floor(interval);
+    return `${value} ${value === 1 ? 'minute' : 'minutes'} ago`;
+  }
+  const value = Math.floor(interval);
+  return `${value} ${value === 1 ? 'second' : 'seconds'} ago`;
+};
+
+/**
+ * Converts excel date into JS date.
+ * @param {number} excel date to convert.
+ */
+export const convertExcelDate = (excelDate) => {
+  const secondsInDay = 86400;
+  const excelEpoch = new Date(1899, 11, 31);
+  const excelEpochAsUnixTimestamp = excelEpoch.getTime();
+  const missingLeapYearDay = secondsInDay * 1000;
+  const delta = excelEpochAsUnixTimestamp - missingLeapYearDay;
+  const excelTimestampAsUnixTimestamp = excelDate * secondsInDay * 1000;
+  const parsed = excelTimestampAsUnixTimestamp + delta;
+  return Number.isNaN(parsed) ? null : new Date(parsed);
+};
