@@ -1,0 +1,112 @@
+{
+  "total": 14237,
+  "offset": 0,
+  "limit": 500,
+  "data": [
+    {
+      "date": "45126",
+      "image": "cards-placeholder/media_1d995a89dc32e47de6829f5a205848e0d9fc374ce.jpeg?width=2000&format=webply&optimize=medium",
+      "path": "story/british-open-2023-top-100-players-in-the-field-at-royal-liverpool-hoylake-ranked",
+      "title": "From shooting cupcakes to breaking barriers with Adobe Stock Artist, Yuya Parker",
+      "author": "Irene Malatesta",
+      "description": "Guided by a powerful sense of curiosity, Yuya Parker took several detours on his journey to becoming a photographer and director. As he worked on his cupcake photo shoots, he realized that he enjoyed spending hours looking at an object, changing the lighting or the arrangement to see what he could create.",
+      "tags": "[\"Photography\",\"Creativity\",\"Creative Cloud\",\"Stock\"]",
+      "imageAlt": "From shooting cupcakes to breaking barriers with Adobe Stock Artist, Yuya Parker",
+      "robots": "0",
+      "lastModified": "1689728171",
+      "courseType": "public"
+    },
+    {
+      "date": "45126",
+      "image": "cards-placeholder/media_1140d5e9a5a9c517945a4abf7a26567fa5f688917.jpeg?width=2000&format=webply&optimize=medium",
+      "path": "story/british-open-picks-2023",
+      "title": "From reality tv to real-life success: Sharing lessons of resilience and authenticity with Sarah Tilleke",
+      "author": "Adobe Life team",
+      "description": "Participating in the reality TV series Australian ‘Survivor’, Sarah Tilleke had to learn the importance of authenticity and being resilient. Joining Adobe as a Sales Graduate and now a Solutions Consultant, Sarah shares her experience on the show and what she learnt.",
+      "tags": "[\"Adobe Life\",\"Adobe Culture\",\"Creative Cloud\",\"Adobe Express\"]",
+      "imageAlt": "Reality TV series Australian ‘Survivor’, Sarah Tilleke.",
+      "robots": "0",
+      "lastModified": "1689740667",
+      "courseType": "private",
+      "awards": ["good", "Top 100 Best"]
+    },
+    {
+      "date": "45125",
+      "image": "cards-placeholder/media_175d1371be2f60b5684ce4f2059fec5c288c96d1d.jpeg?width=2000&format=webply&optimize=medium",
+      "path": "story/michael-block-dj-khaled-golf-shot-instagram-video",
+      "title": "6 ways to create your authentic voice in a digital-first world",
+      "author": "Goldie Chan",
+      "description": "6 ways to create your authentic voice in a digital-first world with personal branding coach and social media storyteller Goldie Chan",
+      "tags": "[\"Creativity\",\"Adobe Express\",\"Creative Cloud\",\"Insights & Inspiration\"]",
+      "imageAlt": "Image of Goldie Chan.",
+      "robots": "0",
+      "lastModified": "1689651332",
+      "courseType": "public"
+    },
+    {
+      "date": "45124",
+      "image": "cards-placeholder/media_1d9a57308e4986a88e141efb10b5eccc8aec7afe3.jpeg?width=2000&format=webply&optimize=medium",
+      "path": "story/british-open-2023-sleepers",
+      "title": "VCU helps athletes find their creative voices with Adobe Creative Cloud",
+      "author": "Kirsten Nagel",
+      "description": "VCU embraces the idea of preparing students for future careers through harnessing cross-disciplinary experiences and innovation. As an Adobe Creative Campus, all students can obtain Adobe Creative Cloud licenses for free, giving them access to powerful, industry-standard creative apps. By promoting art and creativity for athletes, VCU gives students the tools that to succeed throughout their sport careers.",
+      "tags": "[\"Creative Inspiration & Trends\",\"Creative Cloud\",\"Customer Stories\",\"Adobe Express\",\"InDesign\",\"Lightroom\",\"Photoshop\",\"Premiere Rush\",\"Education\"]",
+      "imageAlt": "VCU helps athletes.",
+      "robots": "0",
+      "lastModified": "1689556414",
+      "courseType": "public"
+    },
+    {
+      "date": "45124",
+      "image": "cards-placeholder/media_15430a733b9174fe3ba756ad3aaad1fcd21488c5e.jpeg?width=2000&format=webply&optimize=medium",
+      "path": "story/cam-smith-putting-stroke-video-2023-open-championship",
+      "title": "Powering LifeGift's mission of hope with Adobe Acrobat Sign",
+      "author": "Natasha Wyatt",
+      "description": "LifeGift, a non-profit health services organization, plays a vital role in the complex, highly regulated, life-saving world of organ donations. To ensure the seamless and secure orchestration of organ gifts, they needed to find a way to make their document processes more seamless. The solution needed to handle electronic signatures and provide robust security for sensitive medical information. After exploring several options, LifeGift chose Adobe Acrobat Sign because it was exceptionally easy to use and provided outstanding security and integration features.",
+      "tags": "[\"Digital Transformation\",\"Customer Stories\",\"Document Cloud\",\"Acrobat\",\"Sign\"]",
+      "imageAlt": "0",
+      "robots": "0",
+      "lastModified": "1689568512"
+    },
+    {
+      "date": "45121",
+      "image": "cards-placeholder/media_14870bf88dc50541d9833432f899bd3d8160c5328.jpeg?width=2000&format=webply&optimize=medium",
+      "path": "story/billy-horschel-range-ball-practice-hack",
+      "title": "How to research companies to prepare for interviews",
+      "author": "Adobe Life team",
+      "description": "Our Asia Pacific Talent Acquisition team have come together to share their perspectives and expertise on a number of topics to help candidates set themselves up for success. In this article we’ll explore tips, tricks, and best practices on researching companies to prepare for interviews.",
+      "tags": "[]",
+      "imageAlt": "Woman on her laptop.",
+      "robots": "0",
+      "lastModified": "1689292088",
+      "courseType": "public"
+    },
+    {
+      "date": "45120",
+      "image": "cards-placeholder/media_17c8d7cc3d9a35de149720ec1df79908b236db6d7.jpeg?width=2000&format=webply&optimize=medium",
+      "path": "story/bernard-langer-golf-90-percent-mental-myth",
+      "title": "Adobe Analytics: Prime Day drove record U.S. online spending, bolstered by deep discounts",
+      "author": "Vivek Pandya",
+      "description": "Now in its ninth year, Prime Day has cemented its status in the United States as one of the year’s biggest industry-wide e-commerce moments. This year’s event took place on July 11 and 12, generating 2023’s biggest daily online spending to date. Total spending across both days reached $12.7 billion in the U.S. – 6.1% year-over-year growth – and set a new Prime Day record.",
+      "tags": "[\"Trends & Research\",\"Experience Cloud\",\"Analytics\",\"Retail\"]",
+      "imageAlt": "Shopping Buying Commerce Customer Happiness Concept.",
+      "robots": "0",
+      "lastModified": "1689280809",
+      "courseType": "public"
+    },
+    {
+      "date": "45119",
+      "image": "cards-placeholder/media_1ddca32f87119649cf6c9442f194240a35653a9c9.jpeg?width=2000&format=webply&optimize=medium",
+      "path": "story/rory-mcilroy-2014-open-championship-putting-spot",
+      "title": "Adobe Firefly. Glühwürmchen. Luciérnaga. Luciole. Vaga-lume. Licurici. ホタル",
+      "author": "Alexandru Costin",
+      "description": "Firefly beta website at firefly.adobe.com now accepts prompts in over 100 languages. Enter prompts in your language of choice to generate magic creations with Text to Image, Generative Fill, Generative Recolor or Text Effects. The website is also now available English, German, Spanish, French, Brazilian and Japanese.",
+      "tags": "[\"News\",\"Creative Cloud\",\"Creativity\",\"Adobe Firefly\"]",
+      "imageAlt": "Adobe Firefly image.",
+      "robots": "0",
+      "lastModified": "1689142675",
+      "courseType": "public"
+    }
+  ],
+  ":type": "sheet"
+}
