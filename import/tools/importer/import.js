@@ -151,6 +151,7 @@ function transformArticleDOM(document, templateConfig) {
   const imageEmbed = document.querySelector('.o-ImageEmbed');
   const imageEmbedCredit = document.querySelector('.o-ImageEmbed__a-Credit');
   const articleTitle = document.querySelector('.o-AssetTitle');
+  const articleDescription = document.querySelector('.o-AssetDescription__a-Description');
   const articleBody = document.querySelector('.articleBody');
   const main = document.createElement('main');
 
@@ -169,6 +170,9 @@ function transformArticleDOM(document, templateConfig) {
     main.append(articleHero);
   } else {
     main.append(articleTitle);
+    if (articleDescription) {
+      main.append(articleDescription);
+    }
     if (imageEmbed) {
       main.append(imageEmbed);
     }
@@ -436,8 +440,8 @@ function mapToDocumentPath(document, url) {
 }
 
 const TRANSFORM_CONFIG = {
-  Default: { template: 'Default Article', selector: ".articlePage .article-content .content-well .a-Rubric", category: "article", transformer: transformArticleDOM },
   FullBleed: { template: 'Full Bleed', selector: ".articlePage .area .o-ArticleHero", category: "article", transformer: transformArticleDOM },
+  Default: { template: 'Default Article', selector: ".articlePage .article-content .content-well", category: "article", transformer: transformArticleDOM },
   LongForm: { template: 'Long Form', selector: ".longformPage", category: "article", transformer: transformArticleDOM },
   OpenArticle: { template: 'Open Article', selector: ".openArticlePage",category: "article", transformer: transformArticleDOM },
   LiveStream: { template: 'Live Stream', selector: ".liveStreamArticlePage", category: "article", transformer: transformArticleDOM },
@@ -452,21 +456,25 @@ function findTemplateConfig(document) {
 
 function isArticle(document) {
   const templateConfig = findTemplateConfig(document);
-  return templateConfig.transformer === transformArticleDOM;
+  return templateConfig !== undefined && templateConfig.transformer === transformArticleDOM;
 }
 
 function trasformDOM(document) {
   const templateConfig = findTemplateConfig(document);
 
   let retObj = {
-    element: document.querySelector('main'),
     report: {
       title: document.title,
+      status: 'Error: unknown page type',
+      bodyClass: document.querySelector('body').classList,
     },
   };
 
   if (templateConfig) {
     retObj = templateConfig.transformer(document, templateConfig);
+  } else {
+    const bodyClass = document.querySelector('body').getAttribute('class');
+    throw new Error(`Unknown page type. Body class list ${bodyClass}`);
   }
 
   return retObj;
