@@ -25,7 +25,7 @@ const ARTICLE_TEMPLATES = {
   ProductListing: 'product-listing',
 };
 
-const LCP_BLOCKS = [...Object.values(ARTICLE_TEMPLATES)]; // add your LCP blocks to the list
+const LCP_BLOCKS = [...Object.values(ARTICLE_TEMPLATES), 'hero']; // add your LCP blocks to the list
 
 const range = document.createRange();
 
@@ -288,7 +288,7 @@ export const timeSince = (date) => {
 
 /**
  * Converts excel date into JS date.
- * @param {number} excel date to convert.
+ * @param {number} excelDate date to convert.
  */
 export const convertExcelDate = (excelDate) => {
   const secondsInDay = 86400;
