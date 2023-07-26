@@ -26,7 +26,7 @@ export default async function decorate(block) {
 
   const HTML_TEMPLATE = `
   <h4 style="color: crimson;" id="testing-here">${carouselType} Version:</h4>
-  <div class="carousel-main-wrapper" style="border: 4px solid blue;">
+  <div class="carousel-main-wrapper" >
     <div class="controls">
       <button class="left-button"></button>
       <button class="right-button"></button>
@@ -59,46 +59,65 @@ export default async function decorate(block) {
   // Template rendering
   const template = parseFragment(HTML_TEMPLATE);
 
-  // window.addEventListener("resize", () => {
-
-  // })
-
-  // initialize variables required for carousel features
+  // initialize variables & functions required for carousel features
+  const carouselWrapper = template.querySelector('.carousel-main-wrapper');
+  const carouselFrame = template.querySelector('.carousel-frame');
+  const rightButton = template.querySelector(".controls .right-button");
+  const leftButton = template.querySelector(".controls .left-button");
   let pressed = false;
   let x = 0;
   let maxScroll = 1440
 
-  const roundX = (step) => {
-    x = Math.round(x / step) * step
+  const refreshMaxScroll = () => {
+    maxScroll = carouselFrame.children.length * (carouselFrame.children[0].getBoundingClientRect().width + 25) - carouselFrame.getBoundingClientRect().width // prettier-ignore
   }
 
-  const setX = (addValue) => {
-    let newValue = x + addValue;
+  const roundX = (step=carouselFrame.children[0].getBoundingClientRect().width + 25) => {
+    const rounded = Math.round(x / step) * step
+    x = Math.min(0, Math.max(rounded, -maxScroll))
+  }
+
+  const addToX = (addValue) => {
+    const newValue = x + addValue;
     if (newValue > 0) {
-      x =  0
+      x = !pressed ? 0 : x + (addValue / 8)
     } else if (newValue < -maxScroll) {
-      x =  -maxScroll
+      x = !pressed ? -maxScroll : x + (addValue / 8)
     } else {
       x = newValue
     }
   }
 
-  const carouselWrapper = template.querySelector('.carousel-main-wrapper');
-  const carouselFrame = template.querySelector('.carousel-frame');
+  const updateButtonVisibility = () => {
+    if (x > -40) {
+      leftButton.classList.add("hidden")
+    } else {
+      leftButton.classList.remove("hidden")
+    }
+    if (x < (-maxScroll + 40)) {
+      rightButton.classList.add("hidden")
+    } else {
+      rightButton.classList.remove("hidden")
+    }
+  }
+  updateButtonVisibility()
+
   
   // drag logic
   const mouseMoveHandler = (e) => {
     if (!pressed) return;
     e.preventDefault();
-    setX(e.movementX)
+    addToX(e.movementX)
     carouselFrame.style.transform = `translateX(${x}px)`
   }
 
-  const mouseUpHandler = () => {
+  const mouseUpHandler = (e) => {
     pressed = false
     carouselWrapper.classList.remove("grabbed")
-    roundX(carouselFrame.children[0].getBoundingClientRect().width + 26)
+    roundX()
     carouselFrame.style.transform = `translateX(${x}px)`
+    updateButtonVisibility()
+    // cleanup
     window.removeEventListener("mouseup", mouseUpHandler)
     window.removeEventListener("mousemove", mouseMoveHandler)
   }
@@ -106,28 +125,66 @@ export default async function decorate(block) {
   carouselWrapper.onmousedown = (e) => {
     carouselWrapper.classList.add("grabbed")
     pressed = true;
-    maxScroll = carouselFrame.children.length * (carouselFrame.children[0].getBoundingClientRect().width + 26) - carouselFrame.getBoundingClientRect().width
+    refreshMaxScroll()
 
     window.addEventListener("mouseup", mouseUpHandler)
     window.addEventListener("mousemove", mouseMoveHandler)
   };
 
-
   // button logic
   const rightOnClick = () => {
-    setX(-carouselFrame.getBoundingClientRect().width - 8)
+    addToX(-carouselFrame.getBoundingClientRect().width)
+    roundX()
     carouselFrame.style.transform = `translateX(${x}px)`
+    updateButtonVisibility()
   }
 
   const leftOnClick = () => {
-    setX(carouselFrame.getBoundingClientRect().width + 8)
+    addToX(carouselFrame.getBoundingClientRect().width)
+    roundX()
     carouselFrame.style.transform = `translateX(${x}px)`
+    updateButtonVisibility()
   }
   
-  template.querySelector(".controls .right-button").onclick = rightOnClick;
-  template.querySelector(".controls .left-button").onclick = leftOnClick;
+  rightButton.onclick = rightOnClick;
+  leftButton.onclick = leftOnClick;
 
+  // preventing drag from triggering a page switch
+  const anchors = carouselFrame.querySelectorAll("a.carousel-item")
+  anchors.forEach((anchor) => {
+    const clickLocation = {}
+    anchor.onfocus = (e) => {
+    }
+    anchor.onclick = (e) => {
+      e.preventDefault()
+    }
+    anchor.onmousedown = (e) => {
+      e.preventDefault()
+      clickLocation.x = e.clientX
+      clickLocation.y = e.clientY
+    }
+    anchor.onmouseup = (e) => {
+      e.preventDefault()
+      if (e.clientX === clickLocation.x && e.clientY === clickLocation.y) {
+        window.location.href = e.target.href
+      }
+    }
+  })
+  
 
+  // resize listener
+  let timeout = false
+  const debouncedResizeHandler = (event) => {
+    clearTimeout(timeout)
+    timeout = setTimeout(() => {
+      refreshMaxScroll()
+      addToX(0)
+      roundX()
+      carouselFrame.style.transform = `translateX(${x}px)`
+      updateButtonVisibility()
+    }, 150)
+  }
+  window.addEventListener("resize", debouncedResizeHandler)
 
   // Render template
   render(template, block);
