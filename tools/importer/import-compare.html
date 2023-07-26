@@ -3,7 +3,7 @@
         <title>Compare Tool</title>
         <style>
             .form {
-                padding-bottom: 5;
+                padding-bottom: 5px;
                 text-align: center;
             }
             .manual-form {
@@ -32,7 +32,6 @@
                 border: none;
                 margin: 0;
                 padding: 0;
-                border: inset;
             }
             .frame {
                 width: 200%;
@@ -52,7 +51,7 @@
             .publish-logger {
                 border: none;
                 width: 100%;
-                margin-bottom: 10;
+                margin-bottom: 10px;
             }
             .url {
                 margin-left: 0;
@@ -61,7 +60,7 @@
                 border: 0;
             }
             .env-op-label {
-                margin-left: 50;
+                margin-left: 50px;
             }
             .log-btn {
                 display: none;
@@ -73,7 +72,7 @@
                 flex-direction: row;
             }
             #prev-btn {
-                margin-left: 50;
+                margin-left: 50px;
             }
             #url-text {
                 width: 95%;
@@ -111,16 +110,16 @@
             const myHost = (location.port !== 80) ? `${location.protocol}//${location.hostname}:3000` : `${location.protocol}//${location.hostname}`;
             const proxyHost = `${location.protocol}//${location.hostname}:3001`;
             const projectHost = 'helix-sportsmagazine--headwirecom.hlx';
-            
+
             const localDevHost = 'http://localhost:3000';
-            const importRoot = '/import-test';
+            const importRoot = '/content-v2';
 
             let environment = 'main';
             let previewImportHost = `https://${environment}--${projectHost}.page`;
             let liveImportHost = `https://${environment}--${projectHost}.live`;
 
             let data = [];
-            let currentIndex = 0; 
+            let currentIndex = 0;
             async function fetchFromDataFile(pageType) {
                 let pagePath = window.location.hash.trim();
                 if (pagePath && pagePath.length > 0) {
@@ -247,7 +246,7 @@
                 }
                 const orgFrame = document.getElementById('frame1');
                 orgFrame.src = getRemoteUrl(path);
-                
+
                 if (path.startsWith('/content/golfdigest-com/en/')) {
                     setUrlDisplay(document.getElementById('currentImportedURL'), getImportedUrl(path));
                     updateComapreFrame(path);
@@ -310,7 +309,7 @@
                     let url = await mapFromOriginalPath(origUrl);
                     urls.push(url);
                 }
-        
+
                 appendLog('Publishing ...')
                 await bulk(urls, operation, getPublishLogger());
                 return true;
@@ -355,7 +354,7 @@
                     let url = getImportedProxyUrl(documentPath, op);
                     let importedUrl = getImportedUrl(documentPath, op);
                     let logMsg = '';
-                    
+
                     console.log(`Testing ${url}`);
                     let resp = await fetch(url);
                     let respCode = resp.status;
