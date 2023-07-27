@@ -9,33 +9,9 @@
 
 @font-face {
     font-family: Tungsten;
-    src: url('/styles/fonts/Tungsten/Tungsten-Medium_Web.woff2') format('woff2');
-    font-display: swap;
-    font-weight: 500;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: Tungsten;
     src: url('/styles/fonts/Tungsten/Tungsten-Semibold_Web.woff2') format('woff2');
     font-display: swap;
     font-weight: 600;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: Tungsten;
-    src: url('/styles/fonts/Tungsten/Tungsten-Bold_Web.woff2') format('woff2');
-    font-display: swap;
-    font-weight: 700;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: Tungsten;
-    src: url('/styles/fonts/Tungsten/Tungsten-Black_Web.woff2') format('woff2');
-    font-display: swap;
-    font-weight: 800;
     font-style: normal;
 }
 

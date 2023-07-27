@@ -22,7 +22,18 @@
 }
 
 @font-face {
-  font-family: "Tunsten Fallback";
+  font-family: 'Tungsten Fallback';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Arial Bold');
+  ascent-override: 166.20%;
+  descent-override: 41.55%;
+  line-gap-override: 0.00%;
+  size-adjust: 57.76%;
+}
+
+@font-face {
+  font-family: "Tungsten Fallback";
   font-style: normal;
   font-weight: 400;
   src: local("Arial");
@@ -35,7 +46,7 @@
 :root {
   /* CSS vars */
   --font-gotham: "Gotham", "Gotham Fallback", helvetica, ubuntu, roboto, noto, sans-serif;
-  --font-tungsten: "Tungsten", "Tunsten Fallback", helvetica, ubuntu, roboto, noto, sans-serif;
+  --font-tungsten: "Tungsten", "Tungsten Fallback", helvetica, ubuntu, roboto, noto, sans-serif;
   --header-height: 120px;
   --leaderboard-height: 80px;
   --link-hover-color: #ed3e49;
