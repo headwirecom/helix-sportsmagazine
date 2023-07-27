@@ -67,9 +67,13 @@ main {
   width: 100%;
 }
 
-.separator {
-  border-right: 2px solid #adb4b7;
-  width: 0;
-  padding: 0;
-  height: 1em;
+/* homepage */
+@media (max-width: 1024px) {
+  .home-page header {
+    height: 67px;
+  }
+
+  .home-page main {
+    padding-top: 0;
+  }
 }

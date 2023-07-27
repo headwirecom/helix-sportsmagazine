@@ -1,0 +1,432 @@
+.landing-page main .cards-wrapper {
+  width: 100%;
+}
+
+.landing-page main .cards-wrapper .cards.block {
+  max-width: 1440px;
+  margin: auto;
+  height: 720px;
+  margin-bottom: 40px;
+  overflow: hidden;
+}
+
+.landing-page main .cards-wrapper .cards.block .date-string {
+  display: none;
+}
+
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper {
+  padding: 0 15px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  gap: 24px;
+}
+
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper.reverse {
+  flex-direction: row-reverse;
+}
+
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .main-card,
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .small-card {
+  color: white;
+  text-decoration: none;
+  position: relative;
+  flex: 1 1 0px;
+}
+
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .main-card .image-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .main-card .image-bg > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 3s;
+}
+
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .main-card:hover .image-bg > img {
+  transform: scale(1.2);
+}
+
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .main-card .main-text-wrapper {
+  background: linear-gradient(180deg, transparent 50%, #000);
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .headline > * {
+  display: block;
+  color: #151517;
+  font-family: var(--font-gotham);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 130%;
+  margin: 0;
+}
+
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .main-card .main-text-wrapper .headline > h3 {
+  margin: 0;
+  font-family: var(--font-tungsten);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  line-height: 103%;
+  font-size: 37px;
+  color: white;
+}
+
+@media (max-width: 769px) {
+  .landing-page main .cards-wrapper .cards.block .card-block-wrapper .main-card .main-text-wrapper .headline > h3 {
+    font-size: 28px;
+  }
+}
+
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .main-card .main-text-wrapper .section {
+  color: #adb4b7;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 10px;
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+}
+
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards {
+  height: 100%;
+  flex: 1 1 0px;
+  gap: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card {
+  box-sizing: border-box;
+  border: 0.5px;
+  border-style: solid;
+  border-color: #e5e5e5;
+  background-color: white;
+  color: black;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .image-wrapper > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  transition: transform 3s;
+}
+
+.landing-page
+  main
+  .cards-wrapper
+  .cards.block
+  .card-block-wrapper
+  .secondary-cards
+  .small-card:hover
+  .image-wrapper
+  > img {
+  transform: scale(1.2);
+}
+
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .image-wrapper {
+  width: 322px;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .small-text-wrapper {
+  flex: 1 1 0px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.landing-page
+  main
+  .cards-wrapper
+  .cards.block
+  .card-block-wrapper
+  .secondary-cards
+  .small-card
+  .small-text-wrapper
+  .section {
+  color: #adb4b7;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 10px;
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+}
+
+.landing-page main .cards-wrapper .cards.block.gd .date-string {
+  display: block;
+}
+
+.landing-page
+  main
+  .cards-wrapper
+  .cards.block
+  .card-block-wrapper
+  .secondary-cards
+  .small-card
+  .small-text-wrapper
+  .date-string {
+  margin-top: 10px;
+  font-family: var(--font-gotham);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  letter-spacing: 0.1em;
+  color: #adb4b7;
+}
+
+.landing-page main .cards-wrapper .cards.block.gd .card-block-wrapper .gd-cards-wrapper,
+.landing-page main .cards-wrapper .cards.block.gd .card-block-wrapper .main-card {
+  flex: 1 1 0;
+}
+
+@media (max-width: 1280px) {
+  .landing-page main .cards-wrapper .cards.block {
+    height: auto;
+  }
+
+  .landing-page main .cards-wrapper .cards.block .card-block-wrapper {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .landing-page main .cards-wrapper .cards.block .card-block-wrapper.reverse {
+    flex-direction: column;
+  }
+
+  .landing-page main .cards-wrapper .cards.block .card-block-wrapper a.main-card {
+    aspect-ratio: 1.29/1;
+    flex: none;
+  }
+
+  .landing-page main .cards-wrapper .cards.block .card-block-wrapper a.main-card .main-text-wrapper {
+    padding: 18px;
+  }
+
+  .landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card {
+    min-height: 224px;
+  }
+  
+  .landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .image-wrapper {
+    min-width: 322px;
+  }
+
+  .landing-page main .cards-wrapper .cards.block.gd .card-block-wrapper .secondary-cards .small-card .image-wrapper {
+    width: auto;
+    min-width: 186px;
+  }
+}
+
+@media (max-width: 768px) {
+  .landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards {
+    gap: 0;
+  }
+
+  .landing-page
+    main
+    .cards-wrapper
+    .cards.block
+    .card-block-wrapper
+    .secondary-cards
+    .small-card
+    .small-text-wrapper
+    .headline
+    > h3 {
+    font-size: 14px;
+  }
+
+  .landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card {
+    min-height: 157px;
+    border-top: 0;
+    border-style: solid;
+    border-color: #e5e5e5;
+  }
+
+  .landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards a.small-card:first-child {
+    min-height: 157px;
+    border-top: 0.5px;
+    border-style: solid;
+    border-color: #e5e5e5;
+  }
+
+  .landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .small-text-wrapper {
+    padding-left: 0;
+  }
+
+  .landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .image-wrapper {
+    max-width: 100%;
+    min-width: 0;
+    height: auto;
+    width: calc(32% - 15px);
+    margin: 15px;
+    aspect-ratio: 1.78/1;
+  }
+}
+
+.landing-page main .cards-wrapper .gd-plus-title {
+  padding-bottom: 20px;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  margin-left: -9px;
+  font-family: var(--font-tungsten);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  font-size: 28px;
+}
+
+.landing-page main .cards-wrapper .gd-plus-title::before {
+  content: "";
+  display: block;
+  width: 5px;
+  height: 20px;
+  margin-right: 10px;
+  background-color: #ed3e49;
+}
+
+.landing-page main .cards-wrapper .cards.block.gd {
+  height: auto;
+}
+
+.landing-page main .cards-wrapper .cards.block.gd .card-block-wrapper .main-card {
+  max-width: 693px;
+}
+
+@media (max-width: 1280px) {
+  .landing-page main .cards-wrapper .cards.block.gd .card-block-wrapper .main-card {
+    max-width: none;
+    max-height: none;
+    aspect-ratio: 1/1;
+    width: 100%;
+    flex: none;
+  }
+
+  .landing-page main .cards-wrapper .gd-plus-title {
+    font-size: 24px;
+  }
+}
+
+.landing-page main .cards-wrapper .cards.block.gd .secondary-cards {
+  padding: 20px 35px 25px;
+  box-sizing: border-box;
+  border: 0.5px solid #e5e5e5;
+  background-color: white;
+  gap: 0;
+  height: 100%;
+}
+
+.landing-page main .cards-wrapper .cards.block.gd .secondary-cards .small-card {
+  flex: none;
+  flex-wrap: wrap;
+  padding-top: 15px;
+  border: none;
+  min-height: 120px;
+  padding-bottom: 26px;
+  border-bottom: 0.5px solid #e5e5e5;
+}
+
+.landing-page main .cards-wrapper .cards.block.gd .secondary-cards .small-card .image-wrapper {
+  width: 186px;
+  height: 120px;
+  box-sizing: content-box;
+}
+
+.landing-page main .cards-wrapper .cards.block.gd .secondary-cards .small-card .small-text-wrapper {
+  padding-top: 0;
+  padding-bottom: 0;
+  flex: 1 1 0;
+}
+
+.landing-page main .cards-wrapper .cards.block.gd .gd-plus-icon-img {
+  height: 19px;
+  width: 51px;
+  margin-bottom: 4px;
+}
+
+.landing-page main .cards-wrapper .cards.block.gd .secondary-cards .small-card:first-of-type {
+  height: 236px;
+  min-height: 130px;
+  width: calc(100% + 18px);
+  margin-left: -9px;
+}
+
+.landing-page main .cards-wrapper .cards.block.gd .secondary-cards .small-card:first-of-type .image-wrapper {
+  width: 303px;
+  height: 195px;
+  padding-bottom: 0;
+}
+
+.landing-page main .cards-wrapper .cards.block.gd .secondary-cards .small-card:last-of-type {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.landing-page main {
+  background-color: #f6f6f6;
+}
+
+@media (max-width: 768px) {
+  .landing-page main .cards-wrapper .cards.block.gd .card-block-wrapper .secondary-cards {
+    padding: 15px;
+  }
+
+  .landing-page main .cards-wrapper .cards.block.gd .card-block-wrapper .secondary-cards .small-card {
+    height: 149px;
+    gap: 15px;
+  }
+
+  .landing-page main .cards-wrapper .cards.block.gd .card-block-wrapper .secondary-cards .small-card .image-wrapper {
+    margin: 0;
+    width: 150px;
+    min-width: 0;
+    height: 93px;
+  }
+
+  .landing-page main .cards-wrapper .gd-plus-title {
+    width: 100%;
+    margin-left: 9px;
+  }
+
+  .landing-page main .cards-wrapper .cards.block.gd .secondary-cards .small-card:first-of-type {
+    height: 149px;
+    gap: 15px;
+    width: 100%;
+    margin: 0;
+  }
+
+  .landing-page main .cards-wrapper .cards.block.gd .secondary-cards a.small-card:first-of-type .image-wrapper {
+    width: auto;
+    width: 150px;
+    min-width: 0;
+    height: 93px;
+    margin: 0;
+  }
+}

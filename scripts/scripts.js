@@ -10,7 +10,8 @@ import {
   decorateTemplateAndTheme,
   waitForLCP,
   loadBlocks,
-  loadCSS, toClassName,
+  loadCSS,
+  toCamelCase,
 } from './lib-franklin.js';
 
 const ARTICLE_TEMPLATES = {
@@ -29,14 +30,27 @@ const LCP_BLOCKS = [...Object.values(ARTICLE_TEMPLATES)]; // add your LCP blocks
 const range = document.createRange();
 
 /**
- * Returns metadata JSON key:value pairs
+ * Remove DOM elements which are empty
+ * @param {DocumentFragment} container
+ * @param {string} selector
+ */
+export function removeEmptyElements(container, selector) {
+  container.querySelectorAll(selector).forEach((el) => {
+    if (el.innerHTML.trim() === '') {
+      el.remove();
+    }
+  });
+}
+
+/**
+ * Returns section metadata JSON key:value pairs
  * @param {HTMLDivElement} metadataElement
  * @returns {object} JSON
  */
-export function parseMetadata(metadataElement) {
+export function parseSectionMetadata(metadataElement) {
   const metadata = {};
   [...metadataElement.children].forEach((child) => {
-    const key = toClassName(child.firstElementChild.textContent.trim());
+    const key = toCamelCase(child.firstElementChild.textContent.trim());
     const value = child.lastElementChild.textContent.trim();
     metadata[key] = value;
   });
@@ -52,6 +66,19 @@ export function parseMetadata(metadataElement) {
  */
 export function parseFragment(fragmentString) {
   return range.createContextualFragment(fragmentString);
+}
+
+/**
+ * Assign slot attribute to selected element
+ * @param {HTMLElement} block
+ * @param {string} slot
+ * @param {string} selector
+ */
+export function assignSlot(block, slot, selector) {
+  const el = block.querySelector(selector);
+  if (el) {
+    el.setAttribute('slot', slot);
+  }
 }
 
 /**
@@ -93,6 +120,10 @@ function buildTemplate(main) {
   [...document.body.classList].some((className) => {
     const template = findTemplate(className);
     if (template) {
+      main.querySelectorAll('.section-metadata').forEach((metadataEl) => {
+        metadataEl.className = 'template-section-metadata';
+      });
+
       const section = document.createElement('div');
       section.append(buildBlock(template, { elems: [...main.children] }));
       main.prepend(section);
@@ -218,3 +249,54 @@ async function loadPage() {
 }
 
 loadPage();
+
+/**
+ * Converts date into time since string.
+ * Example: X days ago
+ * @param {Date} date to compare to.
+ */
+export const timeSince = (date) => {
+  const seconds = Math.floor((new Date() - date) / 1000);
+  let interval = seconds / 31536000;
+  if (interval > 1) {
+    const value = Math.floor(interval);
+    return `${value} ${value === 1 ? 'year' : 'years'} ago`;
+  }
+  interval = seconds / 2592000;
+  if (interval > 1) {
+    const value = Math.floor(interval);
+    return `${value} ${value === 1 ? 'month' : 'months'} ago`;
+  }
+  interval = seconds / 86400;
+  if (interval > 1) {
+    const value = Math.floor(interval);
+    return `${value} ${value === 1 ? 'day' : 'days'} ago`;
+  }
+  interval = seconds / 3600;
+  if (interval > 1) {
+    const value = Math.floor(interval);
+    return `${value} ${value === 1 ? 'hour' : 'hours'} ago`;
+  }
+  interval = seconds / 60;
+  if (interval > 1) {
+    const value = Math.floor(interval);
+    return `${value} ${value === 1 ? 'minute' : 'minutes'} ago`;
+  }
+  const value = Math.floor(interval);
+  return `${value} ${value === 1 ? 'second' : 'seconds'} ago`;
+};
+
+/**
+ * Converts excel date into JS date.
+ * @param {number} excel date to convert.
+ */
+export const convertExcelDate = (excelDate) => {
+  const secondsInDay = 86400;
+  const excelEpoch = new Date(1899, 11, 31);
+  const excelEpochAsUnixTimestamp = excelEpoch.getTime();
+  const missingLeapYearDay = secondsInDay * 1000;
+  const delta = excelEpochAsUnixTimestamp - missingLeapYearDay;
+  const excelTimestampAsUnixTimestamp = excelDate * secondsInDay * 1000;
+  const parsed = excelTimestampAsUnixTimestamp + delta;
+  return Number.isNaN(parsed) ? null : new Date(parsed);
+};

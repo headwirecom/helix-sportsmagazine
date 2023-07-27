@@ -315,7 +315,7 @@ function transformGalleryDOM(document, templateConfig) {
         if (!hasMetadata) {
           block.remove();
         }
-
+        
         if (slideCount < totalSlides-1) {
           main.insertAdjacentHTML('beforeend', '<hr/>');
         }
@@ -337,7 +337,7 @@ function transformGalleryDOM(document, templateConfig) {
         if (slideCount < slideInfos.length) {
           const slideInfo = slideInfos.item(slideCount);
           main.append(slideInfo);
-
+          
           let block = createSectionMetadata(document, main);
           let hasMetadata = false;
 

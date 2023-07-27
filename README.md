@@ -1,17 +1,19 @@
-# Golf Digest Frenklin Migration POC V2
+# Golf Digest Frenklin Migration
 
 This project is based on [helix-project-boilerplate](https://github.com/adobe/helix-project-boilerplate) template project. The content mountpoint in the `fstab.yaml` points to [helix-sportsmagazine-content](https://drive.google.com/drive/folders/1HyaaV7_cFS4O0wglrHm2Zk2KChUOz4S2) on Google Drive.
 
 ## Environments
 
-Preview: https://v2--helix-sportsmagazine--headwirecom.hlx.page
+Preview: https://main--helix-sportsmagazine--headwirecom.hlx.page
+Live: https://main--helix-sportsmagazine--headwirecom.hlx.live
 
-Examples:
-- https://v2--helix-sportsmagazine--headwirecom.hlx.page/import-test/play/equipment/apparel/_default/gallery/2020/7/golf-shoes-womens-on-sale-noblocks
-- https://v2--helix-sportsmagazine--headwirecom.hlx.page/import-test/play/equipment/apparel/gallery/2017/3/best-mens-golf-shoes-2017-noblocks
-- https://v2--helix-sportsmagazine--headwirecom.hlx.page/import-test/play/instruction/approach-shots/article/2018/1/get-control-over-your-wedges-like-jason-day
+## Demo
 
-Live: https://v2--helix-sportsmagazine--headwirecom.hlx.live
+- Default Article: https://main--helix-sportsmagazine--headwirecom.hlx.page/import-test/play/instruction/approach-shots/article/2018/1/get-control-over-your-wedges-like-jason-day
+- Gallery Listicle: https://main--helix-sportsmagazine--headwirecom.hlx.page/import-test/play/equipment/apparel/_default/gallery/2020/7/golf-shoes-womens-on-sale-noblocks
+- Gallery: https://main--helix-sportsmagazine--headwirecom.hlx.page/import-test/play/equipment/apparel/gallery/2017/3/best-mens-golf-shoes-2017-noblocks
+- Long Form: https://main--helix-sportsmagazine--headwirecom.hlx.page/import-test/play/instruction/short-game/article/2018/2/does-tiger-still-have-the-yips
+- Product Listing: https://main--helix-sportsmagazine--headwirecom.hlx.page/import-test/play/equipment/products/2022/09/360-only-divot-tool
 
 ## Installation
 
@@ -28,7 +30,7 @@ npm tst
 ## Local development
 
 To start development:
-1. Clone this project and checkout `v2` branch.
+1. Clone this project and checkout `main` branch.
 1. Install the [Helix CLI](https://github.com/adobe/helix-cli): `npm install -g @adobe/helix-cli`
 1. Start Helix Pages Proxy: `hlx up` (opens your browser at `http://localhost:3000`)
 1. Open the `{repo}` directory in your favorite IDE and start coding :)
