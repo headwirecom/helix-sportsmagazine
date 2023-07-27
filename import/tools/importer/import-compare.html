@@ -113,7 +113,7 @@
             const projectHost = 'helix-sportsmagazine--headwirecom.hlx';
             
             const localDevHost = 'http://localhost:3000';
-            const importRoot = '/import-test';
+            const importRoot = '/content-v2';
 
             let environment = 'main';
             let previewImportHost = `https://${environment}--${projectHost}.page`;
@@ -455,7 +455,6 @@
                 <label class="env-op-label" for="env-op">Environment:</label>
                 <select class="env-op" onchange="envChange()">
                     <option value="main" selected>main</option>
-                    <option value="sportsmagazine-poc">sportsmagazine-poc</option>
                     <option value="dev">local development</option>
                 </select>
                 <select class="publish-op" onchange="publishOpChange()">
