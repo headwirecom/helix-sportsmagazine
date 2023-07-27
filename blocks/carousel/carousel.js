@@ -9,6 +9,13 @@ const fetchCarouselData = async (type) => {
   carouselData = data
 }
 
+const carouselTitleLookup = {
+  courses: "Trending Courses",
+  latest: "The Latest",
+  loop: "The Loop",
+  wedges: "Hot List 2023"
+}
+
 const testImage = 'https://placekitten.com/300/400'
 
 export default async function decorate(block) {
@@ -19,13 +26,19 @@ export default async function decorate(block) {
   const carouselType = Array.from(block.classList).filter(className => className !== 'carousel' && className !== 'block')[0]
   console.log("\x1b[31m ~ carouselType:", carouselType)
 
-  const carouselItems = carouselData.data
-  // const carouselItems = []
+  // const carouselItems = carouselData.data
+  const carouselItems = [
+    ...carouselData.data,
+  ]
 
   
 
   const HTML_TEMPLATE = `
-  <h4 style="color: crimson;" id="testing-here">${carouselType} Version:</h4>
+  ${!carouselType ? '' : `
+    <div class="carousel-title-wrapper">
+      <${carouselType === 'wedges' ? 'h1' : 'h4'} class="carousel-title ${carouselType}" id="carousel-${carouselType}">${carouselTitleLookup[carouselType] || carouselType}</${carouselType === 'wedges' ? 'h1' : 'h4'}>
+    </div>
+  `}
   <div class="carousel-main-wrapper" >
     <div class="controls">
       <button class="left-button"></button>
@@ -62,6 +75,7 @@ export default async function decorate(block) {
   // initialize variables & functions required for carousel features
   const carouselWrapper = template.querySelector('.carousel-main-wrapper');
   const carouselFrame = template.querySelector('.carousel-frame');
+  const carouselCardLinks = carouselFrame.children;
   const rightButton = template.querySelector(".controls .right-button");
   const leftButton = template.querySelector(".controls .left-button");
   let pressed = false;
@@ -69,10 +83,10 @@ export default async function decorate(block) {
   let maxScroll = 1440
 
   const refreshMaxScroll = () => {
-    maxScroll = carouselFrame.children.length * (carouselFrame.children[0].getBoundingClientRect().width + 25) - carouselFrame.getBoundingClientRect().width // prettier-ignore
+    maxScroll = carouselCardLinks.length * (carouselCardLinks[0].getBoundingClientRect().width + 27) - carouselFrame.getBoundingClientRect().width // prettier-ignore
   }
 
-  const roundX = (step=carouselFrame.children[0].getBoundingClientRect().width + 25) => {
+  const roundX = (step=carouselCardLinks[0].getBoundingClientRect().width + 27) => {
     const rounded = Math.round(x / step) * step
     x = Math.min(0, Math.max(rounded, -maxScroll))
   }
@@ -103,15 +117,27 @@ export default async function decorate(block) {
   updateButtonVisibility()
 
   
-  // drag logic
+  // drag logic starting with initialization for mobile
+  let previousTouch;
+  
   const mouseMoveHandler = (e) => {
     if (!pressed) return;
-    e.preventDefault();
+    !e?.touches?.[0] && e.preventDefault()
     addToX(e.movementX)
     carouselFrame.style.transform = `translateX(${x}px)`
   }
 
-  const mouseUpHandler = (e) => {
+  const touchMoveHandler = (e) => {
+    const touch = e.touches[0]
+    if (previousTouch) {
+      e.movementX = touch.pageX - previousTouch.pageX
+      mouseMoveHandler(e)
+    }
+    previousTouch = touch
+  }
+
+  // mouse drag handlers
+  const mouseUpHandler = () => {
     pressed = false
     carouselWrapper.classList.remove("grabbed")
     roundX()
@@ -119,17 +145,26 @@ export default async function decorate(block) {
     updateButtonVisibility()
     // cleanup
     window.removeEventListener("mouseup", mouseUpHandler)
+    window.removeEventListener("touchend", mouseUpHandler)
+
     window.removeEventListener("mousemove", mouseMoveHandler)
+    window.removeEventListener("touchmove", touchMoveHandler)
   }
 
-  carouselWrapper.onmousedown = (e) => {
+  const mouseDownHandler = (e) => {
+    if (e?.touches?.[0]) {previousTouch = e.touches[0]}
     carouselWrapper.classList.add("grabbed")
     pressed = true;
     refreshMaxScroll()
-
+  
     window.addEventListener("mouseup", mouseUpHandler)
+    window.addEventListener("touchend", mouseUpHandler)
+
     window.addEventListener("mousemove", mouseMoveHandler)
-  };
+    window.addEventListener("touchmove", touchMoveHandler)
+  }
+  carouselWrapper.onmousedown = mouseDownHandler;
+  carouselWrapper.addEventListener("touchstart", mouseDownHandler)
 
   // button logic
   const rightOnClick = () => {
@@ -149,32 +184,45 @@ export default async function decorate(block) {
   rightButton.onclick = rightOnClick;
   leftButton.onclick = leftOnClick;
 
-  // preventing drag from triggering a page switch
-  const anchors = carouselFrame.querySelectorAll("a.carousel-item")
-  anchors.forEach((anchor) => {
+  // preventing drag from triggering a page switch & focus logic
+  const cardFocusHandler = (cardLink, index) => {
+    refreshMaxScroll()
+    const width = (cardLink.getBoundingClientRect().width + 27)
+    x = width * -index
+    roundX(width)
+    updateButtonVisibility()
+    carouselFrame.style.transform = `translateX(${x}px)`
+  }
+  
+  [...carouselCardLinks].forEach((anchor, index) => {
     const clickLocation = {}
-    anchor.onfocus = (e) => {
+    const keyUpHandler = (e) => {
+      if (e.keyCode === 9) {
+        cardFocusHandler(anchor, index)
+      }
+      window.removeEventListener("keyup", keyUpHandler)
     }
-    anchor.onclick = (e) => {
-      e.preventDefault()
+    // waiting for keyup stops mouse clicks from triggering the focus logic
+    anchor.onfocus = () => {
+      window.addEventListener("keyup", keyUpHandler)
     }
     anchor.onmousedown = (e) => {
       e.preventDefault()
       clickLocation.x = e.clientX
       clickLocation.y = e.clientY
     }
-    anchor.onmouseup = (e) => {
-      e.preventDefault()
-      if (e.clientX === clickLocation.x && e.clientY === clickLocation.y) {
-        window.location.href = e.target.href
+    // prevent opening links when dragging
+    // retains middle-click, shift-click, ctrl-click, etc. functionality
+    anchor.onclick = (e) => {
+      if (e.clientX !== clickLocation.x || e.clientY !== clickLocation.y) {
+        e.preventDefault()
       }
     }
   })
-  
 
   // resize listener
   let timeout = false
-  const debouncedResizeHandler = (event) => {
+  const debouncedResizeHandler = () => {
     clearTimeout(timeout)
     timeout = setTimeout(() => {
       refreshMaxScroll()
