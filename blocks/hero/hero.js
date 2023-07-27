@@ -57,7 +57,7 @@ export default async function decorate(block) {
 
   // Clear the original block content
   block.innerHTML = '';
-  block.append(...template.children);
+  block.append(template);
 
   // Lazy load cards
   if (cards) {

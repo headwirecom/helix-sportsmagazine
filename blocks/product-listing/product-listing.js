@@ -61,5 +61,5 @@ export default async function decorate(block) {
 
   // Update block with rendered template
   block.innerHTML = '';
-  block.append(...template.children);
+  block.append(template);
 }

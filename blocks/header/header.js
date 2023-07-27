@@ -195,7 +195,7 @@ function registerMenuEvents() {
 
 function decorateNavHeader(section) {
   const sectionLink = section.querySelector('a');
-  const url = (sectionLink.getAttribute('href')) ? sectionLink.getAttribute('href') : '//www.golfdigest.com';
+  const url = (sectionLink.getAttribute('href')) ? sectionLink.getAttribute('href') : '/';
   const text = sectionLink.innerHTML;
   const wrapper = document.createElement('div');
 
@@ -335,7 +335,7 @@ function decorateMainSideNav(section) {
 
 function decorateMidNavLink(section) {
   const sectionLink = section.querySelector('a');
-  const url = (sectionLink.getAttribute('href')) ? sectionLink.getAttribute('href') : '//www.golfdigest.com';
+  const url = (sectionLink.getAttribute('href')) ? sectionLink.getAttribute('href') : '/';
   const text = sectionLink.innerHTML;
 
   if (navTemplateDom) {
