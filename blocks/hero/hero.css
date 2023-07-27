@@ -1,6 +1,6 @@
 .hero.block {
     display: grid;
-    grid-template-columns: 1fr min(1440px,100%) 1fr;
+    grid-template-columns: 1fr min(var(--layout-width),100%) 1fr;
 }
 
 .hero.block a {

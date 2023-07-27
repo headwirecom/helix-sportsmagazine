@@ -77,5 +77,5 @@ export default async function decorate(block) {
   removeEmptyElements(template, 'p');
 
   block.innerHTML = '';
-  block.append(...template.children);
+  block.append(template);
 }

@@ -1,5 +1,5 @@
 .default-article.block .container {
-    max-width: 1440px;
+    max-width: var(--layout-width);
     margin: 0 auto;
     padding: 20px;
 }

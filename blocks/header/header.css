@@ -28,6 +28,7 @@
   line-height: 156%;
   letter-spacing: 0.3em;
   text-transform: uppercase;
+  font-family: var(--font-gotham);
 }
 
 .home-page .header:not(.is-scrolling) hr {
@@ -71,7 +72,15 @@
   max-height: 100%;
 }
 
-.home-page .header:not(.is-scrolling) .header-logo svg path {
+.home-page .header:not(.is-scrolling) .header-menu-button svg path {
+  fill: #fff;
+}
+
+.header .nav-menu .social-links a:hover svg path {
+  stroke: #000;
+}
+
+.home-page .header:not(.is-scrolling) .header-top-bar .header-logo svg path {
   fill: #fff;
 }
 
@@ -100,10 +109,6 @@
 
 .home-page .header:not(.is-scrolling) .header-menu-button {
   color: #fff;
-}
-
-.home-page .header:not(.is-scrolling) .header-menu-button svg path {
-  fill: #fff;
 }
 
 .leaderboard .o-leaderboard-link-container-link svg {
@@ -178,7 +183,7 @@
 
 .header .header-bottom-bar,
 .header .header-top-bar {
-  width: 1440px;
+  width: var(--layout-width);
   max-width: 100%;
   margin: 0 auto;
   display: grid;
@@ -307,10 +312,6 @@
   padding: 0;
   width: 50px;
   transition: transform 0.3s, opacity 0.3s, width 0.3s;
-}
-
-.header .nav-menu .social-links a:hover svg path {
-  stroke: #000;
 }
 
 .home-page .header:not(.is-scrolling) .header-bottom-right .header-search-button svg path {
@@ -565,6 +566,10 @@
   display: block;
   padding-bottom: 18px;
   text-align: left;
+}
+
+.home-page .header .header-sub-nav li {
+  color: #151517;
 }
 
 .header .nav-menu-bottom .profile-info li {
@@ -986,7 +991,7 @@
 
 .leaderboard .o-leaderboard {
   display: none;
-  width: 1440px;
+  width: var(--layout-width);
   max-width: 100%;
   margin: 0 auto;
   height: 100%;

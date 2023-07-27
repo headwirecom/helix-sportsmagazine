@@ -17,6 +17,7 @@
   --header-height: 120px;
   --leaderboard-height: 80px;
   --link-hover-color: #ed3e49;
+  --layout-width: 1440px;
 }
 
 @media (max-width: 768px) {

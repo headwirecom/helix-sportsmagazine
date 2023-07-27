@@ -3,10 +3,9 @@
 }
 
 .landing-page main .cards-wrapper .cards.block {
-  max-width: 1440px;
-  margin: auto;
+  max-width: var(--layout-width);
   height: 720px;
-  margin-bottom: 40px;
+  margin: auto auto 40px;
   overflow: hidden;
 }
 
@@ -31,7 +30,7 @@
   color: white;
   text-decoration: none;
   position: relative;
-  flex: 1 1 0px;
+  flex: 1 1 0;
 }
 
 .landing-page main .cards-wrapper .cards.block .card-block-wrapper .main-card .image-bg {
@@ -106,7 +105,7 @@
 
 .landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards {
   height: 100%;
-  flex: 1 1 0px;
+  flex: 1 1 0;
   gap: 24px;
   display: flex;
   flex-direction: column;
@@ -115,9 +114,7 @@
 
 .landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card {
   box-sizing: border-box;
-  border: 0.5px;
-  border-style: solid;
-  border-color: #e5e5e5;
+  border: 0.5px solid #e5e5e5;
   background-color: white;
   color: black;
   display: flex;
@@ -155,7 +152,7 @@
 }
 
 .landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .small-text-wrapper {
-  flex: 1 1 0px;
+  flex: 1 1 0;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -233,7 +230,7 @@
   .landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card {
     min-height: 224px;
   }
-  
+
   .landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .image-wrapper {
     min-width: 322px;
   }
@@ -423,7 +420,6 @@
   }
 
   .landing-page main .cards-wrapper .cards.block.gd .secondary-cards a.small-card:first-of-type .image-wrapper {
-    width: auto;
     width: 150px;
     min-width: 0;
     height: 93px;
