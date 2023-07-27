@@ -1,6 +1,8 @@
 const BULK_URLS_STORAGE_ID = 'option-field-import-urls';
 
 let counter = 0;
+let totalCounter = 0;
+let isJSONOutput = false;
 
 function matchUrlsFilter(url) {
   // match everything if not root urls entered (aka full site import)
@@ -11,31 +13,38 @@ function matchUrlsFilter(url) {
   return false;
 }
 
-async function isPageType(url, pageTypeSelector) {
-  if (!pageTypeSelector || pageTypeSelector === 'all') {
-    return true;
-  }
-
+async function fetchDocument(url) {
   const resp = await fetch(url);
-  if (!resp.ok) {
-    return false;
+  if (resp.ok) {
+    const text = await resp.text();
+    const parser = new DOMParser();
+    return parser.parseFromString(text, 'text/html');
+  } else {
+    console.log(`Unable to fetch ${url}. Response status: ${resp.status}`);
   }
+}
 
-  const text = await resp.text();
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(text, 'text/html');
-  const el = doc.querySelector(pageTypeSelector);
-  if (el) {
-    return true;
+async function isPageType(url, pageTypeSelector) {
+  const doc = await fetchDocument(url);
+  if (doc) {
+    const el = doc.querySelector(pageTypeSelector);
+    if (el) {
+      return true;
+    }
   }
-
   return false;
 }
 
 function append(s) {
+  const logEL = document.querySelector('.log');
   const el = document.createElement('div');
-  el.innerHTML = s;
-  document.querySelector('.log').append(el);
+  if (isJSONOutput) {
+    const txt = `"${s}",`;
+    el.innerText = txt;
+  } else {
+    el.innerHTML = s;
+  }
+  logEL.append(el);
 }
 
 function addToBulkImport(url) {
@@ -61,9 +70,38 @@ async function decompress(blob) {
   return await new Response(decompressedStream).text();
 }
 
+async function process(url, showCount, updateImporter, pageTypeSelector) {
+  const matchPageType = (!pageTypeSelector || pageTypeSelector === 'all') ? true : await isPageType(url, pageTypeSelector);
+  totalCounter++;
+  if (matchPageType) {
+    counter++;
+    if (isJSONOutput) {
+      append(url);
+    } else {
+      if (showCount) append(`${counter} <a href="${url}" target="_blank">${url}</a>`);
+      else append(`<a href="${url}" target="_blank">${url}</a>`);
+    }
+    if (updateImporter) {
+      addToBulkImport(url);
+    }
+  }
+} 
+
 export const urlsFilter = [];
 
-export async function parseSitemap(path, showCount, updateImporter, pageTypeSelector) {
+export async function parse(path, showCount, updateImporter, pageTypeSelector, logAsJson) {
+  if (logAsJson && !isJSONOutput) {
+    isJSONOutput = true;
+    document.querySelector('.log').append('[');
+  }
+  parseSitemap(path, showCount, updateImporter, pageTypeSelector, logAsJson).then(() => {
+    if (isJSONOutput) {
+      document.querySelector('.log').append(']');
+    }
+  });
+}
+
+export async function parseSitemap(path, showCount, updateImporter, pageTypeSelector, logAsJson) {
   if (updateImporter && counter === 0) {
     clearBulkImport();
   }
@@ -83,21 +121,45 @@ export async function parseSitemap(path, showCount, updateImporter, pageTypeSele
 
   const parser = new DOMParser();
   const doc = parser.parseFromString(text, 'application/xml');
+  const sitemaps = [...doc.querySelectorAll('sitemap')];
+  const links = [...doc.querySelectorAll('url')];
 
-  doc.querySelectorAll('sitemap').forEach(async (sitemap) => {
+  for(const sitemap of sitemaps) {
     const url = sitemap.querySelector('loc').childNodes[0].nodeValue;
     await parseSitemap(url, showCount, updateImporter, pageTypeSelector);
-  });
+  }
 
-  doc.querySelectorAll('url').forEach(async (el) => {
+  let urls = [];
+  for(const el of links) {
     const url = el.querySelector('loc').childNodes[0].nodeValue;
-    if (matchUrlsFilter(url) && await isPageType(url, pageTypeSelector)) {
-      counter++;
-      if (showCount) append(`${counter} <a href="${url}" target="_blank">${url}</a>`);
-      else append(`<a href="${url}" target="_blank">${url}</a>`);
-      if (updateImporter) {
-        addToBulkImport(url);
+    const matchUrlFilter = matchUrlsFilter(url);
+    if (matchUrlFilter) {
+      urls.push(url);
+    }
+  }
+  
+  if ((!pageTypeSelector || pageTypeSelector === 'all')) {
+    while (urls.length) {
+      const url = urls.shift();
+      await process(url, showCount, updateImporter, pageTypeSelector);
+    }
+  } else {
+    const dequeue = async () => {
+      while (urls.length) {
+        const url = urls.shift();
+        try {
+          console.log(`(${totalCounter}) Document ${url} processing ... of ${urls.length}`);
+          await process(url, showCount, updateImporter, pageTypeSelector);
+        } catch (error) {
+          console.error(`error processing ${url} : ${error.message}`);
+        }
       }
     }
-  });
+  
+    const concurrency = 5;
+    for (let i = 0; i < concurrency; i += 1) {
+      dequeue();
+    }
+  }
+
 }
