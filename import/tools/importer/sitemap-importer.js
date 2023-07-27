@@ -2,6 +2,7 @@ const BULK_URLS_STORAGE_ID = 'option-field-import-urls';
 
 let counter = 0;
 let totalCounter = 0;
+let isJSONOutput = false;
 
 function matchUrlsFilter(url) {
   // match everything if not root urls entered (aka full site import)
@@ -11,8 +12,6 @@ function matchUrlsFilter(url) {
   }
   return false;
 }
-
-const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 
 async function fetchDocument(url) {
   const resp = await fetch(url);
@@ -37,9 +36,15 @@ async function isPageType(url, pageTypeSelector) {
 }
 
 function append(s) {
+  const logEL = document.querySelector('.log');
   const el = document.createElement('div');
-  el.innerHTML = s;
-  document.querySelector('.log').append(el);
+  if (isJSONOutput) {
+    const txt = `"${s}",`;
+    el.innerText = txt;
+  } else {
+    el.innerHTML = s;
+  }
+  logEL.append(el);
 }
 
 function addToBulkImport(url) {
@@ -70,19 +75,33 @@ async function process(url, showCount, updateImporter, pageTypeSelector) {
   totalCounter++;
   if (matchPageType) {
     counter++;
-    if (showCount) append(`${counter} <a href="${url}" target="_blank">${url}</a>`);
-    else append(`<a href="${url}" target="_blank">${url}</a>`);
+    if (isJSONOutput) {
+      append(url);
+    } else {
+      if (showCount) append(`${counter} <a href="${url}" target="_blank">${url}</a>`);
+      else append(`<a href="${url}" target="_blank">${url}</a>`);
+    }
     if (updateImporter) {
       addToBulkImport(url);
     }
-  } else {
-    // console.log(`(${totalCounter}) Document ${url} didn't match selector '${pageTypeSelector}'`);
   }
 } 
 
 export const urlsFilter = [];
 
-export async function parseSitemap(path, showCount, updateImporter, pageTypeSelector) {
+export async function parse(path, showCount, updateImporter, pageTypeSelector, logAsJson) {
+  if (logAsJson && !isJSONOutput) {
+    isJSONOutput = true;
+    document.querySelector('.log').append('[');
+  }
+  parseSitemap(path, showCount, updateImporter, pageTypeSelector, logAsJson).then(() => {
+    if (isJSONOutput) {
+      document.querySelector('.log').append(']');
+    }
+  });
+}
+
+export async function parseSitemap(path, showCount, updateImporter, pageTypeSelector, logAsJson) {
   if (updateImporter && counter === 0) {
     clearBulkImport();
   }
@@ -102,29 +121,27 @@ export async function parseSitemap(path, showCount, updateImporter, pageTypeSele
 
   const parser = new DOMParser();
   const doc = parser.parseFromString(text, 'application/xml');
+  const sitemaps = [...doc.querySelectorAll('sitemap')];
+  const links = [...doc.querySelectorAll('url')];
 
-  doc.querySelectorAll('sitemap').forEach(async (sitemap) => {
+  for(const sitemap of sitemaps) {
     const url = sitemap.querySelector('loc').childNodes[0].nodeValue;
     await parseSitemap(url, showCount, updateImporter, pageTypeSelector);
-  });
-/*
-  append('<p>awating</p>');
-  await sleep(3000);
-  append('<p>continue</p>');
-*/
+  }
+
   let urls = [];
-  doc.querySelectorAll('url').forEach(async (el) => {
+  for(const el of links) {
     const url = el.querySelector('loc').childNodes[0].nodeValue;
     const matchUrlFilter = matchUrlsFilter(url);
     if (matchUrlFilter) {
       urls.push(url);
     }
-  });
+  }
   
   if ((!pageTypeSelector || pageTypeSelector === 'all')) {
     while (urls.length) {
       const url = urls.shift();
-      process(url, showCount, updateImporter, pageTypeSelector);
+      await process(url, showCount, updateImporter, pageTypeSelector);
     }
   } else {
     const dequeue = async () => {
@@ -133,7 +150,6 @@ export async function parseSitemap(path, showCount, updateImporter, pageTypeSele
         try {
           console.log(`(${totalCounter}) Document ${url} processing ... of ${urls.length}`);
           await process(url, showCount, updateImporter, pageTypeSelector);
-          await sleep(500);
         } catch (error) {
           console.error(`error processing ${url} : ${error.message}`);
         }

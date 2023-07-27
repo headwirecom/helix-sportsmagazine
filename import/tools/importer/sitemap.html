@@ -5,7 +5,7 @@
         
         </style>
         <script type="module">
-            import { urlsFilter, parseSitemap } from "./sitemap-importer.js";
+            import { urlsFilter, parse } from "./sitemap-importer.js";
 
             const sitemap = 'https://www.golfdigest.com/sitemaps/sitemap_golfdigest_index.xml';
             
@@ -31,7 +31,7 @@
                 let showCount = document.getElementById('show-count-btn').checked;
                 let pageType = document.getElementById('page-type').value;
                 document.querySelector('.form').style.display = 'none';
-                parseSitemap(sitemap, showCount, document.getElementById('bulk-import-btn').checked, pageType);
+                parse(sitemap, showCount, document.getElementById('bulk-import-btn').checked, pageType, document.getElementById('isJSON-btn').checked);
             }
 
             // setTimeout(()=>{parseSitemap(sitemap)}, 500);
@@ -49,6 +49,7 @@
                 <p>
                     <label>Show Counter</label><input type="checkbox" id="show-count-btn" checked>
                     <label>Update Importer</label><input type="checkbox" id="bulk-import-btn">
+                    <label>Output JSON</label><input type="checkbox" id="isJSON-btn">
                     <label>Page Type</label>
                     <select name="pageType" id="page-type">
                         <option value="all" selected>---</option>
