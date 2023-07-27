@@ -481,14 +481,19 @@ function decorateLeaderboard(block) {
   leaderboard(block, leaderboardEl);
 }
 
+function handleScrolling(el) {
+  window.addEventListener('scroll', () => {
+    el.classList.toggle('is-scrolling', window.scrollY > 330);
+  });
+}
+
 /**
  * decorates the header, mainly the nav
  * @param {Element} block The header block element
  */
 export default async function decorate(block) {
-  const header = block.closest('.header-wrapper');
+  const header = block.closest('header');
   if (header) {
-    header.classList.add('header');
     header.setAttribute('data-module', 'golf-header');
   }
 
@@ -500,5 +505,6 @@ export default async function decorate(block) {
     await buildHeader(block, html);
     registerMenuEvents();
     handleRootExpand();
+    handleScrolling(header.querySelector('.header'));
   }
 }
