@@ -1,0 +1,122 @@
+.columns-wrapper {
+  width: 100vw;
+  background-color: #151517;
+  color: white;
+}
+
+.columns-wrapper a {
+  text-decoration: none;
+}
+
+.columns-wrapper .columns > div {
+  padding: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.columns-wrapper h2 {
+  font-family: var(--font-tungsten);
+  font-size: 67px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.columns-wrapper p {
+  display: inline-flex;
+  align-items: center;
+  font-family: GothamGD, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 137%;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #e6e6e6;
+}
+
+@media (min-width: 1281px) {
+  .columns-wrapper p {
+    font-size: 20px;
+  }
+}
+
+.columns-wrapper .button-container:hover .arrow-icon {
+  background-color: #000;
+}
+
+.columns-wrapper .button-container {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.columns-wrapper .button-container a {
+  display: inline-flex;
+  align-items: center;
+  font-family: GothamGD, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 130%;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #fff;
+}
+
+@media (min-width: 1025px) {
+  .columns-wrapper .button-container a {
+    font-size: 14px;
+  }
+}
+
+.columns-wrapper .columns .embed-wrapper {
+  flex: 1;
+  padding-left: 0;
+  width: 100%;
+  max-width: 920px;
+}
+
+.columns-wrapper .columns > div > div {
+  flex: 1;
+}
+
+.content-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  padding-left: 150px;
+  max-width: 800px;
+}
+
+@media (max-width: 1281px) {
+  .columns-wrapper .columns > div {
+    flex-direction: column;
+    padding: 15px;
+  }
+
+  .columns-wrapper .columns .embed-wrapper {
+    margin-right: 0;
+    min-width: auto;
+  }
+
+  .content-wrapper {
+    padding: 0;
+  }
+
+  .columns-wrapper h2 {
+    font-size: 37px;
+  }
+
+  .columns-wrapper p {
+    font-size: 14px;
+    padding-right: 20px;
+  }
+
+  .columns-wrapper .button-container {
+    margin: 0 0 40px;
+  }
+
+  main .embed.block:has(div > iframe, iframe) {
+    margin-top: 5px;
+  }
+}
