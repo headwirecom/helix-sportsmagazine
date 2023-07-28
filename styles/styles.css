@@ -10,6 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
+/** Generated with https://github.com/pixel-point/fontpie */
 @font-face {
   font-family: "Gotham Fallback";
   font-style: normal;
@@ -19,17 +20,6 @@
   descent-override: 21.14%;
   line-gap-override: 0.00%;
   size-adjust: 113.51%;
-}
-
-@font-face {
-  font-family: 'Tungsten Fallback';
-  font-style: normal;
-  font-weight: 600;
-  src: local('Arial Bold');
-  ascent-override: 166.20%;
-  descent-override: 41.55%;
-  line-gap-override: 0.00%;
-  size-adjust: 57.76%;
 }
 
 @font-face {
