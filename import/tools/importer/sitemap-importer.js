@@ -82,13 +82,13 @@ function getLongURL(doc, shortURL) {
 
 async function process(options) {
   let {url, showCount, updateImporter, pageTypeSelector, longForm} = options;
+  let longUrl = url;
   let doc = null;
   if (longForm) {
-    // console.log(`getting long form URL for ${url}`);
-    doc = await fetchDocument(url);
-    url = getLongURL(doc, url);
+    doc = await fetchDocument(longUrl);
+    url = getLongURL(doc, longUrl);
   }
-  const matchPageType = (!pageTypeSelector || pageTypeSelector === 'all') ? true : await isPageType(url, pageTypeSelector, doc);
+  const matchPageType = (!pageTypeSelector || pageTypeSelector === 'all') ? true : await isPageType(longUrl, pageTypeSelector, doc);
   totalCounter++;
   if (matchPageType) {
     counter++;
