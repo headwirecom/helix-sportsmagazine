@@ -24,8 +24,7 @@ async function fetchDocument(url) {
   }
 }
 
-async function isPageType(url, pageTypeSelector) {
-  const doc = await fetchDocument(url);
+function isPageTypeDocument(doc, pageTypeSelector) {
   if (doc) {
     const el = doc.querySelector(pageTypeSelector);
     if (el) {
@@ -33,6 +32,11 @@ async function isPageType(url, pageTypeSelector) {
     }
   }
   return false;
+}
+
+async function isPageType(url, pageTypeSelector, doc) {
+  const d = (doc) ? doc : await fetchDocument(url);
+  return isPageTypeDocument(d, pageTypeSelector);
 }
 
 function append(s) {
@@ -70,8 +74,21 @@ async function decompress(blob) {
   return await new Response(decompressedStream).text();
 }
 
-async function process(url, showCount, updateImporter, pageTypeSelector) {
-  const matchPageType = (!pageTypeSelector || pageTypeSelector === 'all') ? true : await isPageType(url, pageTypeSelector);
+function getLongURL(doc, shortURL) {
+  const url = new URL(shortURL);
+  const contentPath = doc.body.getAttribute('data-page-path');
+  return `${url.protocol}//${url.hostname}${contentPath}.html`;
+}
+
+async function process(options) {
+  let {url, showCount, updateImporter, pageTypeSelector, longForm} = options;
+  let longUrl = url;
+  let doc = null;
+  if (longForm) {
+    doc = await fetchDocument(longUrl);
+    url = getLongURL(doc, longUrl);
+  }
+  const matchPageType = (!pageTypeSelector || pageTypeSelector === 'all') ? true : await isPageType(longUrl, pageTypeSelector, doc);
   totalCounter++;
   if (matchPageType) {
     counter++;
@@ -89,19 +106,26 @@ async function process(url, showCount, updateImporter, pageTypeSelector) {
 
 export const urlsFilter = [];
 
-export async function parse(path, showCount, updateImporter, pageTypeSelector, logAsJson) {
-  if (logAsJson && !isJSONOutput) {
+export async function parse(options) {
+  if (options.logAsJson && !isJSONOutput) {
     isJSONOutput = true;
     document.querySelector('.log').append('[');
   }
-  parseSitemap(path, showCount, updateImporter, pageTypeSelector, logAsJson).then(() => {
-    if (isJSONOutput) {
-      document.querySelector('.log').append(']');
-    }
-  });
+  await parseSitemap(options);
+  if (isJSONOutput) {
+    document.querySelector('.log').append(']');
+  }
 }
 
-export async function parseSitemap(path, showCount, updateImporter, pageTypeSelector, logAsJson) {
+export async function parseSitemap(options) {
+  let {
+    path, 
+    showCount, 
+    updateImporter, 
+    pageTypeSelector,
+    longForm 
+  } = options;
+
   if (updateImporter && counter === 0) {
     clearBulkImport();
   }
@@ -126,7 +150,7 @@ export async function parseSitemap(path, showCount, updateImporter, pageTypeSele
 
   for(const sitemap of sitemaps) {
     const url = sitemap.querySelector('loc').childNodes[0].nodeValue;
-    await parseSitemap(url, showCount, updateImporter, pageTypeSelector);
+    await parseSitemap({path: url, showCount, updateImporter, pageTypeSelector, longForm: longForm});
   }
 
   let urls = [];
@@ -138,28 +162,10 @@ export async function parseSitemap(path, showCount, updateImporter, pageTypeSele
     }
   }
   
-  if ((!pageTypeSelector || pageTypeSelector === 'all')) {
-    while (urls.length) {
-      const url = urls.shift();
-      await process(url, showCount, updateImporter, pageTypeSelector);
-    }
-  } else {
-    const dequeue = async () => {
-      while (urls.length) {
-        const url = urls.shift();
-        try {
-          console.log(`(${totalCounter}) Document ${url} processing ... of ${urls.length}`);
-          await process(url, showCount, updateImporter, pageTypeSelector);
-        } catch (error) {
-          console.error(`error processing ${url} : ${error.message}`);
-        }
-      }
-    }
-  
-    const concurrency = 5;
-    for (let i = 0; i < concurrency; i += 1) {
-      dequeue();
-    }
+  while (urls.length) {
+    const url = urls.shift();
+    console.log(`(${totalCounter}) Document ${url} processing ..... of ${urls.length+1}`);
+    await process({url, showCount, updateImporter, pageTypeSelector, longForm});
   }
 
 }

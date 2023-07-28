@@ -28,10 +28,17 @@
                     }
                 }
 
-                let showCount = document.getElementById('show-count-btn').checked;
-                let pageType = document.getElementById('page-type').value;
+                let options = {
+                    path: sitemap, 
+                    showCount: document.getElementById('show-count-btn').checked, 
+                    updateImporter: document.getElementById('bulk-import-btn').checked, 
+                    pageTypeSelector: document.getElementById('page-type').value, 
+                    logAsJson: document.getElementById('isJSON-btn').checked, 
+                    longForm: document.getElementById('show-long-urls-btn').checked 
+                }
+
                 document.querySelector('.form').style.display = 'none';
-                parse(sitemap, showCount, document.getElementById('bulk-import-btn').checked, pageType, document.getElementById('isJSON-btn').checked);
+                parse(options);
             }
 
             // setTimeout(()=>{parseSitemap(sitemap)}, 500);
@@ -48,6 +55,7 @@
                 <textarea id="url-list" rows="20" cols="150"></textarea>
                 <p>
                     <label>Show Counter</label><input type="checkbox" id="show-count-btn" checked>
+                    <label>Show Long URLs</label><input type="checkbox" id="show-long-urls-btn">
                     <label>Update Importer</label><input type="checkbox" id="bulk-import-btn">
                     <label>Output JSON</label><input type="checkbox" id="isJSON-btn">
                     <label>Page Type</label>
