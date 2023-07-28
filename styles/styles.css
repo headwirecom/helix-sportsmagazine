@@ -10,10 +10,33 @@
  * governing permissions and limitations under the License.
  */
 
+/** Generated with https://github.com/pixel-point/fontpie */
+@font-face {
+  font-family: "Gotham Fallback";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Arial");
+  ascent-override: 84.58%;
+  descent-override: 21.14%;
+  line-gap-override: 0.00%;
+  size-adjust: 113.51%;
+}
+
+@font-face {
+  font-family: "Tungsten Fallback";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Arial");
+  ascent-override: 135.83%;
+  descent-override: 33.96%;
+  line-gap-override: 33.96%;
+  size-adjust: 58.90%;
+}
+
 :root {
   /* CSS vars */
-  --font-gotham: "Gotham", helvetica, ubuntu, roboto, noto, sans-serif;
-  --font-tungsten: "Tungsten", helvetica, ubuntu, roboto, noto, sans-serif;
+  --font-gotham: "Gotham", "Gotham Fallback", helvetica, ubuntu, roboto, noto, sans-serif;
+  --font-tungsten: "Tungsten", "Tungsten Fallback", helvetica, ubuntu, roboto, noto, sans-serif;
   --header-height: 120px;
   --leaderboard-height: 80px;
   --link-hover-color: #ed3e49;

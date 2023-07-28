@@ -71,7 +71,7 @@
 .columns-wrapper .button-container a {
   display: inline-flex;
   align-items: center;
-  font-family: GothamGD, Arial, sans-serif;
+  font-family: var(--font-gotham);
   font-weight: 700;
   font-size: 14px;
   line-height: 130%;
