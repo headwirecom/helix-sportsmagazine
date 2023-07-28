@@ -3,68 +3,81 @@ import { parseFragment, removeEmptyElements, render, convertExcelDate, timeSince
 let carouselData;
 
 const fetchCarouselData = async (type) => {
-  const response = await fetch('/blocks/carousel/mockData.json')
-  const data = await response.json()
+  const response = await fetch("/blocks/carousel/mockData.json");
+  const data = await response.json();
 
-  carouselData = data
-}
+  carouselData = data;
+};
 
 const carouselTitleLookup = {
   courses: "Trending Courses",
   latest: "The Latest",
   loop: "The Loop",
-  wedges: "Hot List 2023"
-}
+  wedges: "Hot List 2023",
+};
 
-const testImage = 'https://placekitten.com/300/400'
+const testImage = "https://placekitten.com/300/400";
 
 export default async function decorate(block) {
   if (!carouselData) {
-    await fetchCarouselData()
+    await fetchCarouselData();
   }
-  
-  const carouselType = Array.from(block.classList).filter(className => className !== 'carousel' && className !== 'block')[0]
-  console.log("\x1b[31m ~ carouselType:", carouselType)
+
+  const carouselType = Array.from(block.classList).filter(
+    (className) => className !== "carousel" && className !== "block"
+  )[0];
 
   // const carouselItems = carouselData.data
-  const carouselItems = [
-    ...carouselData.data,
-  ]
-
-  
+  const carouselItems = [...carouselData.data];
 
   const HTML_TEMPLATE = `
-  ${!carouselType ? '' : `
+  ${
+    !carouselType
+      ? ""
+      : `
     <div class="carousel-title-wrapper">
-      <${carouselType === 'wedges' ? 'h1' : 'h4'} class="carousel-title ${carouselType}" id="carousel-${carouselType}">${carouselTitleLookup[carouselType] || carouselType}</${carouselType === 'wedges' ? 'h1' : 'h4'}>
+      <${
+        carouselType === "wedges" ? "h1" : "h4"
+      } class="carousel-title ${carouselType}" id="carousel-${carouselType}">${
+          carouselTitleLookup[carouselType] || carouselType
+        }</${carouselType === "wedges" ? "h1" : "h4"}>
     </div>
-  `}
-  <div class="carousel-main-wrapper" >
-    <div class="controls">
-      <button class="left-button"></button>
-      <button class="right-button"></button>
-    </div>
+  `
+  }
+  <div class="controls">
+    <button class="left-button"></button>
+    <button class="right-button"></button>
+  </div>
+  <div class="carousel-main-wrapper" id="${carouselType === "wedges" ? "testing-here" : ""}" >
     <div class="carousel-frame" >
-      ${carouselItems.map((carouselItem, index) => {
-        return `
+      ${carouselItems
+        .map((carouselItem, index) => {
+          return `
         <a class="carousel-item" href="${carouselItem.path}" >
           <div class="carousel-item-wrapper">
             <div class="carousel-image-wrapper">
-              <img loading="lazy" src="${testImage}" alt="${carouselItem.imageAlt}" />
+              <img class="carousel-image" loading="lazy" src="${testImage}" alt="${carouselItem.imageAlt}" />
             </div>
             
             <div class="carousel-text-content">
-              ${carouselItem.courseType ? `<span class="course-type">${carouselItem.courseType}</span>` : ''}
+              ${carouselItem.courseType ? `<span class="course-type">${carouselItem.courseType}</span>` : ""}
               <h3 class="carousel-item-title">${carouselItem.title}</h3>
               <span class="carousel-item-location">${carouselItem.author}</span>
 
-              ${carouselItem.awards ? `<ul class="carousel-item-pills">${carouselItem.awards.map((award) => '<li class="pill-item">'+award+'</li>').join('')}</ul>` : ''}
+              ${
+                carouselItem.awards
+                  ? `<ul class="carousel-item-pills">${carouselItem.awards
+                      .map((award) => '<li class="pill-item">' + award + "</li>")
+                      .join("")}</ul>`
+                  : ""
+              }
 
             </div>
           </div>
         </a>
-        `
-      }).join('')}
+        `;
+        })
+        .join("")}
     </div>
   </div>
   `;
@@ -73,166 +86,180 @@ export default async function decorate(block) {
   const template = parseFragment(HTML_TEMPLATE);
 
   // initialize variables & functions required for carousel features
-  const carouselWrapper = template.querySelector('.carousel-main-wrapper');
-  const carouselFrame = template.querySelector('.carousel-frame');
+  const carouselWrapper = template.querySelector(".carousel-main-wrapper");
+  const carouselFrame = template.querySelector(".carousel-frame");
   const carouselCardLinks = carouselFrame.children;
   const rightButton = template.querySelector(".controls .right-button");
   const leftButton = template.querySelector(".controls .left-button");
   let pressed = false;
   let x = 0;
-  let maxScroll = 1440
+  let maxScroll = 1440;
+
+  let gapOffset = 27;
+  const updateGapOffset = () => {
+    if (carouselType !== "wedges") {
+      return (gapOffset = 27);
+    }
+    window.innerWidth <= 1280 ? (gapOffset = 10.5) : (gapOffset = 40);
+  };
+  updateGapOffset();
 
   const refreshMaxScroll = () => {
-    maxScroll = carouselCardLinks.length * (carouselCardLinks[0].getBoundingClientRect().width + 27) - carouselFrame.getBoundingClientRect().width // prettier-ignore
-  }
+    maxScroll = carouselCardLinks.length * (carouselCardLinks[0].getBoundingClientRect().width + gapOffset) - carouselFrame.getBoundingClientRect().width // prettier-ignore
+  };
 
-  const roundX = (step=carouselCardLinks[0].getBoundingClientRect().width + 27) => {
-    const rounded = Math.round(x / step) * step
-    x = Math.min(0, Math.max(rounded, -maxScroll))
-  }
+  const roundX = (step = carouselCardLinks[0].getBoundingClientRect().width + gapOffset) => {
+    const rounded = Math.round(x / step) * step;
+    x = Math.min(0, Math.max(rounded, -maxScroll));
+  };
 
   const addToX = (addValue) => {
     const newValue = x + addValue;
+    // while dragging over the edge, value is reduced
     if (newValue > 0) {
-      x = !pressed ? 0 : x + (addValue / 8)
+      x = !pressed ? 0 : x + addValue / 8;
     } else if (newValue < -maxScroll) {
-      x = !pressed ? -maxScroll : x + (addValue / 8)
+      x = !pressed ? -maxScroll : x + addValue / 8;
     } else {
-      x = newValue
+      x = newValue;
     }
-  }
+  };
 
   const updateButtonVisibility = () => {
     if (x > -40) {
-      leftButton.classList.add("hidden")
+      leftButton.classList.add("hidden");
     } else {
-      leftButton.classList.remove("hidden")
+      leftButton.classList.remove("hidden");
     }
-    if (x < (-maxScroll + 40)) {
-      rightButton.classList.add("hidden")
+    if (x < -maxScroll + 40) {
+      rightButton.classList.add("hidden");
     } else {
-      rightButton.classList.remove("hidden")
+      rightButton.classList.remove("hidden");
     }
-  }
-  updateButtonVisibility()
+  };
+  updateButtonVisibility();
 
-  
   // drag logic starting with initialization for mobile
   let previousTouch;
-  
+
   const mouseMoveHandler = (e) => {
     if (!pressed) return;
-    !e?.touches?.[0] && e.preventDefault()
-    addToX(e.movementX)
-    carouselFrame.style.transform = `translateX(${x}px)`
-  }
+    !e?.touches?.[0] && e.preventDefault();
+    addToX(e.movementX);
+    carouselFrame.style.transform = `translateX(${x}px)`;
+  };
 
   const touchMoveHandler = (e) => {
-    const touch = e.touches[0]
+    const touch = e.touches[0];
     if (previousTouch) {
-      e.movementX = touch.pageX - previousTouch.pageX
-      mouseMoveHandler(e)
+      e.movementX = touch.pageX - previousTouch.pageX;
+      mouseMoveHandler(e);
     }
-    previousTouch = touch
-  }
+    previousTouch = touch;
+  };
 
   // mouse drag handlers
   const mouseUpHandler = () => {
-    pressed = false
-    carouselWrapper.classList.remove("grabbed")
-    roundX()
-    carouselFrame.style.transform = `translateX(${x}px)`
-    updateButtonVisibility()
+    pressed = false;
+    carouselWrapper.classList.remove("grabbed");
+    roundX();
+    carouselFrame.style.transform = `translateX(${x}px)`;
+    updateButtonVisibility();
     // cleanup
-    window.removeEventListener("mouseup", mouseUpHandler)
-    window.removeEventListener("touchend", mouseUpHandler)
+    window.removeEventListener("mouseup", mouseUpHandler);
+    window.removeEventListener("touchend", mouseUpHandler);
 
-    window.removeEventListener("mousemove", mouseMoveHandler)
-    window.removeEventListener("touchmove", touchMoveHandler)
-  }
+    window.removeEventListener("mousemove", mouseMoveHandler);
+    window.removeEventListener("touchmove", touchMoveHandler);
+  };
 
   const mouseDownHandler = (e) => {
-    if (e?.touches?.[0]) {previousTouch = e.touches[0]}
-    carouselWrapper.classList.add("grabbed")
+    if (e?.touches?.[0]) {
+      previousTouch = e.touches[0];
+    }
+    carouselWrapper.classList.add("grabbed");
     pressed = true;
-    refreshMaxScroll()
-  
-    window.addEventListener("mouseup", mouseUpHandler)
-    window.addEventListener("touchend", mouseUpHandler)
+    refreshMaxScroll();
 
-    window.addEventListener("mousemove", mouseMoveHandler)
-    window.addEventListener("touchmove", touchMoveHandler)
-  }
+    window.addEventListener("mouseup", mouseUpHandler);
+    window.addEventListener("touchend", mouseUpHandler);
+
+    window.addEventListener("mousemove", mouseMoveHandler);
+    window.addEventListener("touchmove", touchMoveHandler);
+  };
   carouselWrapper.onmousedown = mouseDownHandler;
-  carouselWrapper.addEventListener("touchstart", mouseDownHandler)
+  carouselWrapper.addEventListener("touchstart", mouseDownHandler);
 
   // button logic
   const rightOnClick = () => {
-    addToX(-carouselFrame.getBoundingClientRect().width)
-    roundX()
-    carouselFrame.style.transform = `translateX(${x}px)`
-    updateButtonVisibility()
-  }
+    addToX(-carouselFrame.getBoundingClientRect().width);
+    roundX();
+    carouselFrame.style.transform = `translateX(${x}px)`;
+    updateButtonVisibility();
+  };
 
   const leftOnClick = () => {
-    addToX(carouselFrame.getBoundingClientRect().width)
-    roundX()
-    carouselFrame.style.transform = `translateX(${x}px)`
-    updateButtonVisibility()
-  }
-  
+    addToX(carouselFrame.getBoundingClientRect().width);
+    roundX();
+    carouselFrame.style.transform = `translateX(${x}px)`;
+    updateButtonVisibility();
+  };
+
   rightButton.onclick = rightOnClick;
   leftButton.onclick = leftOnClick;
 
   // preventing drag from triggering a page switch & focus logic
   const cardFocusHandler = (cardLink, index) => {
-    refreshMaxScroll()
-    const width = (cardLink.getBoundingClientRect().width + 27)
-    x = width * -index
-    roundX(width)
-    updateButtonVisibility()
-    carouselFrame.style.transform = `translateX(${x}px)`
-  }
-  
+    refreshMaxScroll();
+    const width = cardLink.getBoundingClientRect().width + gapOffset;
+    x = width * -index;
+    roundX(width);
+    updateButtonVisibility();
+    carouselFrame.style.transform = `translateX(${x}px)`;
+  };
+
   [...carouselCardLinks].forEach((anchor, index) => {
-    const clickLocation = {}
+    const clickLocation = {};
     const keyUpHandler = (e) => {
       if (e.keyCode === 9) {
-        cardFocusHandler(anchor, index)
+        cardFocusHandler(anchor, index);
       }
-      window.removeEventListener("keyup", keyUpHandler)
-    }
+      window.removeEventListener("keyup", keyUpHandler);
+    };
     // waiting for keyup stops mouse clicks from triggering the focus logic
     anchor.onfocus = () => {
-      window.addEventListener("keyup", keyUpHandler)
-    }
+      window.addEventListener("keyup", keyUpHandler);
+    };
     anchor.onmousedown = (e) => {
-      e.preventDefault()
-      clickLocation.x = e.clientX
-      clickLocation.y = e.clientY
-    }
+      e.preventDefault();
+      clickLocation.x = e.clientX;
+      clickLocation.y = e.clientY;
+    };
     // prevent opening links when dragging
     // retains middle-click, shift-click, ctrl-click, etc. functionality
     anchor.onclick = (e) => {
       if (e.clientX !== clickLocation.x || e.clientY !== clickLocation.y) {
-        e.preventDefault()
+        e.preventDefault();
       }
-    }
-  })
+    };
+  });
 
   // resize listener
-  let timeout = false
+  let timeout = false;
   const debouncedResizeHandler = () => {
-    clearTimeout(timeout)
+    clearTimeout(timeout);
     timeout = setTimeout(() => {
-      refreshMaxScroll()
-      addToX(0)
-      roundX()
-      carouselFrame.style.transform = `translateX(${x}px)`
-      updateButtonVisibility()
-    }, 150)
-  }
-  window.addEventListener("resize", debouncedResizeHandler)
+      refreshMaxScroll();
+      addToX(0);
+      roundX();
+      carouselFrame.style.transform = `translateX(${x}px)`;
+      updateButtonVisibility();
+      if (carouselType === "wedges") {
+        updateGapOffset();
+      }
+    }, 150);
+  };
+  window.addEventListener("resize", debouncedResizeHandler);
 
   // Render template
   render(template, block);
