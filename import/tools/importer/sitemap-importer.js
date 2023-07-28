@@ -111,11 +111,10 @@ export async function parse(options) {
     isJSONOutput = true;
     document.querySelector('.log').append('[');
   }
-  parseSitemap(options).then(() => {
-    if (isJSONOutput) {
-      document.querySelector('.log').append(']');
-    }
-  });
+  await parseSitemap(options);
+  if (isJSONOutput) {
+    document.querySelector('.log').append(']');
+  }
 }
 
 export async function parseSitemap(options) {
@@ -163,28 +162,10 @@ export async function parseSitemap(options) {
     }
   }
   
-  if ((!pageTypeSelector || pageTypeSelector === 'all') && !longForm) {
-    while (urls.length) {
-      const url = urls.shift();
-      await process({url, showCount, updateImporter, pageTypeSelector, longForm});
-    }
-  } else {
-    const dequeue = async () => {
-      while (urls.length) {
-        const url = urls.shift();
-        try {
-          // console.log(`(${totalCounter}) Document ${url} processing ... of ${urls.length}`);
-          await process({url, showCount, updateImporter, pageTypeSelector, longForm});
-        } catch (error) {
-          console.error(`error processing ${url} : ${error.message}`);
-        }
-      }
-    }
-  
-    const concurrency = 5;
-    for (let i = 0; i < concurrency; i += 1) {
-      dequeue();
-    }
+  while (urls.length) {
+    const url = urls.shift();
+    console.log(`(${totalCounter}) Document ${url} processing ..... of ${urls.length+1}`);
+    await process({url, showCount, updateImporter, pageTypeSelector, longForm});
   }
 
 }
