@@ -1,17 +1,17 @@
 /* custom fonts */
 @font-face {
     font-family: Tungsten;
-    src: url('/styles/fonts/Tungsten/Tungsten-Book_Web.woff2') format('woff2');
+    src: url('/styles/fonts/Tungsten/Tungsten-Semibold_Web.woff2') format('woff2');
     font-display: swap;
-    font-weight: 400;
+    font-weight: 600;
     font-style: normal;
 }
 
 @font-face {
     font-family: Tungsten;
-    src: url('/styles/fonts/Tungsten/Tungsten-Semibold_Web.woff2') format('woff2');
+    src: url('/styles/fonts/Tungsten/Tungsten-Book_Web.woff2') format('woff2');
     font-display: swap;
-    font-weight: 600;
+    font-weight: 400;
     font-style: normal;
 }
 
