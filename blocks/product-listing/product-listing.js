@@ -25,7 +25,7 @@ export default async function decorate(block) {
             </div>
             <div class="details">
                 <span>${sectionMetadata.price}</span>
-                <span class="separator">|</span>
+                ${sectionMetadata.price ? '<span class="separator">|</span>' : ''}
                 <span>${sectionMetadata.advertiser}</span>
             </div>
             <div class="link">
