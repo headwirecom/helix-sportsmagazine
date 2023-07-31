@@ -2,10 +2,11 @@ version: 1
 # See https://www.hlx.live/docs/setup-indexing.
 
 indices:
-   gallery:
-     inclide:
+  gallery:
+    include:
        - '/content-v2/**/gallery/**'
-      target: /gallery-query-index
+    target: /gallery-query-index.json
+    properties:
       title:
         select: head > meta[property="og:title"]
         value: |
@@ -25,11 +26,12 @@ indices:
       date:
         select: head > meta[name="publication-date"]
         value: |
-          attribute(el, 'content') 
-   articles:
-      inclide:
-       - '/content-v2/**/article/**'
-      target: /articles-query-index
+          attribute(el, 'content')
+  article:
+    include:
+     - '/content-v2/**/article/**'
+    target: /article-query-index.json
+    properties:
       title:
         select: head > meta[property="og:title"]
         value: |
@@ -58,10 +60,11 @@ indices:
         select: head > meta[property="author-url"]
         value: |
           attribute(el, 'content')
-   products:
-      inclide:
-       - '/content-v2/**/products/**'
-      target: /products-query-index
+  products:
+    include:
+     - '/content-v2/**/products/**'
+    target: /product-query-index.json
+    properties:
       title:
         select: head > meta[property="og:title"]
         value: |
