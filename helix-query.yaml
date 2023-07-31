@@ -4,7 +4,7 @@ version: 1
 indices:
    gallery:
      inclide:
-       - '**/gallery/**'
+       - '/content-v2/**/gallery/**'
       target: /gallery-query-index
       title:
         select: head > meta[property="og:title"]
@@ -28,7 +28,7 @@ indices:
           attribute(el, 'content') 
    articles:
       inclide:
-       - '**/article/**'
+       - '/content-v2/**/article/**'
       target: /articles-query-index
       title:
         select: head > meta[property="og:title"]
@@ -60,7 +60,7 @@ indices:
           attribute(el, 'content')
    products:
       inclide:
-       - '**/products/**'
+       - '/content-v2/**/products/**'
       target: /products-query-index
       title:
         select: head > meta[property="og:title"]
