@@ -7,6 +7,22 @@ import {
  * @param {HTMLDivElement} block
  */
 export default async function decorate(block) {
+  // Identify slots
+  assignSlot(block, 'heading', 'h1');
+
+  // Description is optional
+  const descriptionSlots = [];
+  [...block.querySelectorAll('h1 ~ p:not(:last-of-type)')].forEach((p, index) => {
+    if (!p.querySelector('picture')) {
+      const descriptionSlot = `description-${index}`;
+      p.setAttribute('slot', descriptionSlot);
+      descriptionSlots.push(descriptionSlot);
+    }
+  });
+
+  assignSlot(block, 'image', 'picture');
+  assignSlot(block, 'link', 'p:last-of-type > a');
+
   const metadataEl = block.querySelector('.template-section-metadata');
   let sectionMetadata = {};
   if (metadataEl) {
@@ -18,14 +34,15 @@ export default async function decorate(block) {
     <div class="container">
       <article class="article-content">
         <div class="content">
+            ${sectionMetadata.brand ? `<h2 class="brand">${sectionMetadata.brand}</h2>` : ''}  
             <slot name="heading"></slot>
             <div class="awards">${sectionMetadata.awards ? sectionMetadata.awards : ''}</div>
             <div class="description">
-                <slot name="description"></slot>
+                ${descriptionSlots.map((descriptionSlot) => `<slot name="${descriptionSlot}"></slot>`).join('')}
             </div>
             <div class="details">
                 <span>${sectionMetadata.price}</span>
-                ${sectionMetadata.price ? '<span class="separator">|</span>' : ''}
+                ${sectionMetadata.price && sectionMetadata.advertiser ? '<span class="separator">|</span>' : ''}
                 <span>${sectionMetadata.advertiser}</span>
             </div>
             <div class="link">
@@ -40,21 +57,6 @@ export default async function decorate(block) {
 
   // Template rendering
   const template = parseFragment(HTML_TEMPLATE);
-
-  // Identify slots
-  assignSlot(block, 'heading', 'h1');
-
-  // Description is optional
-  [...block.querySelectorAll('h1 ~ p:not(:last-of-type)')].some((p) => {
-    if (!p.querySelector('picture')) {
-      p.setAttribute('slot', 'description');
-      return true;
-    }
-
-    return false;
-  });
-  assignSlot(block, 'image', 'picture');
-  assignSlot(block, 'link', 'p:last-of-type > a');
 
   // Render template
   render(template, block);
