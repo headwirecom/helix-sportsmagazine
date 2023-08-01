@@ -19,7 +19,7 @@ const HTML_TEMPLATE = `
       <div class="headline">
         <slot name="headline"></slot>
       </div>
-      <div class="byline">
+      <div class="byline${author ? '' : ' no-author'}">
         <div class="attribution">
             <span>By</span>
             <a href="${authorURL}">${author}</a>
@@ -129,19 +129,27 @@ export default async function decorate(block) {
 
   const carouselItemsLength = carousel.children.length;
   [...carousel.children].forEach((item, index) => {
+    const img = item.querySelector('img');
+    const width = parseInt(img.getAttribute('width'), 10);
+    const height = parseInt(img.getAttribute('height'), 10);
+
+    if (width / height < 1) {
+      img.classList.add('portrait');
+    }
+
     const isFirst = index === 0;
     item.hidden = !isFirst;
 
     const imageContainer = item.querySelector('picture').parentElement;
 
-    // Get photo metadata for image credit
+    // Get photo metadata
+    let headline;
     let credit;
     const metadataEl = item.querySelector('.template-section-metadata');
     if (metadataEl) {
-      const sectionMetadata = parseSectionMetadata(metadataEl);
-      if (sectionMetadata.photoCredit) {
-        credit = sectionMetadata.photoCredit;
-      }
+      const { promoHeadline, photoCredit } = parseSectionMetadata(metadataEl);
+      headline = promoHeadline;
+      credit = photoCredit;
     }
 
     // Add credits, next and prev buttons and slide counter
@@ -165,7 +173,14 @@ export default async function decorate(block) {
       <div class="count">${index + 1}/${carouselItemsLength}</div>  
     `);
 
-    // Add photo credit again at the end
+    // Add headline
+    if (headline) {
+      imageContainer.insertAdjacentHTML('afterend', `
+        <h3>${headline}</h3>
+      `);
+    }
+
+    // Add photo credit
     if (credit) {
       item.insertAdjacentHTML('beforeend', `
         <span class="photo-credit">Photo By: ${credit}</span>
