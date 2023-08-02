@@ -81,32 +81,7 @@
         </style>
         <script src="./bulk.js" defer></script>
         <script>
-            /*
-            let focusFrameId = null;
-            function scrollFrame(frameId, x, y) {
-                const f = document.getElementById(frameId);
-                f.contentWindow.scrollTo(x, y);
-            }
-            function onscroll() {
-                console.log('in onscroll');
-                let frame1 = document.getElementById('frame2');
-                alert(frame1);
-                frame1.addEventListener('scroll', e => {
-                    console.log("frame: " + e);
-                });
-                frame1.contentWindow.addEventListener('scroll', e => {
-                    console.log("contentWindow: " + e);
-                });
-
-            }
-            function setFrameId(frameId) {
-                console.log(frameId);
-                focusFrameId = frameId;
-            }
-            setTimeout(onscroll, 500);*/
-
-            // const dataFile = '/tools/importer/urls.json';
-            // const dataFile = '/tools/importer/urls.json';
+            
             const remoteHost = 'https://www.golfdigest.com';
             const myHost = (location.port !== 80) ? `${location.protocol}//${location.hostname}:3000` : `${location.protocol}//${location.hostname}`;
             const proxyHost = `${location.protocol}//${location.hostname}:3001`;
@@ -129,7 +104,7 @@
                     pagePath = null;
                 }
 
-                const dataFile = `./${pageType}-urls.json`;
+                const dataFile = `./data/${pageType}-urls.json`;
                 const resp = await fetch(dataFile);
                 if (resp.ok) {
                     const json = await resp.json();
@@ -173,7 +148,8 @@
                 return `${proxyHost}${path}?host=${rh}`;
             }
             function mapToImportedPath(path) {
-                let fn = fileName(path, '_', '-').replaceAll('--','-').replace(/^-/,'').toLowerCase();
+                // let fn = fileName(path, '_', '-').replaceAll('--','-').replace(/^-/,'').toLowerCase();
+                let fn = fileName(path, '_', '-').toLowerCase();
                 let importedPath = path.replace(/\/content\/golfdigest-com\/en/, '').replace(fileName(path), fn).replace(/\.html$/, '').replace(/-$/,'');
                 return importedPath;
             }
@@ -448,7 +424,9 @@
                 Page Type:
                 <select class="page-type" onchange="pageTypeChange()">
                     <option value="gallery">Gallery</option>
-                    <option value="article">Article</option>
+                    <option value="article">Default Article</option>
+                    <option value="fullbleed-article">Full Bleed Article</option>
+                    <option value="longform-article">Long Form Article</option>
                     <option value="product">Producs</option>
                     <option value="manual">Manual Entry</option>
                 </select>
@@ -461,12 +439,14 @@
                     <option value="preview" selected>preview</option>
                     <option value="live">live</option>
                 </select>
+                <!--
                 <span class="clear-cache-check" style="display: none;">
                 <label>Clear Cache</label>
                 <input id="clear-cache-toggle" type="checkbox" checked/>
                 </span>
                 <button class="publish-btn" onclick="publish()">Publish</button>
                 <button class="publish-test-btn" onclick="publishTest()">Publish Check</button>
+                -->
                 <button id="prev-btn" onclick="prev()">Previous</button>
                 <button id="next-btn" onclick="next()">Next</button>
             </div>
