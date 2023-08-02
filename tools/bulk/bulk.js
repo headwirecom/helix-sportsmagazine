@@ -5,7 +5,7 @@ console.log(log);
 
 const append = (string) => {
   if (log) {
-    const p = document.createElement('p');
+    const p = document.createElement('div');
     p.textContent = string;
     log.append(p);
   }
@@ -27,11 +27,17 @@ const bulk = async (urls, operation, logger) => {
     const resp = await fetch(adminURL, {
       method: 'POST',
     });
-    const text = await resp.text();
-    /* eslint-disable no-console */
-    console.log(text);
-    counter += 1;
-    append(`${counter}/${total}: ${adminURL}`);
+    if (resp.ok) {
+      const text = await resp.text();
+      /* eslint-disable no-console */
+      console.log(text);
+      counter += 1;
+      append(`${counter}/${total}: ${adminURL}`);
+    } else {
+      console.warn(`${counter}/${total}: ${adminURL} ${resp.status}`);
+      append(`${counter}/${total} FAILD: ${adminURL} ${resp.status}`);
+      counter += 1;
+    }
   };
 
   const dequeue = async () => {
