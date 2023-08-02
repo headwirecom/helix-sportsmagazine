@@ -13,12 +13,12 @@ const append = (string) => {
   console.log(string);
 };
 
-const bulk = async (urls, operation, logger) => {
+const bulk = async (urls, operation, logger, startCount = 0) => {
   if (logger) {
     log = logger;
   }
 
-  let counter = 0;
+  let counter = startCount;
 
   const executeOperation = async (url) => {
     const { hostname, pathname } = new URL(url);
@@ -41,12 +41,17 @@ const bulk = async (urls, operation, logger) => {
   const dequeue = async () => {
     while (urls.length) {
       const url = urls.shift();
-      await executeOperation(url);
+      try {
+        await executeOperation(url);
+      } catch (e) {
+        console.error(e);
+        append(`${counter}/${total}: FAILED ${url}`);
+      }
     }
   };
 
   const concurrency = operation === 'live' ? 40 : 5;
-  const total = urls.length;
+  const total = urls.length + startCount;
   append(`URLs: ${urls.length}`);
   for (let i = 0; i < concurrency; i += 1) {
     dequeue();
