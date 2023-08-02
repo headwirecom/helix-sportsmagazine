@@ -25,7 +25,7 @@ export default async function decorate(block) {
             </div>
             <div class="details">
                 <span>${sectionMetadata.price}</span>
-                ${sectionMetadata.price ? '<span class="separator">|</span>' : "" }
+                ${sectionMetadata.price && sectionMetadata.advertiser ? '<span class="separator">|</span>' : ''}
                 <span class="advertiser">${sectionMetadata.advertiser}</span>
             </div>
             <div class="link">
@@ -59,10 +59,6 @@ export default async function decorate(block) {
   // Render template
   render(template, block);
 
-  // Update block with rendered template
-  block.innerHTML = '';
-  block.append(template);
-
   // URL check
   block.querySelectorAll('.advertiser').forEach((el) => {
     const url = el.textContent.trim();
@@ -73,4 +69,8 @@ export default async function decorate(block) {
       } catch (e) {}
     }
   });
+  
+  // Update block with rendered template
+  block.innerHTML = '';
+  block.append(template);
 }
