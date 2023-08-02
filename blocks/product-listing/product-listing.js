@@ -62,16 +62,18 @@ export default async function decorate(block) {
   render(template, block);
 
   // URL check
-  block.querySelectorAll('.advertiser').forEach((el) => {
+  template.querySelectorAll('.advertiser').forEach((el) => {
     const url = el.textContent.trim();
     if (url.includes('.') && !url.includes(' ')) {
       try {
-        new URL(`https://${url}`);
-        el.innerHTML = `<a href='https://${url}'>${url}</a>`;
-      } catch (e) {}
+        const { href } = new URL(`https://${url}`);
+        el.innerHTML = `<a href='${href}'>${url}</a>`;
+      } catch (e) {
+        // continue regardless of error
+      }
     }
   });
-  
+
   // Update block with rendered template
   block.innerHTML = '';
   block.append(template);
