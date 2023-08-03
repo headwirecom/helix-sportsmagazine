@@ -2,6 +2,7 @@
   "total": 14237,
   "offset": 0,
   "limit": 500,
+  ":type": "sheet",
   "data": [
     {
       "date": "45126",
@@ -108,5 +109,290 @@
       "courseType": "public"
     }
   ],
-  ":type": "sheet"
+  "courses": [
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_1dab5de508d4c07a7452d4b9476ad739398571a0c.jpeg?width=2000&format=webply&optimize=medium",
+      "subHeading": "public",
+      "title": "The Glen Golf Park",
+      "location": "Madison, WI",
+      "awards": []
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_1d27609aca772c107badcfc0ddc2113f1035b7768.jpeg?width=2000&format=webply&optimize=medium",
+      "subHeading": "private",
+      "title": "Sedgefield Country Club",
+      "location": "Greensboro, NC",
+      "awards": ["best in state"]
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_133b650d94b3ddac842406635188963b78161bbd3.jpeg?width=2000&format=webply&optimize=medium",
+      "subHeading": "private",
+      "title": "TPC Southwind",
+      "location": "Memphis, TN",
+      "awards": ["best in state"]
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_106e2d2ef0dae5a68bca012610e0cc50f06ff1b88.jpeg?width=2000&format=webply&optimize=medium",
+      "subHeading": "private",
+      "title": "Olimpia Fields Country Club: North",
+      "location": "Olympia Fields, IL",
+      "awards": ["100 greatest", "best in state"]
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_1c2d900f2d1639abb0727c291fbf97cfc72986f84.jpeg?width=2000&format=webply&optimize=medium",
+      "subHeading": "public",
+      "title": "Landmand",
+      "location": "Homer, NE",
+      "awards": []
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_1406e59a0ae37e3c69d177f74959f512b24d982da.jpeg?width=2000&format=webply&optimize=medium",
+      "subHeading": "",
+      "title": "RainDance National Golf Club: RainDance National",
+      "location": "Windsor, CO",
+      "awards": ["best in state"]
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_16eba85c796ec0ea29f3090f1b5ecbb3043ecd287.jpeg?width=2000&format=webply&optimize=medium",
+      "subHeading": "private",
+      "title": "Entrada at Snow Canyon",
+      "location": "Saint Groge, UT",
+      "awards": ["best in state"]
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_11ecff6f7d2400f74f21dac122406abac577be84a.jpeg?width=2000&format=webply&optimize=medium",
+      "subHeading": "private",
+      "title": "The Dye Courses at White Oak",
+      "location": "Yulee, FL",
+      "awards": ["second 100 greatest", "best in state"]
+    }
+  ],
+  "wedges": [
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_14af3bc0bc727007f9996d1ae5f6713cea26f20e1.png?width=2000&format=webply&optimize=medium",
+      "subHeading": "",
+      "title": "Drivers",
+      "location": ""
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_1f2c1d5c7f40b4dbaa325026218a35dbaf5405abb.png?width=2000&format=webply&optimize=medium",
+      "subHeading": "",
+      "title": "Fairway Woods",
+      "location": ""
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_1d4b45f4573197507613749f4363b48e807a4a0c3.png?width=2000&format=webply&optimize=medium",
+      "subHeading": "",
+      "title": "Hybrids",
+      "location": ""
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_133389015eaaaaf417cbd40e6e36f1cc54d9aa9df.png?width=2000&format=webply&optimize=medium",
+      "subHeading": "",
+      "title": "players irons",
+      "location": ""
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_152386be5a0eb9e99bd7b76cd83cc9e1b7b0d77ce.png?width=2000&format=webply&optimize=medium",
+      "subHeading": "",
+      "title": "players-distance irons",
+      "location": ""
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_1b9f16c91bfe855707085ffc07109058475ba78c3.png?width=2000&format=webply&optimize=medium",
+      "subHeading": "",
+      "title": "game-improvement irons",
+      "location": ""
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_1f217717384eb60ba089c0ae0250abb3328cc2168.png?width=2000&format=webply&optimize=medium",
+      "subHeading": "",
+      "title": "super-game-improvment irons",
+      "location": ""
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_12bf45085b51b2f149570985e8ddcc4862d84cd29.png?width=2000&format=webply&optimize=medium",
+      "subHeading": "",
+      "title": "wedges",
+      "location": ""
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_1f2e0fd39bb59bba25125473054ae55019d3120f4.png?width=2000&format=webply&optimize=medium",
+      "subHeading": "",
+      "title": "blade putters",
+      "location": ""
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_1200916eb1a54fec654f412b15c6a421833bd0d5a.png?width=2000&format=webply&optimize=medium",
+      "subHeading": "",
+      "title": "mallet putters",
+      "location": ""
+    }
+  ],
+  "latest": [
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_18e2947c5f84c4e03092e9364a4a43bbcb2bf4067.png?width=2000&format=webply&optimize=medium",
+      "subHeading": "wired golf news",
+      "title": "Hole-in-one photo leads to arrest of suspect in heath of Florida man",
+      "location": "",
+      "awards": []
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_1001f3f2eacdf1867511701c68f067ad391bde1d8.jpeg?width=2000&format=webply&optimize=medium",
+      "subHeading": "liv golf",
+      "title": "Senior official removed at LIV golf",
+      "location": "",
+      "awards": []
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_13fe7cd0e1085457b74a77d6eec3ed703b788a5f7.jpeg?width=2000&format=webply&optimize=medium",
+      "subHeading": "media",
+      "title": "Former PGA Tour star to make broadcast debut at Wyndham Championship",
+      "location": "",
+      "awards": []
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_1024ab4880977b29e9daf48c011e95f423127a42e.jpeg?width=2000&format=webply&optimize=medium",
+      "subHeading": "ryder cup 2023",
+      "title": "Ryder Cup team watch: Who's a lock for Italy, and who's staying home?",
+      "location": "",
+      "awards": []
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_1de57cbedc265c49f815a5eb242cccef31eeb862b.jpeg?width=2000&format=webply&optimize=medium",
+      "subHeading": "tee times",
+      "title": "2023 Wyndham Championship tee times, TV coverage, viewer's guide",
+      "location": "",
+      "awards": []
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_1dd6aaf5f9b7263a088654a554b0de827e947755c.jpeg?width=2000&format=webply&optimize=medium",
+      "subHeading": "tiger",
+      "title": "Tiger Woods added to PGA Tour Policy Board as players seek new governance and transparency measures",
+      "location": "",
+      "awards": []
+    }
+  ],
+  "loop": [
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_156e0725739749309444ede5708e6d6b0ae39899c.png?width=2000&format=webply&optimize=medium",
+      "subHeading": "viral videos",
+      "title": "Golfer playing the Old Course at St. Andrews has round of his life ruined by disastrous final shot",
+      "location": "",
+      "awards": []
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_127d5f927312fbebe20bc5b6f89e4a17e31895265.jpeg?width=2000&format=webply&optimize=medium",
+      "subHeading": "what a deal!",
+      "title": "Beautiful four-bedroom bungalow for sale that comes with an 18-hole golf course and clubhouse",
+      "location": "",
+      "awards": []
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_16ebd97b05b523e51713f2a928053dd3d89dc93cb.jpeg?width=2000&format=webply&optimize=medium",
+      "subHeading": "golf fight",
+      "title": "Golfer knocked unconscious during fist fight over 'rude behavior' on the course",
+      "location": "",
+      "awards": []
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_12cc88e21ed7e8301669e2d2051e43bbea3d1612b.png?width=2000&format=webply&optimize=medium",
+      "subHeading": "viral videos",
+      "title": "Bear ripping full golf bag off cart and taking it into the woods is the wildest horror movie of the summer",
+      "location": "",
+      "awards": []
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_1072b8c7dbb2564a9e2c33db2b6553abddd72cbcb.png?width=2000&format=webply&optimize=medium",
+      "subHeading": "rivalries",
+      "title": "Josh Allen says AAron Rodgers sandbagged 'the world' in controversial Pebble Beach Pro-Am win",
+      "location": "",
+      "awards": []
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_16d1c0b2bb74aa008cdb2473c96fc11d7fce2b524.jpeg?width=2000&format=webply&optimize=medium",
+      "subHeading": "celebrity golfers",
+      "title": "Von miller explains why Josh Allen is 'different' (Hind: It involves golf)",
+      "location": "",
+      "awards": []
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_1d90c973d09c68cb6df0df1e7ccd91b84ce37f402.jpeg?width=2000&format=webply&optimize=medium",
+      "subHeading": "podcasts",
+      "title": "Does the Ryder Cup need more edge?",
+      "location": "",
+      "awards": []
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_1ae403f2e26cc8874052713b67df6131cafaa5222.jpeg?width=2000&format=webply&optimize=medium",
+      "subHeading": "better analysis",
+      "title": "Wyndham Championship picks 2023: Can this house for the course finally get over the line?",
+      "location": "",
+      "awards": []
+    }
+  ]
 }

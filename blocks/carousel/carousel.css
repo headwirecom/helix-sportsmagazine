@@ -10,7 +10,7 @@
 .landing-page main .carousel.block.wedges {
   --carousel-card-gap: 40px;
   width: 100%;
-  margin: 100px 0 40px;
+  margin: 100px 0;
 }
 
 @media (max-width: 1280px) {
@@ -22,6 +22,7 @@
 .landing-page main .carousel-title-wrapper {
   display: flex;
   width: 100%;
+  max-width: 1440px;
   padding: 15px;
 }
 
@@ -84,6 +85,9 @@
 }
 
 @media (max-width: 1024px) {
+  .landing-page main .carousel.block.wedges {
+    margin: 100px 0 40px;
+  }
   .landing-page main .carousel.block .carousel-main-wrapper {
     height: auto;
   }
@@ -97,8 +101,6 @@
 
 .landing-page main .carousel.block .controls {
   position: relative;
-  /* top: 76px; */
-  /* left: 0px; */
   width: 100%;
   max-width: 1440px;
   display: flex;
@@ -376,7 +378,7 @@
   .carousel-item
   .carousel-item-wrapper
   .carousel-text-content
-  .course-type {
+  .sub-heading {
   text-transform: uppercase;
   color: #adb4b7;
   font-weight: 500;
@@ -394,7 +396,7 @@
   .carousel-item
   .carousel-item-wrapper
   .carousel-text-content
-  .course-type {
+  .sub-heading {
   display: none;
 }
 

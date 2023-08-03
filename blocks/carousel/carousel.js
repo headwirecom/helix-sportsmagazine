@@ -16,8 +16,6 @@ const carouselTitleLookup = {
   wedges: "Hot List 2023",
 };
 
-const testImage = "https://placekitten.com/300/400";
-
 export default async function decorate(block) {
   if (!carouselData) {
     await fetchCarouselData();
@@ -27,8 +25,7 @@ export default async function decorate(block) {
     (className) => className !== "carousel" && className !== "block"
   )[0];
 
-  // const carouselItems = carouselData.data
-  const carouselItems = [...carouselData.data];
+  const carouselItems = carouselData[carouselType]
 
   const HTML_TEMPLATE = `
   ${
@@ -56,16 +53,16 @@ export default async function decorate(block) {
         <a class="carousel-item" href="${carouselItem.path}" >
           <div class="carousel-item-wrapper">
             <div class="carousel-image-wrapper">
-              <img class="carousel-image" loading="lazy" src="${testImage}" alt="${carouselItem.imageAlt}" />
+              <img class="carousel-image" loading="lazy" src="${carouselItem.imagePath}" alt="${carouselItem.imageAlt || 'carousel cover image'}" />
             </div>
             
             <div class="carousel-text-content">
-              ${carouselItem.courseType ? `<span class="course-type">${carouselItem.courseType}</span>` : ""}
+              ${carouselItem.subHeading ? `<span class="sub-heading">${carouselItem.subHeading}</span>` : ""}
               <h3 class="carousel-item-title">${carouselItem.title}</h3>
-              <span class="carousel-item-location">${carouselItem.author}</span>
+              <span class="carousel-item-location">${carouselItem.location}</span>
 
               ${
-                carouselItem.awards
+                Array.isArray(carouselItem.awards) && carouselItem.awards.length
                   ? `<ul class="carousel-item-pills">${carouselItem.awards
                       .map((award) => '<li class="pill-item">' + award + "</li>")
                       .join("")}</ul>`
