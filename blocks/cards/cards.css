@@ -9,6 +9,16 @@
   overflow: hidden;
 }
 
+.landing-page main .cards-wrapper .cards.block.hero {
+  height: auto;
+
+}
+
+.landing-page main .cards-wrapper .cards.block.hero .card-block-wrapper .main-card {
+  width: 50%;
+  aspect-ratio: 1/1;
+}
+
 .landing-page main .cards-wrapper .cards.block .date-string {
   display: none;
 }
@@ -205,20 +215,31 @@
 }
 
 @media (max-width: 1280px) {
-  .landing-page main .cards-wrapper .cards.block {
+  .landing-page main .cards-wrapper .cards.block:not(.hero) {
     height: auto;
   }
 
   .landing-page main .cards-wrapper .cards.block .card-block-wrapper {
-    flex-direction: column;
     gap: 14px;
   }
 
-  .landing-page main .cards-wrapper .cards.block .card-block-wrapper.reverse {
+  .landing-page main .cards-wrapper .cards.block:not(.hero) .card-block-wrapper {
     flex-direction: column;
   }
 
-  .landing-page main .cards-wrapper .cards.block .card-block-wrapper a.main-card {
+  .landing-page main .cards-wrapper .cards.block:not(.hero) .card-block-wrapper.reverse {
+    flex-direction: column;
+  }
+
+  /* .landing-page main .cards-wrapper .cards.block.hero div.card-block-wrapper {
+    flex-direction: row;
+  }
+
+  .landing-page main .cards-wrapper .cards.block.hero div.card-block-wrapper.reverse {
+    flex-direction: row;
+  } */
+
+  .landing-page main .cards-wrapper .cards.block:not(.hero) .card-block-wrapper a.main-card {
     aspect-ratio: 1.29/1;
     flex: none;
   }
@@ -245,6 +266,25 @@
   .landing-page main .cards-wrapper .cards.block .card-block-wrapper .secondary-cards {
     gap: 0;
   }
+
+  /* WIP */
+  .landing-page main .cards-wrapper .cards.block.hero div.card-block-wrapper {
+    flex-direction: column;
+  }
+
+  .landing-page main .cards-wrapper .cards.block.hero div.card-block-wrapper.reverse {
+    flex-direction: column;
+  }
+
+  .landing-page main .cards-wrapper .cards.block.hero {
+    height: auto;
+  
+  }
+  
+  .landing-page main .cards-wrapper .cards.block.hero .card-block-wrapper .main-card {
+    width: 100%;
+  }
+  /* WIP */
 
   .landing-page
     main

@@ -19,7 +19,16 @@ export default async function decorate(block) {
   if (!cardData) {
     await getCardData();
   }
+
+  const cardsType = Array.from(block.classList).filter(
+    (className) => className !== 'cards' && className !== 'block',
+  )[0];
+  if (cardsType === 'latest') {
+    return
+  }
+
   const cardLinks = [...block.querySelectorAll('p>a[href]')].map((element) => element.href);
+  console.log("\x1b[31m ~ cardLinks:", cardLinks)
 
   const gdPlusCards = block.classList.contains('gd');
 
@@ -37,41 +46,53 @@ export default async function decorate(block) {
     return cardObj;
   });
 
+
   const mainCard = cardList[0];
+
+  const generateMainCard = (card = mainCard) => {
+    console.log("\x1b[34m ~ card:", card)
+    return `
+    <a class="main-card" href="${card.href}">
+      <div class="image-bg">
+        <img loading="lazy" src="${card.image}" alt="${card.imageAlt}"/>
+      </div>
+      <div class="main-text-wrapper">
+        <div class="section">${card.author}</div>
+        ${!gdPlusCards ? '' : `<img loading="lazy" src="/icons/${gdPlusCards ? 'gd-plus-light' : 'gd-plus-dark'}.svg" class="gd-plus-icon-img" alt="Golf Digest Plus Icon" />`}
+        <div class="headline"><h3>${card.title}</h3></div>
+      </div>
+    </a>
+    `
+  }
+
+  const generateSecondaryCards = () => cardList.splice(1).map((card) => `
+    <a class="small-card" href="${card.href}">
+      <div class="image-wrapper">
+        <img loading="lazy" src="${card.image}" alt="${card.imageAlt}"/>
+      </div>
+      <div class="small-text-wrapper">
+        <div class="section">${card.author}</div>
+        ${!gdPlusCards ? '' : '<img loading="lazy" src="/icons/gd-plus-dark.svg" class="gd-plus-icon-img" alt="Golf Digest Plus Icon" />'}
+        <div class="headline"><h3>${card.title}</h3></div>
+        <div class="date-string">${timeSince(convertExcelDate(card.date))}</div>
+      </div>
+    </a>
+  `).join('')
 
   const HTML_TEMPLATE = `
   <div class="card-block-wrapper ${reverse ? 'reverse' : ''}">
-    <a class="main-card" href="${mainCard.href}">
-      <div class="image-bg">
-        <img loading="lazy" src="${mainCard.image}" alt="${mainCard.imageAlt}"/>
+    ${cardsType === 'hero' ?
+      cardList.map((card) => generateMainCard(card)).join("") : `
+      ${generateMainCard()}
+      ${!gdPlusCards ? '' : '<div class="gd-cards-wrapper">'}
+      <div class="secondary-cards">
+        ${!gdPlusCards ? '' : `
+          <h2 class="gd-plus-title">GD+ Latest</h2> 
+        `}
+        ${generateSecondaryCards()}
       </div>
-      <div class="main-text-wrapper">
-        <div class="section">${mainCard.author}</div>
-        ${!gdPlusCards ? '' : `<img loading="lazy" src="/icons/${gdPlusCards ? 'gd-plus-light' : 'gd-plus-dark'}.svg" class="gd-plus-icon-img" alt="Golf Digest Plus Icon" />`}
-        <div class="headline"><h3>${mainCard.title}</h3></div>
-      </div>
-    </a>
-    ${!gdPlusCards ? '' : '<div class="gd-cards-wrapper">'}
-    <div class="secondary-cards">
-      ${!gdPlusCards ? '' : `
-        <h2 class="gd-plus-title">GD+ Latest</h2> 
-      `}
-      ${cardList.splice(1).map((card) => `
-            <a class="small-card" href="${card.href}">
-              <div class="image-wrapper">
-                <img loading="lazy" src="${card.image}" alt="${card.imageAlt}"/>
-              </div>
-              <div class="small-text-wrapper">
-                <div class="section">${card.author}</div>
-                ${!gdPlusCards ? '' : '<img loading="lazy" src="/icons/gd-plus-dark.svg" class="gd-plus-icon-img" alt="Golf Digest Plus Icon" />'}
-                <div class="headline"><h3>${card.title}</h3></div>
-                <div class="date-string">${timeSince(convertExcelDate(card.date))}</div>
-              </div>
-            </a>
-          `)
-    .join('')}
-    </div>
-    ${!gdPlusCards ? '' : '</div>'}
+      ${!gdPlusCards ? '' : '</div>'}
+    `}
   </div>
   `;
 
