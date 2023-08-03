@@ -4,13 +4,17 @@
   flex-direction: column;
   align-items: center;
   overflow: hidden;
+
   --carousel-card-gap: 28px;
 }
 
 .landing-page main .carousel.block.wedges {
-  --carousel-card-gap: 40px;
   width: 100%;
   margin: 100px 0;
+  background-color: #0b3b40;
+  padding: 0 20px;
+  
+  --carousel-card-gap: 40px;
 }
 
 @media (max-width: 1280px) {
@@ -37,7 +41,7 @@
   align-items: center;
 }
 
-.landing-page main .carousel-title-wrapper .carousel-title:before {
+.landing-page main .carousel-title-wrapper .carousel-title::before {
   content: "";
   display: block;
   width: 5px;
@@ -46,11 +50,11 @@
   background-color: #ed3e49;
 }
 
-.landing-page main .carousel-title-wrapper .carousel-title.courses:before {
+.landing-page main .carousel-title-wrapper .carousel-title.courses::before {
   background-color: #105259;
 }
 
-.landing-page main .carousel-title-wrapper .carousel-title.loop:before {
+.landing-page main .carousel-title-wrapper .carousel-title.loop::before {
   background-color: #e8b94d;
 }
 
@@ -59,19 +63,16 @@
   margin-bottom: 34px;
   justify-content: center;
 }
+
 .landing-page main .carousel-title-wrapper .carousel-title.wedges {
   font-size: 67px;
   font-weight: 600;
   color: white;
   margin-bottom: 15px;
 }
-.landing-page main .carousel-title-wrapper .carousel-title.wedges:before {
-  display: none;
-}
 
-.landing-page main .carousel.block.wedges {
-  background-color: #0b3b40;
-  padding: 0 20px;
+.landing-page main .carousel-title-wrapper .carousel-title.wedges::before {
+  display: none;
 }
 
 .landing-page main .carousel.block .carousel-main-wrapper {
@@ -88,6 +89,7 @@
   .landing-page main .carousel.block.wedges {
     margin: 100px 0 40px;
   }
+
   .landing-page main .carousel.block .carousel-main-wrapper {
     height: auto;
   }
@@ -97,13 +99,14 @@
   max-width: 1630px;
   padding: 0;
   margin-bottom: 55px;
+  overflow: hidden;
+  height: auto;
 }
 
 .landing-page main .carousel.block .controls {
   position: relative;
   width: 100%;
   max-width: 1440px;
-  display: flex;
   display: flex;
   justify-content: space-between;
 }
@@ -145,9 +148,6 @@
 
 .landing-page main .carousel.block .controls button.right-button {
   left: auto;
-  right: 12px;
-}
-.landing-page main .carousel.block .controls button.right-button {
   right: -12px;
 }
 
@@ -177,10 +177,6 @@
   flex-shrink: 0;
 }
 
-.landing-page main .carousel.block.wedges .carousel-main-wrapper {
-  overflow: hidden;
-  height: auto;
-}
 .landing-page main .carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item {
   background: none;
   border: none;
@@ -199,6 +195,7 @@
   .landing-page main .carousel.block.wedges .carousel-main-wrapper {
     padding: 0;
   }
+
   .landing-page main .carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item {
     width: 100%;
   }
@@ -263,6 +260,7 @@
   .landing-page main .carousel.block .carousel-main-wrapper .carousel-frame {
     height: auto;
   }
+
   .landing-page main .carousel.block .carousel-main-wrapper .carousel-frame .carousel-item {
     width: calc(50% - 24px);
   }
@@ -304,7 +302,7 @@
   .carousel-frame
   .carousel-item
   .carousel-item-wrapper
-  .carousel-image-wrapper:before {
+  .carousel-image-wrapper::before {
   content: "";
   display: block;
   padding-top: 56.25%;
@@ -417,6 +415,7 @@
   line-height: 130%;
   margin: 0;
 }
+
 .landing-page
   main
   .carousel.block.wedges

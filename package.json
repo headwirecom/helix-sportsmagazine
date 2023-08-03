@@ -7,10 +7,11 @@
     "test": "echo TODO",
     "test:watch": "npm test -- --watch",
     "lint:js": "eslint .",
+    "lint:js:fix": "eslint . --fix",
     "lint:css": "stylelint 'blocks/**/*.css' 'styles/*.css'",
     "lint:css:windows": "stylelint \"blocks/**/*.css\" \"styles/*.css\"",
     "lint": "npm run lint:js && npm run lint:css",
-    "lint:windows": "npm run lint:js && npm run lint:css:windows"
+    "lint:windows": "npm run lint:js:fix && npm run lint:css:windows"
   },
   "repository": {
     "type": "git",
