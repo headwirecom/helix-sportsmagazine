@@ -25,7 +25,7 @@ const ARTICLE_TEMPLATES = {
   ProductListing: 'product-listing',
 };
 
-const LCP_BLOCKS = [...Object.values(ARTICLE_TEMPLATES)]; // add your LCP blocks to the list
+const LCP_BLOCKS = [...Object.values(ARTICLE_TEMPLATES), 'hero']; // add your LCP blocks to the list
 
 const range = document.createRange();
 
@@ -136,12 +136,25 @@ function buildTemplate(main) {
 }
 
 /**
+ * Builds a ceros embed block for all found ceros links
+ *
+ * @param {HTMLElement} main
+ */
+function buildCerosEmbed(main) {
+  main.querySelectorAll('p > a[href^="https://view.ceros.com/golf-digest/"]').forEach((link) => {
+    const embed = buildBlock('embed', { elems: [link.cloneNode(true)] });
+    link.parentElement.replaceWith(embed);
+  });
+}
+
+/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
 function buildAutoBlocks(main) {
   try {
     buildTemplate(main);
+    buildCerosEmbed(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -288,7 +301,7 @@ export const timeSince = (date) => {
 
 /**
  * Converts excel date into JS date.
- * @param {number} excel date to convert.
+ * @param {number} excelDate date to convert.
  */
 export const convertExcelDate = (excelDate) => {
   const secondsInDay = 86400;

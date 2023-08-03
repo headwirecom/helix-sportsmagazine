@@ -67,3 +67,11 @@ main .embed .embed-placeholder-play button::before {
 main .embed.block:has(div > iframe, iframe) {
     max-width: 100%;
 }
+
+main .embed.block:has(iframe[src^="https://view.ceros.com/golf-digest/"]) {
+    max-width: var(--layout-width);
+}
+
+main .embed.block iframe[src^="https://view.ceros.com/golf-digest/"] {
+    padding: 0 15px;
+}

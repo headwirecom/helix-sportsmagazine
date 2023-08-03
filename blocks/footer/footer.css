@@ -29,7 +29,7 @@
 }
 
 .footer .footer-body-wrapper {
-  max-width: 1440px;
+  max-width: var(--layout-width);
   margin: 0 auto;
 }
 
@@ -80,7 +80,7 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
   line-height: 130%;
-  font-family: Tungsten, arial, sans-serif;
+  font-family: var(--font-tungsten);
   text-align: left;
 }
 

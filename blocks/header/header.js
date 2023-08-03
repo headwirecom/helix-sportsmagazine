@@ -3,6 +3,8 @@ import leaderboard from './leaderboard.js';
 
 const DEFAULT_NAV = '/golf-nav';
 
+const isHomePage = document.body.classList.contains('home-page');
+
 const config = {
   setNavTop: true,
   searchExposed: false,
@@ -39,7 +41,7 @@ async function fetchNavTemplate() {
 await fetchNavTemplate();
 
 async function fetchHeaderTemplate() {
-  const templatePath = (window.location.pathname === '/') ? '/blocks/header/homepage-header.html' : '/blocks/header/header.html';
+  const templatePath = isHomePage ? '/blocks/header/homepage-header.html' : '/blocks/header/header.html';
   const resp = await fetch(templatePath);
   if (resp.ok) {
     const html = await resp.text();
@@ -112,14 +114,17 @@ function toggleNav(state) {
     showSearch(false);
   }
   // setNavTop();
-  const menuBtn = document.querySelector('.header .header-menu-button');
+  const menuButtons = document.querySelectorAll('.header .header-menu-button');
   const menuEl = document.querySelector('.header .header-nav-menu');
-  menuBtn.classList.toggle(config.activeClass, menuState);
+  menuButtons.forEach((menuBtn) => {
+    menuBtn.classList.toggle(config.activeClass, menuState);
+  });
   menuEl.classList.toggle(config.openClass, menuState);
   document.querySelector('.header .header-overlay').style = `display: ${menuState ? 'block' : 'none'}`;
 
   const outsideClickListener = (event) => {
-    if (!menuEl.contains(event.target) && !menuBtn.contains(event.target)) {
+    if (!menuEl.contains(event.target) && !menuButtons[0].contains(event.target)
+      && (menuButtons[1] && !menuButtons[1].contains(event.target))) {
       toggleNav(false);
     }
   };
@@ -165,13 +170,16 @@ function registerRootMenuEvents(rootMenu) {
 
 function registerMenuEvents() {
   roots = Array.from(document.querySelectorAll('.header li.nav-level-0'));
-  const menuBtn = document.querySelector('.header .header-menu-button');
+  const menuButtons = document.querySelectorAll('.header .header-menu-button');
   const menuCloseBtn = document.querySelector('.header .header-close');
   const searchBtn = document.querySelector('.header [data-type=button-search-toggle]');
   const searchCancelBtn = document.querySelector('.header [data-type=button-search-cancel]');
-  menuBtn.onclick = () => {
-    toggleNav();
-  };
+  menuButtons.forEach((menuBtn) => {
+    menuBtn.onclick = () => {
+      toggleNav();
+    };
+  });
+
   menuCloseBtn.onclick = () => {
     toggleNav(false);
   };
@@ -187,7 +195,7 @@ function registerMenuEvents() {
 
 function decorateNavHeader(section) {
   const sectionLink = section.querySelector('a');
-  const url = (sectionLink.getAttribute('href')) ? sectionLink.getAttribute('href') : '//www.golfdigest.com';
+  const url = (sectionLink.getAttribute('href')) ? sectionLink.getAttribute('href') : '/';
   const text = sectionLink.innerHTML;
   const wrapper = document.createElement('div');
 
@@ -249,7 +257,7 @@ function decorateMainMenuLevel(listEl, level) {
     const submenus = listItem.querySelectorAll(':scope > ul');
     menuItemDiv.append(link);
     menuLink.replaceWith(menuItemDiv);
-    if (window.location.pathname === '/' && level === 0) {
+    if (isHomePage && level === 0) {
       // get top level menus for horizontal nav on homepage
       if (!channelInfo.submenus) {
         channelInfo.submenus = listItem.parentElement;
@@ -327,7 +335,7 @@ function decorateMainSideNav(section) {
 
 function decorateMidNavLink(section) {
   const sectionLink = section.querySelector('a');
-  const url = (sectionLink.getAttribute('href')) ? sectionLink.getAttribute('href') : '//www.golfdigest.com';
+  const url = (sectionLink.getAttribute('href')) ? sectionLink.getAttribute('href') : '/';
   const text = sectionLink.innerHTML;
 
   if (navTemplateDom) {
@@ -363,13 +371,11 @@ function decorateSecondarySideNav(section) {
 }
 
 function decorateLogin() {
-  const el = navTemplateDom.querySelector('[data-type="nav-profile"]');
-  return el;
+  return navTemplateDom.querySelector('[data-type="nav-profile"]');
 }
 
 function decorateTertiarySideNav(section) {
-  const el = decorateSideNav(section, 'o-NavMenu__m-Tertiary');
-  return el;
+  return decorateSideNav(section, 'o-NavMenu__m-Tertiary');
 }
 
 function getSocialIcon(url, match) {
@@ -475,19 +481,20 @@ function decorateLeaderboard(block) {
   leaderboard(block, leaderboardEl);
 }
 
+function handleScrolling(el) {
+  window.addEventListener('scroll', () => {
+    el.classList.toggle('is-scrolling', window.scrollY > 330);
+  });
+}
+
 /**
  * decorates the header, mainly the nav
  * @param {Element} block The header block element
  */
 export default async function decorate(block) {
-  const header = block.closest('.header-wrapper');
+  const header = block.closest('header');
   if (header) {
-    header.classList.add('header');
     header.setAttribute('data-module', 'golf-header');
-  }
-
-  if (window.location.pathname === '/') {
-    block.classList.add('homepage-header');
   }
 
   decorateLeaderboard(block);
@@ -498,5 +505,6 @@ export default async function decorate(block) {
     await buildHeader(block, html);
     registerMenuEvents();
     handleRootExpand();
+    handleScrolling(header.querySelector('.header'));
   }
 }

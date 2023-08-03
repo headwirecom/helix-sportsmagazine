@@ -4,7 +4,7 @@ main .section.open-article-container {
 
 main .open-article-container h1 {
   font-size: 40px;
-  font-family: Gotham, arial, sans-serif;
+  font-family: var(--font-gotham);
   font-style: normal;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -18,15 +18,14 @@ main .open-article-container .open-article.block {
 }
 
 main .open-article-container .article-body p {
-  font-family: Gotham, arial, sans-serif;
+  font-family: var(--font-gotham);
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
   line-height: 30px;
-  margin: 0;
   text-align: left;
   color: #000;
-  margin-bottom: 30px;
+  margin: 0 0 30px;
 }
 
 main .open-article-container .article-body p::first-letter {
@@ -60,7 +59,7 @@ main .open-article-container .lead img {
 main .open-article-container .byline {
   display: flex;
   color: black;
-  font-family: Gotham, arial, sans-serif;
+  font-family: var(--font-gotham);
   font-style: normal;
   font-weight: 700;
   letter-spacing: 0;

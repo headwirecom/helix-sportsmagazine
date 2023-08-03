@@ -4,7 +4,7 @@
 }
 
 .gallery.block .container {
-  max-width: 1440px;
+  max-width: var(--layout-width);
   margin: 0 auto;
   padding: 20px;
 }
@@ -15,11 +15,22 @@
   margin-bottom: 30px;
 }
 
+.gallery.block .container-article picture {
+  display: flex;
+  background-color: #f2f2f2;
+}
+
 .gallery.block .container-article img {
   width: 100%;
   height: auto;
   object-fit: contain;
-  margin: 10px auto 0;
+  margin: auto;
+  padding: 15px;
+}
+
+.gallery.block .container-article img.portrait {
+  width: 50%;
+  padding: 0;
 }
 
 @media (max-width: 768px) {
@@ -121,6 +132,10 @@
   }
 }
 
+.gallery.block .byline.no-author .attribution {
+  display: none;
+}
+
 .gallery .article-body > div a {
   color: black;
   text-decoration: none;
@@ -155,6 +170,10 @@
   margin: 0 5px;
 }
 
+.gallery.block .byline.no-author .publication::before {
+  display: none;
+}
+
 .gallery.block .byline .sharing {
   display: flex;
   flex-grow: 1;
@@ -186,6 +205,18 @@
   visibility: hidden;
 }
 
+.gallery.block .carousel > div {
+  width: 100%;
+}
+
+.gallery.block .carousel > div h3 {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 23px;
+}
+
 .gallery.block .carousel > div > p:first-of-type {
   position: relative;
   margin: 0;
@@ -201,11 +232,6 @@
 
 .gallery.block .carousel > div > p:last-of-type {
   margin-bottom: 0;
-}
-
-.gallery.block .carousel img {
-  padding: 15px;
-  background-color: #f2f2f2;
 }
 
 .gallery.block .carousel .next,

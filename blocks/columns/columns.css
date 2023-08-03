@@ -1,0 +1,138 @@
+.columns-wrapper {
+  width: 100vw;
+  background-color: #151517;
+  color: white;
+}
+
+.columns.block {
+  max-width: var(--layout-width);
+  margin: auto;
+  padding: 20px 0;
+}
+
+.columns-wrapper .columns-container {
+  display: flex;
+  align-items: center;
+  gap: 100px;
+}
+
+.columns-wrapper .video-container {
+  max-width: 60%;
+  width: 100%;
+}
+
+.columns-wrapper .content-container {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  max-width: 40%;
+  padding: 30px;
+}
+
+.columns-wrapper a {
+  text-decoration: none;
+}
+
+.columns-wrapper h2 {
+  font-family: var(--font-tungsten);
+  font-size: 67px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 98%;
+  padding-bottom: 10px;
+  letter-spacing: .05em;
+}
+
+.columns-wrapper p {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-gotham);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 137%;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #e6e6e6;
+}
+
+@media (min-width: 1281px) {
+  .columns-wrapper p {
+    font-size: 20px;
+  }
+}
+
+.columns-wrapper .button-container {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+.columns-wrapper .button-container a {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-gotham);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 130%;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #fff;
+}
+
+@media (min-width: 1025px) {
+  .columns-wrapper .button-container a {
+    font-size: 14px;
+  }
+}
+
+.columns-wrapper .button-container .arrow-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  color: #fff;
+  width: 20px;
+  height: 20px;
+  background: #ed3e49;
+  transition: background .2s;
+}
+
+.columns-wrapper .button-container:hover .arrow-icon {
+  background: #000;
+}
+
+@media (max-width: 1281px) {
+  .columns.block {
+    padding: 0;
+  }
+
+  .columns-wrapper .columns-container {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .columns-wrapper .video-container {
+    max-width: 100%;
+    padding: 0 20px;
+  }
+
+  .columns-wrapper .content-container {
+    max-width: 100%;
+    padding: 30px;
+  }
+
+  .columns-wrapper h2 {
+    font-size: 37px;
+  }
+
+  .columns-wrapper p {
+    font-size: 14px;
+    padding-right: 20px;
+  }
+
+  .columns-wrapper .button-container {
+    margin: 0 0 40px;
+  }
+}
