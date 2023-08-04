@@ -148,8 +148,11 @@
                 return `${proxyHost}${path}?host=${rh}`;
             }
             function mapToImportedPath(path) {
-                // let fn = fileName(path, '_', '-').replaceAll('--','-').replace(/^-/,'').toLowerCase();
-                let fn = fileName(path, '_', '-').toLowerCase();
+                // match Franklin path names
+                let fn = fileName(path, '_', '-').replaceAll('--','-').replace(/^-/,'').toLowerCase();
+                while (fn.includes('--')) {
+                    fn = fn.replaceAll('--','-');
+                }
                 let importedPath = path.replace(/\/content\/golfdigest-com\/en/, '').replace(fileName(path), fn).replace(/\.html$/, '').replace(/-$/,'');
                 return importedPath;
             }
