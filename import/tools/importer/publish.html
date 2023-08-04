@@ -48,6 +48,9 @@
             #url-text {
                 width: 95%;
             }
+            #log-counter {
+                padding-left: 10px;
+            }
         </style>
         <script src="./bulk.js" defer></script>
         <script>
@@ -112,8 +115,11 @@
                 return `${proxyHost}${path}?host=${rh}`;
             }
             function mapToImportedPath(path) {
-                // let fn = fileName(path, '_', '-').replaceAll('--','-').replace(/^-/,'').toLowerCase();
-                let fn = fileName(path, '_', '-').toLowerCase();
+                // match Franklin path names
+                let fn = fileName(path, '_', '-').replaceAll('--','-').replace(/^-/,'').toLowerCase();
+                while (fn.includes('--')) {
+                    fn = fn.replaceAll('--','-');
+                }
                 let importedPath = path.replace(/\/content\/golfdigest-com\/en/, '').replace(fileName(path), fn).replace(/\.html$/, '').replace(/-$/,'');
                 return importedPath;
             }
@@ -140,46 +146,29 @@
                 }
                 return f;
             }
-            function setUrlDisplay(container, url) {
-                const a = document.createElement('a');
-                a.innerHTML = url;
-                a.href = url;
-                a.target = '_blank';
-                const c = document.createElement('div');
-                c.append(a);
-                container.innerHTML = c.innerHTML;
-            }
-
-            function updateComapreFrame(orgPath) {
-                const newPath = getImportedUrl(orgPath);
-                setUrlDisplay(document.getElementById('currentImportedURL'), newPath);
-                document.getElementById('frame2').src = newPath;
-            }
-            function waitToLoad() {
-                // console.log('waiting to load update page');
-                let docBody = document.getElementById('frame1').contentDocument.body;
-                let pagePath = (docBody) ? docBody.getAttribute("data-page-path") : null;
-                console.log('waiting to load update page. Page path ' + pagePath);
-                if (pagePath) {
-                    let currentUrl = document.getElementById('url-text').value;
-                    let urlFileName = fileName(currentUrl, '.html', '');
-                    let pathFileName = fileName(pagePath);
-                    if (urlFileName == pathFileName) {
-                        updateComapreFrame(pagePath);
-                    } else {
-                        setTimeout(waitToLoad, 100);
-                    }
-                } else {
-                    setTimeout(waitToLoad, 100);
-                }
-            }
 
             fetchData();
 
+            const logger = {
+                append: (s) => {
+                    document.querySelector('.publish-logger').contentDocument.body.append(s);
+                },
+
+                updateCounter: (count, length) => {
+                    const txt = `<span class="log-counter-text">${count}/${data.length}</span>`;
+                    document.querySelector('#log-counter').innerHTML = txt;
+                },
+
+                clear: () => {
+                    document.querySelector('#log-counter').innerHTML = '';
+                    document.querySelector('.publish-logger').contentDocument.body.innerHTML = '';
+                }
+            };
+
             function getPublishLogger() {
-                logger = document.querySelector('.publish-logger');
-                return logger.contentDocument.body;
+                return logger;
             }
+
             function showLogger(show) {
                 document.querySelector('.publish-logger-container').style.display = (show) ? 'block' : 'none';
                 document.querySelector('.hide-log-btn').style.display = (show) ? 'block' : 'none';
@@ -197,7 +186,7 @@
             }
             function clearLog(clearAndHide) {
                 let logger = getPublishLogger();
-                logger.innerHTML = '';
+                logger.clear();
                 if (clearAndHide) {
                     document.querySelector('.publish-logger-container').style.display = 'none';
                     document.querySelectorAll('.log-btn').forEach(el => {el.style.display = 'none';});
@@ -205,7 +194,7 @@
             }
             async function startBulk(operation, doConfirm) {
                 const offset = parseInt(document.querySelector('#offset').value);
-                if (doConfirm && !window.confirm(`Publishing \"${operation}\" ${data.length - offset} pages!`)) {
+                if (doConfirm && !window.confirm(`Run \"${operation}\" operation ${data.length - offset} on pages!`)) {
                     return false;
                 }
 
@@ -219,11 +208,14 @@
                     urls.push(url);
                 }
         
-                appendLog('Publishing ...')
-                await bulk(urls, operation, getPublishLogger(), offset);
+                appendLog(`Running "${operation}" call ...`)
+                await bulk(urls, operation, getPublishLogger(), document.querySelector('.op-method').value, offset);
                 return true;
             }
             async function mapFromOriginalPath(origPath) {
+                if (origPath.includes('--helix-sportsmagazine--headwirecom.hlx')) {
+                    return origPath;
+                }
                 if (!origPath.startsWith('/content/')) {
                     appendLog(`Getting long path for ${origPath}`);
                     const longPath = await fetchLongUrl(`${remoteHost}${origPath}`);
@@ -241,12 +233,15 @@
                 return url;
             }
             async function publish() {
-                const operation = document.querySelector('.publish-op');
-                const clearCache = document.querySelector('#clear-cache-toggle');
-                const started = startBulk(operation.value, true);
-                if (operation.value == 'live' && (started && clearCache)) {
-                    startBulk('cache', false);
+                if (document.querySelector('.page-type').value === 'manual') {
+                    await fetchData();
                 }
+                const operation = document.querySelector('.publish-op');
+                const started = startBulk(operation.value, true);
+            }
+
+            function updateLogCounter(count, length) {
+                logger.updateCounter(count, length);
             }
 
             async function publishTest() {
@@ -269,13 +264,15 @@
                     let respCode = resp.status;
                     let count = i + 1;
                     if (resp.ok) {
-                        logMsg = `[${count}/${data.length}] ${importedUrl} published successfully!`;
+                        // logMsg = `[${count}/${data.length}] ${importedUrl} published successfully!`;
                     } else {
                         console.log(`${url}: [${resp.status}] ${resp.statusText}`);
-                        logMsg = `[${count}/${data.length}] The page ${importedUrl}: [${resp.status}] ${resp.statusText}`;
+                        logMsg = `[${count}/${data.length}] The page ${importedUrl}: [${resp.status}] ${resp.statusText}
+                            <br/>Proxy: ${url}`;
                         failedURLs.push(importedUrl);
                     }
                     appendLog(logMsg);
+                    updateLogCounter(count, data.length);
                 }
 
                 if (failedURLs.length > 0) {
@@ -305,8 +302,24 @@
 
             function publishOpChange() {
                 const op = document.querySelector('.publish-op').value;
-                const clearCacheCheckbox = document.querySelector(".clear-cache-check");
-                clearCacheCheckbox.style.display = (op === 'live') ? 'inline' : 'none';
+                
+                if (op === "status") {
+                    // status op only supports GET
+                    document.querySelector('.op-method').disabled = true;
+                    document.querySelector('.op-method').value = "GET";
+                } else if (op === "cache") {
+                    // cache op only supports GET
+                    document.querySelector('.op-method').disabled = true;
+                    document.querySelector('.op-method').value = "POST";
+                } else {
+                    document.querySelector('.op-method').disabled = false;
+                }
+
+                if (op === "preview" || op === "live") {
+                    document.querySelector('.publish-test-btn').disabled = false;
+                } else {
+                    document.querySelector('.publish-test-btn').disabled = true;
+                }
             }
 
             function envChange() {
@@ -329,20 +342,23 @@
         </script>
     </head>
     <body>
+        <h4>
+            Very ugly tool for executing <a href="https://www.hlx.live/docs/admin.html" target="_blank">Franklin Admin API</a> operations on imported content. Use with extreme caution! :)
+        </h4>
         <div class="main">
             <div class="form manual-form">
                 <div>
-                    <label>Enter a list of URLs (one per line) and click Submit.</label>
+                    <label>Enter a list of URLs (one per line) and click Run.</label>
                     <input id="manual-form-toggle" type="checkbox" onchange="toggleManualForm(this.checked)" checked/>
                 </div>
                 <div id="url-list-container">
                 <textarea id="url-list" rows="20" cols="150">
 
                 </textarea>
-                <p><button id="manual-submit-btn" onclick="fetchData()">Submit</button></p>
                 </div>
             </div>
             <div class="form">
+                <label class="page-type-label" for="page-type">Select Page Type:</label>
                 <select class="page-type" onchange="pageTypeChange()">
                     <option value="gallery">Gallery</option>
                     <option value="article">Default Article</option>
@@ -355,26 +371,33 @@
                 <select class="env-op" onchange="envChange()">
                     <option value="main" selected>main</option>
                 </select>
+                <label class="api-op-label" for="publish-op">API Call:</label>
                 <select class="publish-op" onchange="publishOpChange()">
                     <option value="preview" selected>preview</option>
                     <option value="live">live</option>
+                    <option value="index">index</option>
+                    <option value="cache">cache</option>
+                    <option value="status">status</option>
+                </select>
+                <label class="api-op-label" for="op-method">Method:</label>
+                <select class="op-method">
+                    <option value="GET" selected>GET</option>
+                    <option value="POST">POST</option>
+                    <option value="DEL">DELETE</option>
                 </select>
                 <labe>Start intex:</labe>
                 <input id="offset" type="number" min="0" value="0" size="3">
-                <span class="clear-cache-check" style="display: none;">
-                <label>Clear Cache</label>
-                <input id="clear-cache-toggle" type="checkbox" checked/>
-                </span>
-                <button class="publish-btn" onclick="publish()">Publish</button>
+                <button class="publish-btn" onclick="publish()">Run</button>
                 <button class="publish-test-btn" onclick="publishTest()">Publish Check</button>
-            </div>
-            <div class="publish-logger-container" style="display: none;">
-                <iframe class="publish-logger"></iframe>
             </div>
             <div class="form log-bottons">
                 <button class="show-log-btn log-btn" onclick="showLogger(true)">Show Publish Log</button>
                 <button class="hide-log-btn log-btn" onclick="showLogger(false)">Hide Publish Log</button>
                 <button class="clear-log-btn log-btn" onclick="clearLog(true)">Clear Publish Log</button>
+                <div id="log-counter"></div>
+            </div>
+            <div class="publish-logger-container" style="display: none;">
+                <iframe class="publish-logger"></iframe>
             </div>
         </div>
         <div class="publish-ui" style="display: none">
