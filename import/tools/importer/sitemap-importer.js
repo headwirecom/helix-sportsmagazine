@@ -15,12 +15,13 @@ function append(s) {
 let counter = 0;
 let totalCounter = 0;
 let isJSONOutput = false;
+let _showCount = false;
 let callback = (url, doc) => {
   counter++;
   if (isJSONOutput) {
     append(url);
   } else {
-    if (showCount) append(`${counter} <a href="${url}" target="_blank">${url}</a>`);
+    if (_showCount) append(`${counter} <a href="${url}" target="_blank">${url}</a>`);
     else append(`<a href="${url}" target="_blank">${url}</a>`);
   }
 };
@@ -153,6 +154,8 @@ export async function parseSitemap(options) {
     longForm 
   } = options;
 
+  _showCount = showCount;
+  
   if (updateImporter && counter === 0) {
     clearBulkImport();
   }
