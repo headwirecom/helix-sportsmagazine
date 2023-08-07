@@ -138,6 +138,12 @@
                 let host = encodeURIComponent( (operation === 'live') ? liveImportHost : previewImportHost );
                 return `${proxyHost}${importRoot}${importedPath}?host=${host}`;
             }
+            function getProxyURL(url) {
+                const u = new URL(url);
+                const host = encodeURIComponent(`${u.protocol}://${u.hostname}`);
+                const pathname = u.pathname;
+                return `${proxyHost}${pathname}?host=${host}`;
+            }
             function fileName(path, replaceStr, replaceWith) {
                 const parts = path.split('/');
                 let f = parts[parts.length-1];
@@ -232,8 +238,13 @@
                 console.log(`Fetched long content URL ${url}`);
                 return url;
             }
+
+            function isManualEntry() {
+                return document.querySelector('.page-type').value === 'manual';
+            }
+
             async function publish() {
-                if (document.querySelector('.page-type').value === 'manual') {
+                if (isManualEntry()) {
                     await fetchData();
                 }
                 const operation = document.querySelector('.publish-op');
@@ -244,6 +255,10 @@
                 logger.updateCounter(count, length);
             }
 
+            async function getDocumentPath(path) {
+                return (data[i].startsWith('/content/')) ? data[i] : await fetchLongUrl(`${remoteHost}${data[i]}`);
+            }
+
             async function publishTest() {
                 clearLog();
                 showLogger(true);
@@ -251,12 +266,25 @@
                 document.querySelector('.clear-log-btn').disabled = true;
                 const failedURLs = [];
                 const op = (document.querySelector('.publish-op').value === 'live') ? 'live' : "preview";
+                const isManual = isManualEntry();
 
-                appendLog(`Checking publish status in '${op}' mode for ${data.length} pages.`);
+                if (isManual) {
+                    await fetchData();
+                }
+
+                appendLog(`Checking publish status for ${data.length} pages.`);
                 for (let i = 0; i < data.length; i++) {
-                    let documentPath = (data[i].startsWith('/content/')) ? data[i] : await fetchLongUrl(`${remoteHost}${data[i]}`);
-                    let url = getImportedProxyUrl(documentPath, op);
-                    let importedUrl = getImportedUrl(documentPath, op);
+                    let url = '';
+                    let importedUrl = '';
+                    if (isManual) {
+                        url = getProxyURL(data[i]);
+                        importedUrl = data[i];
+                    } else {
+                        let documentPath = (data[i].startsWith('/content/')) ? data[i] : await fetchLongUrl(`${remoteHost}${data[i]}`);
+                        url = getImportedProxyUrl(documentPath, op);
+                        importedUrl = getImportedUrl(documentPath, op);
+                    }
+
                     let logMsg = '';
                     
                     console.log(`Testing ${url}`);
@@ -289,10 +317,8 @@
                 document.querySelector('.clear-log-btn').disabled = false;
                 // showLogger(false);
             }
-
             function pageTypeChange() {
-                const pageType = document.querySelector('.page-type').value;
-                if (pageType === 'manual') {
+                if (isManualEntry()) {
                     document.querySelector('.manual-form').style.display = 'block';
                 } else {
                     document.querySelector('.manual-form').style.display = 'none';
@@ -349,9 +375,7 @@
                     <input id="manual-form-toggle" type="checkbox" onchange="toggleManualForm(this.checked)" checked/>
                 </div>
                 <div id="url-list-container">
-                <textarea id="url-list" rows="20" cols="150">
-
-                </textarea>
+                <textarea id="url-list" rows="20" cols="150"></textarea>
                 </div>
             </div>
             <div class="form">
