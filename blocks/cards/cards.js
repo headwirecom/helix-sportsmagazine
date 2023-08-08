@@ -23,7 +23,7 @@ export default async function decorate(block) {
 
   const cardLinks = [...block.querySelectorAll("p>a[href]")].map((element) => element.href);
 
-  const cardsTitle = block.querySelector(".cards.latest.block h3")?.innerText
+  const cardsTitle = block.querySelector(".cards.latest.block h3, .cards.columns.block h3")?.innerText
 
   const gdPlusCards = block.classList.contains("gd");
 
@@ -48,7 +48,7 @@ export default async function decorate(block) {
       return '<div class="latest-rail"></div>';
     }
     return `
-    <a class="main-card" href="${card.href}">
+    <a class="main-card" href="${card.href || card.path}">
       <div class="image-bg">
         ${createOptimizedPicture(card.image, card.imageAlt).innerHTML}
       </div>
@@ -69,14 +69,14 @@ export default async function decorate(block) {
 
   const generateSecondaryCards = (cardArray = cardList.splice(1)) => {
     return cardArray.map((card) => `
-      <a class="small-card" href="${card.href}">
+      <a class="small-card" href="${card.href || card.path}">
         <div class="image-wrapper">
           ${createOptimizedPicture(card.image, card.imageAlt).innerHTML}
         </div>
         <div class="small-text-wrapper">
           <div class="section">${card.author}</div>
           ${
-            !gdPlusCards
+            !gdPlusCards && !card?.gdPlus
               ? ""
               : '<img loading="lazy" src="/icons/gd-plus-dark.svg" class="gd-plus-icon-img" alt="Golf Digest Plus Icon" />'
           }
