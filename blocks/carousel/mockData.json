@@ -394,5 +394,79 @@
       "location": "",
       "awards": []
     }
+  ],
+  "large": [
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_156e0725739749309444ede5708e6d6b0ae39899c.png?width=2000&format=webply&optimize=medium",
+      "subHeading": "majors",
+      "title": "The top 25 players competing at the 2023 AIG Women's British Open, ranked",
+      "location": "",
+      "awards": []
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_127d5f927312fbebe20bc5b6f89e4a17e31895265.jpeg?width=2000&format=webply&optimize=medium",
+      "subHeading": "money matters",
+      "title": "The top 10 money earners in FedEx Cup history",
+      "location": "",
+      "awards": []
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_16ebd97b05b523e51713f2a928053dd3d89dc93cb.jpeg?width=2000&format=webply&optimize=medium",
+      "subHeading": "golf fight",
+      "title": "Golfer knocked unconscious during fist fight over 'rude behavior' on the course",
+      "location": "",
+      "awards": []
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_12cc88e21ed7e8301669e2d2051e43bbea3d1612b.png?width=2000&format=webply&optimize=medium",
+      "subHeading": "viral videos",
+      "title": "Bear ripping full golf bag off cart and taking it into the woods is the wildest horror movie of the summer",
+      "location": "",
+      "awards": []
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_1072b8c7dbb2564a9e2c33db2b6553abddd72cbcb.png?width=2000&format=webply&optimize=medium",
+      "subHeading": "rivalries",
+      "title": "Josh Allen says AAron Rodgers sandbagged 'the world' in controversial Pebble Beach Pro-Am win",
+      "location": "",
+      "awards": []
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_16d1c0b2bb74aa008cdb2473c96fc11d7fce2b524.jpeg?width=2000&format=webply&optimize=medium",
+      "subHeading": "celebrity golfers",
+      "title": "Von miller explains why Josh Allen is 'different' (Hind: It involves golf)",
+      "location": "",
+      "awards": []
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_1d90c973d09c68cb6df0df1e7ccd91b84ce37f402.jpeg?width=2000&format=webply&optimize=medium",
+      "subHeading": "podcasts",
+      "title": "Does the Ryder Cup need more edge?",
+      "location": "",
+      "awards": []
+    },
+    {
+      "path": "#",
+      "imageAlt": "",
+      "imagePath": "https://main--helix-sportsmagazine--headwirecom.hlx.page/carousel-placeholder/media_1ae403f2e26cc8874052713b67df6131cafaa5222.jpeg?width=2000&format=webply&optimize=medium",
+      "subHeading": "better analysis",
+      "title": "Wyndham Championship picks 2023: Can this house for the course finally get over the line?",
+      "location": "",
+      "awards": []
+    }
   ]
 }

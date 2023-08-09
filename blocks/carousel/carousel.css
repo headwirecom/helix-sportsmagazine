@@ -8,12 +8,18 @@
   --carousel-card-gap: 28px;
 }
 
+.carousel.block.large {
+  --carousel-card-gap: 12px;
+
+  position: relative;
+}
+
 .carousel.block.wedges {
   width: 100%;
   margin: 100px 0;
   background-color: #0b3b40;
   padding: 0 20px;
-  
+
   --carousel-card-gap: 40px;
 }
 
@@ -99,20 +105,27 @@
   max-width: 1630px;
   padding: 0;
   margin-bottom: 55px;
-  overflow: hidden;
   height: auto;
+}
+
+.carousel.block.large .carousel-main-wrapper .carousel-inner-wrapper{
+  height: 100%;
+  width: 100%;
+}
+
+.carousel.block.wedges .carousel-main-wrapper .carousel-inner-wrapper{
+  overflow: hidden;
 }
 
 .carousel.block.wedges .carousel-main-wrapper.mobile-wedges {
   overflow: visible;
   width: 100%;
-  
-  
 }
 
 .carousel.block .controls {
-  position: relative;
+  position: absolute;
   width: 100%;
+  height: 100%;
   max-width: 1440px;
   display: flex;
   justify-content: space-between;
@@ -139,14 +152,17 @@
   width: 40px;
   height: 40px;
   position: absolute;
-  left: 0;
+  left: -16px;
   z-index: 1;
   top: 96px;
 }
 
 .carousel.block.wedges .controls button {
   top: 170px;
-  left: -16px;
+}
+
+.carousel.block.large .controls button {
+  top: calc(50% - 40px);
 }
 
 .carousel.block .controls button.hidden {
@@ -155,8 +171,17 @@
 
 .carousel.block .controls button.right-button {
   left: auto;
-  right: -12px;
+  right: 26px;
 }
+
+.carousel.block.large .controls button.right-button {
+  right: 16px;
+}
+
+.carousel.block.wedges .controls button.right-button {
+  right: -10px;
+}
+
 
 .carousel.block .controls button.left-button {
   transform: rotate(180deg);
@@ -199,6 +224,17 @@
   height: auto;
 }
 
+.carousel.block.large .carousel-main-wrapper {
+  height: auto;
+}
+
+.carousel.block.large .carousel-main-wrapper .carousel-frame .carousel-item {
+  width: calc(50% - var(--carousel-card-gap) + 7px);
+  aspect-ratio: 1/1;
+  height: auto;
+  position: relative;
+}
+
 .carousel.block.wedges .carousel-main-wrapper.mobile-wedges .carousel-frame .carousel-item {
   width: 100%;
 }
@@ -231,13 +267,15 @@
   }
 }
 
-.carousel.block.wedges
-  .carousel-main-wrapper
-  .carousel-frame
-  .carousel-item
-  div.carousel-image-wrapper {
+.carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item div.carousel-image-wrapper {
   aspect-ratio: 1/1;
   margin: 0 0 21px;
+}
+
+.carousel.block.large .carousel-main-wrapper .carousel-frame .carousel-item div.carousel-image-wrapper {
+  width: 100%;
+  height: 100%;
+  position: absolute;
 }
 
 .carousel.block.wedges
@@ -245,16 +283,12 @@
   .carousel-frame
   .carousel-item
   .carousel-image-wrapper
-  > img.carousel-image {
+  img.carousel-image {
   z-index: 1;
   object-position: 0% 0%;
 }
 
-.carousel.block.wedges
-  .carousel-main-wrapper
-  .carousel-frame
-  .carousel-item
-  .carousel-image-wrapper::before {
+.carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item .carousel-image-wrapper picture::before {
   content: "";
   display: block;
   position: absolute;
@@ -262,11 +296,7 @@
   width: 100%;
 }
 
-.carousel.block.wedges
-  .carousel-main-wrapper
-  .carousel-frame
-  .carousel-item
-  .carousel-image-wrapper::after {
+.carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item .carousel-image-wrapper picture::after {
   top: 35%;
   pointer-events: all;
   content: "";
@@ -275,7 +305,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 0;
+  z-index: -1;
 }
 
 @media (max-width: 1024px) {
@@ -301,12 +331,7 @@
   }
 }
 
-.carousel.block
-  .carousel-main-wrapper
-  .carousel-frame
-  .carousel-item
-  .carousel-item-wrapper
-  .carousel-image-wrapper {
+.carousel.block .carousel-main-wrapper .carousel-frame .carousel-item .carousel-item-wrapper .carousel-image-wrapper {
   margin: -0.5px;
   width: calc(100% - 1px);
   height: auto;
@@ -333,7 +358,7 @@
   .carousel-item
   .carousel-item-wrapper
   .carousel-image-wrapper
-  > img {
+  img {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -352,19 +377,26 @@
   .carousel-item:hover
   .carousel-item-wrapper
   .carousel-image-wrapper
-  > img {
+  img {
   transform: scale(1.2);
 }
 
-.carousel.block
-  .carousel-main-wrapper
-  .carousel-frame
-  .carousel-item
-  .carousel-item-wrapper
-  .carousel-text-content {
+.carousel.block .carousel-main-wrapper .carousel-frame .carousel-item .carousel-item-wrapper .carousel-text-content {
   display: flex;
   flex-direction: column;
   padding: 20px;
+  gap: 10px;
+}
+
+.carousel.large .carousel-main-wrapper .carousel-frame .carousel-item .carousel-item-wrapper .carousel-text-content {
+  background: linear-gradient(180deg, transparent 50%, #000);
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  justify-content: flex-end;
+  padding: 40px;
   gap: 10px;
 }
 
@@ -404,6 +436,31 @@
   display: none;
 }
 
+@media (max-width: 779px) {
+  .carousel.block.large .carousel-main-wrapper .carousel-frame .carousel-item {
+    width: 90%;
+  }
+
+  .carousel.block.large
+    .carousel-main-wrapper
+    .carousel-frame
+    .carousel-item
+    .carousel-item-wrapper
+    .carousel-text-content {
+    padding: 18px;
+  }
+
+  .carousel.block.large
+    .carousel-main-wrapper
+    .carousel-frame
+    .carousel-item
+    .carousel-item-wrapper
+    .carousel-text-content
+    .carousel-item-title {
+    font-size: 28px;
+  }
+}
+
 .carousel.block
   .carousel-main-wrapper
   .carousel-frame
@@ -438,6 +495,24 @@
   text-align: center;
 }
 
+.carousel.block.large
+  .carousel-main-wrapper
+  .carousel-frame
+  .carousel-item
+  .carousel-item-wrapper
+  .carousel-text-content
+  .carousel-item-title {
+  color: #fff;
+  text-transform: uppercase;
+  font-family: var(--font-tungsten);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  font-size: 37px;
+  line-height: 103%;
+  margin: 0;
+}
+
 .carousel.block
   .carousel-main-wrapper
   .carousel-frame
@@ -450,6 +525,16 @@
   font-weight: 400;
   font-size: 12px;
   line-height: 130%;
+}
+
+.carousel.block.large
+  .carousel-main-wrapper
+  .carousel-frame
+  .carousel-item
+  .carousel-item-wrapper
+  .carousel-text-content
+  .carousel-item-location {
+  display: none;
 }
 
 .carousel.block.wedges
