@@ -102,7 +102,7 @@ export default async function decorate(block) {
     let gapOffset = 27;
     const updateGapOffset = () => {
       if (carouselType !== 'wedges') {
-        gapOffset = 27;
+        gapOffset = carouselType === 'large' ? 13 : 27;
         return;
       }
       if (window.innerWidth <= 1280) {
