@@ -1,8 +1,30 @@
 const BULK_URLS_STORAGE_ID = 'option-field-import-urls';
 
+function append(s) {
+  const logEL = document.querySelector('.log');
+  const el = document.createElement('div');
+  if (isJSONOutput) {
+    const txt = `"${s}",`;
+    el.innerText = txt;
+  } else {
+    el.innerHTML = s;
+  }
+  logEL.append(el);
+}
+
 let counter = 0;
 let totalCounter = 0;
 let isJSONOutput = false;
+let _showCount = false;
+let callback = (url, doc) => {
+  counter++;
+  if (isJSONOutput) {
+    append(url);
+  } else {
+    if (_showCount) append(`${counter} <a href="${url}" target="_blank">${url}</a>`);
+    else append(`<a href="${url}" target="_blank">${url}</a>`);
+  }
+};
 
 function matchUrlsFilter(url) {
   // match everything if not root urls entered (aka full site import)
@@ -39,18 +61,6 @@ async function isPageType(url, pageTypeSelector, doc) {
   return isPageTypeDocument(d, pageTypeSelector);
 }
 
-function append(s) {
-  const logEL = document.querySelector('.log');
-  const el = document.createElement('div');
-  if (isJSONOutput) {
-    const txt = `"${s}",`;
-    el.innerText = txt;
-  } else {
-    el.innerHTML = s;
-  }
-  logEL.append(el);
-}
-
 function addToBulkImport(url) {
   // console.log(`Add ${url} to importer localStorage`);
   let urls = localStorage.getItem(BULK_URLS_STORAGE_ID);
@@ -77,6 +87,9 @@ async function decompress(blob) {
 function getLongURL(doc, shortURL) {
   const url = new URL(shortURL);
   const contentPath = doc.body.getAttribute('data-page-path');
+  if (!contentPath) {
+    throw new Error(`Can't get long path from document ${shortURL}. The data-page-path is undefined.`);
+  }
   return `${url.protocol}//${url.hostname}${contentPath}.html`;
 }
 
@@ -86,23 +99,38 @@ async function process(options) {
   let doc = null;
   if (longForm) {
     doc = await fetchDocument(longUrl);
-    url = getLongURL(doc, longUrl);
+    if (doc) {
+      url = getLongURL(doc, longUrl);
+    } else {
+      return;
+    }
   }
   const matchPageType = (!pageTypeSelector || pageTypeSelector === 'all') ? true : await isPageType(longUrl, pageTypeSelector, doc);
-  totalCounter++;
   if (matchPageType) {
-    counter++;
-    if (isJSONOutput) {
-      append(url);
-    } else {
-      if (showCount) append(`${counter} <a href="${url}" target="_blank">${url}</a>`);
-      else append(`<a href="${url}" target="_blank">${url}</a>`);
-    }
-    if (updateImporter) {
-      addToBulkImport(url);
-    }
+    callback(url, doc);
   }
 } 
+
+const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+
+async function processAll(urls, options, concurrency = 1) {
+  while (urls.length) {
+    const dequeue = async () => {
+      for (let i = 0; i < concurrency && urls.length; i += 1) {
+        const url = urls.shift();
+        options.url = url;
+        try {
+          process(options);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+    
+    dequeue();
+    await sleep(200);
+  }
+}
 
 export const urlsFilter = [];
 
@@ -126,6 +154,8 @@ export async function parseSitemap(options) {
     longForm 
   } = options;
 
+  _showCount = showCount;
+  
   if (updateImporter && counter === 0) {
     clearBulkImport();
   }
@@ -154,18 +184,20 @@ export async function parseSitemap(options) {
   }
 
   let urls = [];
-  for(const el of links) {
+  while (links.length) {
+    const el = links.shift();
     const url = el.querySelector('loc').childNodes[0].nodeValue;
     const matchUrlFilter = matchUrlsFilter(url);
     if (matchUrlFilter) {
+      totalCounter++;
+      console.log(`${totalCounter} ${url} matched url filter.`);
       urls.push(url);
+    }
+
+    if (urls.length > 500) {
+      await processAll(urls, {showCount, updateImporter, pageTypeSelector, longForm}, 4);
     }
   }
   
-  while (urls.length) {
-    const url = urls.shift();
-    console.log(`(${totalCounter}) Document ${url} processing ..... of ${urls.length+1}`);
-    await process({url, showCount, updateImporter, pageTypeSelector, longForm});
-  }
-
+  await processAll(urls, {showCount, updateImporter, pageTypeSelector, longForm}, 1);
 }

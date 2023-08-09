@@ -44,18 +44,21 @@ export function removeEmptyElements(container, selector) {
 
 /**
  * Returns section metadata JSON key:value pairs
- * @param {HTMLDivElement} metadataElement
+ * @param {HTMLDivElement | null} metadataElement
  * @returns {object} JSON
  */
 export function parseSectionMetadata(metadataElement) {
   const metadata = {};
-  [...metadataElement.children].forEach((child) => {
-    const key = toCamelCase(child.firstElementChild.textContent.trim());
-    const value = child.lastElementChild.textContent.trim();
-    metadata[key] = value;
-  });
 
-  metadataElement.remove();
+  if (metadataElement) {
+    [...metadataElement.children].forEach((child) => {
+      const key = toCamelCase(child.firstElementChild.textContent.trim());
+      const value = child.lastElementChild.textContent.trim();
+      metadata[key] = value;
+    });
+
+    metadataElement.remove();
+  }
 
   return metadata;
 }

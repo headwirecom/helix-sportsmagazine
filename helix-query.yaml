@@ -16,7 +16,7 @@ indices:
         value: |
           match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
       description:
-        select: head > meta[name="og:description"]
+        select: head > meta[property="og:description"]
         value: |
           attribute(el, 'content')
       category:
@@ -41,11 +41,15 @@ indices:
         value: |
           match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
       description:
-        select: head > meta[name="og:description"]
+        select: head > meta[property="og:description"]
         value: |
           attribute(el, 'content')
       category:
         select: head > meta[name="category"]
+        value: |
+          attribute(el, 'content')
+      rubric:
+        select: head > meta[name="rubric"]
         value: |
           attribute(el, 'content')
       date:
@@ -53,11 +57,11 @@ indices:
         value: |
           attribute(el, 'content')
       author:
-        select: head > meta[property="author"]
+        select: head > meta[name="author"]
         value: |
           attribute(el, 'content')
       authorUrl:
-        select: head > meta[property="author-url"]
+        select: head > meta[name="author-url"]
         value: |
           attribute(el, 'content')
   products:
@@ -74,7 +78,7 @@ indices:
         value: |
           match(attribute(el, 'content'), 'https:\/\/[^/]+(\/.*)')
       description:
-        select: head > meta[name="og:description"]
+        select: head > meta[property="og:description"]
         value: |
           attribute(el, 'content')
       category:

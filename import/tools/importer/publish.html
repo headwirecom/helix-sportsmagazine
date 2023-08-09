@@ -1,0 +1,437 @@
+<html>
+    <head>
+        <title>Publish Tool</title>
+        <style>
+            .form {
+                padding-bottom: 5;
+                text-align: center;
+            }
+            .manual-form {
+                border-bottom: solid;
+                margin-bottom: 5px;
+                display: none;
+            }
+            .publish-ui {
+                margin-top: 20px;
+            }
+            .publish-logger-container {
+                border: none;
+                display: none;
+            }
+            .publish-logger {
+                border: none;
+                width: 100%;
+                height: 100%;
+                margin-bottom: 10;
+            }
+            .url {
+                margin-left: 0;
+            }
+            .url input {
+                border: 0;
+            }
+            .env-op-label {
+                margin-left: 50;
+            }
+            .log-btn {
+                display: none;
+                align-self: center;
+                margin-left: 5px;
+            }
+            .log-bottons {
+                display: flex;
+                flex-direction: row;
+            }
+            #prev-btn {
+                margin-left: 50;
+            }
+            #url-text {
+                width: 95%;
+            }
+            #log-counter {
+                padding-left: 10px;
+            }
+        </style>
+        <script src="./bulk.js" defer></script>
+        <script>
+            const remoteHost = 'https://www.golfdigest.com';
+            const myHost = (location.port !== 80) ? `${location.protocol}//${location.hostname}:3000` : `${location.protocol}//${location.hostname}`;
+            const proxyHost = `${location.protocol}//${location.hostname}:3001`;
+            const projectHost = 'helix-sportsmagazine--headwirecom.hlx';
+            
+            const localDevHost = 'http://localhost:3000';
+            const importRoot = '/content-v2';
+
+            let environment = 'main';
+            let previewImportHost = `https://${environment}--${projectHost}.page`;
+            let liveImportHost = `https://${environment}--${projectHost}.live`;
+
+            let data = [];
+            let currentIndex = 0; 
+            async function fetchFromDataFile(pageType) {
+                let pagePath = window.location.hash.trim();
+                if (pagePath && pagePath.length > 0) {
+                    pagePath = pagePath.replace('#','').replace('https://www.golfdigest.com/', '/');
+                } else {
+                    pagePath = null;
+                }
+
+                const dataFile = `./data/${pageType}-urls.json`;
+                const resp = await fetch(dataFile);
+                if (resp.ok) {
+                    const json = await resp.json();
+                    data = json;
+                    currentIndex = 0;
+                } else {
+                    alert('error fetching url data file');
+                }
+            }
+            async function fetchData() {
+                const pageType = (document.querySelector('.page-type')) ? document.querySelector('.page-type').value : 'gallery';
+                if (pageType === 'manual') {
+                    let userData = document.getElementById('url-list').value.trim();
+                    let lines = userData.split('\n');
+                    if (lines.length > 0) {
+                        let updatedData = [];
+                        for(line of lines) {
+                            console.log(`user entered url ${line}`);
+                            // ignore empty lines
+                            let nextLine = line.trim();
+                            if (nextLine.length > 0) {
+                                updatedData.push(line.trim().replace('https://www.golfdigest.com/', '/'));
+                            }
+                        }
+                        if (updatedData.length >0) {
+                            data = updatedData;
+                            currentIndex = 0;
+                        }
+                    }
+                } else {
+                    fetchFromDataFile(pageType);
+                }
+            }
+            function getRemoteUrl(path) {
+                let rh = encodeURIComponent(remoteHost);
+                return `${proxyHost}${path}?host=${rh}`;
+            }
+            function mapToImportedPath(path) {
+                // match Franklin path names
+                let fn = fileName(path, '_', '-').replaceAll('--','-').replace(/^-/,'').toLowerCase();
+                while (fn.includes('--')) {
+                    fn = fn.replaceAll('--','-');
+                }
+                let importedPath = path.replace(/\/content\/golfdigest-com\/en/, '').replace(fileName(path), fn).replace(/\.html$/, '').replace(/-$/,'');
+                return importedPath;
+            }
+            function getImportedUrl(path, op) {
+                let importedPath = mapToImportedPath(path);
+                const operation = (op) ? op : document.querySelector('.publish-op').value;
+                let rootURL = (operation === 'live') ? `${liveImportHost}${importRoot}` : `${previewImportHost}${importRoot}`;
+                if (environment === 'dev') {
+                    rootURL = `${localDevHost}${importRoot}`;
+                }
+                return `${rootURL}${importedPath}`;;
+            }
+            function getImportedProxyUrl(path, op) {
+                let importedPath = mapToImportedPath(path);
+                const operation = (op) ? op : document.querySelector('.publish-op').value;
+                let host = encodeURIComponent( (operation === 'live') ? liveImportHost : previewImportHost );
+                return `${proxyHost}${importRoot}${importedPath}?host=${host}`;
+            }
+            function getProxyURL(url) {
+                const u = new URL(url);
+                const host = encodeURIComponent(`${u.protocol}://${u.hostname}`);
+                const pathname = u.pathname;
+                return `${proxyHost}${pathname}?host=${host}`;
+            }
+            function fileName(path, replaceStr, replaceWith) {
+                const parts = path.split('/');
+                let f = parts[parts.length-1];
+                if (replaceStr && replaceWith) {
+                    f = f.replaceAll(replaceStr, replaceWith);
+                }
+                return f;
+            }
+
+            fetchData();
+
+            const logger = {
+                append: (s) => {
+                    document.querySelector('.publish-logger').contentDocument.body.append(s);
+                },
+
+                updateCounter: (count, length) => {
+                    const txt = `<span class="log-counter-text">${count}/${data.length}</span>`;
+                    document.querySelector('#log-counter').innerHTML = txt;
+                },
+
+                clear: () => {
+                    document.querySelector('#log-counter').innerHTML = '';
+                    document.querySelector('.publish-logger').contentDocument.body.innerHTML = '';
+                }
+            };
+
+            function getPublishLogger() {
+                return logger;
+            }
+
+            function showLogger(show) {
+                document.querySelector('.publish-logger-container').style.display = (show) ? 'block' : 'none';
+                document.querySelector('.hide-log-btn').style.display = (show) ? 'block' : 'none';
+                document.querySelector('.show-log-btn').style.display = (show) ? 'none' : 'block';
+                document.querySelector('.clear-log-btn').style.display = (show) ? 'block' : 'none';
+            }
+            function appendLog(string) {
+                let logger = getPublishLogger();
+                if (logger) {
+                    let line = document.createElement('p');
+                    line.innerHTML = string;
+                    logger.append(line);
+                }
+                console.log(string);
+            }
+            function clearLog(clearAndHide) {
+                let logger = getPublishLogger();
+                logger.clear();
+                if (clearAndHide) {
+                    document.querySelector('.publish-logger-container').style.display = 'none';
+                    document.querySelectorAll('.log-btn').forEach(el => {el.style.display = 'none';});
+                }
+            }
+            async function startBulk(operation, doConfirm) {
+                const offset = parseInt(document.querySelector('#offset').value);
+                if (doConfirm && !window.confirm(`Run \"${operation}\" operation ${data.length - offset} on pages!`)) {
+                    return false;
+                }
+
+                clearLog();
+                showLogger(true);
+
+                let urls = [];
+                for (let i = offset; i < data.length; i++) {
+                    let origUrl = data[i];
+                    let url = await mapFromOriginalPath(origUrl);
+                    urls.push(url);
+                }
+        
+                appendLog(`Running "${operation}" call ...`)
+                await bulk(urls, operation, getPublishLogger(), document.querySelector('.op-method').value, offset);
+                return true;
+            }
+            async function mapFromOriginalPath(origPath) {
+                if (origPath.includes('--helix-sportsmagazine--headwirecom.hlx')) {
+                    return origPath;
+                }
+                if (!origPath.startsWith('/content/')) {
+                    appendLog(`Getting long path for ${origPath}`);
+                    const longPath = await fetchLongUrl(`${remoteHost}${origPath}`);
+                    return getImportedUrl(longPath);
+                }
+                return getImportedUrl(origPath);
+            }
+            async function fetchLongUrl(documentURL) {
+                console.log(`Fetching long URL from ${documentURL}`);
+                const resp = await fetch(documentURL);
+                const html = await resp.text();
+                const document = (new DOMParser()).parseFromString(html, 'text/html');
+                const url = document.body.getAttribute("data-page-path");
+                console.log(`Fetched long content URL ${url}`);
+                return url;
+            }
+
+            function isManualEntry() {
+                return document.querySelector('.page-type').value === 'manual';
+            }
+
+            async function publish() {
+                if (isManualEntry()) {
+                    await fetchData();
+                }
+                const operation = document.querySelector('.publish-op');
+                const started = startBulk(operation.value, true);
+            }
+
+            function updateLogCounter(count, length) {
+                logger.updateCounter(count, length);
+            }
+
+            async function getDocumentPath(path) {
+                return (data[i].startsWith('/content/')) ? data[i] : await fetchLongUrl(`${remoteHost}${data[i]}`);
+            }
+
+            async function publishTest() {
+                clearLog();
+                showLogger(true);
+                document.querySelector('.publish-test-btn').disabled = true;
+                document.querySelector('.clear-log-btn').disabled = true;
+                const failedURLs = [];
+                const op = (document.querySelector('.publish-op').value === 'live') ? 'live' : "preview";
+                const isManual = isManualEntry();
+
+                if (isManual) {
+                    await fetchData();
+                }
+
+                appendLog(`Checking publish status for ${data.length} pages.`);
+                for (let i = 0; i < data.length; i++) {
+                    let url = '';
+                    let importedUrl = '';
+                    if (isManual) {
+                        url = getProxyURL(data[i]);
+                        importedUrl = data[i];
+                    } else {
+                        let documentPath = (data[i].startsWith('/content/')) ? data[i] : await fetchLongUrl(`${remoteHost}${data[i]}`);
+                        url = getImportedProxyUrl(documentPath, op);
+                        importedUrl = getImportedUrl(documentPath, op);
+                    }
+
+                    let logMsg = '';
+                    
+                    console.log(`Testing ${url}`);
+                    let resp = await fetch(url);
+                    let respCode = resp.status;
+                    let count = i + 1;
+                    if (resp.ok) {
+                        // logMsg = `[${count}/${data.length}] ${importedUrl} published successfully!`;
+                    } else {
+                        console.log(`${url}: [${resp.status}] ${resp.statusText}`);
+                        logMsg = `[${count}/${data.length}] The page ${importedUrl}: [${resp.status}] ${resp.statusText}
+                            <br/>Proxy: ${url}`;
+                        failedURLs.push(importedUrl);
+                    }
+                    appendLog(logMsg);
+                    updateLogCounter(count, data.length);
+                }
+
+                if (failedURLs.length > 0) {
+                    let s = "";
+                    for (let failedurl of failedURLs) {
+                        s = s + '<br>' +failedurl;
+                    }
+                    appendLog(`These pages are not published:<br>${s}`);
+                } else {
+                    appendLog('All pages have been published.');
+                }
+
+                document.querySelector('.publish-test-btn').disabled = false;
+                document.querySelector('.clear-log-btn').disabled = false;
+                // showLogger(false);
+            }
+            function pageTypeChange() {
+                if (isManualEntry()) {
+                    document.querySelector('.manual-form').style.display = 'block';
+                } else {
+                    document.querySelector('.manual-form').style.display = 'none';
+                    fetchData();
+                }
+            }
+
+            function publishOpChange() {
+                const op = document.querySelector('.publish-op').value;
+                
+                if (op === "status") {
+                    // status op only supports GET
+                    document.querySelector('.op-method').disabled = true;
+                    document.querySelector('.op-method').value = "GET";
+                } else if (op === "cache") {
+                    // cache op only supports GET
+                    document.querySelector('.op-method').disabled = true;
+                    document.querySelector('.op-method').value = "POST";
+                } else {
+                    document.querySelector('.op-method').disabled = false;
+                }
+
+                if (op === "preview" || op === "live") {
+                    document.querySelector('.publish-test-btn').disabled = false;
+                } else {
+                    document.querySelector('.publish-test-btn').disabled = true;
+                }
+            }
+
+            function envChange() {
+                environment = document.querySelector('.env-op').value;
+                if (environment === 'dev') {
+                    document.querySelector('.publish-btn').disabled = true;
+                    document.querySelector('.publish-test-btn').disabled = true;
+                } else {
+                    document.querySelector('.publish-btn').disabled = false;
+                    document.querySelector('.publish-test-btn').disabled = false;
+                    previewImportHost = `https://${environment}--${projectHost}.page`;
+                    liveImportHost = `https://${environment}--${projectHost}.live`;
+                }
+            }
+
+            function toggleManualForm(show) {
+                const display = show ? 'block' : 'none';
+                document.getElementById('url-list-container').style.display = display;
+            }
+        </script>
+    </head>
+    <body> 
+        <div class="main">
+            <div class="form manual-form">
+                <div>
+                    <label>Enter a list of URLs (one per line) and click Run.</label>
+                    <input id="manual-form-toggle" type="checkbox" onchange="toggleManualForm(this.checked)" checked/>
+                </div>
+                <div id="url-list-container">
+                <textarea id="url-list" rows="20" cols="150"></textarea>
+                </div>
+            </div>
+            <div class="form">
+                <label class="page-type-label" for="page-type">Select Page Type:</label>
+                <select class="page-type" onchange="pageTypeChange()">
+                    <option value="gallery">Gallery</option>
+                    <option value="article">Default Article</option>
+                    <option value="fullbleed-article">Full Bleed Article</option>
+                    <option value="longform-article">Long Form Article</option>
+                    <option value="product">Producs</option>
+                    <option value="manual">Manual Entry</option>
+                </select>
+                <label class="env-op-label" for="env-op">Branch:</label>
+                <select class="env-op" onchange="envChange()">
+                    <option value="main" selected>main</option>
+                </select>
+                <label class="api-op-label" for="publish-op">API Call:</label>
+                <select class="publish-op" onchange="publishOpChange()">
+                    <option value="preview" selected>preview</option>
+                    <option value="live">live</option>
+                    <option value="index">index</option>
+                    <option value="cache">cache</option>
+                    <option value="status">status</option>
+                </select>
+                <label class="api-op-label" for="op-method">Method:</label>
+                <select class="op-method">
+                    <option value="GET" selected>GET</option>
+                    <option value="POST">POST</option>
+                    <option value="DEL">DELETE</option>
+                </select>
+                <labe>Start intex:</labe>
+                <input id="offset" type="number" min="0" value="0" size="3">
+                <button class="publish-btn" onclick="publish()">Run</button>
+                <button class="publish-test-btn" onclick="publishTest()">Publish Check</button>
+            </div>
+            <div class="form log-bottons">
+                <button class="show-log-btn log-btn" onclick="showLogger(true)">Show Publish Log</button>
+                <button class="hide-log-btn log-btn" onclick="showLogger(false)">Hide Publish Log</button>
+                <button class="clear-log-btn log-btn" onclick="clearLog(true)">Clear Publish Log</button>
+                <div id="log-counter"></div>
+            </div>
+            <div class="publish-logger-container" style="display: none;">
+                <iframe class="publish-logger"></iframe>
+            </div>
+        </div>
+        <div class="publish-ui" style="display: none">
+            <textarea class="id" style="display: none"></textarea>
+            <select class="id" style="display: none">
+                <option value="preview">preview</option>
+                <option value="live">publish</option>
+                <option value="dev">local development</option>
+            </select>
+            <button class="id" style="display: none">start</button>
+            <div class="id logger">
+
+            </div>
+        </div>
+    </body>
+</html>
