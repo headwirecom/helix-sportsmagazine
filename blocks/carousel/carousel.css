@@ -1,4 +1,4 @@
-.landing-page main .carousel.block {
+.carousel.block {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -8,7 +8,7 @@
   --carousel-card-gap: 28px;
 }
 
-.landing-page main .carousel.block.wedges {
+.carousel.block.wedges {
   width: 100%;
   margin: 100px 0;
   background-color: #0b3b40;
@@ -18,19 +18,19 @@
 }
 
 @media (max-width: 1280px) {
-  .landing-page main .carousel.block.wedges {
+  .carousel.block.wedges {
     --carousel-card-gap: 11px;
   }
 }
 
-.landing-page main .carousel-title-wrapper {
+.carousel-title-wrapper {
   display: flex;
   width: 100%;
   max-width: 1440px;
   padding: 15px;
 }
 
-.landing-page main .carousel-title-wrapper .carousel-title {
+.carousel-title-wrapper .carousel-title {
   margin: 0;
   font-family: var(--font-tungsten);
   text-transform: uppercase;
@@ -41,7 +41,7 @@
   align-items: center;
 }
 
-.landing-page main .carousel-title-wrapper .carousel-title::before {
+.carousel-title-wrapper .carousel-title::before {
   content: "";
   display: block;
   width: 5px;
@@ -50,32 +50,32 @@
   background-color: #ed3e49;
 }
 
-.landing-page main .carousel-title-wrapper .carousel-title.courses::before {
+.carousel-title-wrapper .carousel-title.courses::before {
   background-color: #105259;
 }
 
-.landing-page main .carousel-title-wrapper .carousel-title.loop::before {
+.carousel-title-wrapper .carousel-title.loop::before {
   background-color: #e8b94d;
 }
 
-.landing-page main .carousel-title-wrapper:has(.carousel-title.wedges) {
+.carousel-title-wrapper:has(.carousel-title.wedges) {
   margin-top: 45px;
   margin-bottom: 34px;
   justify-content: center;
 }
 
-.landing-page main .carousel-title-wrapper .carousel-title.wedges {
+.carousel-title-wrapper .carousel-title.wedges {
   font-size: 67px;
   font-weight: 600;
   color: white;
   margin-bottom: 15px;
 }
 
-.landing-page main .carousel-title-wrapper .carousel-title.wedges::before {
+.carousel-title-wrapper .carousel-title.wedges::before {
   display: none;
 }
 
-.landing-page main .carousel.block .carousel-main-wrapper {
+.carousel.block .carousel-main-wrapper {
   padding: 0 15px;
   margin-bottom: 40px;
   height: 395px;
@@ -86,16 +86,16 @@
 }
 
 @media (max-width: 1024px) {
-  .landing-page main .carousel.block.wedges {
+  .carousel.block.wedges {
     margin: 100px 0 40px;
   }
 
-  .landing-page main .carousel.block .carousel-main-wrapper {
+  .carousel.block .carousel-main-wrapper {
     height: auto;
   }
 }
 
-.landing-page main .carousel.block.wedges .carousel-main-wrapper {
+.carousel.block.wedges .carousel-main-wrapper {
   max-width: 1630px;
   padding: 0;
   margin-bottom: 55px;
@@ -103,7 +103,23 @@
   height: auto;
 }
 
-.landing-page main .carousel.block .controls {
+.carousel.block.wedges .carousel-main-wrapper.mobile-wedges {
+  overflow: visible;
+  width: 100%;
+  
+  
+}
+
+.carousel.block.wedges .carousel-main-wrapper.mobile-wedges .carousel-frame {
+  display: grid;
+  /* grid-template-columns: repeat(auto-fill, minmax(235px, 2fr)); */
+  grid-template-columns: repeat(6, 1fr);
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+
+.carousel.block .controls {
   position: relative;
   width: 100%;
   max-width: 1440px;
@@ -111,17 +127,17 @@
   justify-content: space-between;
 }
 
-.landing-page main .carousel.block.wedges .controls {
+.carousel.block.wedges .controls {
   max-width: 1630px;
 }
 
 @media (max-width: 779px) {
-  .landing-page main .carousel.block .controls {
+  .carousel.block .controls {
     display: none;
   }
 }
 
-.landing-page main .carousel.block .controls button {
+.carousel.block .controls button {
   border: none;
   background-color: #151517;
   background-image: url("/icons/carousel-next-arrow.svg");
@@ -137,25 +153,25 @@
   top: 96px;
 }
 
-.landing-page main .carousel.block.wedges .controls button {
+.carousel.block.wedges .controls button {
   top: 170px;
   left: -16px;
 }
 
-.landing-page main .carousel.block .controls button.hidden {
+.carousel.block .controls button.hidden {
   visibility: hidden;
 }
 
-.landing-page main .carousel.block .controls button.right-button {
+.carousel.block .controls button.right-button {
   left: auto;
   right: -12px;
 }
 
-.landing-page main .carousel.block .controls button.left-button {
+.carousel.block .controls button.left-button {
   transform: rotate(180deg);
 }
 
-.landing-page main .carousel.block .carousel-main-wrapper .carousel-frame {
+.carousel.block .carousel-main-wrapper .carousel-frame {
   display: flex;
   gap: var(--carousel-card-gap);
   height: 100%;
@@ -163,11 +179,11 @@
   transition: all 0.25s ease 0s;
 }
 
-.landing-page main .carousel.block .carousel-main-wrapper.grabbed .carousel-frame {
+.carousel.block .carousel-main-wrapper.grabbed .carousel-frame {
   transition: none;
 }
 
-.landing-page main .carousel.block .carousel-main-wrapper .carousel-frame .carousel-item {
+.carousel.block .carousel-main-wrapper .carousel-frame .carousel-item {
   width: calc(25% - var(--carousel-card-gap) + 4px);
   display: flex;
   flex-direction: column;
@@ -177,7 +193,7 @@
   flex-shrink: 0;
 }
 
-.landing-page main .carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item {
+.carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item {
   background: none;
   border: none;
   width: calc(16.66% - var(--carousel-card-gap) + 6px);
@@ -185,25 +201,39 @@
   height: auto;
 }
 
-@media (max-width: 1280px) {
-  .landing-page main .carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item {
-    width: calc(33.33% - var(--carousel-card-gap) + 6px);
-  }
+.carousel.block.wedges .carousel-main-wrapper.mobile-wedges .carousel-frame .carousel-item {
+  width: 100%;
 }
 
-@media (max-width: 779px) {
-  .landing-page main .carousel.block.wedges .carousel-main-wrapper {
-    padding: 0;
+@media (max-width: 1280px) {
+  .carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item {
+    width: calc(33.33% - var(--carousel-card-gap) + 6px);
   }
 
-  .landing-page main .carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item {
+  .carousel.block.wedges .carousel-main-wrapper.mobile-wedges .carousel-frame {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .carousel.block.wedges .carousel-main-wrapper.mobile-wedges .carousel-frame .carousel-item {
     width: 100%;
   }
 }
 
-.landing-page
-  main
-  .carousel.block.wedges
+@media (max-width: 779px) {
+  .carousel.block.wedges .carousel-main-wrapper {
+    padding: 0;
+  }
+
+  .carousel.block.wedges .carousel-main-wrapper.mobile-wedges .carousel-frame {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .carousel.block.wedges .carousel-main-wrapper.mobile-wedges .carousel-frame .carousel-item {
+    width: 100%;
+  }
+}
+
+.carousel.block.wedges
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -212,9 +242,7 @@
   margin: 0 0 21px;
 }
 
-.landing-page
-  main
-  .carousel.block.wedges
+.carousel.block.wedges
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -224,9 +252,7 @@
   object-position: 0% 0%;
 }
 
-.landing-page
-  main
-  .carousel.block.wedges
+.carousel.block.wedges
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -238,9 +264,7 @@
   width: 100%;
 }
 
-.landing-page
-  main
-  .carousel.block.wedges
+.carousel.block.wedges
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -257,31 +281,29 @@
 }
 
 @media (max-width: 1024px) {
-  .landing-page main .carousel.block .carousel-main-wrapper .carousel-frame {
+  .carousel.block .carousel-main-wrapper .carousel-frame {
     height: auto;
   }
 
-  .landing-page main .carousel.block .carousel-main-wrapper .carousel-frame .carousel-item {
+  .carousel.block .carousel-main-wrapper .carousel-frame .carousel-item {
     width: calc(50% - 24px);
   }
 }
 
-.landing-page main .carousel.block .carousel-main-wrapper .carousel-frame .carousel-item .carousel-item-wrapper {
+.carousel.block .carousel-main-wrapper .carousel-frame .carousel-item .carousel-item-wrapper {
   width: 100%;
   height: 100%;
 }
 
 @media (max-width: 1024px) {
-  .landing-page main .carousel.block .carousel-main-wrapper .carousel-frame .carousel-item .carousel-item-wrapper {
+  .carousel.block .carousel-main-wrapper .carousel-frame .carousel-item .carousel-item-wrapper {
     width: 100%;
     height: 100%;
     aspect-ratio: 1/1;
   }
 }
 
-.landing-page
-  main
-  .carousel.block
+.carousel.block
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -295,9 +317,7 @@
   flex-shrink: 0;
 }
 
-.landing-page
-  main
-  .carousel.block
+.carousel.block
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -309,9 +329,7 @@
   width: 100%;
 }
 
-.landing-page
-  main
-  .carousel.block
+.carousel.block
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -330,9 +348,7 @@
   transition: transform 3s;
 }
 
-.landing-page
-  main
-  .carousel.block
+.carousel.block
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item:hover
@@ -342,9 +358,7 @@
   transform: scale(1.2);
 }
 
-.landing-page
-  main
-  .carousel.block
+.carousel.block
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -356,9 +370,7 @@
   gap: 10px;
 }
 
-.landing-page
-  main
-  .carousel.block.wedges
+.carousel.block.wedges
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -368,9 +380,7 @@
   padding: 0;
 }
 
-.landing-page
-  main
-  .carousel.block
+.carousel.block
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -386,9 +396,7 @@
   font-family: var(--font-gotham);
 }
 
-.landing-page
-  main
-  .carousel.block.wedges
+.carousel.block.wedges
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -398,9 +406,7 @@
   display: none;
 }
 
-.landing-page
-  main
-  .carousel.block
+.carousel.block
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -416,9 +422,7 @@
   margin: 0;
 }
 
-.landing-page
-  main
-  .carousel.block.wedges
+.carousel.block.wedges
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -436,9 +440,7 @@
   text-align: center;
 }
 
-.landing-page
-  main
-  .carousel.block
+.carousel.block
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -452,9 +454,7 @@
   line-height: 130%;
 }
 
-.landing-page
-  main
-  .carousel.block.wedges
+.carousel.block.wedges
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -464,9 +464,7 @@
   display: none;
 }
 
-.landing-page
-  main
-  .carousel.block
+.carousel.block
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -482,9 +480,7 @@
   margin-top: 6px;
 }
 
-.landing-page
-  main
-  .carousel.block.wedges
+.carousel.block.wedges
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -494,9 +490,7 @@
   display: none;
 }
 
-.landing-page
-  main
-  .carousel.block
+.carousel.block
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
