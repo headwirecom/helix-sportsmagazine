@@ -105,6 +105,15 @@ export function render(template, fragment) {
 }
 
 /**
+ * Returns author URL
+ *
+ * @param {string} author
+ */
+export function normalizeAuthorURL(author) {
+  return `/contributor/${author.replace(/[^a-z0-9]/gmi, ' ').replace(/\s/g, ' ').toLowerCase()}`;
+}
+
+/**
  * Find the template corresponding to the provided classname
  *
  * @param className
