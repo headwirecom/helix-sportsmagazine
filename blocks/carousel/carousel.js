@@ -35,7 +35,7 @@ export default async function decorate(block) {
 
   const HTML_TEMPLATE = `
   ${
-  !carouselType
+  carouselType === 'large'
     ? ''
     : `
     <div class="carousel-title-wrapper">
