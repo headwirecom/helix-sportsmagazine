@@ -10,6 +10,8 @@
 
 .carousel.block.large {
   --carousel-card-gap: 12px;
+
+  position: relative;
 }
 
 .carousel.block.wedges {
@@ -17,6 +19,7 @@
   margin: 100px 0;
   background-color: #0b3b40;
   padding: 0 20px;
+
   --carousel-card-gap: 40px;
 }
 
@@ -102,8 +105,16 @@
   max-width: 1630px;
   padding: 0;
   margin-bottom: 55px;
-  overflow: hidden;
   height: auto;
+}
+
+.carousel.block.large .carousel-main-wrapper .carousel-inner-wrapper{
+  height: 100%;
+  width: 100%;
+}
+
+.carousel.block.wedges .carousel-main-wrapper .carousel-inner-wrapper{
+  overflow: hidden;
 }
 
 .carousel.block.wedges .carousel-main-wrapper.mobile-wedges {
@@ -112,8 +123,9 @@
 }
 
 .carousel.block .controls {
-  position: relative;
+  position: absolute;
   width: 100%;
+  height: 100%;
   max-width: 1440px;
   display: flex;
   justify-content: space-between;
@@ -140,22 +152,13 @@
   width: 40px;
   height: 40px;
   position: absolute;
-  left: 0;
+  left: -16px;
   z-index: 1;
   top: 96px;
 }
 
-.carousel.block.large {
-  position: relative;
-}
-
-.carousel.block.large .controls {
-  position: static;
-}
-
 .carousel.block.wedges .controls button {
   top: 170px;
-  left: -16px;
 }
 
 .carousel.block.large .controls button {
@@ -168,8 +171,17 @@
 
 .carousel.block .controls button.right-button {
   left: auto;
-  right: 2px;
+  right: 26px;
 }
+
+.carousel.block.large .controls button.right-button {
+  right: 16px;
+}
+
+.carousel.block.wedges .controls button.right-button {
+  right: -10px;
+}
+
 
 .carousel.block .controls button.left-button {
   transform: rotate(180deg);
@@ -271,12 +283,12 @@
   .carousel-frame
   .carousel-item
   .carousel-image-wrapper
-  > img.carousel-image {
+  img.carousel-image {
   z-index: 1;
   object-position: 0% 0%;
 }
 
-.carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item .carousel-image-wrapper::before {
+.carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item .carousel-image-wrapper picture::before {
   content: "";
   display: block;
   position: absolute;
@@ -284,7 +296,7 @@
   width: 100%;
 }
 
-.carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item .carousel-image-wrapper::after {
+.carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item .carousel-image-wrapper picture::after {
   top: 35%;
   pointer-events: all;
   content: "";
@@ -293,7 +305,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 0;
+  z-index: -1;
 }
 
 @media (max-width: 1024px) {
@@ -346,7 +358,7 @@
   .carousel-item
   .carousel-item-wrapper
   .carousel-image-wrapper
-  > img {
+  img {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -365,7 +377,7 @@
   .carousel-item:hover
   .carousel-item-wrapper
   .carousel-image-wrapper
-  > img {
+  img {
   transform: scale(1.2);
 }
 

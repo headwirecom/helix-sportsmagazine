@@ -1,3 +1,4 @@
+import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 import { parseFragment, removeEmptyElements, render } from '../../scripts/scripts.js';
 
 let carouselData;
@@ -45,11 +46,12 @@ export default async function decorate(block) {
     </div>
   `
 }
-  <div class="controls">
-    <button class="left-button"></button>
-    <button class="right-button"></button>
-  </div>
-  <div class="carousel-main-wrapper ${isMobileWedges ? 'mobile-wedges' : ''}">
+<div class="carousel-main-wrapper ${isMobileWedges ? 'mobile-wedges' : ''}">
+<div class="controls">
+  <button class="left-button"></button>
+  <button class="right-button"></button>
+</div>
+<div class="carousel-inner-wrapper">
     <div class="carousel-frame" >
       ${carouselItems
     .map(
@@ -57,9 +59,7 @@ export default async function decorate(block) {
         <a class="carousel-item" href="${carouselItem.path}" >
           <div class="carousel-item-wrapper">
             <div class="carousel-image-wrapper">
-              <img class="carousel-image" loading="lazy" src="${carouselItem.imagePath}" alt="${
-  carouselItem.imageAlt || 'carousel cover image'
-}" />
+              ${createOptimizedPicture(carouselItem.imagePath, carouselItem.imageAlt || 'carousel cover image').outerHTML}
             </div>
             
             <div class="carousel-text-content">
@@ -67,20 +67,19 @@ export default async function decorate(block) {
               <h3 class="carousel-item-title">${carouselItem.title}</h3>
               <span class="carousel-item-location">${carouselItem.location}</span>
 
-              ${
-  Array.isArray(carouselItem.awards) && carouselItem.awards.length
+              ${Array.isArray(carouselItem.awards) && carouselItem.awards.length
     ? `<ul class="carousel-item-pills">${carouselItem.awards
       .map((award) => `<li class="pill-item">${award}</li>`)
       .join('')}</ul>`
     : ''
 }
-
             </div>
           </div>
         </a>
         `,
     )
     .join('')}
+    </div>
     </div>
   </div>
   `;
