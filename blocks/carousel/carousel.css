@@ -110,15 +110,6 @@
   
 }
 
-.carousel.block.wedges .carousel-main-wrapper.mobile-wedges .carousel-frame {
-  display: grid;
-  /* grid-template-columns: repeat(auto-fill, minmax(235px, 2fr)); */
-  grid-template-columns: repeat(6, 1fr);
-  flex-wrap: wrap;
-  width: 100%;
-}
-
-
 .carousel.block .controls {
   position: relative;
   width: 100%;
@@ -183,6 +174,13 @@
   transition: none;
 }
 
+.carousel.block.wedges .carousel-main-wrapper.mobile-wedges .carousel-frame {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  flex-wrap: wrap;
+  width: 100%;
+}
+
 .carousel.block .carousel-main-wrapper .carousel-frame .carousel-item {
   width: calc(25% - var(--carousel-card-gap) + 4px);
   display: flex;
@@ -227,7 +225,7 @@
   .carousel.block.wedges .carousel-main-wrapper.mobile-wedges .carousel-frame {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .carousel.block.wedges .carousel-main-wrapper.mobile-wedges .carousel-frame .carousel-item {
     width: 100%;
   }

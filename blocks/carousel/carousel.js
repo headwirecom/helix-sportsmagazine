@@ -1,19 +1,19 @@
-import { parseFragment, removeEmptyElements, render } from "../../scripts/scripts.js";
+import { parseFragment, removeEmptyElements, render } from '../../scripts/scripts.js';
 
 let carouselData;
 
 const fetchCarouselData = async () => {
-  const response = await fetch("/blocks/carousel/mockData.json");
+  const response = await fetch('/blocks/carousel/mockData.json');
   const data = await response.json();
 
   carouselData = data;
 };
 
 const carouselTitleLookup = {
-  courses: "Trending Courses",
-  latest: "The Latest",
-  loop: "The Loop",
-  wedges: "Hot List 2023",
+  courses: 'Trending Courses',
+  latest: 'The Latest',
+  loop: 'The Loop',
+  wedges: 'Hot List 2023',
 };
 
 export default async function decorate(block) {
@@ -22,64 +22,65 @@ export default async function decorate(block) {
   }
 
   const carouselType = Array.from(block.classList).filter(
-    (className) => className !== "carousel" && className !== "block"
+    (className) => className !== 'carousel' && className !== 'block',
   )[0];
 
   const carouselItems = carouselData[carouselType];
 
-  const carouselHeadingType = carouselType === "wedges" ? "h2" : "h4";
+  const carouselHeadingType = carouselType === 'wedges' ? 'h2' : 'h4';
 
-  // Mobile version of wedges displays them all and disables swiping, but is only checked for on the initial render
-  const isMobileWedges = carouselType === "wedges" && window.innerWidth < 779
+  // Mobile version of wedges displays them all and disables swiping,
+  // but is only checked for on the initial render
+  const isMobileWedges = carouselType === 'wedges' && window.innerWidth < 779;
 
   const HTML_TEMPLATE = `
   ${
-    !carouselType
-      ? ""
-      : `
+  !carouselType
+    ? ''
+    : `
     <div class="carousel-title-wrapper">
       <${carouselHeadingType} class="carousel-title ${carouselType}" id="carousel-${carouselType}">${
-          carouselTitleLookup[carouselType] || carouselType
-        }</${carouselHeadingType}>
+  carouselTitleLookup[carouselType] || carouselType
+}</${carouselHeadingType}>
     </div>
   `
-  }
+}
   <div class="controls">
     <button class="left-button"></button>
     <button class="right-button"></button>
   </div>
-  <div class="carousel-main-wrapper ${isMobileWedges ? 'mobile-wedges':''}">
+  <div class="carousel-main-wrapper ${isMobileWedges ? 'mobile-wedges' : ''}">
     <div class="carousel-frame" >
       ${carouselItems
-        .map(
-          (carouselItem) => `
+    .map(
+      (carouselItem) => `
         <a class="carousel-item" href="${carouselItem.path}" >
           <div class="carousel-item-wrapper">
             <div class="carousel-image-wrapper">
               <img class="carousel-image" loading="lazy" src="${carouselItem.imagePath}" alt="${
-            carouselItem.imageAlt || "carousel cover image"
-          }" />
+  carouselItem.imageAlt || 'carousel cover image'
+}" />
             </div>
             
             <div class="carousel-text-content">
-              ${carouselItem.subHeading ? `<span class="sub-heading">${carouselItem.subHeading}</span>` : ""}
+              ${carouselItem.subHeading ? `<span class="sub-heading">${carouselItem.subHeading}</span>` : ''}
               <h3 class="carousel-item-title">${carouselItem.title}</h3>
               <span class="carousel-item-location">${carouselItem.location}</span>
 
               ${
-                Array.isArray(carouselItem.awards) && carouselItem.awards.length
-                  ? `<ul class="carousel-item-pills">${carouselItem.awards
-                      .map((award) => `<li class="pill-item">${award}</li>`)
-                      .join("")}</ul>`
-                  : ""
-              }
+  Array.isArray(carouselItem.awards) && carouselItem.awards.length
+    ? `<ul class="carousel-item-pills">${carouselItem.awards
+      .map((award) => `<li class="pill-item">${award}</li>`)
+      .join('')}</ul>`
+    : ''
+}
 
             </div>
           </div>
         </a>
-        `
-        )
-        .join("")}
+        `,
+    )
+    .join('')}
     </div>
   </div>
   `;
@@ -89,18 +90,18 @@ export default async function decorate(block) {
 
   if (!isMobileWedges) {
     // initialize variables & functions required for carousel features
-    const carouselWrapper = template.querySelector(".carousel-main-wrapper");
-    const carouselFrame = template.querySelector(".carousel-frame");
+    const carouselWrapper = template.querySelector('.carousel-main-wrapper');
+    const carouselFrame = template.querySelector('.carousel-frame');
     const carouselCardLinks = carouselFrame.children;
-    const rightButton = template.querySelector(".controls .right-button");
-    const leftButton = template.querySelector(".controls .left-button");
+    const rightButton = template.querySelector('.controls .right-button');
+    const leftButton = template.querySelector('.controls .left-button');
     let pressed = false;
     let x = 0;
     let maxScroll = 1440;
 
     let gapOffset = 27;
     const updateGapOffset = () => {
-      if (carouselType !== "wedges") {
+      if (carouselType !== 'wedges') {
         gapOffset = 27;
         return;
       }
@@ -113,10 +114,9 @@ export default async function decorate(block) {
     updateGapOffset();
 
     const refreshMaxScroll = () => {
-      maxScroll =
-        carouselCardLinks.length
-        * (carouselCardLinks[0].getBoundingClientRect().width + gapOffset) - // prettier-ignore
-        carouselFrame.getBoundingClientRect().width;
+      maxScroll = carouselCardLinks.length
+        * (carouselCardLinks[0].getBoundingClientRect().width + gapOffset) // prettier-ignore
+        - carouselFrame.getBoundingClientRect().width;
     };
 
     const roundX = (step = carouselCardLinks[0].getBoundingClientRect().width + gapOffset) => {
@@ -138,14 +138,14 @@ export default async function decorate(block) {
 
     const updateButtonVisibility = () => {
       if (x > -40) {
-        leftButton.classList.add("hidden");
+        leftButton.classList.add('hidden');
       } else {
-        leftButton.classList.remove("hidden");
+        leftButton.classList.remove('hidden');
       }
       if (x < -maxScroll + 40) {
-        rightButton.classList.add("hidden");
+        rightButton.classList.add('hidden');
       } else {
-        rightButton.classList.remove("hidden");
+        rightButton.classList.remove('hidden');
       }
     };
     updateButtonVisibility();
@@ -175,34 +175,34 @@ export default async function decorate(block) {
     // mouse drag handlers
     const mouseUpHandler = () => {
       pressed = false;
-      carouselWrapper.classList.remove("grabbed");
+      carouselWrapper.classList.remove('grabbed');
       roundX();
       carouselFrame.style.transform = `translateX(${x}px)`;
       updateButtonVisibility();
       // cleanup
-      window.removeEventListener("mouseup", mouseUpHandler);
-      window.removeEventListener("touchend", mouseUpHandler);
+      window.removeEventListener('mouseup', mouseUpHandler);
+      window.removeEventListener('touchend', mouseUpHandler);
 
-      window.removeEventListener("mousemove", mouseMoveHandler);
-      window.removeEventListener("touchmove", touchMoveHandler);
+      window.removeEventListener('mousemove', mouseMoveHandler);
+      window.removeEventListener('touchmove', touchMoveHandler);
     };
 
     const mouseDownHandler = (e) => {
       if (e?.touches?.[0]) {
         [previousTouch] = e.touches;
       }
-      carouselWrapper.classList.add("grabbed");
+      carouselWrapper.classList.add('grabbed');
       pressed = true;
       refreshMaxScroll();
 
-      window.addEventListener("mouseup", mouseUpHandler);
-      window.addEventListener("touchend", mouseUpHandler);
+      window.addEventListener('mouseup', mouseUpHandler);
+      window.addEventListener('touchend', mouseUpHandler);
 
-      window.addEventListener("mousemove", mouseMoveHandler);
-      window.addEventListener("touchmove", touchMoveHandler);
+      window.addEventListener('mousemove', mouseMoveHandler);
+      window.addEventListener('touchmove', touchMoveHandler);
     };
     carouselWrapper.onmousedown = mouseDownHandler;
-    carouselWrapper.addEventListener("touchstart", mouseDownHandler);
+    carouselWrapper.addEventListener('touchstart', mouseDownHandler);
 
     // button logic
     const rightOnClick = () => {
@@ -238,16 +238,16 @@ export default async function decorate(block) {
         if (e.keyCode === 9) {
           cardFocusHandler(anchor, index);
         }
-        window.removeEventListener("keyup", keyUpHandler);
+        window.removeEventListener('keyup', keyUpHandler);
       };
       anchor.onkeyup = (e) => {
-        if (e.key === "Enter") {
-          window.location.href = anchor.href.startsWith("#") ? window.location.href + anchor.href : anchor.href;
+        if (e.key === 'Enter') {
+          window.location.href = anchor.href.startsWith('#') ? window.location.href + anchor.href : anchor.href;
         }
       };
       // waiting for keyup stops mouse clicks from triggering the focus logic
       anchor.onfocus = () => {
-        window.addEventListener("keyup", keyUpHandler);
+        window.addEventListener('keyup', keyUpHandler);
       };
       anchor.onmousedown = (e) => {
         e.preventDefault();
@@ -273,20 +273,20 @@ export default async function decorate(block) {
         roundX();
         carouselFrame.style.transform = `translateX(${x}px)`;
         updateButtonVisibility();
-        if (carouselType === "wedges") {
+        if (carouselType === 'wedges') {
           updateGapOffset();
         }
       }, 150);
     };
-    window.addEventListener("resize", debouncedResizeHandler);
+    window.addEventListener('resize', debouncedResizeHandler);
   }
 
   // Render template
   render(template, block);
 
   // Post-processing
-  removeEmptyElements(template, "p");
+  removeEmptyElements(template, 'p');
 
-  block.innerHTML = "";
+  block.innerHTML = '';
   block.append(...template.children);
 }
