@@ -1,11 +1,16 @@
-import { parseFragment, parseSectionMetadata, render } from '../../scripts/scripts.js';
+import {
+  normalizeAuthorURL,
+  parseFragment,
+  parseSectionMetadata,
+  render,
+} from '../../scripts/scripts.js';
 import {
   buildBlock, decorateBlock, getMetadata, loadBlocks,
 } from '../../scripts/lib-franklin.js';
 
 const rubric = getMetadata('rubric');
 const author = getMetadata('author');
-const authorURL = getMetadata('author-url');
+const imageCredit = getMetadata('image-credit');
 const publicationDate = getMetadata('publication-date');
 
 // HTML template in JS to avoid extra waterfall for LCP blocks
@@ -19,10 +24,10 @@ const HTML_TEMPLATE = `
       <div class="headline">
         <slot name="headline"></slot>
       </div>
-      <div class="byline${author ? '' : ' no-author'}">
+      <div class="byline${author || imageCredit ? '' : ' no-author'}">
         <div class="attribution">
-            <span>By</span>
-            <a href="${authorURL}">${author}</a>
+          ${author ? `<span>By&nbsp;</span><a href="${normalizeAuthorURL(author)}">${author}</a>` : ''}
+          ${imageCredit ? `<span>Photos By&nbsp;</span><a href="${normalizeAuthorURL(imageCredit)}">${imageCredit}</a>` : ''}
         </div>
         <div class="publication">
             <span>${publicationDate}</span>
