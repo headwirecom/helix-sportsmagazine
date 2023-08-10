@@ -1,6 +1,6 @@
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 import {
-  parseFragment, removeEmptyElements, render, convertExcelDate, timeSince,
+  parseFragment, removeEmptyElements, render, convertExcelDate, timeSince, prependImage,
 } from '../../scripts/scripts.js';
 
 let cardData;
@@ -9,8 +9,6 @@ async function getCardData() {
   const response = await fetch('/blocks/cards/mockData.json');
   cardData = await response.json();
 }
-
-const prependImage = 'https://main--helix-sportsmagazine--headwirecom.hlx.live';
 
 export default async function decorate(block) {
   if (!cardData) {
@@ -38,7 +36,7 @@ export default async function decorate(block) {
     const cardObj = cardData.data.find((obj) => obj.path === cardSearchQuery);
     if (cardObj) {
       cardObj.href = cardLink;
-      cardObj.image = prependImage + cardObj.image;
+      cardObj.image = prependImage(cardObj.image);
     }
     return cardObj;
   });
@@ -52,7 +50,7 @@ export default async function decorate(block) {
     return `
     <a class="main-card" href="${card.href || card.path}">
       <div class="image-bg">
-        ${createOptimizedPicture(card.image, card.imageAlt).innerHTML}
+        ${createOptimizedPicture(card.image, card.imageAlt).outerHTML}
       </div>
       <div class="main-text-wrapper">
         <div class="section">${card.author}</div>
@@ -72,7 +70,7 @@ export default async function decorate(block) {
   const generateSecondaryCards = (cardArray = cardList.splice(1)) => cardArray.map((card) => `
       <a class="small-card" href="${card.href || card.path}">
         <div class="image-wrapper">
-          ${createOptimizedPicture(card.image, card.imageAlt).innerHTML}
+          ${createOptimizedPicture(card.image, card.imageAlt).outerHTML}
         </div>
         <div class="small-text-wrapper">
           <div class="section">${card.author}</div>
