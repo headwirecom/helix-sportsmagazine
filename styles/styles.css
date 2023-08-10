@@ -98,6 +98,14 @@ main {
   width: 100%;
 }
 
+a {
+  color: black;
+}
+
+a:hover {
+  color: var(--link-hover-color);
+}
+
 /* landing-page */
 .landing-page main {
   padding-top: 0;

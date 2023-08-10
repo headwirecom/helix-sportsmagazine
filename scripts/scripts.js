@@ -14,7 +14,7 @@ import {
   toCamelCase,
 } from './lib-franklin.js';
 
-const ARTICLE_TEMPLATES = {
+export const ARTICLE_TEMPLATES = {
   Default: 'default-article',
   FullBleed: 'full-bleed',
   LongForm: 'long-form',
@@ -87,7 +87,18 @@ export function assignSlot(block, slot, selector) {
 /**
  * Update template with slotted elements from fragment
  */
-export function render(template, fragment) {
+export function render(template, fragment, type) {
+  // TODO remove once importer fixes "**" occurrences and missing line breaks
+  if (type === ARTICLE_TEMPLATES.GalleryListicle) {
+    fragment.innerHTML = fragment.innerHTML
+      .replaceAll('**<a ', '<strong><a ')
+      .replaceAll('</a>**', '</a></strong>')
+      .replaceAll('** <a ', '<strong><a ')
+      .replaceAll('</a> **', '</a></strong>')
+      .replaceAll('from left to right:', 'from left to right:<br>')
+      .replaceAll('</a><strong>', '</a><br><strong>');
+  }
+
   const slottedElements = fragment.querySelectorAll('[slot]');
   for (const slottedElement of slottedElements) {
     const slotName = slottedElement.getAttribute('slot');

@@ -1,4 +1,10 @@
-import { parseFragment, render } from '../../scripts/scripts.js';
+import {
+  ARTICLE_TEMPLATES,
+  normalizeAuthorURL,
+  parseFragment,
+  parseSectionMetadata,
+  render,
+} from '../../scripts/scripts.js';
 import {
   buildBlock, decorateBlock, getMetadata, loadBlocks,
 } from '../../scripts/lib-franklin.js';
@@ -9,7 +15,7 @@ import {
 export default async function decorate(block) {
   const rubric = getMetadata('rubric');
   const author = getMetadata('author');
-  const authorURL = getMetadata('author-url');
+  const imageCredit = getMetadata('image-credit');
   const publicationDate = getMetadata('publication-date');
 
   // HTML template in JS to avoid extra waterfall for LCP blocks
@@ -25,8 +31,8 @@ export default async function decorate(block) {
           </div>
           <div class="byline">
             <div class="attribution">
-                <span>By</span>
-                <a href="${authorURL}">${author}</a>
+              ${author ? `<span>By&nbsp;</span><a href="${normalizeAuthorURL(author)}">${author}</a>` : ''}
+              ${imageCredit ? `<span>Photos By&nbsp;</span><a href="${normalizeAuthorURL(imageCredit)}">${imageCredit}</a>` : ''}
             </div>
             <div class="publication">
                 <span>${publicationDate}</span>
@@ -62,7 +68,22 @@ export default async function decorate(block) {
   block.append(share);
 
   // Render template
-  render(template, block);
+  render(template, block, ARTICLE_TEMPLATES.GalleryListicle);
+
+  // Handle section metadata
+  template.querySelectorAll('.template-section-metadata').forEach((metadataEl) => {
+    const section = metadataEl.parentElement;
+    const metadata = parseSectionMetadata(metadataEl);
+    const picture = section.querySelector('picture');
+    if (metadata.photoCredit && picture) {
+      picture.insertAdjacentHTML('beforeend', `<p class="photo-credit">${metadata.photoCredit}</p>`);
+    }
+  });
+
+  // Handle automatic headings
+  template.querySelectorAll('.article-body picture').forEach((picture, index) => {
+    picture.insertAdjacentHTML('afterend', `<h2>${index + 1}</h2>`);
+  });
 
   // Update block with rendered template
   block.innerHTML = '';
