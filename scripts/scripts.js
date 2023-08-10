@@ -321,6 +321,6 @@ export const convertExcelDate = (excelDate) => {
  * Prepends an image path for images depending on window location
  */
 export const prependImage = (imagePath) => {
-  const host = window.location.origin.startsWith('http://localhost') ? 'https://main--helix-sportsmagazine--headwirecom.hlx.live' : window.location.origin
-  return host+imagePath
-}
+  const host = window.location.origin.startsWith('http://localhost') ? 'https://main--helix-sportsmagazine--headwirecom.hlx.live' : window.location.origin;
+  return host + imagePath;
+};
