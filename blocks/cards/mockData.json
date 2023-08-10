@@ -2,10 +2,112 @@
   "total": 14237,
   "offset": 0,
   "limit": 500,
+  "latest": [
+    {
+      "date": "45106",
+      "image": "/cards-placeholder/media_1729951289e1006994d8ba751766db1cf2496140e.jpeg?width=2000&format=webply&optimize=medium",
+      "path": "#",
+      "author": "local knowledge",
+      "title": "A look at the weirdest major ever played: The Open, 1876",
+      "imageAlt": "",
+      "robots": "0",
+      "lastModified": ""
+    },
+    {
+      "date": "45106",
+      "image": "/cards-placeholder/media_10b487e08b40df2004eb1958468845f79251c547b.jpeg?width=2000&format=webply&optimize=medium",
+      "path": "#",
+      "author": "local knowledge",
+      "title": "The Deepdale Scandle: The sandbag that changed golf",
+      "imageAlt": "",
+      "robots": "0",
+      "lastModified": ""
+    },
+    {
+      "date": "45106",
+      "image": "/cards-placeholder/media_184ce5600316e577ed2fd5be47baa1661c8b73e96.png?width=2000&format=webply&optimize=medium",
+      "path": "#",
+      "author": "local knowledge",
+      "title": "The inside story of how \"The Cup\" became a classic",
+      "imageAlt": "",
+      "robots": "0",
+      "lastModified": ""
+    },
+    {
+      "date": "45106",
+      "image": "/cards-placeholder/media_16c59f01f4d64c8771efd177c7c8ac23f5ce6ecbe.jpeg?width=2000&format=webply&optimize=medium",
+      "path": "#",
+      "author": "local knowledge",
+      "title": "Fear and loathing at Winged Foot '74: The USGA's response to Johnny Miller",
+      "imageAlt": "",
+      "robots": "0",
+      "lastModified": ""
+    },
+    {
+      "date": "45106",
+      "image": "/cards-placeholder/media_148f0e05d29aaf7b9985226aecd6c1c4935e16411.png?width=2000&format=webply&optimize=medium",
+      "path": "#",
+      "author": "local knowledge",
+      "title": "When the 1990 PGA Championship at Shoal creek forced golf into a racial reckoning",
+      "imageAlt": "",
+      "robots": "0",
+      "lastModified": ""
+    },
+    {
+      "date": "45106",
+      "image": "/cards-placeholder/media_1d2dee95b0e591225167738a4c456b9681764b1c5.jpeg?width=2000&format=webply&optimize=medium",
+      "path": "#",
+      "author": "local knowledge",
+      "title": "Seve Ballesteros: The myth and the reality",
+      "imageAlt": "",
+      "robots": "0",
+      "lastModified": ""
+    },
+    {
+      "date": "45106",
+      "image": "/cards-placeholder/media_1f266b47abb6b6405493f23e659dec075be93e3c3.jpeg?width=2000&format=webply&optimize=medium",
+      "path": "#",
+      "author": "local knowledge",
+      "title": "Greg Norman's 1996 Masters collapse is old news, yet its impact is still huge",
+      "imageAlt": "",
+      "robots": "0",
+      "lastModified": ""
+    },
+    {
+      "date": "45106",
+      "image": "/cards-placeholder/media_1c05fcb2bdf778786ef3a82a406c7365b361e8ff6.jpeg?width=2000&format=webply&optimize=medium",
+      "path": "#",
+      "author": "local knowledge",
+      "title": "The day a gate crasher with a .38 revolver took hostages at Augusta National",
+      "imageAlt": "",
+      "robots": "0",
+      "lastModified": ""
+    },
+    {
+      "date": "45106",
+      "image": "/cards-placeholder/media_171edbe69df916909e25c35c78ddc321c3d3d4d3d.jpeg?width=2000&format=webply&optimize=medium",
+      "path": "#",
+      "author": "local knowledge",
+      "title": "The 1983 Rebellion: Our latest podcast revisits pro golf's original crisis",
+      "imageAlt": "",
+      "robots": "0",
+      "lastModified": ""
+    },
+    {
+      "date": "45106",
+      "image": "/cards-placeholder/media_124623afbee2ff3e08137be9153a65231e16e8591.jpeg?width=2000&format=webply&optimize=medium",
+      "path": "#",
+      "author": "local knowledge",
+      "title": "Our favorite Golf Digest podcasts of 2022",
+      "imageAlt": "",
+      "robots": "0",
+      "lastModified": ""
+    }
+  ],
   "data": [
     {
       "date": "45126",
-      "image": "cards-placeholder/media_1d995a89dc32e47de6829f5a205848e0d9fc374ce.jpeg?width=2000&format=webply&optimize=medium",
+      "image": "/cards-placeholder/media_1d995a89dc32e47de6829f5a205848e0d9fc374ce.jpeg?width=2000&format=webply&optimize=medium",
       "path": "story/british-open-2023-top-100-players-in-the-field-at-royal-liverpool-hoylake-ranked",
       "title": "From shooting cupcakes to breaking barriers with Adobe Stock Artist, Yuya Parker",
       "author": "Irene Malatesta",
@@ -17,7 +119,7 @@
     },
     {
       "date": "45126",
-      "image": "cards-placeholder/media_1140d5e9a5a9c517945a4abf7a26567fa5f688917.jpeg?width=2000&format=webply&optimize=medium",
+      "image": "/cards-placeholder/media_1140d5e9a5a9c517945a4abf7a26567fa5f688917.jpeg?width=2000&format=webply&optimize=medium",
       "path": "story/british-open-picks-2023",
       "title": "From reality tv to real-life success: Sharing lessons of resilience and authenticity with Sarah Tilleke",
       "author": "Adobe Life team",
@@ -29,7 +131,7 @@
     },
     {
       "date": "45125",
-      "image": "cards-placeholder/media_175d1371be2f60b5684ce4f2059fec5c288c96d1d.jpeg?width=2000&format=webply&optimize=medium",
+      "image": "/cards-placeholder/media_175d1371be2f60b5684ce4f2059fec5c288c96d1d.jpeg?width=2000&format=webply&optimize=medium",
       "path": "story/michael-block-dj-khaled-golf-shot-instagram-video",
       "title": "6 ways to create your authentic voice in a digital-first world",
       "author": "Goldie Chan",
@@ -41,7 +143,7 @@
     },
     {
       "date": "45124",
-      "image": "cards-placeholder/media_1d9a57308e4986a88e141efb10b5eccc8aec7afe3.jpeg?width=2000&format=webply&optimize=medium",
+      "image": "/cards-placeholder/media_1d9a57308e4986a88e141efb10b5eccc8aec7afe3.jpeg?width=2000&format=webply&optimize=medium",
       "path": "story/british-open-2023-sleepers",
       "title": "VCU helps athletes find their creative voices with Adobe Creative Cloud",
       "author": "Kirsten Nagel",
@@ -53,7 +155,7 @@
     },
     {
       "date": "45124",
-      "image": "cards-placeholder/media_15430a733b9174fe3ba756ad3aaad1fcd21488c5e.jpeg?width=2000&format=webply&optimize=medium",
+      "image": "/cards-placeholder/media_15430a733b9174fe3ba756ad3aaad1fcd21488c5e.jpeg?width=2000&format=webply&optimize=medium",
       "path": "story/cam-smith-putting-stroke-video-2023-open-championship",
       "title": "Powering LifeGift's mission of hope with Adobe Acrobat Sign",
       "author": "Natasha Wyatt",
@@ -65,7 +167,7 @@
     },
     {
       "date": "45121",
-      "image": "cards-placeholder/media_14870bf88dc50541d9833432f899bd3d8160c5328.jpeg?width=2000&format=webply&optimize=medium",
+      "image": "/cards-placeholder/media_14870bf88dc50541d9833432f899bd3d8160c5328.jpeg?width=2000&format=webply&optimize=medium",
       "path": "story/billy-horschel-range-ball-practice-hack",
       "title": "How to research companies to prepare for interviews",
       "author": "Adobe Life team",
@@ -77,7 +179,7 @@
     },
     {
       "date": "45120",
-      "image": "cards-placeholder/media_17c8d7cc3d9a35de149720ec1df79908b236db6d7.jpeg?width=2000&format=webply&optimize=medium",
+      "image": "/cards-placeholder/media_17c8d7cc3d9a35de149720ec1df79908b236db6d7.jpeg?width=2000&format=webply&optimize=medium",
       "path": "story/bernard-langer-golf-90-percent-mental-myth",
       "title": "Adobe Analytics: Prime Day drove record U.S. online spending, bolstered by deep discounts",
       "author": "Vivek Pandya",
@@ -89,7 +191,7 @@
     },
     {
       "date": "45119",
-      "image": "cards-placeholder/media_1ddca32f87119649cf6c9442f194240a35653a9c9.jpeg?width=2000&format=webply&optimize=medium",
+      "image": "/cards-placeholder/media_1ddca32f87119649cf6c9442f194240a35653a9c9.jpeg?width=2000&format=webply&optimize=medium",
       "path": "story/rory-mcilroy-2014-open-championship-putting-spot",
       "title": "Adobe Firefly. Glühwürmchen. Luciérnaga. Luciole. Vaga-lume. Licurici. ホタル",
       "author": "Alexandru Costin",
@@ -101,7 +203,7 @@
     },
     {
       "date": "45118",
-      "image": "cards-placeholder/media_186493bf3df6b2ced41727b47c055ad27c010d9be.jpeg?width=2000&format=webply&optimize=medium",
+      "image": "/cards-placeholder/media_186493bf3df6b2ced41727b47c055ad27c010d9be.jpeg?width=2000&format=webply&optimize=medium",
       "path": "story/collin-morikawa-seven-smart-ways-to-play-better-tomorrow",
       "title": "Converge ICT Solutions promotes e-signature efficiencies with Adobe Acrobat Sign",
       "author": "Adobe Communications Team",
@@ -113,7 +215,7 @@
     },
     {
       "date": "45118",
-      "image": "cards-placeholder/media_1569bd9f94437d4326d723cefd11dc2c2692c751d.png?width=2000&format=webply&optimize=medium",
+      "image": "/cards-placeholder/media_1569bd9f94437d4326d723cefd11dc2c2692c751d.png?width=2000&format=webply&optimize=medium",
       "path": "story/majors-matrix",
       "title": "smart Europe transforms electric car sales with real-time personalization, powered by Adobe",
       "author": "Adobe Communications Team",
@@ -125,10 +227,11 @@
     },
     {
       "date": "45118",
-      "image": "cards-placeholder/media_150339e6106b9ef2ece2e9313f63d0f30958554b1.png?width=2000&format=webply&optimize=medium",
+      "image": "/cards-placeholder/media_150339e6106b9ef2ece2e9313f63d0f30958554b1.png?width=2000&format=webply&optimize=medium",
       "path": "story/how-an-automated-teeing-system-elevated-the-range-game",
       "title": "Ohio State University helps student athletes build a brand with the Adobe Creator Challenge",
       "author": "Kirsten Nagel",
+      "gdPlus": true,
       "description": "The Ohio State University (OSU) is known for its strong academic standards, world-changing research, and notable alumni. But to many fans around the world, OSU is simply known as the home of the Buckeyes. Every year, people gather around televisions, in arenas, and on fields to cheer on student athletes to big wins. The Eugene D. Smith Leadership Institute at the OSU Athletics Department gives back to its student athletes through development and support both on and off the field. The Institute delivers a wide variety of internships, events, and programs aimed at helping student athletes reach their goals after graduation: finding a job, entering graduate school, or pursuing the next level of their sport.",
       "tags": "[\"Digital Literacy\",\"Customer Stories\",\"Creative Cloud\",\"Adobe Express\",\"Lightroom\",\"Premiere Pro\",\"Education\"]",
       "imageAlt": "Ohio State University helps student athletes build a brand with the Adobe Creator Challenge.",
@@ -137,7 +240,7 @@
     },
     {
       "date": "45107",
-      "image": "cards-placeholder/media_1819c85b3bf01697898e5110c642fee985ec1e154.jpeg?width=2000&format=webply&optimize=medium",
+      "image": "/cards-placeholder/media_1819c85b3bf01697898e5110c642fee985ec1e154.jpeg?width=2000&format=webply&optimize=medium",
       "path": "story/atthaya-thitikul-whats-in-my-bag",
       "title": "Filmmaker Sofia Kerpan uses Adobe Premiere Pro to showcase French Montana’s life journey in Tribeca documentary, “For Khadija”",
       "author": "Kylee Pena",
@@ -149,7 +252,7 @@
     },
     {
       "date": "45106",
-      "image": "cards-placeholder/media_1661c045f04a122355ed2a76208c07a260621f80d.jpeg?width=2000&format=webply&optimize=medium",
+      "image": "/cards-placeholder/media_1661c045f04a122355ed2a76208c07a260621f80d.jpeg?width=2000&format=webply&optimize=medium",
       "path": "story/talor-gooch-attack-the-wind-easy-adjustments-hit-irons-low-and-high",
       "title": "Expressing Pride with Adobe: A look back at Tokyo Rainbow Pride 2023",
       "author": "Adobe Life team",
@@ -161,8 +264,8 @@
     },
     {
       "date": "45106",
-      "image": "/en/publish/2023/06/29/media_1770185d283e995d1edb8304673379893d2299e5d.png?width=1200&format=pjpg&optimize=medium",
-      "path": "/en/publish/2023/06/29/career-fest-global-celebration-professional-growth-development",
+      "image": "/cards-placeholder/media_1fd0cf2b1bab2b2d79dd9a13adafdcf17eebf5029.jpeg?width=2000&format=webply&optimize=medium",
+      "path": "story/2023-british-open-bunker-rakes-royal-liverpool",
       "title": "Career Fest: A global celebration of professional growth and development",
       "author": "Adobe Life team",
       "description": "At Adobe, we believe that career growth and development should be celebrated and that employees should be given every opportunity to unlock their full potential. That's why we introduced Career Fest, an internal program dedicated to empowering employees on their unique career journeys.",
@@ -173,8 +276,8 @@
     },
     {
       "date": "45106",
-      "image": "/en/publish/2023/06/29/media_18f62f33088d08be9ad156e188920446667032cb6.jpeg?width=1200&format=pjpg&optimize=medium",
-      "path": "/en/publish/2023/06/29/creative-growth-stock-photo-success-with-zamurovic-brothers",
+      "image": "/cards-placeholder/media_196f6d45adcd4991ef9dce32b07ccc14e142188eb.png?width=2000&format=webply&optimize=medium",
+      "path": "story/2023-british-open-golf-swings-wind-driving-range",
       "title": "Creative growth and stock photo success with the Zamurovic Brothers",
       "author": "Irene Malatesta",
       "description": "Get to know Adobe Stock contributors and brothers Ivan and Bojan Zamurovic and their commitment to hard work, collaboration, and an eagerness to always learn and change. Colorful, whimsical, and rich in textures, their work transforms everyday objects into fun thought pieces",

@@ -336,3 +336,11 @@ export const convertExcelDate = (excelDate) => {
   const parsed = excelTimestampAsUnixTimestamp + delta;
   return Number.isNaN(parsed) ? null : new Date(parsed);
 };
+
+/**
+ * Prepends an image path for images depending on window location
+ */
+export const prependImage = (imagePath) => {
+  const host = window.location.origin.startsWith('http://localhost') ? 'https://main--helix-sportsmagazine--headwirecom.hlx.page' : window.location.origin;
+  return host + imagePath;
+};
