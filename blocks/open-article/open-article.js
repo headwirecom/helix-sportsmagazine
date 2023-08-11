@@ -1,4 +1,5 @@
 import {
+  addPortraitClass,
   assignSlot,
   normalizeAuthorURL,
   parseFragment,
@@ -63,11 +64,14 @@ export default async function decorate(block) {
 
   // Template rendering
   const template = parseFragment(HTML_TEMPLATE);
+
   // Render template
   render(template, block);
 
   // Post-processing
   removeEmptyElements(template, 'p');
+
+  addPortraitClass(template.querySelectorAll('.article-body p > picture'));
 
   block.innerHTML = '';
   block.append(template);
