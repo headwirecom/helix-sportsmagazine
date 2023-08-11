@@ -29,6 +29,20 @@ const LCP_BLOCKS = [...Object.values(ARTICLE_TEMPLATES), 'hero']; // add your LC
 
 const range = document.createRange();
 
+export function replaceLinksWithEmbed(block) {
+  const embeds = ['youtube', 'twitter', 'brightcove', 'instagram'];
+  block.querySelectorAll(embeds.map((embed) => `a[href*="${embed}"]`).join(',')).forEach((embedLink) => {
+    // TODO Ideally duplicated instagram embeds should not be imported
+    if (embedLink.textContent.startsWith('View') && embedLink.href.includes('instagram')) {
+      embedLink.remove();
+    } else {
+      const parent = embedLink.parentElement;
+      const embed = buildBlock('embed', { elems: [embedLink] });
+      parent.replaceWith(embed);
+    }
+  });
+}
+
 /**
  * Remove DOM elements which are empty
  * @param {DocumentFragment} container
@@ -121,7 +135,28 @@ export function render(template, fragment, type) {
  * @param {string} author
  */
 export function normalizeAuthorURL(author) {
-  return `/contributor/${author.replace(/[^a-z0-9]/gmi, ' ').replace(/\s/g, ' ').toLowerCase()}`;
+  return `/contributor/${author.replace(/[^a-z0-9]/gmi, ' ').replace(/\s/g, '-').toLowerCase()}`;
+}
+
+/**
+ * Adds portrait class if image has portrait aspect-ratio
+ *
+ * @param picture
+ */
+export function addPortraitClass(pictures) {
+  pictures.forEach((picture) => {
+    const img = picture.querySelector('img');
+    if (img && img.height > img.width) {
+      picture.classList.add('portrait');
+    }
+
+    // TODO Remove once importer fixes photo-credit metadata for articles
+    const next = picture.parentElement.nextElementSibling;
+    // Assuming name is not longer than that
+    if (next && next.textContent.split(' ').length < 3) {
+      next.classList.add('photo-credit');
+    }
+  });
 }
 
 /**

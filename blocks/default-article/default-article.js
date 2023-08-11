@@ -1,5 +1,12 @@
 import {
-  assignSlot, parseFragment, removeEmptyElements, render,
+  addPortraitClass,
+  assignSlot,
+  normalizeAuthorURL,
+  parseFragment,
+  parseSectionMetadata,
+  removeEmptyElements,
+  render,
+  replaceLinksWithEmbed,
 } from '../../scripts/scripts.js';
 import {
   buildBlock, decorateBlock, getMetadata, loadBlocks,
@@ -11,9 +18,8 @@ import {
 export default async function decorate(block) {
   const rubric = getMetadata('rubric');
   const author = getMetadata('author');
-  const authorURL = getMetadata('author-url');
   const publicationDate = getMetadata('publication-date');
-  const imageCredit = getMetadata('image-credit');
+  const imageCredit = parseSectionMetadata(block.querySelector('.template-section-metadata'))?.imageCredit;
 
   // HTML template in JS to avoid extra waterfall for LCP blocks
   const HTML_TEMPLATE = `
@@ -28,8 +34,7 @@ export default async function decorate(block) {
           </div>
           <div class="byline">
             <div class="attribution">
-                <span>By</span>
-                <a href="${authorURL}">${author}</a>
+              ${author ? `<span>By&nbsp;</span><a href="${normalizeAuthorURL(author)}">${author}</a>` : ''}
             </div>
             <div class="publication">
                 <span>${publicationDate}</span>
@@ -41,6 +46,7 @@ export default async function decorate(block) {
           <div class="lead">
             <slot name="image"></slot>
             <div class="credit">
+                <slot name="caption"></slot>
                 <span>${imageCredit}</span>
             </div>
           </div>
@@ -63,23 +69,26 @@ export default async function decorate(block) {
   assignSlot(block, 'heading', 'h1');
   assignSlot(block, 'image', 'picture');
 
+  const picture = block.querySelector('picture');
+  const caption = picture.parentElement.nextElementSibling;
+  if (caption && caption.tagName === 'P') {
+    caption.setAttribute('slot', 'caption');
+  }
+
   // Pre-processing
   const share = buildBlock('social-share', { elems: [] });
   share.setAttribute('slot', 'share');
   block.append(share);
 
-  const embeds = ['youtube', 'twitter', 'brightcove'];
-  block.querySelectorAll(embeds.map((embed) => `a[href*="${embed}"]`).join(',')).forEach((embedLink) => {
-    const parent = embedLink.parentElement;
-    const embed = buildBlock('embed', { elems: [embedLink] });
-    parent.replaceWith(embed);
-  });
+  replaceLinksWithEmbed(block);
 
   // Render template
   render(template, block);
 
   // Post-processing
   removeEmptyElements(template, 'p');
+
+  addPortraitClass(template.querySelectorAll('.article-body p > picture'));
 
   // Update block with rendered template
   block.innerHTML = '';

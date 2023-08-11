@@ -22,6 +22,16 @@ const getDefaultEmbed = (url) => `<div style="left: 0; width: 100%; height: 0; p
     </iframe>
   </div>`;
 
+const embedInstagram = (url) => {
+  url.pathname = `/${url.pathname.split('/').filter((s) => s).join('/')}/embed`;
+
+  return `<div style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.25%;">
+    <iframe src="${url.href}" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" allowfullscreen=""
+      scrolling="no" allow="encrypted-media" title="Content from ${url.hostname}" loading="lazy">
+    </iframe>
+  </div>`;
+};
+
 const embedYoutube = (url, autoplay) => {
   const usp = new URLSearchParams(url.search);
   const suffix = autoplay ? '&muted=1&autoplay=1' : '';
@@ -72,6 +82,10 @@ const loadEmbed = (block, link, autoplay) => {
     {
       match: ['twitter'],
       embed: embedTwitter,
+    },
+    {
+      match: ['instagram'],
+      embed: embedInstagram,
     },
   ];
 

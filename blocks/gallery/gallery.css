@@ -85,7 +85,7 @@
   }
 }
 
-.gallery .article-body > div p {
+.gallery.block .article-body > div p {
   margin: 0 auto 30px;
   font-size: 14px;
   font-style: normal;
@@ -136,21 +136,21 @@
   display: none;
 }
 
-.gallery .article-body > div a {
-  color: black;
-  text-decoration: none;
-}
-
 .gallery.block .attribution a {
   color: #000;
   text-decoration: none;
 }
 
-.gallery .article-body > div a:hover {
+.gallery.block .article-body > div a {
+  color: black;
+  text-decoration: none;
+}
+
+.gallery.block .article-body > div a:hover {
   color: var(--link-hover-color);
 }
 
-.gallery .article-body .social-share {
+.gallery.block .article-body .social-share {
   margin-top: 72px;
 }
 

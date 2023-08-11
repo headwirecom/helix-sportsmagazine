@@ -1,4 +1,6 @@
-import { assignSlot, parseFragment, render } from '../../scripts/scripts.js';
+import {
+  assignSlot, parseFragment, render, replaceLinksWithEmbed,
+} from '../../scripts/scripts.js';
 import {
   buildBlock,
   decorateBlock,
@@ -83,14 +85,7 @@ export default async function decorate(block) {
   share.setAttribute('slot', 'share');
   block.append(share);
 
-  const embeds = ['youtube', 'twitter', 'brightcove'];
-  block
-    .querySelectorAll(embeds.map((embed) => `a[href*="${embed}"]`).join(','))
-    .forEach((embedLink) => {
-      const parent = embedLink.parentElement;
-      const embed = buildBlock('embed', { elems: [embedLink] });
-      parent.replaceWith(embed);
-    });
+  replaceLinksWithEmbed(block);
 
   // Render template
   render(template, block);
