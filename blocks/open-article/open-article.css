@@ -87,6 +87,14 @@
   margin: 0 5px;
 }
 
+.open-article.block .article-body .photo-credit {
+  font-size: 12px;
+  line-height: 16px;
+  color: #adb4b7;
+  margin-top: -20px;
+  margin-bottom: 50px;
+}
+
 .open-article.block .article-body img {
   width: 100%;
   height: auto;

@@ -149,11 +149,15 @@ export function addPortraitClass(pictures) {
     if (img && img.height > img.width) {
       picture.classList.add('portrait');
     }
+  });
+}
 
-    // TODO Remove once importer fixes photo-credit metadata for articles
+// TODO Remove once importer fixes photo-credit metadata for articles
+export function addImageCredit(pictures) {
+  pictures.forEach((picture) => {
     const next = picture.parentElement.nextElementSibling;
     // Assuming name is not longer than that
-    if (next && next.textContent.split(' ').length < 3) {
+    if (next && next.tagName === 'P' && next.textContent.split(' ').length < 3) {
       next.classList.add('photo-credit');
     }
   });

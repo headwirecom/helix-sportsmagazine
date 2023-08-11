@@ -1,4 +1,5 @@
 import {
+  addImageCredit,
   addPortraitClass,
   assignSlot,
   normalizeAuthorURL,
@@ -88,7 +89,9 @@ export default async function decorate(block) {
   // Post-processing
   removeEmptyElements(template, 'p');
 
-  addPortraitClass(template.querySelectorAll('.article-body p > picture'));
+  const pictures = template.querySelectorAll('.article-body p > picture');
+  addImageCredit(pictures);
+  addPortraitClass(pictures);
 
   // Update block with rendered template
   block.innerHTML = '';
