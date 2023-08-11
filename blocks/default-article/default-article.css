@@ -133,6 +133,20 @@
     height: auto;
 }
 
+.default-article.block .article-body img {
+    width: 100%;
+    height: auto;
+}
+
+.default-article.block .lead .portrait {
+    display: flex;
+    justify-content: center;
+}
+
+.default-article.block .lead .portrait img {
+    max-width: 400px;
+}
+
 .default-article.block .credit {
     margin: 0 auto;
     padding-top: 15px;
@@ -200,11 +214,6 @@
     color: #adb4b7;
     margin-top: -20px;
     margin-bottom: 50px;
-}
-
-.default-article.block .article-body img {
-    width: 100%;
-    height: auto;
 }
 
 .default-article.block .article-body .portrait {
