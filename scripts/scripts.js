@@ -141,15 +141,22 @@ export function normalizeAuthorURL(author) {
 /**
  * Adds portrait class if image has portrait aspect-ratio
  *
- * @param picture
+ * @param el
  */
-export function addPortraitClass(pictures) {
-  pictures.forEach((picture) => {
-    const img = picture.querySelector('img');
+export function addPortraitClass(el) {
+  if (el.length) {
+    el.forEach((picture) => {
+      const img = picture.querySelector('img');
+      if (img && img.height > img.width) {
+        picture.classList.add('portrait');
+      }
+    });
+  } else {
+    const img = el.querySelector('img');
     if (img && img.height > img.width) {
-      picture.classList.add('portrait');
+      el.classList.add('portrait');
     }
-  });
+  }
 }
 
 // TODO Remove once importer fixes photo-credit metadata for articles
@@ -157,7 +164,7 @@ export function addImageCredit(pictures) {
   pictures.forEach((picture) => {
     const next = picture.parentElement.nextElementSibling;
     // Assuming name is not longer than that
-    if (next && next.tagName === 'P' && next.textContent.split(' ').length < 3) {
+    if (next && next.tagName === 'P' && (next.textContent.startsWith('Photo') || next.textContent.split(' ').length < 3)) {
       next.classList.add('photo-credit');
     }
   });

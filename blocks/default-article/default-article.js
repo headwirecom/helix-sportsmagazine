@@ -48,7 +48,7 @@ export default async function decorate(block) {
             <slot name="image"></slot>
             <div class="credit">
                 <slot name="caption"></slot>
-                <span>${imageCredit}</span>
+                ${imageCredit ? `<span>${imageCredit}</span>` : ''}
             </div>
           </div>
           <div class="article-body">
@@ -71,6 +71,8 @@ export default async function decorate(block) {
   assignSlot(block, 'image', 'picture');
 
   const picture = block.querySelector('picture');
+  addPortraitClass(picture);
+
   const caption = picture.parentElement.nextElementSibling;
   if (caption && caption.tagName === 'P') {
     caption.setAttribute('slot', 'caption');
