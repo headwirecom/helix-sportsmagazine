@@ -1,13 +1,22 @@
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 import { parseFragment, removeEmptyElements, render } from '../../scripts/scripts.js';
 
-let carouselData;
+const fetchTypeLookup = {
+  latest: 'golf-news-tours-default'
+}
 
-const fetchCarouselData = async () => {
-  const response = await fetch('/blocks/carousel/mockData.json');
+const fetchCarouselData = async (type, limit=20) => {
+  if (type === 'wedges') {
+    const response = await fetch(`/blocks/carousel/wedgesData.json`)
+    const data = await response.json()
+    console.log("\x1b[31m ~ response:", response)
+    return data
+  }
+  const sheetType = fetchTypeLookup[type] || type
+  const response = await fetch(`/article-query-index.json?limit=${limit}&sheet=${sheetType}`);
   const data = await response.json();
 
-  carouselData = data;
+  return data.data
 };
 
 const carouselTitleLookup = {
@@ -18,15 +27,11 @@ const carouselTitleLookup = {
 };
 
 export default async function decorate(block) {
-  if (!carouselData) {
-    await fetchCarouselData();
-  }
-
   const carouselType = Array.from(block.classList).filter(
     (className) => className !== 'carousel' && className !== 'block',
   )[0];
 
-  const carouselItems = carouselData[carouselType];
+  const carouselItems = await fetchCarouselData(carouselType)
 
   const carouselHeadingType = carouselType === 'wedges' ? 'h2' : 'h4';
 
@@ -59,13 +64,13 @@ export default async function decorate(block) {
         <a class="carousel-item" href="${carouselItem.path}" >
           <div class="carousel-item-wrapper">
             <div class="carousel-image-wrapper">
-              ${createOptimizedPicture(carouselItem.imagePath, carouselItem.imageAlt || 'carousel cover image').outerHTML}
+              ${createOptimizedPicture(carouselItem.image, carouselItem.imageAlt || 'carousel cover image').outerHTML}
             </div>
             
             <div class="carousel-text-content">
-              ${carouselItem.subHeading ? `<span class="sub-heading">${carouselItem.subHeading}</span>` : ''}
+              ${carouselItem.rubric ? `<span class="sub-heading">${carouselItem.rubric}</span>` : ''}
               <h3 class="carousel-item-title">${carouselItem.title}</h3>
-              <span class="carousel-item-location">${carouselItem.location}</span>
+              ${carouselType === 'courses' ? `<span class="carousel-item-location">${carouselItem.location}</span>` : ''}
 
               ${Array.isArray(carouselItem.awards) && carouselItem.awards.length
     ? `<ul class="carousel-item-pills">${carouselItem.awards

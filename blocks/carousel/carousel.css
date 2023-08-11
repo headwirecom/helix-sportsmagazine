@@ -23,6 +23,14 @@
   --carousel-card-gap: 40px;
 }
 
+.carousel.block picture {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 @media (max-width: 1280px) {
   .carousel.block.wedges {
     --carousel-card-gap: 11px;
@@ -108,12 +116,17 @@
   height: auto;
 }
 
-.carousel.block.large .carousel-main-wrapper .carousel-inner-wrapper{
+.carousel.block .carousel-main-wrapper .carousel-inner-wrapper {
   height: 100%;
   width: 100%;
 }
 
-.carousel.block.wedges .carousel-main-wrapper .carousel-inner-wrapper{
+.carousel.block.large .carousel-main-wrapper .carousel-inner-wrapper {
+  height: 100%;
+  width: 100%;
+}
+
+.carousel.block.wedges .carousel-main-wrapper .carousel-inner-wrapper {
   overflow: hidden;
 }
 

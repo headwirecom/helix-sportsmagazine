@@ -4,10 +4,13 @@ import {
 } from '../../scripts/scripts.js';
 
 let cardData;
+let cardDataIndex = 0
 
 async function getCardData() {
-  const response = await fetch('/blocks/cards/mockData.json');
-  cardData = await response.json();
+  const response = await fetch(`/article-query-index.json?limit=60&sheet=golf-news-tours-features`);
+  const data = await response.json();
+
+  cardData = data.data
 }
 
 export default async function decorate(block) {
@@ -21,7 +24,7 @@ export default async function decorate(block) {
 
   const isLatestCardBlock = cardsType === 'latest';
 
-  const cardLinks = [...block.querySelectorAll('p>a[href]')].map((element) => element.href);
+  // const cardLinks = [...block.querySelectorAll('p>a[href]')].map((element) => element.href);
 
   const cardsTitle = block.querySelector('.cards.latest.block h3, .cards.columns.block h3')?.innerText;
 
@@ -31,15 +34,9 @@ export default async function decorate(block) {
   const indexInPage = cardBlocks.findIndex((element) => element.isEqualNode(block));
   const reverse = !(indexInPage === 0 || indexInPage % 2 === 0);
 
-  const cardList = isLatestCardBlock ? cardData.latest : cardLinks.map((cardLink) => {
-    const cardSearchQuery = cardLink.split('/').slice(3).join('/');
-    const cardObj = cardData.data.find((obj) => obj.path === cardSearchQuery);
-    if (cardObj) {
-      cardObj.href = cardLink;
-      cardObj.image = prependImage(cardObj.image);
-    }
-    return cardObj;
-  });
+  const cardOffset = (cardsType === 'hero' ? 2 : cardsType === 'latest' ? 10 : 4)
+  const cardList = cardData.slice(cardDataIndex, cardDataIndex+cardOffset)
+  cardDataIndex = cardDataIndex+cardOffset
 
   const mainCard = cardList[0];
 
@@ -80,7 +77,7 @@ export default async function decorate(block) {
     : '<img loading="lazy" src="/icons/gd-plus-dark.svg" class="gd-plus-icon-img" alt="Golf Digest Plus Icon" />'
 }
           <div class="headline"><h3>${card.title}</h3></div>
-          <div class="date-string">${timeSince(convertExcelDate(card.date))}</div>
+          <div class="date-string">${timeSince(convertExcelDate(card.dateValue))}</div>
         </div>
       </a>
     `).join('');

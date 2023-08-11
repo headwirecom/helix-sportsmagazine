@@ -12,6 +12,7 @@
 .cards-wrapper .cards.block picture {
   width: 100%;
   height: 100%;
+  position: absolute;
 }
 
 .cards-wrapper .cards.block.latest,
@@ -528,6 +529,12 @@
 
 .cards-wrapper .cards.block.gd .card-block-wrapper .main-card {
   max-width: 693px;
+}
+
+@media (max-width: 1280px) {
+  .cards-wrapper .cards.block.gd .card-block-wrapper .main-card {
+    max-width: none;
+  }
 }
 
 .cards-wrapper .cards.block.gd .secondary-cards {
