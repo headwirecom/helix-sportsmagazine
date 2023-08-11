@@ -9,11 +9,13 @@ Live: https://main--helix-sportsmagazine--headwirecom.hlx.live
 
 ## Demo
 
-- Default Article: https://main--helix-sportsmagazine--headwirecom.hlx.page/import-test/play/instruction/approach-shots/article/2018/1/get-control-over-your-wedges-like-jason-day
-- Gallery Listicle: https://main--helix-sportsmagazine--headwirecom.hlx.page/import-test/play/equipment/apparel/_default/gallery/2020/7/golf-shoes-womens-on-sale-noblocks
-- Gallery: https://main--helix-sportsmagazine--headwirecom.hlx.page/import-test/play/equipment/apparel/gallery/2017/3/best-mens-golf-shoes-2017-noblocks
-- Long Form: https://main--helix-sportsmagazine--headwirecom.hlx.page/import-test/play/instruction/short-game/article/2018/2/does-tiger-still-have-the-yips
-- Product Listing: https://main--helix-sportsmagazine--headwirecom.hlx.page/import-test/play/equipment/products/2022/09/360-only-divot-tool
+- Default Article: https://main--helix-sportsmagazine--headwirecom.hlx.page/content-v2/golf-news-tours/_default/article/2023/7/carlota-ciganda-dq-slow-play-penalty-calls-out-lpga-rules-officials
+- Gallery Listicle: https://main--helix-sportsmagazine--headwirecom.hlx.page/content-v2/play/equipment/apparel/_default/gallery/2020/7/summer-golf-essentials
+- Gallery: https://main--helix-sportsmagazine--headwirecom.hlx.page/content-v2/play/instruction/_default/gallery/2012/4/photos-aaron-baddeley-2012-04
+- Product Listing: https://main--helix-sportsmagazine--headwirecom.hlx.page/content-v2/play/equipment/products/golfdigest/Editorial/2022/03/tory-sport-classic-tech-piqu-sleeveless-polo
+- Open Article: https://main--helix-sportsmagazine--headwirecom.hlx.page/content-v2/play/instruction/_default/article/2016/2/day-1-master-the-gate-crasher-drill-for-putting-accuracy
+- Long Form Article: https://main--helix-sportsmagazine--headwirecom.hlx.page/content-v2/the-loop/gambling/article/2023/7/british-open-picks-2023
+- Full Bleed Article: https://main--helix-sportsmagazine--headwirecom.hlx.page/content-v2/golf-news-tours/_default/article/2023/3/ask-alan-shipnuck-players-championship-state-of-jordan-spieth-fixing-broadcasts-ryder-cup-rookies
 
 ## Installation
 
