@@ -132,7 +132,7 @@ function getGallerySlideImage(slide) {
   if (el) {
     const dataAttr = el.getAttribute('data-photo-box-params');
     /* eslint-disable no-console */
-    console.log(`Parsing data attribute '${dataAttr}'`);
+    // console.log(`Parsing data attribute '${dataAttr}'`);
     const json = JSON.parse(dataAttr);
     const sourcePath = json.assetId;
     const sourceUrl = `${host}${sourcePath}`;
@@ -159,7 +159,7 @@ function transformArticleDOM(document, templateConfig) {
   const authorURL = getAttributionURL(document);
   const publicationDate = getPublicationDate(document);
   /* eslint-disable no-console */
-  console.log(`Author: ${author}. Publication Date: ${publicationDate}`);
+  // console.log(`Author: ${author}. Publication Date: ${publicationDate}`);
 
   let rubric = getRubric(document);
   if (articleHero && !rubric) {
@@ -252,7 +252,7 @@ function galleryUpdateToOriginalRendition(media) {
 function isGif(media) {
   const img = (media.tagName === 'IMG') ? media : media.querySelector('img');
   let imgSrc = img.getAttribute('src');
-  console.log(`Checking if ${imgSrc} is a GIF`);
+  // console.log(`Checking if ${imgSrc} is a GIF`);
   return (imgSrc && imgSrc.toLowerCase().endsWith('.gif'));
 }
 
@@ -480,39 +480,43 @@ function trasformDOM(document) {
   return retObj;
 }
 
+function preprocess({ document, url, html, params }) {
+  if (isArticle(document)) {
+    // For articles keep hr tags as section separators.
+    // These are removed by importer preprocessing step. So, use temporary div tags.
+    document.querySelectorAll('hr').forEach(el => { 
+      const tmpEl = document.createElement('div');
+      tmpEl.classList.add('importer-section-separator');
+      el.replaceWith(tmpEl);
+    });
+  }
+}
+
+/**
+   * Apply DOM operations to the provided document and return
+   * the root element to be then transformed to Markdown.
+   * @param {HTMLDocument} document The document
+   * @param {string} url The url of the page imported
+   * @param {string} html The raw html (the document is cleaned up during preprocessing)
+   * @param {object} params Object containing some parameters given by the import process.
+   * @returns {HTMLElement} The root element to be transformed
+   */
+function transform({document, url, html, params}) {
+  const docPath = mapToDocumentPath(document, url);
+  const retObj = trasformDOM(document);
+  return [{
+    element: retObj.element,
+    path: docPath,
+    report: retObj.report,
+  }];
+}
+
+export {
+  preprocess,
+  transform
+}
+
 export default {
-
-  preprocess: ({ document, url, html, params }) => {
-    if (isArticle(document)) {
-      // For articles keep hr tags as section separators.
-      // These are removed by importer preprocessing step. So, use temporary div tags.
-      document.querySelectorAll('hr').forEach(el => { 
-        const tmpEl = document.createElement('div');
-        tmpEl.classList.add('importer-section-separator');
-        el.replaceWith(tmpEl);
-      });
-    }
-  },
-
-  /**
-     * Apply DOM operations to the provided document and return
-     * the root element to be then transformed to Markdown.
-     * @param {HTMLDocument} document The document
-     * @param {string} url The url of the page imported
-     * @param {string} html The raw html (the document is cleaned up during preprocessing)
-     * @param {object} params Object containing some parameters given by the import process.
-     * @returns {HTMLElement} The root element to be transformed
-     */
-  transform: ({
-    // eslint-disable-next-line no-unused-vars
-    document, url, html, params,
-  }) => {
-    const docPath = mapToDocumentPath(document, url);
-    const retObj = trasformDOM(document);
-    return [{
-      element: retObj.element,
-      path: docPath,
-      report: retObj.report,
-    }];
-  },
-};
+  preprocess: preprocess,
+  transform: transform
+}
