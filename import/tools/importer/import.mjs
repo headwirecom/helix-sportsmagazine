@@ -1,3 +1,5 @@
+"use strict";
+
 function replaceEmbed(el, url) {
   el.insertAdjacentHTML('beforebegin', `<a href=${url}>${url}</a>`);
   el.remove();
@@ -511,11 +513,13 @@ function transform({document, url, html, params}) {
   }];
 }
 
+// export compatible with node
 export {
   preprocess,
   transform
 }
 
+// export compatible with browser but breaks with node
 export default {
   preprocess: preprocess,
   transform: transform
