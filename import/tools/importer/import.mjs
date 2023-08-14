@@ -151,7 +151,9 @@ function transformArticleDOM(document, templateConfig) {
 
   const articleHero = document.querySelector('.o-ArticleHero');
   const imageEmbed = document.querySelector('.o-ImageEmbed');
-  const imageEmbedCredit = document.querySelector('.o-ImageEmbed__a-Credit');
+  const imageEmbedCredit = document.querySelector('.o-ImageEmbed__a-Credit') ? 
+      document.querySelector('.o-ImageEmbed__a-Credit') : 
+      document.querySelector('.o-ArticleHero .o-ArticleInfo .a-Credit');
   const articleTitle = document.querySelector('.o-AssetTitle');
   const articleDescription = document.querySelector('.o-AssetDescription__a-Description');
   const articleBody = document.querySelector('.articleBody');
@@ -184,7 +186,7 @@ function transformArticleDOM(document, templateConfig) {
     const heroImageCreditTxt = (imageEmbedCredit) ? imageEmbedCredit.innerHTML : '';
     imageEmbedCredit.remove();
     let sectionBlock = createSectionMetadata(document, main);
-    appendToBlock(sectionBlock, 'Image Credit', heroImageCreditTxt);
+    appendToBlock(sectionBlock, 'Photo Credit', heroImageCreditTxt);
   }
 
   main.append(document.createElement('hr'));
