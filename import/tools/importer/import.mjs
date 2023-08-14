@@ -223,7 +223,9 @@ function transformArticleDOM(document, templateConfig) {
     const acct = videoEl.getAttribute('data-account');
     const player = videoEl.getAttribute('data-player');
     const videoId = videoEl.getAttribute('data-video-id');
-    const src = `https://players.brightcove.net/${acct}/${player}_default/index.html?videoId=${videoId}`;
+    const playlistId = videoEl.getAttribute('data-playlist-id');
+    const param = (videoId) ? `videoId=${videoId}` : `playlistId=${playlistId}`;
+    const src = `https://players.brightcove.net/${acct}/${player}_default/index.html?${param}`;
     replaceEmbed(el, src);
   });
 
