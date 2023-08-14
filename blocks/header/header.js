@@ -445,7 +445,11 @@ function updateHeaderLink(block, selector, text, url) {
 }
 
 function updateChannelCrumb(block) {
-  if (!channelInfo.mainChannelHref) return;
+  const separatorElement = block.querySelector('.header-channel-crumb .separator');
+  if (!channelInfo.mainChannelHref) {
+    if (separatorElement) separatorElement.style.display = 'none';
+    return;
+  }
   updateHeaderLink(block, '.header-channel', channelInfo.mainChannelText, channelInfo.mainChannelHref);
   if (channelInfo.subChannelHref) {
     updateHeaderLink(block, '.header-subchannel', channelInfo.subChannelText, channelInfo.subChannelHref);
