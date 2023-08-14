@@ -213,7 +213,7 @@ function transformArticleDOM(document, templateConfig) {
     }
   });
 
-  articleBody.querySelectorAll('.iframe').forEach((el) => {
+  articleBody.querySelectorAll('.iframe, .youtubeEmbed').forEach((el) => {
     const frame = el.querySelector('iframe');
     if (frame && frame.src.toLowerCase().includes('youtube.')) {
       replaceEmbed(el, frame.src);
