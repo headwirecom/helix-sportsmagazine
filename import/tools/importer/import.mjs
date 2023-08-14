@@ -461,6 +461,20 @@ function isArticle(document) {
   return templateConfig !== undefined && templateConfig.transformer === transformArticleDOM;
 }
 
+
+function fixBoldText(document) {
+  // Issue #107
+  // empty <span> tags inside <b> break bold text in markdown and word docs
+  // move them outside
+  document.querySelectorAll('b').forEach(boldEl => {
+    boldEl.querySelectorAll('span').forEach(el => {
+      if((!el.innerHTML || el.innerHTML.trim().length === 0) && (!el.innerText || el.innerText.trim().length === 0)) {
+        boldEl.insertAdjacentElement('afterend', el);
+      }
+    });
+  });
+}
+
 function trasformDOM(document) {
   const templateConfig = findTemplateConfig(document);
 
@@ -473,6 +487,7 @@ function trasformDOM(document) {
   };
 
   if (templateConfig) {
+    fixBoldText(document);
     retObj = templateConfig.transformer(document, templateConfig);
   } else {
     const bodyClass = document.querySelector('body').getAttribute('class');
