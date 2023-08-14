@@ -26,12 +26,62 @@ const carouselTitleLookup = {
   wedges: "Hot List 2023",
 };
 
+const carouselFetchedData = {}
+const dataPromiseTracker = {}
+
+
+
 export default async function decorate(block) {
   const carouselType = Array.from(block.classList).filter(
     (className) => className !== "carousel" && className !== "block"
   )[0];
 
-  const carouselItems = await fetchCarouselData(carouselType);
+  // const carouselItems = await fetchCarouselData(carouselType);
+
+  const renderFunction = () => {
+    if (!carouselFetchedData[carouselType]) {
+      block.innerHTML = `
+      ${
+        carouselType === "large"
+          ? ""
+          : `
+        <div class="carousel-title-wrapper">
+          <h4 class="carousel-title " id="carousel-"> </h4>
+        </div>
+      `
+      }
+    <div class="carousel-main-wrapper  ">
+    <div class="controls">
+      <button class="left-button"></button>
+      <button class="right-button"></button>
+    </div>
+    <div class="carousel-inner-wrapper">
+        <div class="carousel-frame" >
+        </div>
+        </div>
+      </div>
+      `
+      dataPromiseTracker[carouselType] = new Promise((resolve) => {
+        if (carouselType === "wedges") {
+          fetch(`/blocks/carousel/wedgesData.json`)
+          .then((response) => response.json())
+          .then((data) => {
+                carouselFetchedData[carouselType] = data
+                resolve()
+            })
+          } else {
+            const sheetType = fetchTypeLookup[carouselType] || carouselType;
+            fetch(`/article-query-index.json?limit=${20}&sheet=${sheetType}`)
+            .then((response) => response.json())
+            .then((data) => {
+                  carouselFetchedData[carouselType] = data.data
+                  resolve()
+              })
+
+        }
+      })
+      return
+    }
 
   const carouselHeadingType = carouselType === "wedges" ? "h2" : "h4";
 
@@ -58,7 +108,7 @@ export default async function decorate(block) {
 </div>
 <div class="carousel-inner-wrapper">
     <div class="carousel-frame" >
-      ${carouselItems
+      ${carouselFetchedData[carouselType]
         .map(
           (carouselItem) => `
         <a class="carousel-item" href="${carouselItem.path}" >
@@ -297,4 +347,7 @@ export default async function decorate(block) {
 
   block.innerHTML = "";
   block.append(...template.children);
+}
+renderFunction()
+dataPromiseTracker[carouselType].then(() => renderFunction())
 }

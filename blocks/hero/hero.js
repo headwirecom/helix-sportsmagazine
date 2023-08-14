@@ -14,16 +14,51 @@ const getHeroData = async () => {
   heroItems = data.data;
 };
 
+const fallbackHeroHtml = `
+<div class="hero-container">
+  <div class="hero-image-container">
+    <picture></picture>
+  </div>
+  <div class="hero-text-container">
+    <a href="#">
+      <div>
+      <h2> </h2>
+        <p> </p>
+      </div>
+      <div class="button-container">
+        <div class="icon-container"> > </div>
+        <span> </span>
+      </div>
+    </a>
+  </div>
+</div>
+`
+
+const dataPromise = new Promise((resolve) => {
+  fetch(`/article-query-index.json?limit=10&sheet=golf-news-tours-default`)
+    .then((response) => response.json().then((data) => {
+      heroItems = data.data
+      resolve()
+    }))
+})
+
 export default async function decorate(block) {
   if (!heroItems) {
     await getHeroData();
   }
-  const firstHero = document.querySelector(".hero.block[data-block-name='hero']");
-  const isFirstHero = firstHero.isEqualNode(block);
 
-  const heroData = heroItems[heroItemsIndex];
-  const cards = heroItems.slice(heroItemsIndex + 1, heroItemsIndex + 5);
+  const isFirstHero = document.querySelector(".hero.block[data-block-name='hero']").isEqualNode(block);
+
+  const heroDataIndex = heroItemsIndex
   heroItemsIndex = heroItemsIndex + (isFirstHero ? 5 : 1);
+
+  const renderFunction = () => {
+    if (!heroItems) {
+  block.innerHTML = fallbackHeroHtml;
+  return
+    }
+  const heroData = heroItems[heroDataIndex];
+  const cards = heroItems.slice(heroDataIndex + 1, heroDataIndex + 5);
 
   const heroLink = block.querySelector(".button-container > a");
   heroLink.parentElement.remove();
@@ -89,4 +124,7 @@ export default async function decorate(block) {
   // Clear the original block content
   block.innerHTML = "";
   block.append(template);
+}
+renderFunction()
+dataPromise.then(() => renderFunction)
 }
