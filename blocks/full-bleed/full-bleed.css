@@ -260,6 +260,8 @@
 
 .full-bleed.block .article-body a {
   color: #000;
+  font-style: bold;
+  font-weight: 600;
 }
 
 .full-bleed.block .attribution a:hover {
