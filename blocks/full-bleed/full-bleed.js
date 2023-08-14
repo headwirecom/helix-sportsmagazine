@@ -47,9 +47,7 @@ const HTML_TEMPLATE = `
               <div class="attribution">
                   <span>By</span>
                   <a href="${authorURL}">${author}</a>
-              </div>
-              <div class="publication">
-                  <span>${publicationDate}</span>
+                  <span class="publication">${publicationDate}</span>
               </div>
               <div class="sharing">
                   <slot name="share"></slot>

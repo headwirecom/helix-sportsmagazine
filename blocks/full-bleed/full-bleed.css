@@ -120,6 +120,7 @@
   display: flex;
   align-items: baseline;
   letter-spacing: -0.03em;
+  font-weight: 100;
 }
 
 .full-bleed.block .publication::before {
@@ -157,12 +158,11 @@
 .full-bleed.block .lead > .byline .attribution {
   grid-column: 1;
   grid-row: 1;
+  display: flex;
 }
 
-@media (min-width: 769px) {
-  .full-bleed.block .lead > .byline .publication {
-    margin-left: 135px;
-  }
+.full-bleed.block .lead > .byline .attribution > span:first-of-type {
+  margin-right: 5px;
 }
 
 .full-bleed.block .headline .byline {
