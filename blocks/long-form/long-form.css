@@ -339,9 +339,27 @@
 .long-form.block .article-body .photo-credit {
     border-bottom: 1px solid #c4c4c4;
     max-width: 635px;
-    margin: 0 auto;
-    padding: 15px;
     font-size: 12px;
     line-height: 16px;
     color: #adb4b7;
+    padding: 15px;
+    margin: 0 auto 30px;
+}
+
+@media (min-width: 1025px) {
+    .long-form.block .article-body .photo-credit {
+        margin-bottom: 60px;
+    }
+}
+
+.long-form.block .article-body .fullscreen {
+    margin-bottom: 0;
+}
+
+.long-form.block .article-body .fullscreen img {
+    position: relative;
+    background-color: #ededed;
+    width: 100vw;
+    object-fit: contain;
+    max-height: 850px;
 }

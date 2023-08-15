@@ -1,4 +1,5 @@
 import {
+  addPhotoCredit,
   ARTICLE_TEMPLATES,
   assignSlot, getAuthors, normalizeAuthorURL,
   parseFragment,
@@ -112,6 +113,18 @@ export default async function decorate(block) {
   removeEmptyElements(template, 'p');
   template.querySelector('.article-body div > p').classList.add('highlight');
 
+  const pictures = template.querySelectorAll('.article-body p > picture');
+  addPhotoCredit(pictures);
+
+  // Set fullscreen images
+  pictures.forEach((picture) => {
+    const img = picture.querySelector('img');
+    picture.parentElement.classList.add('fullscreen');
+    img.onload = () => {
+      img.style.left = `-${img.offsetLeft}px`;
+    };
+  });
+
   // Update block with rendered template
   block.innerHTML = '';
   block.append(template);
@@ -129,4 +142,19 @@ export default async function decorate(block) {
       article.classList.toggle('dark', !(bottom < 0 || top - viewHeight >= 0));
     }).observe(block.querySelector('.lead .image'));
   });
+
+  // Get images that were styled as fullscreen and adjust position
+  window.onresize = () => {
+    block.querySelectorAll('.fullscreen img').forEach((img) => {
+      // Hide visibility before resetting the position
+      img.style.visibility = 'hidden';
+      img.style.left = 0;
+
+      // Wait frame before reading position
+      requestAnimationFrame(() => {
+        img.style.left = `-${img.offsetLeft}px`;
+        img.style.visibility = 'visible';
+      });
+    });
+  };
 }
