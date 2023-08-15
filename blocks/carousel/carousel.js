@@ -1,9 +1,7 @@
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 import { parseFragment, removeEmptyElements, render } from '../../scripts/scripts.js';
 
-const placeholderHtml = (carouselType) => {
-  return `<div class="carousel-main-wrapper" style="${carouselType === 'large' ? 'aspect-ratio: 2/1; ' : 'height: 949px;'} width: 100%; visibility: hidden;"><div>`
-}
+const placeholderHtml = (carouselType) => `<div class="carousel-main-wrapper" style="${carouselType === 'large' ? 'aspect-ratio: 2/1; ' : 'height: 949px;'} width: 100%; visibility: hidden;"><div>`;
 const getSheetForCarouselType = (carouselType) => {
   const fetchTypeLookup = {
     latest: 'golf-news-tours-default',
