@@ -8,7 +8,7 @@ const arrowIcon = '<svg width="6" height="9" viewBox="0 0 6 9" fill="none" xmlns
 let heroItems;
 let heroItemsIndex = 0;
 
-const placeholderHtml = '<div class="hero-container"><div class="hero-image-container"><picture></picture></div><div class="hero-text-container"><a href="#"><div><h2> </h2><p> </p></div><div class="button-container"><div class="icon-container"> > </div><span> </span></div></a></div></div>';
+const placeholderHtml = '<div class="hero-container" style="visibility: hidden; max-height: 1040px; aspect-ratio: 1.57/1; width: 100%" ></div>';
 
 const dataPromise = new Promise((resolve) => {
   window.store.fetch('/article-query-index.json?limit=10&sheet=golf-news-tours-default').then((data) => {

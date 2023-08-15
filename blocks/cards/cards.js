@@ -7,13 +7,9 @@ let cardData;
 let cardDataIndex = 0;
 
 const placeholderHtml = `
-<div class="card-block-wrapper">
-<a class="main-card" href="#"><div class="image-bg"><picture></picture></div><div class="main-text-wrapper"><div class="section"></div><div class="headline"><h3> </h3></div></div></a>
-    <div class="secondary-cards">
-    ${'<a class="small-card" href="#"><div class="image-wrapper"><picture></picture></div><div class="small-text-wrapper"><div class="section"></div><div class="headline"><h3> </h3></div><div class="date-string"> </div></div></a>'.repeat(
-    3,
-  )}
-    </div>
+<div class="card-block-wrapper" style="visibility: hidden;">
+  <div class="main-card" href="#" style="aspect-ratio: 1/1; width: 50%; flex: 0;"></div>
+  <div class="secondary-cards" style="aspect-ratio: 1/1; width: 50%; flex: 0;"></div>
 </div>
 `;
 
