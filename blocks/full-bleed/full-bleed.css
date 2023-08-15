@@ -321,16 +321,6 @@
   }
 }
 
-.article-body > div > div > div:nth-child(3) {
-  border-top: 1px solid #a09e9e;
-  padding-top: 50px;
-}
-
-.embed-wrapper {
-  border-top: 1px solid #7a7a7a;
-  padding-top: 50px;
-}
-
 .full-bleed.block .center-seperator {
   display: flex;
   justify-content: center;
