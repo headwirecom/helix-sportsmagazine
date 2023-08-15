@@ -6,18 +6,18 @@ const fetchTypeLookup = {
   large: "golf-news-tours-features",
 };
 
-const fetchCarouselData = async (type, limit = 20) => {
-  if (type === "wedges") {
-    const response = await fetch(`/blocks/carousel/wedgesData.json`);
-    const data = await response.json();
-    return data;
-  }
-  const sheetType = fetchTypeLookup[type] || type;
-  const response = await fetch(`/article-query-index.json?limit=${limit}&sheet=${sheetType}`);
-  const data = await response.json();
+// const fetchCarouselData = async (type, limit = 20) => {
+//   if (type === "wedges") {
+//     const response = await fetch(`/blocks/carousel/wedgesData.json`);
+//     const data = await response.json();
+//     return data;
+//   }
+//   const sheetType = fetchTypeLookup[type] || type;
+//   const response = await fetch(`/article-query-index.json?limit=${limit}&sheet=${sheetType}`);
+//   const data = await response.json();
 
-  return data.data;
-};
+//   return data.data;
+// };
 
 const carouselTitleLookup = {
   courses: "Trending Courses",

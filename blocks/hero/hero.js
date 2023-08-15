@@ -7,13 +7,6 @@ const arrowIcon =
 let heroItems;
 let heroItemsIndex = 0;
 
-const getHeroData = async () => {
-  const response = await fetch(`/article-query-index.json?limit=10&sheet=golf-news-tours-default`);
-  const data = await response.json();
-
-  heroItems = data.data;
-};
-
 const fallbackHeroHtml = `
 <div class="hero-container">
   <div class="hero-image-container">
@@ -32,55 +25,54 @@ const fallbackHeroHtml = `
     </a>
   </div>
 </div>
-`
+`;
 
 const dataPromise = new Promise((resolve) => {
-  fetch(`/article-query-index.json?limit=10&sheet=golf-news-tours-default`)
-    .then((response) => response.json().then((data) => {
-      heroItems = data.data
-      resolve()
-    }))
-})
+  fetch(`/article-query-index.json?limit=10&sheet=golf-news-tours-default`).then((response) =>
+    response.json().then((data) => {
+      heroItems = data.data;
+      resolve();
+    })
+  );
+});
 
 export default async function decorate(block) {
-  if (!heroItems) {
-    await getHeroData();
-  }
 
   const isFirstHero = document.querySelector(".hero.block[data-block-name='hero']").isEqualNode(block);
 
-  const heroDataIndex = heroItemsIndex
+  const heroDataIndex = heroItemsIndex;
   heroItemsIndex = heroItemsIndex + (isFirstHero ? 5 : 1);
-
-  const renderFunction = () => {
-    if (!heroItems) {
-  block.innerHTML = fallbackHeroHtml;
-  return
-    }
-  const heroData = heroItems[heroDataIndex];
-  const cards = heroItems.slice(heroDataIndex + 1, heroDataIndex + 5);
-
+  
   const heroLink = block.querySelector(".button-container > a");
   heroLink.parentElement.remove();
 
-  assignSlot(block, "image", "picture");
+  const renderFunction = () => {
+    if (!heroItems) {
+      block.innerHTML = fallbackHeroHtml;
+      return;
+    }
 
-  const cardsTemplate = cards
-    .map((card) => {
-      return `
-    <a href="${card.path}">
-    ${createOptimizedPicture(card.image, card.imageAlt || "hero card image").outerHTML}
-    <div>
-      <span>${card.rubric}</span>
-      <h3>${card.title}</h3>
-    </div>
-    </a>
-    `;
-    })
-    .join("");
+    const heroData = heroItems[heroDataIndex];
+    const cards = heroItems.slice(heroDataIndex + 1, heroDataIndex + 5);
 
-  // HTML template in JS to avoid extra waterfall for LCP blocks
-  const HTML_TEMPLATE = `
+    assignSlot(block, "image", "picture");
+
+    const cardsTemplate = cards
+      .map((card) => {
+        return `
+          <a href="${card.path}">
+            ${createOptimizedPicture(card.image, card.imageAlt || "hero card image").outerHTML}
+            <div>
+              <span>${card.rubric}</span>
+              <h3>${card.title}</h3>
+            </div>
+          </a>
+        `;
+      })
+      .join("");
+
+    // HTML template in JS to avoid extra waterfall for LCP blocks
+    const HTML_TEMPLATE = `
     <div class="hero-container">
       <div class="hero-image-container">
         ${createOptimizedPicture(heroData.image, heroData.imageAlt || "hero main image").outerHTML}
@@ -107,24 +99,25 @@ export default async function decorate(block) {
     </div>
   `;
 
-  // Parse the HTML template into a document fragment
-  const template = parseFragment(HTML_TEMPLATE);
+    // Parse the HTML template into a document fragment
+    const template = parseFragment(HTML_TEMPLATE);
 
-  // Render the template onto the block element
-  render(template, block);
+    // Render the template onto the block element
+    render(template, block);
 
-  // Post-processing
-  removeEmptyElements(template, "p");
+    // Post-processing
+    removeEmptyElements(template, "p");
 
-  // Default text alignment
-  if (!block.classList.contains("text-center") && !block.classList.contains("text-right")) {
-    block.classList.add("text-left");
-  }
+    // Default text alignment
+    if (!block.classList.contains("text-center") && !block.classList.contains("text-right")) {
+      block.classList.add("text-left");
+    }
 
-  // Clear the original block content
-  block.innerHTML = "";
-  block.append(template);
-}
-renderFunction()
-dataPromise.then(() => renderFunction)
+    // Clear the original block content
+    block.innerHTML = "";
+    block.append(template);
+  };
+
+  renderFunction();
+  dataPromise.then(() => renderFunction());
 }
