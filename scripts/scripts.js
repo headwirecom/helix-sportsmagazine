@@ -390,3 +390,44 @@ export const prependImage = (imagePath) => {
   const host = window.location.origin.startsWith('http://localhost') ? 'https://main--helix-sportsmagazine--headwirecom.hlx.page' : window.location.origin;
   return host + imagePath;
 };
+
+window.store = new (class {
+  constructor() {
+    try {
+      this._cache = JSON.parse(window.sessionStorage['golf-store']);
+    } catch (e) {
+      // session storage not supported
+      this._cache = {};
+    }
+  }
+
+  fetch(url) {
+    return new Promise((resolve, reject) => {
+      if (this._cache[url]) {
+        resolve(this._cache[url]);
+        return;
+      }
+
+      fetch(url)
+        .then((req) => {
+          if (req.ok) {
+            return req.json();
+          }
+          throw new Error(req.statusText);
+        })
+        .then((res) => {
+          this._cache[url] = res;
+
+          try {
+            window.sessionStorage['golf-store'] = JSON.stringify(this._cache);
+          } catch (e) {
+            // session storage not supported
+          }
+          resolve(this._cache[url]);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  }
+})();

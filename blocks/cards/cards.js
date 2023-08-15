@@ -1,19 +1,32 @@
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 import {
-  parseFragment, removeEmptyElements, render, convertExcelDate, timeSince, prependImage,
+  parseFragment, removeEmptyElements, render, convertExcelDate, timeSince,
 } from '../../scripts/scripts.js';
 
 let cardData;
+let cardDataIndex = 0;
 
-async function getCardData() {
-  const response = await fetch('/blocks/cards/mockData.json');
-  cardData = await response.json();
-}
+const placeholderHtml = `
+<div class="card-block-wrapper">
+<a class="main-card" href="#"><div class="image-bg"><picture></picture></div><div class="main-text-wrapper"><div class="section"></div><div class="headline"><h3> </h3></div></div></a>
+    <div class="secondary-cards">
+    ${'<a class="small-card" href="#"><div class="image-wrapper"><picture></picture></div><div class="small-text-wrapper"><div class="section"></div><div class="headline"><h3> </h3></div><div class="date-string"> </div></div></a>'.repeat(
+    3,
+  )}
+    </div>
+</div>
+`;
+
+const dataPromise = new Promise((resolve) => {
+  window.store.fetch('/article-query-index.json?limit=60&sheet=golf-news-tours-features').then((data) => {
+    cardData = data.data;
+    resolve();
+  });
+});
 
 export default async function decorate(block) {
-  if (!cardData) {
-    await getCardData();
-  }
+  const cardBlocks = [...document.querySelectorAll(".cards.block[data-block-name='cards']")];
+  const indexInPage = cardBlocks.findIndex((element) => element.isEqualNode(block));
 
   const cardsType = Array.from(block.classList).filter(
     (className) => className !== 'cards' && className !== 'block',
@@ -21,39 +34,38 @@ export default async function decorate(block) {
 
   const isLatestCardBlock = cardsType === 'latest';
 
-  const cardLinks = [...block.querySelectorAll('p>a[href]')].map((element) => element.href);
-
-  const cardsTitle = block.querySelector('.cards.latest.block h3, .cards.columns.block h3')?.innerText;
+  const cardsTitle = block.querySelector('.cards.block h3, .cards.block h3')?.innerText || (isLatestCardBlock ? 'The Latest' : '');
 
   const gdPlusCards = block.classList.contains('gd');
 
-  const cardBlocks = [...document.querySelectorAll(".cards.block[data-block-name='cards']")];
-  const indexInPage = cardBlocks.findIndex((element) => element.isEqualNode(block));
   const reverse = !(indexInPage === 0 || indexInPage % 2 === 0);
 
-  const cardList = isLatestCardBlock ? cardData.latest : cardLinks.map((cardLink) => {
-    const cardSearchQuery = cardLink.split('/').slice(3).join('/');
-    const cardObj = cardData.data.find((obj) => obj.path === cardSearchQuery);
-    if (cardObj) {
-      cardObj.href = cardLink;
-      cardObj.image = prependImage(cardObj.image);
-    }
-    return cardObj;
-  });
+  const cardOffset = { hero: 2, latest: 10, columns: 5 }?.[cardsType] || 4;
+  const currentBlockIndex = cardDataIndex;
+  cardDataIndex += cardOffset;
 
-  const mainCard = cardList[0];
+  // using placeholder html
+  if (!cardData) {
+    block.innerHTML = placeholderHtml;
+  }
 
-  const generateMainCard = (card = mainCard) => {
-    if (isLatestCardBlock) {
-      return '<div class="latest-rail"></div>';
-    }
-    return `
+  // rending content when data is fetched
+  dataPromise.then(() => {
+    const cardList = cardData?.slice(currentBlockIndex, currentBlockIndex + cardOffset);
+
+    const mainCard = cardList[0];
+
+    const generateMainCard = (card = mainCard) => {
+      if (isLatestCardBlock) {
+        return '<div class="latest-rail"></div>';
+      }
+      return `
     <a class="main-card" href="${card.href || card.path}">
       <div class="image-bg">
-        ${createOptimizedPicture(card.image, card.imageAlt).outerHTML}
+        ${createOptimizedPicture(card.image, card.imageAlt, false, [{ width: '700' }]).outerHTML}
       </div>
       <div class="main-text-wrapper">
-        <div class="section">${card.author}</div>
+        <div class="section">${card.rubric}</div>
         ${
   !gdPlusCards
     ? ''
@@ -65,63 +77,71 @@ export default async function decorate(block) {
       </div>
     </a>
     `;
-  };
+    };
 
-  const generateSecondaryCards = (cardArray = cardList.splice(1)) => cardArray.map((card) => `
+    const generateSecondaryCards = (cardArray = cardList.splice(1)) => cardArray
+      .map(
+        (card) => `
       <a class="small-card" href="${card.href || card.path}">
         <div class="image-wrapper">
-          ${createOptimizedPicture(card.image, card.imageAlt).outerHTML}
+          ${createOptimizedPicture(card.image, card.imageAlt, false, [{ width: '350' }]).outerHTML}
         </div>
         <div class="small-text-wrapper">
-          <div class="section">${card.author}</div>
+          <div class="section">${card.rubric}</div>
           ${
   !gdPlusCards && !card?.gdPlus
     ? ''
     : '<img loading="lazy" src="/icons/gd-plus-dark.svg" class="gd-plus-icon-img" alt="Golf Digest Plus Icon" />'
 }
           <div class="headline"><h3>${card.title}</h3></div>
-          <div class="date-string">${timeSince(convertExcelDate(card.date))}</div>
+          <div class="date-string">${timeSince(convertExcelDate(card.dateValue))}</div>
         </div>
       </a>
-    `).join('');
+    `,
+      )
+      .join('');
 
-  const HTML_TEMPLATE = `
-  ${cardsTitle ? `
-    <div class="cards-title-wrapper">
-      <h2 class="cards-title">${cardsTitle}
-    </div>`
-    : ''}
-  <div class="card-block-wrapper ${reverse ? 'reverse' : ''}">
+    const HTML_TEMPLATE = `
     ${
+  cardsTitle
+    ? `
+      <div class="cards-title-wrapper">
+        <h2 class="cards-title">${cardsTitle}
+      </div>`
+    : ''
+}
+    <div class="card-block-wrapper ${reverse ? 'reverse' : ''}">
+      ${
   cardsType === 'hero'
     ? cardList.map((card) => generateMainCard(card)).join('')
     : `
-      ${generateMainCard()}
-      ${!gdPlusCards ? '' : '<div class="gd-cards-wrapper">'}
-      <div class="secondary-cards">
-        ${
+        ${generateMainCard()}
+        ${!gdPlusCards ? '' : '<div class="gd-cards-wrapper">'}
+        <div class="secondary-cards">
+          ${
   !gdPlusCards
     ? ''
     : `
-          <h2 class="gd-plus-title">GD+ Latest</h2> 
-        `
+            <h2 class="gd-plus-title">GD+ Latest</h2> 
+          `
 }
-        ${generateSecondaryCards(isLatestCardBlock ? cardList : cardList.splice(1))}
-      </div>
-      ${!gdPlusCards ? '' : '</div>'}
-    `
+          ${generateSecondaryCards(isLatestCardBlock ? cardList : cardList.splice(1))}
+        </div>
+        ${!gdPlusCards ? '' : '</div>'}
+      `
 }
-  </div>
-  `;
+    </div>
+    `;
 
-  // Template rendering
-  const template = parseFragment(HTML_TEMPLATE);
-  // Render template
-  render(template, block);
+    // Template rendering
+    const template = parseFragment(HTML_TEMPLATE);
+    // Render template
+    render(template, block);
 
-  // Post-processing
-  removeEmptyElements(template, 'p');
+    // Post-processing
+    removeEmptyElements(template, 'p');
 
-  block.innerHTML = '';
-  block.append(template);
+    block.innerHTML = '';
+    block.append(template);
+  });
 }
