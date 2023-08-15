@@ -325,3 +325,22 @@
   display: flex;
   justify-content: center;
 }
+
+.full-bleed.block h2 {
+  font-weight: 700;
+  background-image: linear-gradient(to bottom, transparent calc(100% - 2px), #ed3e49 calc(100% - 2px), #ed3e49 100%);
+  background-repeat: repeat-y;
+  padding-bottom: 2px;
+  display: inline; 
+  text-align: center;
+  line-height: 58px;
+  letter-spacing: .05em;
+  font-family: Tungsten,arial,sans-serif;
+  font-size: 37px;
+  box-decoration-break: clone;
+}
+
+.full-bleed.block .article-body .centered-h2 {
+  text-align: center;
+  margin-bottom: 50px;
+}

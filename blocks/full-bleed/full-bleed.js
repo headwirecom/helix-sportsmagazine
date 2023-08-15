@@ -99,6 +99,13 @@ export default async function decorate(block) {
   block.append(template);
 
   // Inner block loading
+  block.querySelectorAll('h2').forEach((h2) => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'centered-h2';
+    h2.before(wrapper);
+    wrapper.appendChild(h2);
+  });
+
   block
     .querySelectorAll('.social-share, .embed')
     .forEach((innerBlock) => decorateBlock(innerBlock));
