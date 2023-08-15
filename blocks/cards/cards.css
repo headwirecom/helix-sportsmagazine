@@ -139,6 +139,10 @@
   margin-bottom: 25px;
 }
 
+.cards-wrapper .cards.block .cards-title-wrapper .cards-title {
+  font-size: 28px;
+}
+
 .cards-wrapper .cards.block.latest .cards-title-wrapper .cards-title,
 .cards-wrapper .cards.block.columns .cards-title-wrapper .cards-title {
   display: flex;
@@ -148,10 +152,6 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-family: var(--font-tungsten);
-}
-
-.cards-wrapper .cards.block .cards-title-wrapper .cards-title {
-  font-size: 28px;
 }
 
 .cards-wrapper .cards.block.latest .cards-title-wrapper .cards-title::before,
@@ -449,18 +449,18 @@
     height: auto;
   }
 
-  .cards-wrapper .cards.block.latest .card-block-wrapper .secondary-cards a.small-card,
-  .cards-wrapper .cards.block.latest .card-block-wrapper .secondary-cards a.small-card:first-child {
-    min-height: auto;
-    max-height: none;
-    height: auto;
-  }
-
   .cards-wrapper .cards.block .card-block-wrapper .secondary-cards a.small-card:first-child {
     min-height: 157px;
     border-top: 0.5px;
     border-style: solid;
     border-color: #e5e5e5;
+  }
+
+  .cards-wrapper .cards.block.latest .card-block-wrapper .secondary-cards a.small-card,
+  .cards-wrapper .cards.block.latest .card-block-wrapper .secondary-cards a.small-card:first-child {
+    min-height: auto;
+    max-height: none;
+    height: auto;
   }
 
   .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .small-text-wrapper {
