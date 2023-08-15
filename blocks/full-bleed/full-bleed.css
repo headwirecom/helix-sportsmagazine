@@ -330,3 +330,8 @@
   border-top: 1px solid #7a7a7a;
   padding-top: 50px;
 }
+
+.full-bleed.block .center-seperator {
+  display: flex;
+  justify-content: center;
+}

@@ -85,6 +85,12 @@ export default async function decorate(block) {
 
   replaceLinksWithEmbed(block);
 
+  block.querySelectorAll('p').forEach((p) => {
+    if (p.textContent.includes('• • •')) {
+      p.classList.add('center-seperator');
+    }
+  });
+
   // Render template
   render(template, block);
 
