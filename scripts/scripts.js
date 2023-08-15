@@ -11,7 +11,7 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
-  toCamelCase,
+  toCamelCase, getMetadata,
 } from './lib-franklin.js';
 
 export const ARTICLE_TEMPLATES = {
@@ -111,6 +111,11 @@ export function render(template, fragment, type) {
       .replaceAll('</a> **', '</a></strong>')
       .replaceAll('from left to right:', 'from left to right:<br>')
       .replaceAll('</a><strong>', '</a><br><strong>');
+  } else if (type === ARTICLE_TEMPLATES.LongForm) {
+    fragment.innerHTML = fragment.innerHTML
+      .replaceAll('****', '')
+      .replaceAll('</em> **', '</em></strong>&nbsp;')
+      .replaceAll('**<em>', '<strong><em>');
   }
 
   const slottedElements = fragment.querySelectorAll('[slot]');
@@ -127,6 +132,10 @@ export function render(template, fragment, type) {
     fragment.querySelectorAll('[slot]').forEach((el) => el.remove());
     defaultSlot.replaceWith(...fragment.children);
   }
+}
+
+export function getAuthors() {
+  return getMetadata('author').split(',').map((author) => author.trim());
 }
 
 /**
@@ -160,7 +169,7 @@ export function addPortraitClass(el) {
 }
 
 // TODO Remove once importer fixes photo-credit metadata for articles
-export function addImageCredit(pictures) {
+export function addPhotoCredit(pictures) {
   pictures.forEach((picture) => {
     const next = picture.parentElement.nextElementSibling;
     // Assuming name is not longer than that

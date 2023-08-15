@@ -15,7 +15,8 @@ import {
 export default async function decorate(block) {
   const rubric = getMetadata('rubric');
   const author = getMetadata('author');
-  const imageCredit = getMetadata('image-credit');
+  // TODO replace once importer fixes photo-credit
+  const photoCredit = getMetadata('image-credit') ?? getMetadata('photo-credit');
   const publicationDate = getMetadata('publication-date');
 
   // HTML template in JS to avoid extra waterfall for LCP blocks
@@ -32,7 +33,7 @@ export default async function decorate(block) {
           <div class="byline">
             <div class="attribution">
               ${author ? `<span>By&nbsp;</span><a href="${normalizeAuthorURL(author)}">${author}</a>` : ''}
-              ${imageCredit ? `<span>Photos By&nbsp;</span><a href="${normalizeAuthorURL(imageCredit)}">${imageCredit}</a>` : ''}
+              ${photoCredit ? `<span>Photos By&nbsp;</span><a href="${normalizeAuthorURL(photoCredit)}">${photoCredit}</a>` : ''}
             </div>
             <div class="publication">
                 <span>${publicationDate}</span>
