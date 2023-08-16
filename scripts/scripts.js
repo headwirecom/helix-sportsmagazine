@@ -214,25 +214,12 @@ function buildTemplate(main) {
 }
 
 /**
- * Builds a ceros embed block for all found ceros links
- *
- * @param {HTMLElement} main
- */
-function buildCerosEmbed(main) {
-  main.querySelectorAll('p > a[href^="https://view.ceros.com/golf-digest/"]').forEach((link) => {
-    const embed = buildBlock('embed', { elems: [link.cloneNode(true)] });
-    link.parentElement.replaceWith(embed);
-  });
-}
-
-/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
 function buildAutoBlocks(main) {
   try {
     buildTemplate(main);
-    buildCerosEmbed(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
