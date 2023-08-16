@@ -465,7 +465,6 @@ function isArticle(document) {
   return templateConfig !== undefined && templateConfig.transformer === transformArticleDOM;
 }
 
-
 function fixBoldText(document) {
   // Issue #107
   // empty <span> tags inside <b> break bold text in markdown and word docs
@@ -476,7 +475,27 @@ function fixBoldText(document) {
         boldEl.insertAdjacentElement('afterend', el);
       }
     });
+
+    // Issue #23
+    // also move the last <br/> after closing tag
+    while (boldEl.lastElementChild && boldEl.lastElementChild === boldEl.lastChild && boldEl.lastElementChild.tagName === 'BR') {
+      let el = boldEl.lastElementChild;
+      boldEl.insertAdjacentElement('afterend', el);
+    }
   });
+}
+
+function fixBrInsideLinks(document) {
+  document.querySelectorAll('a').forEach(link => {
+    link.querySelectorAll('br').forEach(nl => {
+      link.insertAdjacentElement('afterend', nl);
+    });
+  });
+}
+
+function applyMarkupFixes(document) {
+  fixBoldText(document);
+  fixBrInsideLinks(document)
 }
 
 function trasformDOM(document) {
@@ -491,7 +510,7 @@ function trasformDOM(document) {
   };
 
   if (templateConfig) {
-    fixBoldText(document);
+    applyMarkupFixes(document);
     retObj = templateConfig.transformer(document, templateConfig);
   } else {
     const bodyClass = document.querySelector('body').getAttribute('class');
