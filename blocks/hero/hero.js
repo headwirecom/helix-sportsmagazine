@@ -8,7 +8,7 @@ const arrowIcon = '<svg width="6" height="9" viewBox="0 0 6 9" fill="none" xmlns
 let heroItems;
 let heroItemsIndex = 0;
 
-const placeholderHtml = '<div class="hero-container"><div class="hero-image-container"><picture></picture></div><div class="hero-text-container"><a href="#"><div><h2> </h2><p> </p></div><div class="button-container"><div class="icon-container"> > </div><span> </span></div></a></div></div>';
+const placeholderHtml = '<div class="hero-container" style="visibility: hidden; max-height: 1040px; aspect-ratio: 1.57/1; width: 100%" ></div>';
 
 const dataPromise = new Promise((resolve) => {
   window.store.fetch('/article-query-index.json?limit=10&sheet=golf-news-tours-default').then((data) => {
@@ -41,10 +41,10 @@ export default async function decorate(block) {
     const cardsTemplate = cards
       .map((card) => `
               <a href="${card.path}">
-                ${createOptimizedPicture(card.image, card.imageAlt || 'hero card image').outerHTML}
+                ${createOptimizedPicture(card.image, card.imageAlt || 'hero card image', isFirstHero, [{ width: '120' }]).outerHTML}
                 <div>
                   <span>${card.rubric}</span>
-                  <h3>${card.title}</h3>
+                  <p class="hero-card-title">${card.title}</p>
                 </div>
               </a>
             `)
@@ -54,7 +54,7 @@ export default async function decorate(block) {
     const HTML_TEMPLATE = `
         <div class="hero-container">
           <div class="hero-image-container">
-            ${createOptimizedPicture(heroData.image, heroData.imageAlt || 'hero main image').outerHTML}
+            ${createOptimizedPicture(heroData.image, heroData.imageAlt || 'hero main image', isFirstHero, [{ media: '(min-width: 686px)', width: '686' }, { media: '(min-width: 966px)', width: '966' }, { media: '(min-width: 1280px)', width: '1280' }, { width: '1850' }]).outerHTML}
           </div>
           <div class="hero-text-container">
             <a href="${heroData.path}">

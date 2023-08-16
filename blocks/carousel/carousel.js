@@ -1,12 +1,7 @@
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 import { parseFragment, removeEmptyElements, render } from '../../scripts/scripts.js';
 
-const placeholderHtml = (carouselType) => `${
-  carouselType === 'large'
-    ? ''
-    : '<div class="carousel-title-wrapper"><h4 class="carousel-title " id="carousel-"> </h4></div>'
-}<div class="carousel-main-wrapper  "><div class="controls"><button class="left-button"></button><button class="right-button"></button></div><div class="carousel-inner-wrapper"><div class="carousel-frame" style="transform: translateX(0px);"></div></div></div>`;
-
+const placeholderHtml = (carouselType) => `<div class="carousel-main-wrapper" style="${carouselType === 'large' ? 'aspect-ratio: 2/1; ' : 'height: 949px;'} width: 100%; visibility: hidden;"><div>`;
 const getSheetForCarouselType = (carouselType) => {
   const fetchTypeLookup = {
     latest: 'golf-news-tours-default',
@@ -31,14 +26,14 @@ export default async function decorate(block) {
     (className) => className !== 'carousel' && className !== 'block',
   )[0];
 
-  // adding placeholder html
+  // Adding placeholder html
   if (!carouselFetchedData[carouselType]) {
     block.innerHTML = placeholderHtml(carouselType);
   }
 
   const carouselSheetName = getSheetForCarouselType(carouselType);
 
-  // create fetch promise based on sheet name
+  // Create fetch promise based on sheet name
   if (!dataPromiseTracker[carouselSheetName]) {
     dataPromiseTracker[carouselSheetName] = new Promise((resolve) => {
       if (carouselType === 'wedges') {
@@ -55,7 +50,7 @@ export default async function decorate(block) {
     });
   }
 
-  // render content upon fetch complete
+  // Render content upon fetch complete
   dataPromiseTracker[carouselSheetName].then(() => {
     const carouselHeadingType = carouselType === 'wedges' ? 'h2' : 'h4';
 
@@ -77,8 +72,8 @@ export default async function decorate(block) {
 }
   <div class="carousel-main-wrapper ${isMobileWedges ? 'mobile-wedges' : ''}">
   <div class="controls">
-    <button class="left-button"></button>
-    <button class="right-button"></button>
+    <button aria-label="Scroll Left" class="left-button"></button>
+    <button aria-label="Scroll Right" class="right-button"></button>
   </div>
   <div class="carousel-inner-wrapper">
       <div class="carousel-frame" style="transform: translateX(0px);">

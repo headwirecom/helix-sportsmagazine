@@ -302,7 +302,7 @@
     margin-bottom: 10px;
 }
 
-.hero.block .hero-cards-container a h3 {
+.hero.block .hero-cards-container a .hero-card-title {
     display: block;
     color: #151517;
     font-family: var(--font-gotham);

@@ -393,13 +393,8 @@ export const convertExcelDate = (excelDate) => {
 };
 
 /**
- * Prepends an image path for images depending on window location
+ * Setting up custom fetch to cache article-query
  */
-export const prependImage = (imagePath) => {
-  const host = window.location.origin.startsWith('http://localhost') ? 'https://main--helix-sportsmagazine--headwirecom.hlx.page' : window.location.origin;
-  return host + imagePath;
-};
-
 window.store = new (class {
   constructor() {
     try {
