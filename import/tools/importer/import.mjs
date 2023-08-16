@@ -146,6 +146,18 @@ function getGallerySlideImage(slide) {
   }
 }
 
+function isGDPlusArticle(document) {
+  const rubricContainer = document.querySelector('.a-Rubric');
+  if (rubricContainer) {
+    const svgEl = rubricContainer.querySelector('svg');
+    if (svgEl) {
+      const label = svgEl.getAttribute('aria-label');
+      return label === 'GD Plus Logo';
+    }
+  }
+  return false;
+}
+
 function transformArticleDOM(document, templateConfig) {
   let articleTemplate = templateConfig.template;
 
@@ -165,6 +177,7 @@ function transformArticleDOM(document, templateConfig) {
   /* eslint-disable no-console */
   // console.log(`Author: ${author}. Publication Date: ${publicationDate}`);
 
+  const isGDPlus = isGDPlusArticle(document);
   let rubric = getRubric(document);
   if (articleHero && !rubric) {
     rubric = getRubric(articleHero);
@@ -239,6 +252,10 @@ function transformArticleDOM(document, templateConfig) {
   appendMetadata(metadata, 'category', templateConfig.category);
   appendMetadata(metadata, 'Rubric', rubric);
 
+  if (isGDPlus) {
+    appendMetadata(metadata, 'GD Plus', 'yes');
+  }
+
   appendPageMetadata(document, metadata);
   return {
     element: main,
@@ -265,6 +282,7 @@ function isGif(media) {
 function transformGalleryDOM(document, templateConfig) {
   const main = document.createElement('main');
   const assetTitle = document.querySelector('.assetTitle');
+  const isGDPlus = isGDPlusArticle(document);
 
   let articleTemplate = templateConfig.template;
   let gifCount = 0;
@@ -388,6 +406,11 @@ function transformGalleryDOM(document, templateConfig) {
   if (rubric) {
     appendMetadata(metadata, 'Rubric', rubric);
   }
+
+  if (isGDPlus) {
+    appendMetadata(metadata, 'GD Plus', 'yes');
+  }
+  
   appendMetadata(metadata, 'og:type', 'gallery');
   appendMetadata(metadata, 'template', articleTemplate);
   appendMetadata(metadata, 'category', templateConfig.category);
