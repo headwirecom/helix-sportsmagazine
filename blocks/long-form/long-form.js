@@ -1,5 +1,7 @@
 import {
-  assignSlot,
+  addPhotoCredit,
+  ARTICLE_TEMPLATES,
+  assignSlot, getAuthors, normalizeAuthorURL,
   parseFragment,
   parseSectionMetadata,
   removeEmptyElements,
@@ -15,8 +17,7 @@ import {
  */
 export default async function decorate(block) {
   const rubric = getMetadata('rubric');
-  const author = getMetadata('author');
-  const authorURL = getMetadata('author-url');
+  const authors = getAuthors();
   const publicationDate = getMetadata('publication-date');
   const headlineMetadata = parseSectionMetadata(block.querySelector('.template-section-metadata'));
 
@@ -38,9 +39,10 @@ export default async function decorate(block) {
             <div class="byline">
               <div class="attribution">
                   <span>By&nbsp;</span>
-                  <a href="${authorURL}">${author}</a>
+                  ${authors.map((author) => `<a href="${normalizeAuthorURL(author)}">${author}</a>`).join('&nbsp;and&nbsp;')}
               </div>
               <div class="publication">
+                  ${publicationDate ? '<div class="separator"></div>' : ''}  
                   <span>${publicationDate}</span>
               </div>
             </div>
@@ -50,8 +52,8 @@ export default async function decorate(block) {
           </div>
           <div class="byline">
             <div class="attribution">
-                <span>By</span>
-                <a href="${authorURL}">${author}</a>
+                ${authors.length ? '<span>By&nbsp;</span>' : ''}
+                ${authors.map((author) => `<a href="${normalizeAuthorURL(author)}">${author}</a>`).join('&nbsp;and&nbsp;')}
             </div>
             <div class="publication">
                 <span>${publicationDate}</span>
@@ -59,7 +61,7 @@ export default async function decorate(block) {
             <div class="sharing">
                 <slot name="share"></slot>
             </div>
-            <div class="credit">Photo by: ${headlineMetadata.photoCredit}</div>
+            ${headlineMetadata.photoCredit ? `<div class="credit">Photo by: ${headlineMetadata.photoCredit}</div>` : ''}
           </div>
         </div>
         <div class="article-body">
@@ -75,8 +77,12 @@ export default async function decorate(block) {
 
   // Identify slots
   assignSlot(block, 'heading', 'h1');
-  assignSlot(block, 'description', 'h1 + p');
   assignSlot(block, 'image', 'picture');
+
+  const description = [...block.querySelectorAll('h1 ~ p')].find((p) => !p.querySelector('picture'));
+  if (description) {
+    description.setAttribute('slot', 'description');
+  }
 
   // Pre-processing
   block.querySelectorAll('.template-section-metadata').forEach((metadataEl) => {
@@ -101,11 +107,23 @@ export default async function decorate(block) {
   replaceLinksWithEmbed(block);
 
   // Render template
-  render(template, block);
+  render(template, block, ARTICLE_TEMPLATES.LongForm);
 
   // Post-processing
   removeEmptyElements(template, 'p');
   template.querySelector('.article-body div > p').classList.add('highlight');
+
+  const pictures = template.querySelectorAll('.article-body p > picture');
+  addPhotoCredit(pictures);
+
+  // Set fullscreen images
+  pictures.forEach((picture) => {
+    const img = picture.querySelector('img');
+    picture.parentElement.classList.add('fullscreen');
+    img.onload = () => {
+      img.style.left = `-${img.offsetLeft}px`;
+    };
+  });
 
   // Update block with rendered template
   block.innerHTML = '';
@@ -124,4 +142,19 @@ export default async function decorate(block) {
       article.classList.toggle('dark', !(bottom < 0 || top - viewHeight >= 0));
     }).observe(block.querySelector('.lead .image'));
   });
+
+  // Get images that were styled as fullscreen and adjust position
+  window.onresize = () => {
+    block.querySelectorAll('.fullscreen img').forEach((img) => {
+      // Hide visibility before resetting the position
+      img.style.visibility = 'hidden';
+      img.style.left = 0;
+
+      // Wait frame before reading position
+      requestAnimationFrame(() => {
+        img.style.left = `-${img.offsetLeft}px`;
+        img.style.visibility = 'visible';
+      });
+    });
+  };
 }

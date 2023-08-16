@@ -1,5 +1,5 @@
 import {
-  addImageCredit,
+  addPhotoCredit,
   addPortraitClass,
   assignSlot,
   normalizeAuthorURL,
@@ -20,7 +20,9 @@ export default async function decorate(block) {
   const rubric = getMetadata('rubric');
   const author = getMetadata('author');
   const publicationDate = getMetadata('publication-date');
-  const imageCredit = parseSectionMetadata(block.querySelector('.template-section-metadata'))?.imageCredit;
+  const headlineMetadata = parseSectionMetadata(block.querySelector('.template-section-metadata'));
+  // TODO remove once importer fixes photo credit
+  const photoCredit = headlineMetadata?.imageCredit ?? headlineMetadata?.photoCredit;
 
   // HTML template in JS to avoid extra waterfall for LCP blocks
   const HTML_TEMPLATE = `
@@ -48,7 +50,7 @@ export default async function decorate(block) {
             <slot name="image"></slot>
             <div class="credit">
                 <slot name="caption"></slot>
-                ${imageCredit ? `<span>${imageCredit}</span>` : ''}
+                ${photoCredit ? `<span>${photoCredit}</span>` : ''}
             </div>
           </div>
           <div class="article-body">
@@ -92,7 +94,7 @@ export default async function decorate(block) {
   removeEmptyElements(template, 'p');
 
   const pictures = template.querySelectorAll('.article-body p > picture');
-  addImageCredit(pictures);
+  addPhotoCredit(pictures);
   addPortraitClass(pictures);
 
   // Update block with rendered template
