@@ -23,9 +23,6 @@ export default async function decorate(block) {
   const heroDataIndex = heroItemsIndex;
   heroItemsIndex += (isFirstHero ? 5 : 1);
 
-  const heroLink = block.querySelector('.button-container > a');
-  heroLink.parentElement.remove();
-
   // settings placeholder data
   if (!heroItems) {
     block.innerHTML = placeholderHtml;
@@ -64,7 +61,7 @@ export default async function decorate(block) {
               </div>
               <div class="button-container">
                 <div class="icon-container">${arrowIcon}</div>
-                <span>${heroLink.textContent}</span>
+                <span>Read story</span>
               </div>
             </a>
           </div>
