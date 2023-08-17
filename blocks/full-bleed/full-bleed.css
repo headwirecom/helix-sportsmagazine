@@ -365,13 +365,13 @@
   margin-right: 40px;
 }
 
-.content-wrapper {
+.full-bleed.block .content-wrapper {
   display: flex;
   flex-direction: row;
 }
 
 @media (max-width: 768px) {
-  .content-wrapper {
+  .full-bleed.block .content-wrapper {
       flex-direction: column;
   }
 }
