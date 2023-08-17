@@ -30,15 +30,21 @@ const LCP_BLOCKS = [...Object.values(ARTICLE_TEMPLATES), 'hero']; // add your LC
 const range = document.createRange();
 
 export function replaceLinksWithEmbed(block) {
-  const embeds = ['youtube', 'twitter', 'brightcove', 'instagram'];
+  const embeds = ['youtube', 'brightcove', 'instagram'];
   block.querySelectorAll(embeds.map((embed) => `a[href*="${embed}"]`).join(',')).forEach((embedLink) => {
-    // TODO Ideally duplicated instagram embeds should not be imported
     if (embedLink.textContent.startsWith('View') && embedLink.href.includes('instagram')) {
       embedLink.remove();
     } else {
-      const parent = embedLink.parentElement;
-      const embed = buildBlock('embed', { elems: [embedLink] });
-      parent.replaceWith(embed);
+      const embed = buildBlock('embed', { elems: [embedLink.cloneNode(true)] });
+      embedLink.replaceWith(embed);
+    }
+  });
+
+  // handling for Twitter links
+  block.querySelectorAll('a[href*="twitter.com"]').forEach((twitterLink) => {
+    if (twitterLink.href.includes('/status/')) {
+      const embed = buildBlock('embed', { elems: [twitterLink.cloneNode(true)] });
+      twitterLink.replaceWith(embed);
     }
   });
 }
