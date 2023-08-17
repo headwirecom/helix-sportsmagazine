@@ -97,6 +97,14 @@
   line-height: 30px;
 }
 
+.full-bleed.block .headline > .title > p {
+    font-weight: 400;
+    color: white;
+    margin: 40px 0 10px;
+    display: block;
+    font-size: 18px;
+}
+
 @media (min-width: 769px) {
   .full-bleed.block .article-body div > p {
     margin-bottom: 60px;

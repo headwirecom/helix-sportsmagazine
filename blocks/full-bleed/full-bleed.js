@@ -24,6 +24,7 @@ const HTML_TEMPLATE = `
           </p>
           <div class="title">
               <slot name="heading"></slot>
+              <slot name="description"></slot>
           </div>
           <div class="byline">
               <div class="attribution">
@@ -80,6 +81,10 @@ export default async function decorate(block) {
   // Identify slots
   assignSlot(block, 'heading', 'h1');
   assignSlot(block, 'image', 'picture');
+  const h1Element = block.querySelector('h1');
+  if (h1Element && h1Element.nextElementSibling && h1Element.nextElementSibling.tagName === 'P' && !h1Element.nextElementSibling.querySelector('picture')) {
+    assignSlot(block, 'description', 'h1 + p:not(:has(picture))');
+  }
 
   // Pre-processing
   const share = buildBlock('social-share', { elems: [] });
