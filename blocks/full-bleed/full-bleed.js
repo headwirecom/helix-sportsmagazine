@@ -75,6 +75,8 @@ export default async function decorate(block) {
   // Template rendering
   const template = parseFragment(HTML_TEMPLATE);
 
+  replaceLinksWithEmbed(block);
+
   // Identify slots
   assignSlot(block, 'heading', 'h1');
   assignSlot(block, 'image', 'picture');
@@ -84,9 +86,10 @@ export default async function decorate(block) {
   share.setAttribute('slot', 'share');
   block.append(share);
 
-  replaceLinksWithEmbed(block);
-
   block.querySelectorAll('p').forEach((p) => {
+    // Convert **text** to bold
+    p.innerHTML = p.innerHTML.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    // Center seperator
     if (p.textContent.includes('• • •')) {
       p.classList.add('center-seperator');
     }
