@@ -196,7 +196,10 @@ function transformArticleDOM(document, templateConfig) {
   }
 
   if (imageEmbedCredit) {
-    const heroImageCreditTxt = (imageEmbedCredit) ? imageEmbedCredit.innerHTML : '';
+    let heroImageCreditTxt = (imageEmbedCredit) ? imageEmbedCredit.innerHTML : '';
+    if (heroImageCreditTxt.includes('Photo By:')) {
+      heroImageCreditTxt = heroImageCreditTxt.replace('Photo By:','').trim();
+    }
     imageEmbedCredit.remove();
     let sectionBlock = createSectionMetadata(document, main);
     appendToBlock(sectionBlock, 'Photo Credit', heroImageCreditTxt);
@@ -410,7 +413,7 @@ function transformGalleryDOM(document, templateConfig) {
   if (isGDPlus) {
     appendMetadata(metadata, 'GD Plus', 'yes');
   }
-  
+
   appendMetadata(metadata, 'og:type', 'gallery');
   appendMetadata(metadata, 'template', articleTemplate);
   appendMetadata(metadata, 'category', templateConfig.category);
