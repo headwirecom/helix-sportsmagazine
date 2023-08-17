@@ -158,6 +158,10 @@
   margin-bottom: 45px;
 }
 
+.full-bleed.block .attribution > span {
+  margin-right: 5px;
+}
+
 .full-bleed.block .lead > .byline .attribution > span:first-of-type {
   margin-right: 5px;
 }
