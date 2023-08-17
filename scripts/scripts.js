@@ -379,46 +379,165 @@ export const convertExcelDate = (excelDate) => {
   return Number.isNaN(parsed) ? null : new Date(parsed);
 };
 
+export function getBlockId(block) {
+  block.id = window.crypto.randomUUID();
+  return block.id;
+}
+
 /**
  * Setting up custom fetch to cache article-query
  */
 window.store = new (class {
   constructor() {
+    // Fetch stack
+    this._stack = {};
+
+    // Indexes
+    this._spreadsheets = {
+      ARTICLES: 'article-query-index',
+      PRODUCTS: 'product-query-index',
+      GALLERY: 'gallery-query-index',
+    };
+
+    // Author query to query map
+    this._queryMap = {
+      news: {
+        spreadsheet: this._spreadsheets.ARTICLES,
+        sheet: 'golf-news-tours-default',
+      },
+      features: {
+        spreadsheet: this._spreadsheets.ARTICLES,
+        sheet: 'golf-news-tours-features',
+      },
+      // TODO query gd+ articles
+      gd: {
+        spreadsheet: this._spreadsheets.ARTICLES,
+        sheet: 'golf-news-tours-features',
+      },
+      courses: {
+        spreadsheet: this._spreadsheets.ARTICLES,
+        sheet: 'courses',
+      },
+      loop: {
+        spreadsheet: this._spreadsheets.ARTICLES,
+        sheet: 'loop',
+      },
+      wedges: {
+        mock: '/mock-data/wedges.json',
+      },
+    };
+
     try {
       this._cache = JSON.parse(window.sessionStorage['golf-store']);
+
+      // Forces a refresh after a long period (1d) in case window is stored in memory
+      setTimeout(() => {
+        sessionStorage.clear();
+      }, 86400);
     } catch (e) {
       // session storage not supported
       this._cache = {};
     }
   }
 
-  fetch(url) {
-    return new Promise((resolve, reject) => {
-      if (this._cache[url]) {
-        resolve(this._cache[url]);
-        return;
+  /**
+   * Looks for a query in the given block classname
+   * @param {HTMLElement} block
+   * @return {string}
+   */
+  getQuery(block) {
+    let query = '';
+
+    const queries = Object.keys(this._queryMap);
+    for (const className of block.classList) {
+      if (queries.includes(className)) {
+        query = className;
+        break;
+      }
+    }
+
+    return query;
+  }
+
+  /**
+   * Triggers an index fetch
+   * @param {object}
+   */
+  query({
+    id, query, offset = 0, limit = 10,
+  }) {
+    if (!query) {
+      console.warn(`Query missing for "${id}"`);
+      return;
+    }
+
+    // Check if query is available
+    const queryDetails = this._queryMap[query];
+    if (!queryDetails) {
+      console.warn(`Query "${query}" not implemented`);
+      return;
+    }
+
+    let url;
+    // Use mock data if defined
+    if (queryDetails.mock) {
+      url = queryDetails.mock;
+    } else {
+      // Build query sheet url
+      url = `/${queryDetails.spreadsheet}.json?offset=${offset}&limit=${limit}&sheet=${queryDetails.sheet}`;
+    }
+
+    // Use cached resource
+    if (this._cache[url]) {
+      // Only trigger if there is data
+      if (this._cache[url].data.length) {
+        // "Return" data for given id
+        document.dispatchEvent(new CustomEvent(`query:${id}`, { detail: this._cache[url] }));
+      } else {
+        // Stack query
+        this._stack = {
+          ...this._stack,
+          id: url,
+        };
       }
 
-      fetch(url)
-        .then((req) => {
-          if (req.ok) {
-            return req.json();
-          }
-          throw new Error(req.statusText);
-        })
-        .then((res) => {
-          this._cache[url] = res;
+      return;
+    }
 
-          try {
-            window.sessionStorage['golf-store'] = JSON.stringify(this._cache);
-          } catch (e) {
-            // session storage not supported
+    // Start setting cache to avoid multiple requests
+    this._cache[url] = { data: [] };
+
+    fetch(url)
+      .then((req) => {
+        if (req.ok) {
+          return req.json();
+        }
+        throw new Error(req.statusText);
+      })
+      .then((res) => {
+        // Set cache with data
+        this._cache[url] = res;
+
+        // Store cached data in session storage
+        try {
+          window.sessionStorage['golf-store'] = JSON.stringify(this._cache);
+        } catch (e) {
+          // Session storage not supported
+        }
+
+        // "Return" data for given id
+        document.dispatchEvent(new CustomEvent(`query:${id}`, { detail: this._cache[url] }));
+
+        // Unstack and "return" data
+        Object.entries(this._stack).forEach((stackId, stackURL) => {
+          if (url === stackURL) {
+            document.dispatchEvent(new CustomEvent(`query:${stackId}`, { detail: this._cache[url] }));
+            delete this._stack[stackId];
           }
-          resolve(this._cache[url]);
-        })
-        .catch((error) => {
-          reject(error);
         });
-    });
+      })
+      .catch((error) => {
+        console.warn(error);
+      });
   }
 })();
