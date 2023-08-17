@@ -106,12 +106,13 @@ a:hover {
   color: var(--link-hover-color);
 }
 
-/* landing-page */
-.landing-page main {
+/* home-page */
+.home-page main {
   padding-top: 0;
   margin-top: calc(var(--header-height) * -1);
 }
 
+/* landing-page */
 .landing-page main > div > * {
   margin-bottom: 40px;
 }
