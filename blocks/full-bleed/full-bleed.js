@@ -90,7 +90,8 @@ export default async function decorate(block) {
   assignSlot(block, 'heading', 'h1');
   assignSlot(block, 'image', 'picture');
   const h1Element = block.querySelector('h1');
-  if (h1Element && h1Element.nextElementSibling && h1Element.nextElementSibling.tagName === 'P' && !h1Element.nextElementSibling.querySelector('picture')) {
+  const nextSibling = h1Element?.nextElementSibling;
+  if (nextSibling && nextSibling.tagName === 'P' && !nextSibling.querySelector('picture')) {
     assignSlot(block, 'description', 'h1 + p:not(:has(picture))');
   }
 
