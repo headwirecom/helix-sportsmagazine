@@ -509,30 +509,38 @@ window.store = new (class {
       url = queryDetails.mock;
     } else {
       // Build query sheet url
-      url = `/${queryDetails.spreadsheet}.json?limit=${queryDetails.limit}&sheet=${queryDetails.sheet}`;
+      url = `/${queryDetails.spreadsheet}.json?sheet=${queryDetails.sheet}`;
     }
 
     // Use cached resource
     if (this._cache[url]) {
-      // Only trigger if there is data
+      // Cache is already populated
       if (this._cache[url].data.length) {
-        // "Return" data for given id
-        document.dispatchEvent(new CustomEvent(`query:${block.id}`, { detail: this._cache[url] }));
+        // Only trigger if there is enough data
+        if (queryDetails.limit <= this._cache[url].data.length) {
+          // "Return" data for given id
+          document.dispatchEvent(new CustomEvent(`query:${block.id}`, { detail: this._cache[url] }));
+          return;
+        }
       } else {
         // Stack query
         this._queryStack = {
           ...this._queryStack,
           [block.id]: url,
         };
-      }
 
-      return;
+        return;
+      }
     }
 
-    // Start setting cache to avoid multiple requests
+    // Start setting cache to avoid multiple requests or invalid cache if not enough items
     this._cache[url] = { data: [] };
 
-    fetch(url)
+    // TODO store the delta between the number of cached items and the number of items requested
+    // and only request that with ?offset=
+
+    // Fetch new data, cache it then trigger
+    fetch(queryDetails.mock ? url : `${url}&limit=${queryDetails.limit}`)
       .then((req) => {
         if (req.ok) {
           return req.json();
