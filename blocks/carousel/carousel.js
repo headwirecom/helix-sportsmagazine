@@ -12,7 +12,6 @@ let carouselData;
 
 export default async function decorate(block) {
   const id = getBlockId(block);
-  const query = window.store.getQuery(block);
 
   const isWedges = block.classList.contains('wedges');
   const isLarge = block.classList.contains('large');
@@ -33,6 +32,7 @@ export default async function decorate(block) {
 
   // Render content upon fetch complete
   document.addEventListener(`query:${id}`, (event) => {
+    // TODO Support multiple queries
     carouselData = event.detail.data;
 
     const carouselHeadingType = isWedges ? 'h2' : 'h4';
@@ -283,5 +283,5 @@ export default async function decorate(block) {
     block.append(...template.children);
   });
 
-  window.store.query({ id, query, limit: 20 });
+  window.store.query(block);
 }

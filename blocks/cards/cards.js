@@ -20,7 +20,6 @@ const placeholderHtml = `
 
 export default async function decorate(block) {
   const id = getBlockId(block);
-  const query = window.store.getQuery(block);
 
   const cardBlocks = [...document.querySelectorAll(".cards.block[data-block-name='cards']")];
   const indexInPage = cardBlocks.findIndex((element) => element.isEqualNode(block));
@@ -54,7 +53,8 @@ export default async function decorate(block) {
   document.addEventListener(`query:${id}`, (event) => {
     cardData = event.detail.data;
 
-    const cardList = cardData?.slice(currentBlockIndex, currentBlockIndex + cardOffset);
+    // TODO Add support for multiple queries
+    const cardList = cardData.slice(currentBlockIndex, currentBlockIndex + cardOffset);
 
     const mainCard = cardList[0];
 
@@ -120,5 +120,5 @@ export default async function decorate(block) {
   });
 
   // Trigger query
-  window.store.query({ id, query, limit: 60 });
+  window.store.query(block);
 }

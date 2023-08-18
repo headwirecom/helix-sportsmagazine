@@ -12,7 +12,6 @@ const placeholderHtml = '<div class="hero-container" style="visibility: hidden; 
 
 export default async function decorate(block) {
   const id = getBlockId(block);
-  const query = window.store.getQuery(block);
 
   const isFirstHero = document.querySelector(".hero.block[data-block-name='hero']").isEqualNode(block);
 
@@ -29,6 +28,7 @@ export default async function decorate(block) {
     heroItems = event.detail.data;
 
     const heroData = heroItems[heroDataIndex];
+    // TODO Add support for multiple queries
     const cards = heroItems.slice(heroDataIndex + 1, heroDataIndex + 5);
 
     assignSlot(block, 'image', 'picture');
@@ -87,5 +87,5 @@ export default async function decorate(block) {
   });
 
   // Trigger query
-  window.store.query({ id, query });
+  window.store.query(block);
 }

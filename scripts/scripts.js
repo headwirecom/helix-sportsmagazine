@@ -389,8 +389,8 @@ export function getBlockId(block) {
  */
 window.store = new (class {
   constructor() {
-    // Fetch stack
-    this._stack = {};
+    // Query stack
+    this._queryStack = {};
 
     // Indexes
     this._spreadsheets = {
@@ -399,33 +399,50 @@ window.store = new (class {
       GALLERY: 'gallery-query-index',
     };
 
+    // TODO support gd+ query
     // Author query to query map
     this._queryMap = {
       news: {
         spreadsheet: this._spreadsheets.ARTICLES,
         sheet: 'golf-news-tours-default',
+        limit: 0,
       },
       features: {
         spreadsheet: this._spreadsheets.ARTICLES,
         sheet: 'golf-news-tours-features',
-      },
-      // TODO query gd+ articles
-      gd: {
-        spreadsheet: this._spreadsheets.ARTICLES,
-        sheet: 'golf-news-tours-features',
+        limit: 0,
       },
       courses: {
         spreadsheet: this._spreadsheets.ARTICLES,
         sheet: 'courses',
+        limit: 0,
       },
       loop: {
         spreadsheet: this._spreadsheets.ARTICLES,
         sheet: 'loop',
+        limit: 0,
       },
       wedges: {
         mock: '/mock-data/wedges.json',
+        limit: 0,
       },
     };
+
+    // Max items per block
+    this._blockQueryLimit = {
+      hero: 4,
+      cards: 10,
+      carousel: 20,
+    };
+
+    // Construct limit for each query based on the blocks on the page
+    const blockNames = Object.keys(this._blockQueryLimit);
+    const queryNames = Object.keys(this._queryMap);
+    blockNames.forEach((blockName) => {
+      queryNames.forEach((queryName) => {
+        this._queryMap[queryName].limit += document.querySelectorAll(`main .${blockName}.${queryName}.block`).length * this._blockQueryLimit[blockName];
+      });
+    });
 
     try {
       this._cache = JSON.parse(window.sessionStorage['golf-store']);
@@ -452,6 +469,7 @@ window.store = new (class {
     for (const className of block.classList) {
       if (queries.includes(className)) {
         query = className;
+        block.dataset.query = query;
         break;
       }
     }
@@ -461,13 +479,14 @@ window.store = new (class {
 
   /**
    * Triggers an index fetch
-   * @param {object}
+   * @param {HTMLElement} block
    */
-  query({
-    id, query, offset = 0, limit = 10,
-  }) {
+  query(block) {
+    block.id = block.id || getBlockId(block);
+    const query = this.getQuery(block);
+
     if (!query) {
-      console.warn(`Query missing for "${id}"`);
+      console.warn(`Query missing for "${block.dataset.blockName}" with id "${block.id}"`);
       return;
     }
 
@@ -484,7 +503,7 @@ window.store = new (class {
       url = queryDetails.mock;
     } else {
       // Build query sheet url
-      url = `/${queryDetails.spreadsheet}.json?offset=${offset}&limit=${limit}&sheet=${queryDetails.sheet}`;
+      url = `/${queryDetails.spreadsheet}.json?limit=${queryDetails.limit}&sheet=${queryDetails.sheet}`;
     }
 
     // Use cached resource
@@ -492,12 +511,12 @@ window.store = new (class {
       // Only trigger if there is data
       if (this._cache[url].data.length) {
         // "Return" data for given id
-        document.dispatchEvent(new CustomEvent(`query:${id}`, { detail: this._cache[url] }));
+        document.dispatchEvent(new CustomEvent(`query:${block.id}`, { detail: this._cache[url] }));
       } else {
         // Stack query
-        this._stack = {
-          ...this._stack,
-          id: url,
+        this._queryStack = {
+          ...this._queryStack,
+          [block.id]: url,
         };
       }
 
@@ -526,15 +545,15 @@ window.store = new (class {
         }
 
         // "Return" data for given id
-        document.dispatchEvent(new CustomEvent(`query:${id}`, { detail: this._cache[url] }));
+        document.dispatchEvent(new CustomEvent(`query:${block.id}`, { detail: this._cache[url] }));
 
         // Unstack and "return" data
-        Object.entries(this._stack).forEach((stackId, stackURL) => {
-          if (url === stackURL) {
+        for (const stackId in this._queryStack) {
+          if (url === this._queryStack[stackId]) {
             document.dispatchEvent(new CustomEvent(`query:${stackId}`, { detail: this._cache[url] }));
-            delete this._stack[stackId];
+            delete this._queryStack[stackId];
           }
-        });
+        }
       })
       .catch((error) => {
         console.warn(error);
