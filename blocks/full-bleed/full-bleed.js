@@ -51,6 +51,7 @@ export default async function decorate(block) {
       <div class="image">
           <slot name="image"></slot>
           <div class="credit">
+          <slot name="caption"></slot>
           ${photoCredit ? `<span>${photoCredit}</span>` : ''}
           </div>
       </div>
@@ -105,6 +106,13 @@ export default async function decorate(block) {
       p.classList.add('center-seperator');
     }
   });
+
+  const picture = block.querySelector('picture');
+
+  const caption = picture.parentElement.nextElementSibling;
+  if (caption && caption.tagName === 'P') {
+    caption.setAttribute('slot', 'caption');
+  }
 
   // Render template
   // TODO remove ARTICLE_TEMPLATES.FullBleed once importer fixes "**" occurrences
