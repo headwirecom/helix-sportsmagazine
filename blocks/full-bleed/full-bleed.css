@@ -210,6 +210,16 @@
   height: 100%;
 }
 
+.full-bleed.block.block .article-body .photo-credit {
+    color: #adb4b7;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0;
+    margin: -60px auto 30px;
+}
+
 @media (min-width: 1025px) {
   .full-bleed.block .lead picture {
     position: absolute;
