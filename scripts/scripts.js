@@ -536,6 +536,9 @@ window.store = new (class {
     // Start setting cache to avoid multiple requests or invalid cache if not enough items
     this._cache[url] = { data: [] };
 
+    // TODO store the delta between the number of cached items and the number of items requested
+    // and only request that with ?offset=
+
     // Fetch new data, cache it then trigger
     fetch(queryDetails.mock ? url : `${url}&limit=${queryDetails.limit}`)
       .then((req) => {
