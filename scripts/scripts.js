@@ -509,13 +509,13 @@ window.store = new (class {
       url = queryDetails.mock;
     } else {
       // Build query sheet url
-      url = `/${queryDetails.spreadsheet}.json?limit=${queryDetails.limit}&sheet=${queryDetails.sheet}`;
+      url = `/${queryDetails.spreadsheet}.json?sheet=${queryDetails.sheet}`;
     }
 
     // Use cached resource
     if (this._cache[url]) {
-      // Only trigger if there is data
-      if (this._cache[url].data.length) {
+      // Only trigger if there is enough data
+      if (this._cache[url].data.length && this._cache[url].data.length <= queryDetails.limit) {
         // "Return" data for given id
         document.dispatchEvent(new CustomEvent(`query:${block.id}`, { detail: this._cache[url] }));
       } else {
@@ -532,7 +532,8 @@ window.store = new (class {
     // Start setting cache to avoid multiple requests
     this._cache[url] = { data: [] };
 
-    fetch(url)
+    // Fetch new data, cache it then trigger
+    fetch(queryDetails.mock ? url : `${url}&limit=${queryDetails.limit}`)
       .then((req) => {
         if (req.ok) {
           return req.json();
