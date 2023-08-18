@@ -430,7 +430,7 @@ window.store = new (class {
 
     // Max items per block
     this._blockQueryLimit = {
-      hero: 4,
+      hero: 5,
       cards: 10,
       carousel: 20,
     };
