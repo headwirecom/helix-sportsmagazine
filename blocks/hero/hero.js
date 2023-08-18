@@ -1,5 +1,5 @@
 import {
-  parseFragment, render, removeEmptyElements, assignSlot,
+  parseFragment, render, removeEmptyElements, assignSlot, getBlockId,
 } from '../../scripts/scripts.js';
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
@@ -10,14 +10,9 @@ let heroItemsIndex = 0;
 
 const placeholderHtml = '<div class="hero-container" style="visibility: hidden; max-height: 1040px; aspect-ratio: 1.57/1; width: 100%" ></div>';
 
-const dataPromise = new Promise((resolve) => {
-  window.store.fetch('/article-query-index.json?limit=10&sheet=golf-news-tours-default').then((data) => {
-    heroItems = data.data;
-    resolve();
-  });
-});
-
 export default async function decorate(block) {
+  const id = getBlockId(block);
+
   const isFirstHero = document.querySelector(".hero.block[data-block-name='hero']").isEqualNode(block);
 
   const heroDataIndex = heroItemsIndex;
@@ -29,8 +24,11 @@ export default async function decorate(block) {
   }
 
   // rendering content upon fetch complete
-  dataPromise.then(() => {
+  document.addEventListener(`query:${id}`, (event) => {
+    heroItems = event.detail.data;
+
     const heroData = heroItems[heroDataIndex];
+    // TODO Add support for multiple queries
     const cards = heroItems.slice(heroDataIndex + 1, heroDataIndex + 5);
 
     assignSlot(block, 'image', 'picture');
@@ -65,13 +63,7 @@ export default async function decorate(block) {
               </div>
             </a>
           </div>
-          ${
-  isFirstHero && cards.length
-    ? `<div class="hero-cards-container">
-            ${cardsTemplate}
-          </div>`
-    : ''
-}
+          ${isFirstHero && cards.length ? `<div class="hero-cards-container">${cardsTemplate}</div>` : ''}
         </div>
       `;
 
@@ -93,4 +85,7 @@ export default async function decorate(block) {
     block.innerHTML = '';
     block.append(template);
   });
+
+  // Trigger query
+  window.store.query(block);
 }

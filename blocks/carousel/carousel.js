@@ -1,75 +1,51 @@
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
-import { parseFragment, removeEmptyElements, render } from '../../scripts/scripts.js';
+import {
+  getBlockId,
+  parseFragment,
+  removeEmptyElements,
+  render,
+} from '../../scripts/scripts.js';
 
-const placeholderHtml = (carouselType) => `<div class="carousel-main-wrapper" style="${carouselType === 'large' ? 'aspect-ratio: 2/1; ' : 'height: 949px;'} width: 100%; visibility: hidden;"><div>`;
-const getSheetForCarouselType = (carouselType) => {
-  const fetchTypeLookup = {
-    latest: 'golf-news-tours-default',
-    large: 'golf-news-tours-features',
-  };
+const placeholderHtml = (isLarge) => `<div class="carousel-main-wrapper" style="${isLarge ? 'aspect-ratio: 2/1; ' : 'height: 949px;'} width: 100%; visibility: hidden;"><div>`;
 
-  return fetchTypeLookup[carouselType] || carouselType;
-};
-
-const carouselTitleLookup = {
-  courses: 'Trending Courses',
-  latest: 'The Latest',
-  loop: 'The Loop',
-  wedges: 'Hot List 2023',
-};
-
-const carouselFetchedData = {};
-const dataPromiseTracker = {};
+let carouselData;
 
 export default async function decorate(block) {
-  const carouselType = Array.from(block.classList).filter(
-    (className) => className !== 'carousel' && className !== 'block',
-  )[0];
+  const id = getBlockId(block);
 
-  // Adding placeholder html
-  if (!carouselFetchedData[carouselType]) {
-    block.innerHTML = placeholderHtml(carouselType);
+  const isWedges = block.classList.contains('wedges');
+  const isLarge = block.classList.contains('large');
+  const isCourses = block.classList.contains('courses');
+  const variants = Array.from(block.classList).filter(
+    (className) => className !== 'carousel' && className !== 'block',
+  ).join(' ');
+
+  let heading = block.querySelector('h3')?.textContent ?? '';
+  if (isWedges) {
+    heading = heading.replace('(year)', new Date().getFullYear());
   }
 
-  const carouselSheetName = getSheetForCarouselType(carouselType);
-
-  // Create fetch promise based on sheet name
-  if (!dataPromiseTracker[carouselSheetName]) {
-    dataPromiseTracker[carouselSheetName] = new Promise((resolve) => {
-      if (carouselType === 'wedges') {
-        window.store.fetch('/blocks/carousel/wedgesData.json').then((data) => {
-          carouselFetchedData[carouselType] = data;
-          resolve();
-        });
-      } else {
-        window.store.fetch(`/article-query-index.json?limit=${20}&sheet=${carouselSheetName}`).then((data) => {
-          carouselFetchedData[carouselType] = data.data;
-          resolve();
-        });
-      }
-    });
+  // Adding placeholder html
+  if (!carouselData) {
+    block.innerHTML = placeholderHtml(isLarge);
   }
 
   // Render content upon fetch complete
-  dataPromiseTracker[carouselSheetName].then(() => {
-    const carouselHeadingType = carouselType === 'wedges' ? 'h2' : 'h4';
+  document.addEventListener(`query:${id}`, (event) => {
+    // TODO Support multiple queries
+    carouselData = event.detail.data;
+
+    const carouselHeadingType = isWedges ? 'h2' : 'h4';
 
     // Mobile version of wedges displays them all and disables swiping,
     // but is only checked for on the initial render
-    const isMobileWedges = carouselType === 'wedges' && window.innerWidth < 779;
+    const isMobileWedges = isWedges && window.innerWidth < 779;
 
     const HTML_TEMPLATE = `
-    ${
-  carouselType === 'large'
-    ? ''
-    : `
-      <div class="carousel-title-wrapper">
-        <${carouselHeadingType} class="carousel-title ${carouselType}" id="carousel-${carouselType}">${
-  carouselTitleLookup[carouselType] || carouselType
-}</${carouselHeadingType}>
+    ${isLarge ? '' : `<div class="carousel-title-wrapper">
+        <${carouselHeadingType} class="carousel-title ${variants}">${heading}</${carouselHeadingType}>
       </div>
-    `
-}
+    `}
   <div class="carousel-main-wrapper ${isMobileWedges ? 'mobile-wedges' : ''}">
   <div class="controls">
     <button aria-label="Scroll Left" class="left-button"></button>
@@ -77,44 +53,25 @@ export default async function decorate(block) {
   </div>
   <div class="carousel-inner-wrapper">
       <div class="carousel-frame" style="transform: translateX(0px);">
-        ${carouselFetchedData[carouselType]
+        ${carouselData
     .map(
       (carouselItem) => `
           <a class="carousel-item" href="${carouselItem.path}" >
             <div class="carousel-item-wrapper">
               <div class="carousel-image-wrapper">
-                ${
-  createOptimizedPicture(
-    carouselItem.image,
-    carouselItem.imageAlt || 'carousel cover image',
-    false,
-    carouselType === 'large' ? [{ width: '700' }] : [{ width: '500' }],
-  ).outerHTML
-}
+                ${createOptimizedPicture(carouselItem.image, carouselItem.imageAlt || 'carousel cover image', false, isLarge ? [{ width: '700' }] : [{ width: '500' }]).outerHTML}
               </div>
               
               <div class="carousel-text-content">
                 ${carouselItem.rubric ? `<span class="sub-heading">${carouselItem.rubric}</span>` : ''}
                 <h3 class="carousel-item-title">${carouselItem.title}</h3>
-                ${
-  carouselType === 'courses'
-    ? `<span class="carousel-item-location">${carouselItem.location}</span>`
-    : ''
-}
+                ${isCourses && carouselItem.location ? `<span class="carousel-item-location">${carouselItem.location}</span>` : ''}
   
-                ${
-  Array.isArray(carouselItem.awards) && carouselItem.awards.length
-    ? `<ul class="carousel-item-pills">${carouselItem.awards
-      .map((award) => `<li class="pill-item">${award}</li>`)
-      .join('')}</ul>`
-    : ''
-}
+                ${Array.isArray(carouselItem.awards) && carouselItem.awards.length ? `<ul class="carousel-item-pills">${carouselItem.awards.map((award) => `<li class="pill-item">${award}</li>`).join('')}</ul>` : ''}
               </div>
             </div>
-          </a>
-          `,
-    )
-    .join('')}
+          </a>`,
+    ).join('')}
       </div>
       </div>
     </div>
@@ -136,8 +93,8 @@ export default async function decorate(block) {
 
       let gapOffset = 27;
       const updateGapOffset = () => {
-        if (carouselType !== 'wedges') {
-          gapOffset = carouselType === 'large' ? 13 : 27;
+        if (!isWedges) {
+          gapOffset = isLarge ? 13 : 27;
           return;
         }
         if (window.innerWidth <= 1280) {
@@ -308,7 +265,7 @@ export default async function decorate(block) {
           roundX();
           carouselFrame.style.transform = `translateX(${x}px)`;
           updateButtonVisibility();
-          if (carouselType === 'wedges') {
+          if (isWedges) {
             updateGapOffset();
           }
         }, 150);
@@ -325,4 +282,6 @@ export default async function decorate(block) {
     block.innerHTML = '';
     block.append(...template.children);
   });
+
+  window.store.query(block);
 }
