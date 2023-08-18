@@ -386,7 +386,7 @@ export const convertExcelDate = (excelDate) => {
 };
 
 export function getBlockId(block) {
-  block.id = window.crypto.randomUUID();
+  block.id = block.id || window.crypto.randomUUID();
   return block.id;
 }
 
@@ -488,11 +488,11 @@ window.store = new (class {
    * @param {HTMLElement} block
    */
   query(block) {
-    block.id = block.id || getBlockId(block);
+    const id = getBlockId(block);
     const query = this.getQuery(block);
 
     if (!query) {
-      console.warn(`Query missing for "${block.dataset.blockName}" with id "${block.id}"`);
+      console.warn(`Query missing for "${block.dataset.blockName}" with id "${id}"`);
       return;
     }
 
@@ -519,14 +519,14 @@ window.store = new (class {
         // Only trigger if there is enough data
         if (queryDetails.limit <= this._cache[url].data.length) {
           // "Return" data for given id
-          document.dispatchEvent(new CustomEvent(`query:${block.id}`, { detail: this._cache[url] }));
+          document.dispatchEvent(new CustomEvent(`query:${id}`, { detail: this._cache[url] }));
           return;
         }
       } else {
         // Stack query
         this._queryStack = {
           ...this._queryStack,
-          [block.id]: url,
+          [id]: url,
         };
 
         return;
@@ -559,7 +559,7 @@ window.store = new (class {
         }
 
         // "Return" data for given id
-        document.dispatchEvent(new CustomEvent(`query:${block.id}`, { detail: this._cache[url] }));
+        document.dispatchEvent(new CustomEvent(`query:${id}`, { detail: this._cache[url] }));
 
         // Unstack and "return" data
         for (const stackId in this._queryStack) {
