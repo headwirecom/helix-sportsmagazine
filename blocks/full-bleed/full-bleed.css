@@ -123,7 +123,7 @@
   font-weight: 100;
 }
 
-.full-bleed.block .publication::before {
+.full-bleed.block .publication:not(:empty)::before {
   content: "";
   display: block;
   border-left: 2px solid #e6e6e6;
