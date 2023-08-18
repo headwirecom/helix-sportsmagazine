@@ -514,22 +514,26 @@ window.store = new (class {
 
     // Use cached resource
     if (this._cache[url]) {
-      // Only trigger if there is enough data
-      if (this._cache[url].data.length && this._cache[url].data.length <= queryDetails.limit) {
-        // "Return" data for given id
-        document.dispatchEvent(new CustomEvent(`query:${block.id}`, { detail: this._cache[url] }));
+      // Cache is already populated
+      if (this._cache[url].data.length) {
+        // Only trigger if there is enough data
+        if (queryDetails.limit <= this._cache[url].data.length) {
+          // "Return" data for given id
+          document.dispatchEvent(new CustomEvent(`query:${block.id}`, { detail: this._cache[url] }));
+          return;
+        }
       } else {
         // Stack query
         this._queryStack = {
           ...this._queryStack,
           [block.id]: url,
         };
-      }
 
-      return;
+        return;
+      }
     }
 
-    // Start setting cache to avoid multiple requests
+    // Start setting cache to avoid multiple requests or invalid cache if not enough items
     this._cache[url] = { data: [] };
 
     // Fetch new data, cache it then trigger
