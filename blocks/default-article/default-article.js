@@ -73,11 +73,14 @@ export default async function decorate(block) {
   assignSlot(block, 'image', 'picture');
 
   const picture = block.querySelector('picture');
-  addPortraitClass(picture);
+  // Picture is optional
+  if (picture) {
+    addPortraitClass(picture);
 
-  const caption = picture.parentElement.nextElementSibling;
-  if (caption && caption.tagName === 'P') {
-    caption.setAttribute('slot', 'caption');
+    const caption = picture.parentElement.nextElementSibling;
+    if (caption && caption.tagName === 'P') {
+      caption.setAttribute('slot', 'caption');
+    }
   }
 
   // Pre-processing

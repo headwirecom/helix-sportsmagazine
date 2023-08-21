@@ -159,18 +159,18 @@ export function normalizeAuthorURL(author) {
  * @param el
  */
 export function addPortraitClass(el) {
-  if (el.length) {
+  if (el.tagName === 'PICTURE') {
+    const img = el.querySelector('img');
+    if (img && img.height > img.width) {
+      el.classList.add('portrait');
+    }
+  } else {
     el.forEach((picture) => {
       const img = picture.querySelector('img');
       if (img && img.height > img.width) {
         picture.classList.add('portrait');
       }
     });
-  } else {
-    const img = el.querySelector('img');
-    if (img && img.height > img.width) {
-      el.classList.add('portrait');
-    }
   }
 }
 
