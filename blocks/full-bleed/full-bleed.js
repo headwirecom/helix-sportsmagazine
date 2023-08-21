@@ -1,5 +1,11 @@
 import {
-  assignSlot, parseFragment, render, replaceLinksWithEmbed,
+  assignSlot,
+  parseFragment,
+  render,
+  replaceLinksWithEmbed,
+  parseSectionMetadata,
+  addPhotoCredit,
+  ARTICLE_TEMPLATES,
 } from '../../scripts/scripts.js';
 import {
   buildBlock,
@@ -8,14 +14,20 @@ import {
   loadBlocks,
 } from '../../scripts/lib-franklin.js';
 
-const rubric = getMetadata('rubric');
-const author = getMetadata('author');
-const authorURL = getMetadata('author-url');
-const publicationDate = getMetadata('publication-date');
-const imageCredit = getMetadata('hero-image-credit');
+/**
+ * @param {HTMLDivElement} block
+ */
+export default async function decorate(block) {
+  const rubric = getMetadata('rubric');
+  const author = getMetadata('author');
+  const authorURL = getMetadata('author-url');
+  const publicationDate = getMetadata('publication-date');
+  const headlineMetadata = parseSectionMetadata(block.querySelector('.template-section-metadata'));
+  // TODO remove once importer fixes photo credit
+  const photoCredit = headlineMetadata?.imageCredit ?? headlineMetadata?.photoCredit;
 
-// HTML template in JS to avoid extra waterfall for LCP blocks
-const HTML_TEMPLATE = `
+  // HTML template in JS to avoid extra waterfall for LCP blocks
+  const HTML_TEMPLATE = `
 <div class="container">
   <div class="lead">
       <div class="headline">
@@ -24,6 +36,7 @@ const HTML_TEMPLATE = `
           </p>
           <div class="title">
               <slot name="heading"></slot>
+              <slot name="description"></slot>
           </div>
           <div class="byline">
               <div class="attribution">
@@ -38,7 +51,8 @@ const HTML_TEMPLATE = `
       <div class="image">
           <slot name="image"></slot>
           <div class="credit">
-              <span>${imageCredit}</span>
+          <slot name="caption"></slot>
+          ${photoCredit ? `<span>${photoCredit}</span>` : ''}
           </div>
       </div>
   </div>
@@ -68,10 +82,6 @@ const HTML_TEMPLATE = `
 </div>
 `;
 
-/**
- * @param {HTMLDivElement} block
- */
-export default async function decorate(block) {
   // Template rendering
   const template = parseFragment(HTML_TEMPLATE);
 
@@ -80,6 +90,11 @@ export default async function decorate(block) {
   // Identify slots
   assignSlot(block, 'heading', 'h1');
   assignSlot(block, 'image', 'picture');
+  const h1Element = block.querySelector('h1');
+  const nextSibling = h1Element?.nextElementSibling;
+  if (nextSibling && nextSibling.tagName === 'P' && !nextSibling.querySelector('picture')) {
+    assignSlot(block, 'description', 'h1 + p:not(:has(picture))');
+  }
 
   // Pre-processing
   const share = buildBlock('social-share', { elems: [] });
@@ -87,20 +102,28 @@ export default async function decorate(block) {
   block.append(share);
 
   block.querySelectorAll('p').forEach((p) => {
-    // Convert **text** to bold
-    p.innerHTML = p.innerHTML.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-    // Center seperator
     if (p.textContent.includes('• • •')) {
       p.classList.add('center-seperator');
     }
   });
 
+  const picture = block.querySelector('picture');
+
+  const caption = picture.parentElement.nextElementSibling;
+  if (caption && caption.tagName === 'P') {
+    caption.setAttribute('slot', 'caption');
+  }
+
   // Render template
-  render(template, block);
+  // TODO remove ARTICLE_TEMPLATES.FullBleed once importer fixes "**" occurrences
+  render(template, block, ARTICLE_TEMPLATES.FullBleed);
 
   // Update block with rendered template
   block.innerHTML = '';
   block.append(template);
+
+  const pictures = block.querySelectorAll('picture');
+  addPhotoCredit(pictures);
 
   // Inner block loading
   block.querySelectorAll('h2').forEach((h2) => {

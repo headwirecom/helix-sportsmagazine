@@ -117,7 +117,7 @@ export function render(template, fragment, type) {
       .replaceAll('</a> **', '</a></strong>')
       .replaceAll('from left to right:', 'from left to right:<br>')
       .replaceAll('</a><strong>', '</a><br><strong>');
-  } else if (type === ARTICLE_TEMPLATES.LongForm) {
+  } else if (type === ARTICLE_TEMPLATES.LongForm || type === ARTICLE_TEMPLATES.FullBleed) {
     fragment.innerHTML = fragment.innerHTML
       .replaceAll('****', '')
       .replaceAll('</em> **', '</em></strong>&nbsp;')
