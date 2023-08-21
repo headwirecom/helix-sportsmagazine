@@ -27,6 +27,10 @@ indices:
         select: head > meta[name="publication-date"]
         value: |
           attribute(el, 'content')
+      gdPlus:
+        select: head > meta[name="gd-plus"]
+        value: |
+          attribute(el, 'content')
   article:
     include:
      - '/content-v2/**/article/**'
@@ -62,6 +66,10 @@ indices:
           attribute(el, 'content')
       authorUrl:
         select: head > meta[name="author-url"]
+        value: |
+          attribute(el, 'content')
+      gdPlus:
+        select: head > meta[name="gd-plus"]
         value: |
           attribute(el, 'content')
   products:
