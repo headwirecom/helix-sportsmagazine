@@ -175,12 +175,16 @@ export function addPortraitClass(el) {
 }
 
 // TODO Remove once importer fixes photo-credit metadata for articles
+
 export function addPhotoCredit(pictures) {
   pictures.forEach((picture) => {
     const next = picture.parentElement.nextElementSibling;
-    // Assuming name is not longer than that
-    if (next && next.tagName === 'P' && (next.textContent.startsWith('Photo') || next.textContent.split(' ').length < 3)) {
-      next.classList.add('photo-credit');
+    const creditElem = next?.nextElementSibling;
+    if (next && next.tagName === 'P') {
+      next.setAttribute('slot', 'caption');
+    }
+    if (creditElem && creditElem.tagName === 'P' && (creditElem.textContent.startsWith('Photo') || creditElem.textContent.split(' ').length < 3)) {
+      creditElem.classList.add('photo-credit');
     }
   });
 }
