@@ -113,7 +113,7 @@ function createSectionMetadata(document, main) {
 }
 
 function appendToBlock(block, key, value) {
-  const row = `<tr><td>${key}</td><td>${value}</td></tr>`;
+  const row = (key) ? `<tr><td>${key}</td><td>${value}</td></tr>` : `<tr><td colspan="2">${value}</td></tr>`;
   block.insertAdjacentHTML('beforeend', row);
 }
 
@@ -245,6 +245,17 @@ function transformArticleDOM(document, templateConfig) {
     const param = (videoId) ? `videoId=${videoId}` : `playlistId=${playlistId}`;
     const src = `https://players.brightcove.net/${acct}/${player}_default/index.html?${param}`;
     replaceEmbed(el, src);
+  });
+
+  // Issue https://github.com/headwirecom/helix-sportsmagazine/issues/128
+  // replace all other iframes with an embed block
+  articleBody.querySelectorAll('.iframe').forEach((el) => {
+    const frame = el.querySelector('iframe');
+    const url = frame.src;
+    const embedBlock = createBlockTable(document, main, 'Embed');
+    appendToBlock(embedBlock, null, `<a href=${url}>${url}</a>`);
+    el.insertAdjacentElement('beforebegin', embedBlock);
+    el.remove();
   });
 
   const metadata = createMetadataBlock(document, main);
