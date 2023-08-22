@@ -166,6 +166,7 @@ function transformArticleDOM(document, templateConfig) {
   const imageEmbedCredit = document.querySelector('.o-ImageEmbed__a-Credit') ? 
       document.querySelector('.o-ImageEmbed__a-Credit') : 
       document.querySelector('.o-ArticleHero .o-ArticleInfo .a-Credit');
+  const imageEmbedCaption = document.querySelector('.o-ImageEmbed .o-ImageEmbed__a-Caption');
   const articleTitle = document.querySelector('.o-AssetTitle');
   const articleDescription = document.querySelector('.o-AssetDescription__a-Description');
   const articleBody = document.querySelector('.articleBody');
@@ -195,14 +196,21 @@ function transformArticleDOM(document, templateConfig) {
     }
   }
 
-  if (imageEmbedCredit) {
-    let heroImageCreditTxt = (imageEmbedCredit) ? imageEmbedCredit.innerHTML : '';
-    if (heroImageCreditTxt.includes('Photo By:')) {
-      heroImageCreditTxt = heroImageCreditTxt.replace('Photo By:','').trim();
-    }
-    imageEmbedCredit.remove();
+  if (imageEmbedCredit || imageEmbedCaption) {
     let sectionBlock = createSectionMetadata(document, main);
-    appendToBlock(sectionBlock, 'Photo Credit', heroImageCreditTxt);
+    if (imageEmbedCredit) {
+      let heroImageCreditTxt = (imageEmbedCredit) ? imageEmbedCredit.innerHTML : '';
+      if (heroImageCreditTxt.includes('Photo By:')) {
+        heroImageCreditTxt = heroImageCreditTxt.replace('Photo By:','').trim();
+      }
+      imageEmbedCredit.remove();
+      appendToBlock(sectionBlock, 'Photo Credit', heroImageCreditTxt);
+    }
+    if (imageEmbedCaption) {
+      const imageEmbedCaptionTxt = (imageEmbedCaption.querySelector('p')) ? imageEmbedCaption.querySelector('p').innerHTML : imageEmbedCaption.innerHTML;
+      appendToBlock(sectionBlock, 'Photo Caption', imageEmbedCaptionTxt);
+      imageEmbedCaption.remove()
+    }
   }
 
   main.append(document.createElement('hr'));
@@ -219,6 +227,32 @@ function transformArticleDOM(document, templateConfig) {
  
   // reinsert original document section separators
   articleBody.querySelectorAll('.importer-section-separator').forEach(el => { el.replaceWith(document.createElement('hr')); });
+
+  // Create a section for each image embed with it's own section metadata
+  articleBody.querySelectorAll('.imageEmbed').forEach(imageEmbed => {
+    const imageEmbedCredit = imageEmbed.querySelector('.o-ImageEmbed__a-Credit');
+    const imageEmbedCaption = imageEmbed.querySelector('.o-ImageEmbed__a-Caption');
+    if (imageEmbedCredit || imageEmbedCaption) {
+      let sectionBlock = createSectionMetadata(document, main);
+      if (imageEmbedCredit) {
+        let heroImageCreditTxt = (imageEmbedCredit) ? imageEmbedCredit.innerHTML : '';
+        if (heroImageCreditTxt.includes('Photo By:')) {
+          heroImageCreditTxt = heroImageCreditTxt.replace('Photo By:','').trim();
+        }
+        imageEmbedCredit.remove();
+        appendToBlock(sectionBlock, 'Photo Credit', heroImageCreditTxt);
+      }
+      if (imageEmbedCaption) {
+        const imageEmbedCaptionTxt = (imageEmbedCaption.querySelector('p')) ? imageEmbedCaption.querySelector('p').innerHTML : imageEmbedCaption.innerHTML;
+        appendToBlock(sectionBlock, 'Photo Caption', imageEmbedCaptionTxt);
+        imageEmbedCaption.remove()
+      }
+    
+      imageEmbed.insertAdjacentHTML('beforebegin', '<hr/>');
+      imageEmbed.insertAdjacentElement('afterend', sectionBlock);
+      sectionBlock.insertAdjacentHTML('afterend', '<hr/>');
+    }
+  });
 
   const tweets = articleBody.querySelectorAll('.tweetEmbed');
   tweets.forEach((tweet) => {
