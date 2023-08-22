@@ -136,6 +136,7 @@ const loadEmbed = (block, link, autoplay) => {
 };
 
 export default function decorate(block) {
+  const autoplay = block.classList.contains('autoplay');
   const placeholder = block.querySelector('picture');
   const link = block.querySelector('a').href;
   block.textContent = '';
@@ -146,14 +147,14 @@ export default function decorate(block) {
     wrapper.innerHTML = '<div class="embed-placeholder-play"><button title="Play"></button></div>';
     wrapper.prepend(placeholder);
     wrapper.addEventListener('click', () => {
-      loadEmbed(block, link, false);
+      loadEmbed(block, link, autoplay);
     });
     block.append(wrapper);
   } else {
     const observer = new IntersectionObserver((entries) => {
       if (entries.some((e) => e.isIntersecting)) {
         observer.disconnect();
-        loadEmbed(block, link, true);
+        loadEmbed(block, link, autoplay);
       }
     });
     observer.observe(block);
