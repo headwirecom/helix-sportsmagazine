@@ -1,0 +1,247 @@
+.loop-container {
+  border-top: 300px solid rgba(255, 0, 0, 0.24);
+}
+
+.loop-container .loop-wrapper {
+  background-attachment: fixed;
+  background-position: center 300px;
+  background-repeat: no-repeat;
+  background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22984%22%20height%3D%22978%22%3E%3Cdefs%3E%3Cmask%20id%3D%22a%22%3E%3Cellipse%20cx%3D%22492%22%20cy%3D%22489%22%20rx%3D%22492%22%20ry%3D%22489%22%20fill%3D%22%23fff%22%20stroke%3D%22%23000%22%20stroke-width%3D%2259%22%2F%3E%3C%2Fmask%3E%3CclipPath%20id%3D%22b%22%3E%3Cellipse%20cx%3D%22492%22%20cy%3D%22489%22%20rx%3D%22492%22%20ry%3D%22489%22%2F%3E%3C%2FclipPath%3E%3C%2Fdefs%3E%3Cellipse%20mask%3D%22url(%23a)%22%20cx%3D%22492%22%20cy%3D%22489%22%20rx%3D%22492%22%20ry%3D%22489%22%20fill%3D%22none%22%20pointer-events%3D%22visiblePainted%22%2F%3E%3Cellipse%20clip-path%3D%22url(%23b)%22%20cx%3D%22492%22%20cy%3D%22489%22%20rx%3D%22492%22%20ry%3D%22489%22%20fill%3D%22none%22%20stroke%3D%22%23ffd600%22%20stroke-width%3D%22118%22%20pointer-events%3D%22visiblePainted%22%2F%3E%3C%2Fsvg%3E');
+  display: flex;
+  flex-direction: column;
+}
+
+/*
+*
+* Trending Styling
+*
+*/
+
+.loop-container .loop-wrapper .trending-wrapper {
+  width: 100%;
+  display: flex;
+  position: relative;
+  overflow-x: auto;
+}
+
+.loop-container .loop-wrapper .trending-wrapper .trending-heading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 10px;
+  padding: 9px 15px;
+  width: 132px;
+  height: 28px;
+  /* box-sizing: content-box; */
+  background-color: #e8b94d;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.loop-container .loop-wrapper .trending-wrapper .trending-heading span {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-family: var(--font-gotham);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.loop-container .loop-wrapper .trending-wrapper .trending-content {
+  list-style: none;
+  display: flex;
+  gap: 2px;
+  padding: 0;
+  margin: 0 auto;
+  position: relative;
+  background-color: white;
+}
+
+.loop-container .loop-wrapper .trending-wrapper .trending-content .trending-item {
+  width: 220px;
+  height: 220px;
+}
+
+.loop-container .loop-wrapper .trending-wrapper .trending-content .trending-item .trending-link {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+  overflow: hidden;
+}
+
+.loop-container .loop-wrapper .trending-wrapper .trending-content .trending-text-wrapper {
+  width: 100%;
+  padding: 15px;
+}
+
+.loop-container .loop-wrapper .trending-wrapper .trending-content .trending-text-wrapper .trending-title {
+  margin: 0;
+  font-weight: 400;
+  color: #fff;
+  font-size: 14px;
+  font-family: var(--font-gotham);
+  line-height: 130%;
+  position: relative;
+}
+
+.loop-container .loop-wrapper .trending-wrapper .trending-content .trending-image-wrapper {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  position: absolute;
+  background: linear-gradient(180deg,transparent 30%,#000);
+
+}
+
+.loop-container .loop-wrapper .trending-wrapper .trending-content .trending-image-wrapper picture {
+  width: 100%;
+  height: 100%;
+}
+
+.loop-container .loop-wrapper .trending-wrapper .trending-content .trending-image-wrapper picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/*
+*
+* Header Styling
+*
+*/
+
+.loop-container .loop-wrapper .loop-header {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  margin: 20px 0 50px;
+  padding: 0 10px 0 55px;
+  height: 120px;
+}
+
+.loop-container .loop-wrapper .loop-header p,
+.loop-container .loop-wrapper .loop-header h1 {
+  margin: 0;
+}
+
+.loop-container .loop-wrapper .loop-header h1 {
+  text-transform: uppercase;
+  position: relative;
+  text-transform: uppercase;
+  color: #263238;
+  font-family: var(--font-archivo);
+  font-weight: 400;
+  letter-spacing: 1px;
+  line-height: 35px;
+  text-align: left;
+  font-size: 40px;
+  width: 234px;
+  margin-bottom: 6px;
+}
+
+.loop-container .loop-wrapper .loop-header p {
+  font-size: 16px;
+  margin-bottom: 4px;
+  line-height: 1.33em;
+  vertical-align: baseline;
+  font-family: Georgia, serif;
+  opacity: .6;
+  width: 343px;
+}
+
+.loop-container .loop-wrapper .loop-header .loop-dash {
+  display: inline-block;
+  margin: 0 20px 22px;
+  background-color: #263238;
+  height: 3px;
+  width: 36px;
+}
+
+/*
+*
+* Content Styling
+*
+*/
+
+.loop-container .loop-wrapper .loop-content-wrapper {
+  padding: 0 10px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.loop-container .loop-wrapper .loop-content-wrapper .loop-card-wrapper {
+  width: 33.3333%;
+  max-width: 33.3333%;
+  box-sizing: border-box;
+  padding: 0 3% 24px;
+}
+
+.loop-container .loop-wrapper .loop-content-wrapper .loop-card-wrapper .loop-card {
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow .2s;
+  background-color: white;
+  cursor: pointer;
+}
+
+.loop-container .loop-wrapper .loop-content-wrapper .loop-card-wrapper .loop-card:hover {
+  box-shadow: 0 0 26px 0 rgba(0,0,0,.2);
+  color: #000;
+}
+
+.loop-container .loop-wrapper .loop-content-wrapper .loop-card-wrapper .loop-card .image-wrapper {
+  height: 260px;
+  width: 100%;
+  
+}
+
+.loop-container .loop-wrapper .loop-content-wrapper .loop-card-wrapper .loop-card .image-wrapper picture {
+  width: 100%;
+  height: 100%;
+}
+
+.loop-container .loop-wrapper .loop-content-wrapper .loop-card-wrapper .loop-card .image-wrapper picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  padding: 25px 60px;
+}
+
+.loop-container .loop-wrapper .loop-content-wrapper .loop-card-wrapper:nth-child(odd) .loop-card .image-wrapper picture img {
+  border-radius: 50%;
+}
+
+.loop-container .loop-wrapper .loop-content-wrapper .loop-card-wrapper .loop-card .text-wrapper {
+  min-height: 191px;
+  text-align: center;
+  padding: 0 25px;
+  margin: 0 auto;
+}
+
+.loop-container .loop-wrapper .loop-content-wrapper .loop-card-wrapper .loop-card .text-wrapper .rubric {
+  background-color: #263238;
+  color: #fff;
+  transition: color,background-color .2s;
+  padding: 10px 15px;
+  margin: 25px auto 15px;
+  width: max-content;
+  text-transform: uppercase;
+  display: inline-block;
+  font-family: var(--font-chivo-black);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+}
+.loop-container .loop-wrapper .loop-content-wrapper .loop-card-wrapper .loop-card:hover .text-wrapper .rubric {
+  background-color: #ffd800;
+  color: #000;
+}
+

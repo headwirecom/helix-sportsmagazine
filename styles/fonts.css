@@ -70,3 +70,20 @@
     font-weight: 700;
     font-style: italic;
 }
+
+@font-face {
+    font-family: Archivo;
+    src: url('/styles/fonts/Archivo/ArchivoBlack-Regular.ttf') format('truetype');
+    font-display: swap;
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Chivo Black";
+    src: url('/styles/fonts/Chivo/Chivo-Black.ttf') format('truetype');
+    font-display: swap;
+    font-weight: 400;
+    font-style: normal;
+}
+
