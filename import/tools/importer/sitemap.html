@@ -2,13 +2,39 @@
     <head>
         <title>Golfdigest Sitemap Importer</title>
         <style>
-        
+            .form-item {
+                margin-left: 5px;
+            }
         </style>
         <script type="module">
             import { urlsFilter, parse } from "./sitemap-importer.js";
 
             const sitemap = 'https://www.golfdigest.com/sitemaps/sitemap_golfdigest_index.xml';
-            
+
+            function removeEl(el, addNewLine) {
+                let txt = el.innerHTML;
+                addNewLine ? el.insertAdjacentHTML('afterend', `${txt}\n`) : el.insertAdjacentHTML('afterend', `${txt}`);
+                el.remove();
+            }
+
+            function getLogText() {
+                const logHtml = document.querySelector('.log').cloneNode(true);
+                logHtml.querySelectorAll('div').forEach(el => { removeEl(el, true); });
+                logHtml.querySelectorAll('a').forEach(el => { removeEl(el, false); });
+                return logHtml.innerHTML;
+            }
+
+            function downloadLog() {
+                const logTxt = getLogText();
+                const blob = new Blob([logTxt], {type: 'text/plain'});
+                const tmpLink = document.createElement('a');
+                const fileName = document.getElementById('isJSON-btn').checked ? 'urls.json' : 'urls.txt';
+                tmpLink.setAttribute('href', URL.createObjectURL(blob));
+                tmpLink.setAttribute('download', fileName);
+                tmpLink.click();
+                URL.revokeObjectURL(tmpLink.href);
+            }
+
             export function start() {
                 let userData = document.getElementById('url-list').value.trim();
                 let lines = userData.split('\n');
@@ -34,11 +60,18 @@
                     updateImporter: document.getElementById('bulk-import-btn').checked, 
                     pageTypeSelector: document.getElementById('page-type').value, 
                     logAsJson: document.getElementById('isJSON-btn').checked, 
-                    longForm: document.getElementById('show-long-urls-btn').checked 
+                    longForm: document.getElementById('show-long-urls-btn').value == '1',
+                    shortToLongMap: document.getElementById('show-long-urls-btn').value == '2'
                 }
 
                 document.querySelector('.form').style.display = 'none';
-                parse(options);
+                parse(options).then(() => {
+                    document.querySelector('#parsing-txt').remove();
+                    const saveBtn = document.querySelector('#saveLogBtn');
+                    saveBtn.addEventListener('click', downloadLog);
+                    document.querySelector('.saveLogForm').style.display = 'block';
+                });
+                document.querySelector('.log').insertAdjacentHTML('beforebegin', '<div id="parsing-txt">Parsing sitemap. Wait ...</div>');
             }
 
             // setTimeout(()=>{parseSitemap(sitemap)}, 500);
@@ -53,12 +86,17 @@
                 <h2>Sitemap Import</h2>
                 <div><label>Root URLs to import (full import if no URLs are entered):</label></div>
                 <textarea id="url-list" rows="20" cols="150"></textarea>
-                <p>
-                    <label>Show Counter</label><input type="checkbox" id="show-count-btn" checked>
-                    <label>Show Long URLs</label><input type="checkbox" id="show-long-urls-btn">
-                    <label>Update Importer</label><input type="checkbox" id="bulk-import-btn">
-                    <label>Output JSON</label><input type="checkbox" id="isJSON-btn">
-                    <label>Page Type</label>
+                <p style="background-color: lightgray; width: 70%;">
+                    <label class="form-item">Show Counter</label><input type="checkbox" id="show-count-btn" checked>
+                    <label class="form-item">Display</label>
+                    <select id="show-long-urls-btn">
+                        <option value="0" selected>Short URLs</option>
+                        <option value="1">Long URLs</option>
+                        <option value="2">Short to Long URL map</option>
+                    </select>
+                    <label class="form-item">Update Importer</label><input type="checkbox" id="bulk-import-btn">
+                    <label class="form-item">Output JSON</label><input type="checkbox" id="isJSON-btn">
+                    <label class="form-item">Page Type</label>
                     <select name="pageType" id="page-type">
                         <option value="all" selected>---</option>
                         <option value=".slideshow-wrapper">Gallery Slideshow</option>
@@ -75,6 +113,10 @@
                     </select>
                     <button id="start-btn">Start</button>
                 </p>
+            </div>
+            <div class="saveLogForm" style="display: none; margin-bottom: 5px;">
+                <button onclick="location.reload()">Clear</button>
+                <button id="saveLogBtn">Save To File</button>
             </div>
             <div class="log"></div>
         </main>
