@@ -134,7 +134,7 @@ export default async function decorate(block) {
   });
 
   block
-    .querySelectorAll('.social-share, .embed')
+    .querySelectorAll('.social-share, .embed, .more-cards')
     .forEach((innerBlock) => decorateBlock(innerBlock));
   loadBlocks(document.querySelector('main'));
 }

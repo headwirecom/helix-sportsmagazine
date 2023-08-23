@@ -105,6 +105,6 @@ export default async function decorate(block) {
   block.append(template);
 
   // Inner block loading
-  block.querySelectorAll('.social-share, .embed').forEach((innerBlock) => decorateBlock(innerBlock));
+  block.querySelectorAll('.social-share, .embed, .more-cards').forEach((innerBlock) => decorateBlock(innerBlock));
   loadBlocks(document.querySelector('main'));
 }
