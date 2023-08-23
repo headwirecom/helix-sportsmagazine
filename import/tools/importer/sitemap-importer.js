@@ -31,6 +31,10 @@ let callback = (url, props = {}, doc) => {
     if (_showCount) append(`${counter} ${output}`);
     else append(output);
   }
+
+  if (props.updateImporter) {
+    (props.longURL) ? addToBulkImport(props.longURL) : addToBulkImport(url);
+  }
 };
 
 function matchUrlsFilter(url) {
@@ -68,7 +72,7 @@ async function isPageType(url, pageTypeSelector, doc) {
   return isPageTypeDocument(d, pageTypeSelector);
 }
 
-function addToBulkImport(url) {
+export function addToBulkImport(url) {
   // console.log(`Add ${url} to importer localStorage`);
   let urls = localStorage.getItem(BULK_URLS_STORAGE_ID);
   if (urls) {
@@ -104,7 +108,7 @@ async function process(options) {
   let {url, showCount, updateImporter, pageTypeSelector, longForm, shortToLongMap} = options;
   let longUrl = url;
   let doc = null;
-  let props = {};
+  let props = { showCount, updateImporter };
   if (longForm) {
     doc = await fetchDocument(longUrl);
     if (doc) {
@@ -146,6 +150,10 @@ async function processAll(urls, options, concurrency = 1) {
     dequeue();
     await sleep(200);
   }
+}
+
+export function setCallback(f) {
+  callback = f;
 }
 
 export const urlsFilter = [];
