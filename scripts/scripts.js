@@ -175,16 +175,12 @@ export function addPortraitClass(el) {
 }
 
 // TODO Remove once importer fixes photo-credit metadata for articles
-
 export function addPhotoCredit(pictures) {
   pictures.forEach((picture) => {
     const next = picture.parentElement.nextElementSibling;
-    const creditElem = next?.nextElementSibling;
-    if (next && next.tagName === 'P') {
-      next.setAttribute('slot', 'caption');
-    }
-    if (creditElem && creditElem.tagName === 'P' && (creditElem.textContent.startsWith('Photo') || creditElem.textContent.split(' ').length < 3)) {
-      creditElem.classList.add('photo-credit');
+    // Assuming name is not longer than that
+    if (next && next.tagName === 'P' && (next.textContent.startsWith('Photo') || next.textContent.split(' ').length < 3)) {
+      next.classList.add('photo-credit');
     }
   });
 }
@@ -210,6 +206,50 @@ function buildTemplate(main) {
     if (template) {
       main.querySelectorAll('.section-metadata').forEach((metadataEl) => {
         metadataEl.className = 'template-section-metadata';
+      });
+
+      // TODO remove once importer fixes more cards
+      const checkForMoreCards = (el, elems) => {
+        if (el.tagName === 'P' && el.querySelector('picture') && el.querySelector('a') && el?.nextElementSibling?.tagName === 'P' && el.nextElementSibling.children[0]?.tagName === 'A' && el.nextElementSibling?.nextElementSibling.tagName === 'P' && el.nextElementSibling.nextElementSibling.children[0]?.tagName === 'A') {
+          const rubric = document.createElement('span');
+          rubric.textContent = el.nextElementSibling.textContent.trim();
+
+          const desc = document.createElement('strong');
+          desc.textContent = el.nextElementSibling.nextElementSibling.textContent.trim();
+
+          const link = document.createElement('a');
+          link.setAttribute('href', new URL(el.querySelector('a').getAttribute('href')).pathname);
+
+          link.append(el.querySelector('picture'));
+          link.append(rubric);
+          link.append(desc);
+
+          el.nextElementSibling.nextElementSibling.classList.add('remove');
+          el.nextElementSibling.classList.add('remove');
+          el.classList.add('remove');
+
+          elems.push(link);
+
+          if (el.nextElementSibling.nextElementSibling.nextElementSibling) {
+            checkForMoreCards(el.nextElementSibling.nextElementSibling.nextElementSibling, elems);
+          }
+        }
+      };
+
+      main.querySelectorAll('h2').forEach((h2) => {
+        if (h2.nextElementSibling) {
+          const elems = [];
+          checkForMoreCards(h2.nextElementSibling, elems);
+          if (elems.length) {
+            main.querySelectorAll('.remove').forEach((el) => el.remove());
+            const h3 = document.createElement('h3');
+            h3.textContent = h2.textContent;
+            h3.id = h2.id;
+            elems.unshift(h3);
+            const moreCards = buildBlock('more-cards', { elems });
+            h2.replaceWith(moreCards);
+          }
+        }
       });
 
       const section = document.createElement('div');
