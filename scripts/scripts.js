@@ -411,22 +411,22 @@ window.store = new (class {
       news: {
         spreadsheet: this._spreadsheets.ARTICLES,
         sheet: 'golf-news-tours-default',
-        limit: 0,
+        limit: 50,
       },
       features: {
         spreadsheet: this._spreadsheets.ARTICLES,
         sheet: 'golf-news-tours-features',
-        limit: 0,
+        limit: 50,
       },
       courses: {
         spreadsheet: this._spreadsheets.ARTICLES,
         sheet: 'courses',
-        limit: 0,
+        limit: 50,
       },
       loop: {
         spreadsheet: this._spreadsheets.ARTICLES,
         sheet: 'loop',
-        limit: 0,
+        limit: 50,
       },
       wedges: {
         mock: '/mock-data/wedges.json',
@@ -487,7 +487,7 @@ window.store = new (class {
    * Triggers an index fetch
    * @param {HTMLElement} block
    */
-  query(block) {
+  query(block, limit) {
     const id = getBlockId(block);
     const query = this.getQuery(block);
 
@@ -540,7 +540,7 @@ window.store = new (class {
     // and only request that with ?offset=
 
     // Fetch new data, cache it then trigger
-    fetch(queryDetails.mock ? url : `${url}&limit=${queryDetails.limit}`)
+    fetch(queryDetails.mock ? url : `${url}&limit=${limit || queryDetails.limit}`)
       .then((req) => {
         if (req.ok) {
           return req.json();
