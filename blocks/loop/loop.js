@@ -139,5 +139,5 @@ export default async function decorate(block) {
   });
 
   // Trigger query
-  window.store.query(block, 10);
+  window.store.query(block, 30);
 }
