@@ -51,6 +51,11 @@ export default async function decorate(block) {
       )
       .join('');
 
+    const withCards = isFirstHero && cards.length;
+    if (withCards) {
+      block.classList.add('with-cards');
+    }
+
     // HTML template in JS to avoid extra waterfall for LCP blocks
     const HTML_TEMPLATE = `
         <div class="hero-container">
@@ -76,7 +81,7 @@ export default async function decorate(block) {
               </div>
             </a>
           </div>
-          ${isFirstHero && cards.length ? `<div class="hero-cards-container">${cardsTemplate}</div>` : ''}
+          ${withCards ? `<div class="hero-cards-container">${cardsTemplate}</div>` : ''}
         </div>
       `;
 
