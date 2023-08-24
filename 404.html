@@ -13,9 +13,6 @@
       type="module"
       crossorigin="use-credentials"
     ></script>
-    <script type="module">
-      import { sampleRUM } from "/scripts/scripts.js";
-    </script>
     <link rel="stylesheet" href="/styles/styles.css" />
     <link rel="stylesheet" href="/styles/lazy-styles.css" />
     <style>
@@ -37,20 +34,17 @@
       }
 
       .error-message h1 {
-        font-family: Tungsten, arial, sans-serif;
+        font-family: var(--font-tungsten);
         font-weight: 600;
-        font-size: 49px;
-        line-height: 78.32px;
-        margin: 0;
-        margin-bottom: 17px;
-        transform: scaleY(1.9);
+        font-size: 89px;
+        margin-bottom: 10px;
+        transform: scaleY(1.4);
+        text-shadow: 1px 1px 0px currentColor;
       }
 
       .error-message p {
-        font-family: GothamGD, arial, sans-serif;
-        font-weight: 325;
-        font-size: 18px;
-        line-height: 29.4px;
+        font-family: var(--font-gotham);
+        line-height: 25.4px;
         text-align: left;
         color: #8f8f8f;
         margin: 0;
@@ -67,7 +61,7 @@
         align-items: center;
         background-color: #ed3e49;
         color: #fff;
-        font-family: GothamGD, arial, sans-serif;
+        font-family: var(--font-gotham);
         font-weight: 700;
         font-size: 12px;
         line-height: 18.72px;
@@ -98,7 +92,7 @@
       }
 
       .error-number {
-        font-family: arial, sans-serif;
+        font-family: var(--font-gotham);
         font-weight: 600;
         font-size: 250px;
         line-height: 540px;
