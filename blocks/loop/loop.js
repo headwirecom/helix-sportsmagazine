@@ -8,6 +8,13 @@ import {
 import { facebookSvg, twitterSvg, linkedInSvg } from '../social-share/social-share.js';
 
 const trendingSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 11 11"><g fill="none" fill-rule="evenodd"><path fill="#000" d="M6.211 2.216l3.5-2.234.58 4.07z"/><path stroke="#000" stroke-width="1.44" d="M8.232 3L6.103 7.677l-3.205-2.07L.622 9.83"/></g></svg>';
+let numberOfEagerCards = 3;
+if (window.innerWidth < 1024) {
+  numberOfEagerCards = 2;
+}
+if (window.innerWidth < 768) {
+  numberOfEagerCards = 1;
+}
 
 const placeholderLoopCardHtml = ({
   image = '',
@@ -16,28 +23,31 @@ const placeholderLoopCardHtml = ({
   title = '',
   date = '',
   path = '#',
-} = {}, index = 4) => `
-  <div class="loop-card-wrapper"> 
-    <a class="loop-card" href="${path}"> 
-      <div class="image-wrapper">
-        ${image ? createOptimizedPicture(image, imageAlt, index < 4, [
-    { media: '(max-width: 768px)', width: '710' },
-    { media: '(max-width: 1024px)', width: '474' },
-    { width: '345' },
+} = {}, index = 4) => {
+  const isEven = index % 2 === 0;
+  return `
+    <div class="loop-card-wrapper"> 
+      <a class="loop-card" href="${path}"> 
+        <div class="image-wrapper">
+          ${image ? createOptimizedPicture(image, imageAlt, index <= numberOfEagerCards, [
+    { media: '(max-width: 768px)', width: isEven ? '710' : '591' },
+    { media: '(max-width: 1024px)', width: isEven ? '474' : '254' },
+    { width: isEven ? '345' : '225' },
   ]).outerHTML : '<picture></picture>'}
-      </div>
-      <div class="text-wrapper">
-        <div class="rubric">
-          ${rubric}
         </div>
-        <h3 class="headline">
-          <span class="headline-span">${title}</span>
-        </h3>
-        <span class="label">${date.includes(',') ? date.split(',')[0] : date}</span>
-      </div>
-    </a>
-  </div>
-`;
+        <div class="text-wrapper">
+          <div class="rubric">
+            ${rubric}
+          </div>
+          <h3 class="headline">
+            <span class="headline-span">${title}</span>
+          </h3>
+          <span class="label">${date.includes(',') ? date.split(',')[0] : date}</span>
+        </div>
+      </a>
+    </div>
+  `;
+};
 
 const placeholderTrendingItemHtml = ({
   image = '', imageAlt = 'alt-text', title = '', path = '#',
@@ -129,5 +139,5 @@ export default async function decorate(block) {
   });
 
   // Trigger query
-  window.store.query(block);
+  window.store.query(block, 30);
 }

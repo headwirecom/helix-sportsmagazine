@@ -436,7 +436,7 @@ window.store = new (class {
       loop: {
         spreadsheet: this._spreadsheets.ARTICLES,
         sheet: 'loop',
-        limit: 50,
+        limit: 530,
       },
       wedges: {
         mock: '/mock-data/wedges.json',
