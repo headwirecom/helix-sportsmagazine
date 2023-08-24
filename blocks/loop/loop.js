@@ -24,15 +24,15 @@ const placeholderLoopCardHtml = ({
   date = '',
   path = '#',
 } = {}, index = 4) => {
-  const isEven = index % 2 === 0;
+  const isEven = index === 0 || index % 2 === 0;
   return `
-    <div class="loop-card-wrapper"> 
+    <div class="loop-card-wrapper">
       <a class="loop-card" href="${path}"> 
         <div class="image-wrapper">
           ${image ? createOptimizedPicture(image, imageAlt, index <= numberOfEagerCards, [
-    { media: '(max-width: 768px)', width: isEven ? '710' : '591' },
-    { media: '(max-width: 1024px)', width: isEven ? '474' : '254' },
-    { width: isEven ? '345' : '225' },
+    { media: '(max-width: 768px)', width: !isEven ? '710' : '591' },
+    { media: '(max-width: 1024px)', width: !isEven ? '474' : '254' },
+    { width: !isEven ? '345' : '225' },
   ]).outerHTML : '<picture></picture>'}
         </div>
         <div class="text-wrapper">
