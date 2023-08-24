@@ -26,7 +26,6 @@ export default async function decorate(block) {
   // rendering content upon fetch complete
   document.addEventListener(`query:${id}`, (event) => {
     heroItems = event.detail.data;
-    console.log('\x1b[31m ~ event:', event);
 
     const heroData = heroItems[heroDataIndex];
     // TODO Add support for multiple queries

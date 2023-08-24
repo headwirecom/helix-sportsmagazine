@@ -16,19 +16,23 @@ const placeholderLoopCardHtml = ({
   title = '',
   date = '',
   path = '#',
-} = {}) => `
+} = {}, index = 4) => `
   <div class="loop-card-wrapper"> 
     <a class="loop-card" href="${path}"> 
       <div class="image-wrapper">
-        ${image ? createOptimizedPicture(image, imageAlt).outerHTML : '<picture></picture>'}
+        ${image ? createOptimizedPicture(image, imageAlt, index < 4, [
+    { media: '(max-width: 768px)', width: '710' },
+    { media: '(max-width: 1024px)', width: '474' },
+    { width: '345' },
+  ]).outerHTML : '<picture></picture>'}
       </div>
       <div class="text-wrapper">
         <div class="rubric">
           ${rubric}
         </div>
-        <h4 class="headline">
+        <h3 class="headline">
           <span class="headline-span">${title}</span>
-        </h4>
+        </h3>
         <span class="label">${date.includes(',') ? date.split(',')[0] : date}</span>
       </div>
     </a>
@@ -38,16 +42,19 @@ const placeholderLoopCardHtml = ({
 const placeholderTrendingItemHtml = ({
   image = '', imageAlt = 'alt-text', title = '', path = '#',
 } = {}) => `
-  <li class="trending-item">
+  <div class="trending-item">
     <a class="trending-link" href="${path}">
       <div class="trending-image-wrapper">
-        ${image ? createOptimizedPicture(image, imageAlt).outerHTML : '<picture></picture>'}
+        ${image ? createOptimizedPicture(image, imageAlt, true, [
+    { media: '(max-width: 768px)', width: '180' },
+    { width: '220' },
+  ]).outerHTML : '<picture></picture>'}
       </div>
       <div class="trending-text-wrapper">
-        <h3 class="trending-title">${title}</h3>
+        <h2 class="trending-title">${title}</h2>
       </div>
     </a>
-  </li>
+  </div>
 `;
 
 const encodedUrl = encodeURIComponent(window.location.href);
@@ -55,7 +62,7 @@ const encodedUrl = encodeURIComponent(window.location.href);
 const placeholderHtml = (data) => `
 <div class="loop-wrapper">
   <div class="trending-wrapper">
-  <ul class="trending-content">
+  <div class="trending-content">
   <div class="trending-heading"><span>Trending</span>${trendingSvg}</div>
 
       ${
@@ -67,7 +74,7 @@ const placeholderHtml = (data) => `
       .map((loopItem) => placeholderTrendingItemHtml(loopItem))
       .join('')
 }
-    </ul>
+    </div>
     </div>
   </div>
 
@@ -88,7 +95,7 @@ const placeholderHtml = (data) => `
   </div>
 
   <section class="loop-content-wrapper">
-    ${!data ? placeholderLoopCardHtml().repeat(30) : data.map((loopItem) => placeholderLoopCardHtml(loopItem)).join('')}
+    ${!data ? placeholderLoopCardHtml().repeat(30) : data.map((loopItem, index) => placeholderLoopCardHtml(loopItem, index)).join('')}
   </section>
 </div>
 `;
