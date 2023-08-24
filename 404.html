@@ -21,7 +21,7 @@
         padding: 0;
       }
 
-      .section {
+      section {
         padding: 50px 0;
         background-color: #f6f6f6;
       }
@@ -171,17 +171,21 @@
             <a href="/" class="button">TAKE ME THERE</a>
           </div>
           <div class="error-image-and-number">
-            <div class="error-image">
-              <img
-                src="https://drive.google.com/uc?export=view&id=1y9XMvEwd7AUrmrEeVbR4yXjq5uCtHobL"
-                alt="Tiger Woods regretting a bad shot"
-              />
-            </div>
+            <div class="error-image"></div>
             <div class="error-number">404</div>
           </div>
         </div>
       </section>
     </main>
     <footer></footer>
+    <script type="module">
+      import { createOptimizedPicture } from "./scripts/lib-franklin.js";
+      const imageUrl =
+        "https://main--helix-sportsmagazine--headwirecom.hlx.page/media_10b8f0c21a329ee5ab764abf34d64a94de757ea2a.png";
+      const imageAlt = "Tiger Woods regretting a bad shot";
+      const pictureElement = createOptimizedPicture(imageUrl, imageAlt);
+      const imageContainer = document.querySelector(".error-image");
+      imageContainer.appendChild(pictureElement);
+    </script>
   </body>
 </html>
