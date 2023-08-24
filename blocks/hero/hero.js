@@ -36,7 +36,7 @@ export default async function decorate(block) {
     const cardsTemplate = cards
       .map((card) => `
               <a href="${card.path}">
-                ${createOptimizedPicture(card.image, card.imageAlt || 'hero card image', isFirstHero, [{ width: '120' }]).outerHTML}
+                ${createOptimizedPicture(card.image, card.imageAlt || 'hero card image', isFirstHero, [{ width: '240' }]).outerHTML}
                 <div>
                   <span>${card.rubric}</span>
                   <p class="hero-card-title">${card.title}</p>
@@ -44,6 +44,11 @@ export default async function decorate(block) {
               </a>
             `)
       .join('');
+
+    const withCards = isFirstHero && cards.length;
+    if (withCards) {
+      block.classList.add('with-cards');
+    }
 
     // HTML template in JS to avoid extra waterfall for LCP blocks
     const HTML_TEMPLATE = `
@@ -63,7 +68,7 @@ export default async function decorate(block) {
               </div>
             </a>
           </div>
-          ${isFirstHero && cards.length ? `<div class="hero-cards-container">${cardsTemplate}</div>` : ''}
+          ${withCards ? `<div class="hero-cards-container">${cardsTemplate}</div>` : ''}
         </div>
       `;
 
