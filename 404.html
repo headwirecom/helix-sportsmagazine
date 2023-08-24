@@ -33,10 +33,7 @@
         align-items: center;
         justify-content: center;
         padding-bottom: 50px;
-      }
-
-      .error-message {
-        width: 500px;
+        flex-wrap: wrap-reverse;
       }
 
       .error-message h1 {
@@ -58,6 +55,8 @@
         color: #8f8f8f;
         margin: 0;
         margin-bottom: 26px;
+        opacity: 0.6;
+        width: 450px;
       }
 
       .error-message .button {
@@ -75,6 +74,10 @@
         letter-spacing: 0.3em;
         text-decoration: none;
         padding: 0;
+      }
+
+      .error-image-and-number {
+        display: flex;
       }
 
       .error-image {
@@ -104,11 +107,61 @@
         margin-left: -140px;
         letter-spacing: -5px;
         transform: scaleY(1.8);
-        margin-top: -200px;
       }
 
       header {
         height: auto;
+      }
+
+      @media (max-width: 768px) {
+        .error-container {
+          flex-direction: column;
+          align-items: center;
+          padding: 0 14px 240px;
+        }
+
+        .error-message {
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+          align-items: center;
+          order: 2;
+          margin-top: 90px;
+        }
+
+        .error-message p {
+          font-family: GothamGD, arial, sans-serif;
+          text-align: left;
+          color: #8f8f8f;
+          margin: 0;
+          margin-bottom: 26px;
+          text-align: center;
+          width: 365px;
+          padding: 0 30px;
+        }
+
+        .error-message h1 {
+          font-size: 28px;
+          line-height: 40px;
+        }
+
+        .error-image-and-number {
+          display: flex;
+          width: 100%;
+          order: 1;
+        }
+
+        .error-image img {
+          width: 200px;
+        }
+
+        .error-number {
+          font-size: 150px;
+          line-height: 250px;
+          font-weight: 100;
+          z-index: 1;
+          transform: scaleY(1.5);
+        }
       }
     </style>
   </head>
@@ -121,18 +174,20 @@
           <div class="error-message">
             <h1>TAKE A MULLIGAN</h1>
             <p>
-              Sorry, we couldn't find the page you were looking for. <br />
-              Check out our homepage for the latest in golf.
+              Sorry, we couldn't find the page you were looking for. Check out
+              our homepage for the latest in golf.
             </p>
             <a href="/" class="button">TAKE ME THERE</a>
           </div>
-          <div class="error-image">
-            <img
-              src="https://drive.google.com/uc?export=view&id=1y9XMvEwd7AUrmrEeVbR4yXjq5uCtHobL"
-              alt="Tiger Woods regretting a bad shot"
-            />
+          <div class="error-image-and-number">
+            <div class="error-image">
+              <img
+                src="https://drive.google.com/uc?export=view&id=1y9XMvEwd7AUrmrEeVbR4yXjq5uCtHobL"
+                alt="Tiger Woods regretting a bad shot"
+              />
+            </div>
+            <div class="error-number">404</div>
           </div>
-          <div class="error-number">404</div>
         </div>
       </div>
     </main>
