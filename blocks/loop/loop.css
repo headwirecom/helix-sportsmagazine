@@ -1,7 +1,3 @@
-.loop-container {
-  border-top: 300px solid rgba(255, 0, 0, 0.24);
-}
-
 .loop-container .loop-wrapper .loop.block {
   background-attachment: fixed;
   background-position: center 300px;
@@ -126,11 +122,11 @@
   }
 
   .loop-container .loop-wrapper .loop.block .trending-wrapper .trending-heading {
-
     width: 93px;
     height: 22px;
     padding: 7px 12px;
   }
+
   .loop-container .loop-wrapper .loop.block .trending-wrapper .trending-heading span {
     font-size: 8px;
   }
@@ -160,7 +156,6 @@
 .loop-container .loop-wrapper .loop.block .loop-header h1 {
   text-transform: uppercase;
   position: relative;
-  text-transform: uppercase;
   color: #263238;
   font-family: var(--font-archivo);
   font-weight: 400;
@@ -172,7 +167,6 @@
   margin-bottom: 6px;
 }
 
-
 .loop-container .loop-wrapper .loop.block .loop-header .loop-dash {
   display: inline-block;
   margin: 0 20px 22px;
@@ -183,11 +177,11 @@
 
 .loop-container .loop-wrapper .loop.block .loop-header .loop-description {
   color: #000;
-  font-family: Georgia,serif;
+  font-family: Georgia, serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 1.55;
-  opacity: .6;
+  opacity: 0.6;
   text-align: left;
   max-width: 343px;
 }
@@ -199,6 +193,7 @@
   justify-content: space-between;
   margin: 0 8px 8px auto;
 }
+
 .loop-container .loop-wrapper .loop.block .loop-header .loop-social-share .loop-social-share-title {
   margin-bottom: 20px;
   font-family: var(--font-work);
@@ -214,7 +209,6 @@
   margin: 0;
   padding: 0;
   display: flex;
-
 }
 
 .loop-container .loop-wrapper .loop.block .loop-header .loop-social-share .loop-social-list li a {
@@ -256,7 +250,6 @@
 }
 
 @media (max-width: 1024px) {
-
   .loop-container .loop-wrapper .loop.block .loop-header h1 {
     font-size: 30px;
     width: 195px;
@@ -265,7 +258,7 @@
   .loop-container .loop-wrapper .loop.block .loop-header .loop-dash {
     margin-left: 0;
   }
-  
+
   .loop-container .loop-wrapper .loop.block .loop-header .loop-description {
     font-size: 12px;
     max-width: 200px;
@@ -281,22 +274,27 @@
     flex-wrap: wrap;
     height: auto;
   }
+
   .loop-container .loop-wrapper .loop.block .loop-header .loop-headline {
     width: 100%;
     flex-shrink: 0;
   }
+
   .loop-container .loop-wrapper .loop.block .loop-header .loop-headline h1 {
     margin: 0 auto;
     font-size: 36px;
     width: 212px;
     text-align: center;
   }
+
   .loop-container .loop-wrapper .loop.block .loop-header .loop-dash {
     display: none;
   }
+
   .loop-container .loop-wrapper .loop.block .loop-header .loop-description {
     margin: 0;
   }
+
   .loop-container .loop-wrapper .loop.block .loop-header .loop-social-share {
     margin: 16px auto 0;
   }
@@ -335,7 +333,7 @@
 }
 
 .loop-container .loop-wrapper .loop.block .loop-content-wrapper .loop-card-wrapper .loop-card:hover {
-  box-shadow: 0 0 26px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 26px 0 rgba(0 0 0 / 20%);
   color: #000;
 }
 
@@ -415,7 +413,15 @@
   color: #000;
 }
 
-.loop-container .loop-wrapper .loop.block .loop-content-wrapper .loop-card-wrapper .loop-card .text-wrapper .headline .headline-span,
+.loop-container
+  .loop-wrapper
+  .loop.block
+  .loop-content-wrapper
+  .loop-card-wrapper
+  .loop-card
+  .text-wrapper
+  .headline
+  .headline-span,
 .loop-container .loop-wrapper .loop.block .loop-content-wrapper .loop-card-wrapper .loop-card .text-wrapper .headline {
   color: #000;
   font-family: var(--font-work);
@@ -450,18 +456,20 @@
   .loop-container .loop-wrapper .loop.block .loop-content-wrapper .loop-card-wrapper .loop-card .image-wrapper {
     overflow: hidden;
   }
+
   .loop-container
-  .loop-wrapper
-  .loop.block
-  .loop-content-wrapper
-  .loop-card-wrapper:nth-child(odd)
-  .loop-card
-  .image-wrapper
-  picture
-  img {
+    .loop-wrapper
+    .loop.block
+    .loop-content-wrapper
+    .loop-card-wrapper:nth-child(odd)
+    .loop-card
+    .image-wrapper
+    picture
+    img {
     max-height: none;
   }
 }
+
 @media (max-width: 768px) {
   .loop-container .loop-wrapper .loop.block .loop-content-wrapper .loop-card-wrapper {
     width: 100%;

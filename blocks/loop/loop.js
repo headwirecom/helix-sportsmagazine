@@ -3,26 +3,20 @@ import {
   parseFragment,
   removeEmptyElements,
   render,
-  convertExcelDate,
-  timeSince,
   getBlockId,
 } from '../../scripts/scripts.js';
-import { facebookSvg, twitterSvg, linkedInSvg } from "../social-share/social-share.js";
+import { facebookSvg, twitterSvg, linkedInSvg } from '../social-share/social-share.js';
 
-const trendingSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 11 11"><g fill="none" fill-rule="evenodd"><path fill="#000" d="M6.211 2.216l3.5-2.234.58 4.07z"/><path stroke="#000" stroke-width="1.44" d="M8.232 3L6.103 7.677l-3.205-2.07L.622 9.83"/></g></svg>'
-
-const loopSocialLinks = [
-
-]
+const trendingSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 11 11"><g fill="none" fill-rule="evenodd"><path fill="#000" d="M6.211 2.216l3.5-2.234.58 4.07z"/><path stroke="#000" stroke-width="1.44" d="M8.232 3L6.103 7.677l-3.205-2.07L.622 9.83"/></g></svg>';
 
 const placeholderLoopCardHtml = ({
-  image="",
-  imageAlt="alt-text",
-  rubric="",
-  title="",
-  date="",
-  path="#"
-}) => `
+  image = '',
+  imageAlt = 'alt-text',
+  rubric = '',
+  title = '',
+  date = '',
+  path = '#',
+} = {}) => `
   <div class="loop-card-wrapper"> 
     <a class="loop-card" href="${path}"> 
       <div class="image-wrapper">
@@ -39,14 +33,11 @@ const placeholderLoopCardHtml = ({
       </div>
     </a>
   </div>
-`
+`;
 
 const placeholderTrendingItemHtml = ({
-  image="",
-  imageAlt="alt-text",
-  title="",
-  path="#"
-}) => `
+  image = '', imageAlt = 'alt-text', title = '', path = '#',
+} = {}) => `
   <li class="trending-item">
     <a class="trending-link" href="${path}">
       <div class="trending-image-wrapper">
@@ -57,21 +48,25 @@ const placeholderTrendingItemHtml = ({
       </div>
     </a>
   </li>
-`
+`;
 
-const encodedUrl = encodeURIComponent(window.location.href)
+const encodedUrl = encodeURIComponent(window.location.href);
 
-const placeholderHtml = (data) => {
-  return `
+const placeholderHtml = (data) => `
 <div class="loop-wrapper">
   <div class="trending-wrapper">
   <ul class="trending-content">
   <div class="trending-heading"><span>Trending</span>${trendingSvg}</div>
 
-      ${!data ? placeholderTrendingItemHtml({}).repeat(6) : 
-        // TODO have trending query and use it instead of loop articles
-        data.slice(0, 6).map((loopItem) => placeholderTrendingItemHtml(loopItem)).join('')
-      }
+      ${
+  !data
+    ? placeholderTrendingItemHtml().repeat(6)
+    // TODO have trending query and use it instead of loop articles
+    : data
+      .slice(0, 6)
+      .map((loopItem) => placeholderTrendingItemHtml(loopItem))
+      .join('')
+}
     </ul>
     </div>
   </div>
@@ -93,19 +88,16 @@ const placeholderHtml = (data) => {
   </div>
 
   <section class="loop-content-wrapper">
-    ${!data ? placeholderLoopCardHtml({}).repeat(30) : 
-      data.map((loopItem) => placeholderLoopCardHtml(loopItem)).join('')
-    }
+    ${!data ? placeholderLoopCardHtml().repeat(30) : data.map((loopItem) => placeholderLoopCardHtml(loopItem)).join('')}
   </section>
 </div>
-`}
+`;
 
 export default async function decorate(block) {
   const id = getBlockId(block);
 
   let loopData;
 
-  
   // using placeholder html
   if (!loopData) {
     block.innerHTML = placeholderHtml();
@@ -114,9 +106,8 @@ export default async function decorate(block) {
   // Rendering content upon fetch complete
   document.addEventListener(`query:${id}`, (event) => {
     loopData = event.detail.data;
-    console.log("\x1b[31m ~ loopData:", loopData)
 
-    const HTML_TEMPLATE = placeholderHtml(loopData)
+    const HTML_TEMPLATE = placeholderHtml(loopData);
 
     // Template rendering
     const template = parseFragment(HTML_TEMPLATE);

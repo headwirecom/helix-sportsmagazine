@@ -408,6 +408,16 @@ window.store = new (class {
     // TODO support gd+ query
     // Author query to query map
     this._queryMap = {
+      hero: {
+        spreadsheet: this._spreadsheets.ARTICLES,
+        sheet: 'golf-news-tours-default',
+        limit: 10,
+      },
+      latest: {
+        spreadsheet: this._spreadsheets.ARTICLES,
+        sheet: 'latest',
+        limit: 50,
+      },
       news: {
         spreadsheet: this._spreadsheets.ARTICLES,
         sheet: 'golf-news-tours-default',
