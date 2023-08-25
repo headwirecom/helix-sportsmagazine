@@ -452,35 +452,30 @@ window.store = new (class {
     // TODO support gd+ query
     // Author query to query map
     this._queryMap = {
-      hero: {
-        spreadsheet: this._spreadsheets.ARTICLES,
-        sheet: 'golf-news-tours-default',
-        limit: 10,
-      },
       latest: {
         spreadsheet: this._spreadsheets.ARTICLES,
         sheet: 'latest',
-        limit: 50,
+        limit: 0,
       },
       news: {
         spreadsheet: this._spreadsheets.ARTICLES,
         sheet: 'golf-news-tours-default',
-        limit: 50,
+        limit: 0,
       },
       features: {
         spreadsheet: this._spreadsheets.ARTICLES,
         sheet: 'golf-news-tours-features',
-        limit: 50,
+        limit: 0,
       },
       courses: {
         spreadsheet: this._spreadsheets.ARTICLES,
         sheet: 'courses',
-        limit: 50,
+        limit: 0,
       },
       loop: {
         spreadsheet: this._spreadsheets.ARTICLES,
         sheet: 'loop',
-        limit: 530,
+        limit: 0,
       },
       wedges: {
         mock: '/mock-data/wedges.json',
@@ -493,6 +488,7 @@ window.store = new (class {
       hero: 5,
       cards: 10,
       carousel: 20,
+      loop: 30,
     };
 
     // Construct limit for each query based on the blocks on the page
@@ -541,7 +537,7 @@ window.store = new (class {
    * Triggers an index fetch
    * @param {HTMLElement} block
    */
-  query(block, limit) {
+  query(block) {
     const id = getBlockId(block);
     const query = this.getQuery(block);
 
@@ -594,7 +590,7 @@ window.store = new (class {
     // and only request that with ?offset=
 
     // Fetch new data, cache it then trigger
-    fetch(queryDetails.mock ? url : `${url}&limit=${limit || queryDetails.limit}`)
+    fetch(queryDetails.mock ? url : `${url}&limit=${queryDetails.limit}`)
       .then((req) => {
         if (req.ok) {
           return req.json();

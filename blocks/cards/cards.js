@@ -65,7 +65,7 @@ export default async function decorate(block) {
       return `
       <a class="main-card" href="${card.href || card.path}">
         <div class="image-bg">
-          ${createOptimizedPicture(card.image, card.imageAlt, false, [{ width: '700' }]).outerHTML}
+          ${createOptimizedPicture(card.image, card.imageAlt || card.title, false, [{ width: '700' }]).outerHTML}
         </div>
         <div class="main-text-wrapper">
           <div class="section">${card.rubric}</div>
@@ -87,7 +87,7 @@ export default async function decorate(block) {
         (card) => `
         <a class="small-card" href="${card.href || card.path}">
           <div class="image-wrapper">
-            ${createOptimizedPicture(card.image, card.imageAlt, false, [{ width: '350' }]).outerHTML}
+            ${createOptimizedPicture(card.image, card.imageAlt || card.title, false, [{ width: '350' }]).outerHTML}
           </div>
           <div class="small-text-wrapper">
             <div class="section">${card.rubric}</div>

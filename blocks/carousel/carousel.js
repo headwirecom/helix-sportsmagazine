@@ -59,7 +59,7 @@ export default async function decorate(block) {
           <a class="carousel-item" href="${carouselItem.path}" >
             <div class="carousel-item-wrapper">
               <div class="carousel-image-wrapper">
-                ${createOptimizedPicture(carouselItem.image, carouselItem.imageAlt || 'carousel cover image', false, isLarge ? [{ width: '700' }] : [{ width: '500' }]).outerHTML}
+                ${createOptimizedPicture(carouselItem.image, carouselItem.imageAlt || carouselItem.title, false, isLarge ? [{ width: '700' }] : [{ width: '500' }]).outerHTML}
               </div>
               
               <div class="carousel-text-content">

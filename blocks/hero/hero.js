@@ -38,7 +38,7 @@ export default async function decorate(block) {
         (card) => `
               <a href="${card.path}">
                 ${
-  createOptimizedPicture(card.image, card.imageAlt || 'hero card image', isFirstHero, [
+  createOptimizedPicture(card.image, card.imageAlt || card.title, isFirstHero, [
     { width: '120' },
   ]).outerHTML
 }
@@ -61,7 +61,7 @@ export default async function decorate(block) {
         <div class="hero-container">
           <div class="hero-image-container">
             ${
-  createOptimizedPicture(heroData.image, heroData.imageAlt || 'hero main image', isFirstHero, [
+  createOptimizedPicture(heroData.image, heroData.imageAlt || heroData.title, isFirstHero, [
     { media: '(min-width: 686px)', width: '686' },
     { media: '(min-width: 966px)', width: '966' },
     { media: '(min-width: 1280px)', width: '1280' },
