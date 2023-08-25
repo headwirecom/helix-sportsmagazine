@@ -444,39 +444,13 @@ window.store = new (class {
 
     // Indexes
     this._spreadsheets = {
-      ARTICLES: 'article-query-index',
-      PRODUCTS: 'product-query-index',
-      GALLERY: 'gallery-query-index',
+      article: 'article-query-index',
+      product: 'product-query-index',
+      gallery: 'gallery-query-index',
     };
 
-    // TODO support gd+ query
-    // Author query to query map
+    // Pre-defined queries
     this._queryMap = {
-      latest: {
-        spreadsheet: this._spreadsheets.ARTICLES,
-        sheet: 'latest',
-        limit: 0,
-      },
-      news: {
-        spreadsheet: this._spreadsheets.ARTICLES,
-        sheet: 'golf-news-tours-default',
-        limit: 0,
-      },
-      features: {
-        spreadsheet: this._spreadsheets.ARTICLES,
-        sheet: 'golf-news-tours-features',
-        limit: 0,
-      },
-      courses: {
-        spreadsheet: this._spreadsheets.ARTICLES,
-        sheet: 'courses',
-        limit: 0,
-      },
-      loop: {
-        spreadsheet: this._spreadsheets.ARTICLES,
-        sheet: 'loop',
-        limit: 0,
-      },
       wedges: {
         mock: '/mock-data/wedges.json',
         limit: 0,
@@ -491,12 +465,35 @@ window.store = new (class {
       loop: 30,
     };
 
-    // Construct limit for each query based on the blocks on the page
     const blockNames = Object.keys(this._blockQueryLimit);
+    const spreadsheets = Object.keys(this._spreadsheets);
+
+    // Find all dynamic queries on the page and map them out
+    // Dynamic queries end with their spreadsheet name e.g. loop-article or latest-gallery
+    const dynamicQuerySelectors = spreadsheets.map((spreadsheet) => `main .block[class*="${spreadsheet}"]`);
+    document.querySelectorAll(dynamicQuerySelectors.join(',')).forEach((block) => {
+      for (const spreadsheet of spreadsheets) {
+        const queryClassName = [...block.classList]
+          .find((className) => className.endsWith(spreadsheet));
+
+        if (queryClassName) {
+          const query = queryClassName.replace(`-${spreadsheet}`, '');
+          if (!this._queryMap[query]) {
+            this._queryMap[query] = {
+              spreadsheet,
+              limit: 0,
+            };
+          }
+        }
+      }
+    });
+
+    // Construct limit for each query based on the blocks on the page
     const queryNames = Object.keys(this._queryMap);
     blockNames.forEach((blockName) => {
       queryNames.forEach((queryName) => {
-        this._queryMap[queryName].limit += document.querySelectorAll(`main .${blockName}.${queryName}.block`).length * this._blockQueryLimit[blockName];
+        const { spreadsheet } = this._queryMap[queryName];
+        this._queryMap[queryName].limit += document.querySelectorAll(`main .${blockName}.${queryName}-${spreadsheet}.block`).length * this._blockQueryLimit[blockName];
       });
     });
 
@@ -519,18 +516,17 @@ window.store = new (class {
    * @return {string}
    */
   getQuery(block) {
-    let query = '';
-
     const queries = Object.keys(this._queryMap);
-    for (const className of block.classList) {
-      if (queries.includes(className)) {
-        query = className;
+
+    for (const query of queries) {
+      const found = [...block.classList].find((className) => className.startsWith(query));
+      if (found) {
         block.dataset.query = query;
         break;
       }
     }
 
-    return query;
+    return block.dataset.query;
   }
 
   /**
@@ -546,20 +542,15 @@ window.store = new (class {
       return;
     }
 
-    // Check if query is available
     const queryDetails = this._queryMap[query];
-    if (!queryDetails) {
-      console.warn(`Query "${query}" not implemented`);
-      return;
-    }
-
     let url;
+
     // Use mock data if defined
     if (queryDetails.mock) {
       url = queryDetails.mock;
     } else {
       // Build query sheet url
-      url = `/${queryDetails.spreadsheet}.json?sheet=${queryDetails.sheet}`;
+      url = `/${this._spreadsheets[queryDetails.spreadsheet]}.json?sheet=${query}`;
     }
 
     // Use cached resource
@@ -615,6 +606,7 @@ window.store = new (class {
         for (const stackId in this._queryStack) {
           if (url === this._queryStack[stackId]) {
             document.dispatchEvent(new CustomEvent(`query:${stackId}`, { detail: this._cache[url] }));
+            // Pop stack id
             delete this._queryStack[stackId];
           }
         }
