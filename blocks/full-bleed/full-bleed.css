@@ -98,6 +98,18 @@
   }
 }
 
+.full-bleed.block .editors-note-wrapper p {
+  font-size: 16px;
+  font-family: var(--font-gotham);
+  font-weight: 500;
+}
+
+@media (min-width: 769px) {
+  .full-bleed.block .editors-note-wrapper p {
+    font-size: 18px;
+  }
+}
+
 .full-bleed.block .article-body div > p {
   margin: 0 auto 30px;
   font-size: 16px;
@@ -140,10 +152,19 @@
   margin: 0 10px;
 }
 
+.full-bleed.block .editors-note-wrapper {
+  padding: 0 20px;
+  max-width: 950px;
+  margin: 0 auto;
+}
+
 .full-bleed.block .byline {
   display: flex;
   height: 10px;
-  justify-content: space-around;
+  justify-content: space-between;
+  padding: 0 20px;
+  max-width: 950px;
+  margin: 0 auto;
 }
 
 @media (max-width: 768px) {
@@ -290,6 +311,10 @@
 .full-bleed.block .article-body a {
   color: #000;
   font-weight: 600;
+}
+
+.full-bleed.block .editors-note-wrapper p a {
+  color: #00e;
 }
 
 .full-bleed.block .attribution a:hover {

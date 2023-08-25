@@ -26,6 +26,20 @@ export default async function decorate(block) {
   // TODO remove once importer fixes photo credit
   const photoCredit = headlineMetadata?.imageCredit ?? headlineMetadata?.photoCredit;
 
+  let editorsNoteString = getMetadata('editors_note');
+  if (editorsNoteString) {
+    const markdownLinksRegex = /\[([\w\s\d]+)\]\(((?:\/|https?:\/\/)[\w\d./?=#]+)\)/gm;
+    const linkMatches = editorsNoteString.match(markdownLinksRegex);
+
+    for (let i = 0; i < linkMatches.length; i += 1) {
+      const trimmedLink = linkMatches[i].substring(1, linkMatches[i].length - 1);
+
+      const [text, url] = trimmedLink.split('](');
+
+      editorsNoteString = editorsNoteString.replace(linkMatches[i], `<a class="editors-note-link" href="${url}">${text}</a>`);
+    }
+  }
+
   // HTML template in JS to avoid extra waterfall for LCP blocks
   const HTML_TEMPLATE = `
 <div class="container">
@@ -59,6 +73,7 @@ export default async function decorate(block) {
   <div class="container-article">
     <div class="content-wrapper">
         <article class="article-content">
+        ${editorsNoteString ? `<div class="editors-note-wrapper"><p><i>Editor's note: ${editorsNoteString}</i></p></div>` : ''}
             <div class="byline">
                 <div class="attribution">
                     <span>By</span>
