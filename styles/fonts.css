@@ -70,3 +70,44 @@
     font-weight: 700;
     font-style: italic;
 }
+
+@font-face {
+    font-family: Archivo;
+    src: url('/styles/fonts/Archivo/ArchivoBlack-Regular.woff2') format('woff2');
+    font-display: swap;
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Chivo Black";
+    src: url('/styles/fonts/Chivo/Chivo-Black.woff2') format('woff2');
+    font-display: swap;
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Chivo Bold";
+    src: url('/styles/fonts/Chivo/Chivo-Bold.woff2') format('woff2');
+    font-display: swap;
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Work Sans";
+    src: url('/styles/fonts/Work/WorkSans-Black.woff2') format('woff2');
+    font-display: swap;
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Work Sans";
+    src: url('/styles/fonts/Work/WorkSans-Bold.woff2') format('woff2');
+    font-display: swap;
+    font-weight: 700;
+    font-style: normal;
+}
+

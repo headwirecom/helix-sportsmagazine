@@ -16,7 +16,7 @@ export default async function decorate(block) {
   const isFirstHero = document.querySelector(".hero.block[data-block-name='hero']").isEqualNode(block);
 
   const heroDataIndex = heroItemsIndex;
-  heroItemsIndex += (isFirstHero ? 5 : 1);
+  heroItemsIndex += isFirstHero ? 5 : 1;
 
   // settings placeholder data
   if (!heroItems) {
@@ -34,15 +34,21 @@ export default async function decorate(block) {
     assignSlot(block, 'image', 'picture');
 
     const cardsTemplate = cards
-      .map((card) => `
+      .map(
+        (card) => `
               <a href="${card.path}">
-                ${createOptimizedPicture(card.image, card.imageAlt || 'hero card image', isFirstHero, [{ width: '240' }]).outerHTML}
+                ${
+  createOptimizedPicture(card.image, card.imageAlt || card.title, isFirstHero, [
+    { width: '120' },
+  ]).outerHTML
+}
                 <div>
                   <span>${card.rubric}</span>
                   <p class="hero-card-title">${card.title}</p>
                 </div>
               </a>
-            `)
+            `,
+      )
       .join('');
 
     const withCards = isFirstHero && cards.length;
@@ -54,7 +60,14 @@ export default async function decorate(block) {
     const HTML_TEMPLATE = `
         <div class="hero-container">
           <div class="hero-image-container">
-            ${createOptimizedPicture(heroData.image, heroData.imageAlt || 'hero main image', isFirstHero, [{ media: '(min-width: 686px)', width: '686' }, { media: '(min-width: 966px)', width: '966' }, { media: '(min-width: 1280px)', width: '1280' }, { width: '1850' }]).outerHTML}
+            ${
+  createOptimizedPicture(heroData.image, heroData.imageAlt || heroData.title, isFirstHero, [
+    { media: '(min-width: 686px)', width: '686' },
+    { media: '(min-width: 966px)', width: '966' },
+    { media: '(min-width: 1280px)', width: '1280' },
+    { width: '1850' },
+  ]).outerHTML
+}
           </div>
           <div class="hero-text-container">
             <a href="${heroData.path}">

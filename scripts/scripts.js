@@ -462,6 +462,7 @@ window.store = new (class {
       hero: 5,
       cards: 10,
       carousel: 20,
+      loop: 30,
     };
 
     const blockNames = Object.keys(this._blockQueryLimit);

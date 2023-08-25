@@ -33,10 +33,47 @@
   size-adjust: 58.90%;
 }
 
+@font-face {
+  font-family: 'Archivo Fallback';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Arial');
+  ascent-override: 70.47%;
+  descent-override: 16.86%;
+  line-gap-override: 0.00%;
+  size-adjust: 124.59%;
+}
+
+@font-face {
+  font-family: 'Chivo Black Fallback';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Arial');
+  ascent-override: 84.64%;
+  descent-override: 22.51%;
+  line-gap-override: 0.00%;
+  size-adjust: 111.06%;
+}
+
+@font-face {
+  font-family: 'Work Sans Fallback';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Arial');
+  ascent-override: 82.24%;
+  descent-override: 21.49%;
+  line-gap-override: 0.00%;
+  size-adjust: 113.08%;
+}
+
 :root {
   /* CSS vars */
   --font-gotham: "Gotham", "Gotham Fallback", helvetica, ubuntu, roboto, noto, sans-serif;
   --font-tungsten: "Tungsten", "Tungsten Fallback", helvetica, ubuntu, roboto, noto, sans-serif;
+  --font-archivo: "Archivo", "Archivo Fallback", helvetica, ubuntu, roboto, noto, sans-serif;
+  --font-chivo-black: "Chivo Black", "Chivo Black Fallback", helvetica, ubuntu, roboto, noto, sans-serif;
+  --font-chivo-bold: "Chivo Bold", "Chivo Bold Fallback", helvetica, ubuntu, roboto, noto, sans-serif;
+  --font-work: "Work Sans", "Work Sans Fallback", helvetica, ubuntu, roboto, noto, sans-serif;;
   --header-height: 120px;
   --leaderboard-height: 80px;
   --link-hover-color: #ed3e49;
