@@ -38,6 +38,8 @@ export default async function decorate(block) {
               <slot name="heading"></slot>
               <slot name="description"></slot>
           </div>
+          <!-- this slot must be wrapped in a p tag otherwise other code will break the block -->
+          <p><slot name="editors-note"></slot></p>
           <div class="byline">
               <div class="attribution">
                   <span>By</span>

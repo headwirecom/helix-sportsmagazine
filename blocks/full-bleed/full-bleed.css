@@ -147,6 +147,10 @@
   margin: 0 auto;
 }
 
+.full-bleed.block .lead .editors-note.block {
+  display: none;
+}
+
 .full-bleed.block .byline {
   display: flex;
   height: 10px;
@@ -158,6 +162,14 @@
 
 @media (max-width: 768px) {
   .full-bleed.block .byline {
+    display: none;
+  }
+
+  .full-bleed.block .lead .editors-note.block {
+    display: block;
+  }
+
+  .full-bleed.block .article-content .editors-note.block {
     display: none;
   }
 }
