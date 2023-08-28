@@ -46,6 +46,8 @@ ${!gdPlusArticle ? '' : premiumArticleBanner(2)}
               <slot name="heading"></slot>
               <slot name="description"></slot>
           </div>
+          <!-- this slot must be wrapped in a p tag otherwise other code will break the block -->
+          <p><slot name="editors-note"></slot></p>
           <div class="byline">
               <div class="attribution">
                   <span>By</span>
@@ -67,6 +69,7 @@ ${!gdPlusArticle ? '' : premiumArticleBanner(2)}
   <div class="container-article">
     <div class="content-wrapper">
         <article class="article-content">
+        <slot name="editors-note"></slot>
             <div class="byline">
                 <div class="attribution">
                     <span>By</span>
@@ -108,6 +111,12 @@ ${!gdPlusArticle ? '' : premiumArticleBanner(2)}
   const share = buildBlock('social-share', { elems: [] });
   share.setAttribute('slot', 'share');
   block.append(share);
+
+  const editorsNote = block.querySelector('.editors-note');
+  if (editorsNote) {
+    decorateBlock(editorsNote);
+    assignSlot(block, 'editors-note', '.editors-note');
+  }
 
   block.querySelectorAll('p').forEach((p) => {
     if (p.textContent.includes('• • •')) {
