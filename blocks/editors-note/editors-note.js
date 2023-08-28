@@ -3,9 +3,6 @@ import {
 } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
-  console.log('\x1b[31m ~ block:', block);
-  block.querySelector('div > div').type = 'i';
-
   const noteContent = block.querySelector('div > div > div').innerHTML;
 
   const HTML_TEMPLATE = `
