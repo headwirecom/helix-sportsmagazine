@@ -9,7 +9,7 @@ import {
   buildBlock, decorateBlock, getMetadata, loadBlocks,
 } from '../../scripts/lib-franklin.js';
 
-const gdPlusArticle = getMetadata('gdplus').length > 0
+const gdPlusArticle = getMetadata('gdplus').length > 0;
 const rubric = getMetadata('rubric');
 const author = getMetadata('author');
 // TODO remove once importer fixes photo credit

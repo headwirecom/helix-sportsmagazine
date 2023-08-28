@@ -621,16 +621,16 @@ window.store = new (class {
  * Generates HTML for the premium article banner.
  * @param {Number} Number of leftover articles to compare to.
  */
-export const premiumArticleBanner = (leftoverArticles=0) => {
+export const premiumArticleBanner = (leftoverArticles = 0) => {
   let text;
   if (leftoverArticles > 1) {
-    text = `You have <strong>${leftoverArticles}</strong> free premium articles remaining.`
+    text = `You have <strong>${leftoverArticles}</strong> free premium articles remaining.`;
   }
   if (leftoverArticles === 1) {
-    text = 'This is your last free premium article for the month.'
+    text = 'This is your last free premium article for the month.';
   }
   if (leftoverArticles < 1) {
-    text = 'You are out of free premium articles.'
+    text = 'You are out of free premium articles.';
   }
 
   return `
@@ -642,5 +642,5 @@ export const premiumArticleBanner = (leftoverArticles=0) => {
         </a>
       </div>
     </div>
-  `
+  `;
 };

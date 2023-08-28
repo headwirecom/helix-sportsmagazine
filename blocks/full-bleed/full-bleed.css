@@ -8,6 +8,7 @@
   border-right: solid 2px white;
   box-sizing: content-box;
 }
+
 .full-bleed.block .gd-plus-icon.dark {
   display: none;
 }
@@ -20,11 +21,7 @@
   .full-bleed.block .gd-plus-icon.light {
     display: none;
   }
-
-  
 }
-
-
 
 .full-bleed.block .credit {
   margin: 0 auto;
@@ -297,7 +294,7 @@
   }
 }
 
-.full-bleed.block .lead .image img {
+.full-bleed.block .lead img:not(.gd-plus-icon) {
   object-position: 50% 10%;
   height: auto;
   max-height: 680px;
@@ -306,7 +303,7 @@
 }
 
 @media (max-width: 768px) {
-  .full-bleed.block .lead .image img {
+  .full-bleed.block .lead img:not(.gd-plus-icon) {
     height: auto;
     object-fit: cover;
   }
@@ -347,7 +344,7 @@
   margin-top: 0;
 }
 
-.full-bleed.block .article-body img {
+.full-bleed.block .article-body img:not(.gd-plus-icon) {
   width: 100%;
   height: auto;
 }

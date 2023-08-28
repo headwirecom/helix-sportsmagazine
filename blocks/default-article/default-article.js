@@ -18,7 +18,7 @@ import {
  * @param {HTMLDivElement} block
  */
 export default async function decorate(block) {
-  const gdPlusArticle = getMetadata('gdplus').length > 0
+  const gdPlusArticle = getMetadata('gdplus').length > 0;
   const rubric = getMetadata('rubric');
   const author = getMetadata('author');
   const publicationDate = getMetadata('publication-date');
