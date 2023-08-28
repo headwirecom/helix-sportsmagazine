@@ -20,7 +20,7 @@
   background-color: #f2f2f2;
 }
 
-.gallery.block .container-article img {
+.gallery.block .container-article img:not(.gd-plus-icon) {
   width: 100%;
   height: auto;
   object-fit: contain;
