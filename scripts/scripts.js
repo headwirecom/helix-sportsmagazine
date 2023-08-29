@@ -23,6 +23,7 @@ export const ARTICLE_TEMPLATES = {
   Gallery: 'gallery',
   GalleryListicle: 'gallery-listicle',
   ProductListing: 'product-listing',
+  TheTigerVault: 'the-tiger-vault',
 };
 
 const LCP_BLOCKS = [...Object.values(ARTICLE_TEMPLATES), 'hero']; // add your LCP blocks to the list
