@@ -481,7 +481,7 @@ window.store = new (class {
           if (!this._queryMap[query]) {
             this._queryMap[query] = {
               spreadsheet,
-              limit: 0,
+              limit: 50,
             };
           }
         }
@@ -553,8 +553,8 @@ window.store = new (class {
       url = `/${this._spreadsheets[queryDetails.spreadsheet]}.json?sheet=${query}`;
     }
 
-    // Use cached resource
-    if (this._cache[url]) {
+    // Use cached resource & that it has data
+    if (this._cache[url] && this._cache[url].limit) {
       // Cache is already populated
       if (this._cache[url].data.length) {
         // Only trigger if there is enough data
@@ -581,7 +581,7 @@ window.store = new (class {
     // and only request that with ?offset=
 
     // Fetch new data, cache it then trigger
-    fetch(queryDetails.mock ? url : `${url}&limit=${queryDetails.limit}`)
+    fetch(queryDetails.mock ? url : `${url}&limit=${queryDetails.limit || 50}`)
       .then((req) => {
         if (req.ok) {
           return req.json();
