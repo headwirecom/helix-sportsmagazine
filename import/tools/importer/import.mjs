@@ -1,5 +1,138 @@
 "use strict";
 
+async function _sitemap() {
+  console.log('fetching sitemap');
+  let sitemap = [];
+  const resp = await fetch('http://localhost:3001/tools/importer/data/sitemap.json');
+  if (resp.ok) {
+    const text = await resp.text();
+    console.log('Parsing sitemap to JSON');
+    sitemap = JSON.parse(text);
+    console.log('Parsed sitemap');
+  } else {
+    console.error(`Unable to get sitemap. Response status ${resp.status}`);
+  }
+  return sitemap;
+}
+
+const sitemap = await _sitemap();
+
+function mapToFranklinPath(path) {
+  let newPath = path.replace(/\/content\/golfdigest-com\/en/, '').replace('\.html', '');
+  newPath = WebImporter.FileUtils.sanitizePath(newPath);
+  return newPath;
+}
+
+function findLongUrlInSitemap(path) {
+  const map = sitemap.find(map => map.hasOwnProperty(path));
+  if (map) {
+    return map[path];
+  }
+  return null;
+}
+
+async function getRedirect(url) {
+  const resp = await fetch(url);
+  if (resp.redirected) {
+    return resp.url;
+  }
+  return false;
+}
+
+async function parseHTML(text) {
+  // DOMParser not present in Node
+  if (typeof DOMParser === 'undefined') {
+    const jsdom = new JSDOM(text);
+    return jsdom.window.document;
+  } else {
+    const parser = new DOMParser();
+    return parser.parseFromString(text, 'text/html');
+  }
+}
+
+async function fetchDocument(url) {
+  const resp = await fetch(url);
+  if (resp.ok) {
+    const text = await resp.text();
+    return await parseHTML(text);
+  } else {
+    console.log(`Unable to fetch ${url}. Response status: ${resp.status}`);
+    throw new Error(resp.status);
+  }
+}
+
+async function fetchLongPath(url) {
+  console.log(`fetching long path from ${url}`);
+  const doc = await fetchDocument(url);
+  if (doc) {
+    return doc.body.getAttribute('data-page-path');
+  }
+}
+
+function shouldRewriteLink(href) {
+  return (href.startsWith('https://www.golfdigest.com/') || 
+    href.startsWith('//www.golfdigest.com/') ||
+    (href.startsWith('/') && !href.startsWith('//')));
+}
+
+async function updateLink(el, err) {
+  let href = el.href;
+  
+  // is this an internal link?
+  if (shouldRewriteLink(href)) {
+    console.log(`rewriting ${href} to franklin url`);
+    href = href.replace('https:','').replace('\/\/www.golfdigest.com', '');
+    let oldPath = href;
+    if (!href.startsWith('/content/golfdigest-com/en/')) {
+      href = findLongUrlInSitemap(href);
+    }
+    if (href) {
+      href = mapToFranklinPath(href);
+      // console.log(`Replacing internal link ${el.href} with ${href}`);
+      el.setAttribute('href', href);
+    } else {
+      const redirect = await getRedirect(`https://www.golfdigest.com${oldPath}`);
+      if (redirect) {
+        console.log(`${oldPath} redirected to ${redirect}`);
+        err.push(`Redirect: [${el.innerHTML}](${el.href}) to ${redirect}`);
+        el.setAttribute('href', redirect);
+        updateLink(el, err);
+      } else {
+        console.warn(`Unable to replace link ${el.href} with Franklin path. Item not found in sitemap.`);
+        try {
+          href = await fetchLongPath(`https://www.golfdigest.com${oldPath}`);
+        } catch(error) {
+          err.push(`Unble to map: [${el.innerHTML}](${el.href}) ${error.message}`);
+          console.warn(`Unable to map ${el.hre} Franklin path. ${error}`);
+          return;
+        }
+        if (href) {
+          href = mapToFranklinPath(href);
+          // console.log(`Replacing internal link ${el.href} with ${href}`);
+          el.setAttribute('href', href);
+        } else {
+          console.warn(`Unable to map ${el.hre} Franklin path.`);
+          err.push(`Unble to map: [${el.innerHTML}](${el.href})`);
+        }
+      }
+    }
+  }
+}
+
+async function updateInternalLinks(dom, report) {
+  const err = [];
+  const f = async (el) => {
+    await updateLink(el, err);
+  };
+  const links = dom.querySelectorAll('a');
+  for (let el of links) {
+    await f(el);
+  }
+  if (report && err.length > 0) {
+    report.linkRewriteErrors = err.join('\n');
+  }
+}
+
 function replaceEmbed(el, url) {
   el.insertAdjacentHTML('beforebegin', `<a href=${url}>${url}</a>`);
   el.remove();
@@ -509,11 +642,14 @@ function transformProductDOM(document, templateConfig) {
 }
 
 function mapToDocumentPath(document, url) {
+  let franklinPath = null;
   let contentPath = document.body.getAttribute('data-page-path');
   if (contentPath) {
-    return contentPath.replace(/\/content\/golfdigest-com\/en/, '');
+    franklinPath = mapToFranklinPath(contentPath);
+  } else {
+    franklinPath = mapToFranklinPath(new URL(url).pathname.replace(/\.html$/, '').replace(/\/$/, ''));
   }
-  return new URL(url).pathname.replace(/\.html$/, '').replace(/\/$/, '').replace(/\/content\/golfdigest-com\/en/, '');
+  return franklinPath;
 }
 
 const TRANSFORM_CONFIG = {
@@ -569,7 +705,7 @@ function applyMarkupFixes(document) {
   fixBrInsideLinks(document)
 }
 
-function trasformDOM(document) {
+async function trasformDOM(document) {
   const templateConfig = findTemplateConfig(document);
 
   let retObj = {
@@ -583,6 +719,7 @@ function trasformDOM(document) {
   if (templateConfig) {
     applyMarkupFixes(document);
     retObj = templateConfig.transformer(document, templateConfig);
+    await updateInternalLinks(retObj.element, retObj.report);
   } else {
     const bodyClass = document.querySelector('body').getAttribute('class');
     throw new Error(`Unknown page type. Body class list ${bodyClass}`);
@@ -612,9 +749,9 @@ function preprocess({ document, url, html, params }) {
    * @param {object} params Object containing some parameters given by the import process.
    * @returns {HTMLElement} The root element to be transformed
    */
-function transform({document, url, html, params}) {
+async function transform({document, url, html, params}) {
   const docPath = mapToDocumentPath(document, url);
-  const retObj = trasformDOM(document);
+  const retObj = await trasformDOM(document);
   return [{
     element: retObj.element,
     path: docPath,
