@@ -64,6 +64,10 @@ indices:
         select: head > meta[name="author-url"]
         value: |
           attribute(el, 'content')
+      videoUrl:
+        select: div.embed iframe
+        value: |
+          attribute(el, 'src')
   products:
     include:
      - '/content-v2/**/products/**'
