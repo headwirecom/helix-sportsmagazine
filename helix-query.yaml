@@ -65,9 +65,9 @@ indices:
         value: |
           attribute(el, 'content')
       videoUrl:
-        select: div.embed iframe
+        select: main > div
         value: |
-          attribute(el, 'content')
+          innerHTML(el)
   products:
     include:
      - '/content-v2/**/products/**'
