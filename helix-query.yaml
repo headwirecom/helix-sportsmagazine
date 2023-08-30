@@ -65,9 +65,9 @@ indices:
         value: |
           attribute(el, 'content')
       videoUrl:
-        select: main > div
+        select: a[href*="brightcove"]
         value: |
-          innerHTML(el)
+          attribute(el, 'href')
   products:
     include:
      - '/content-v2/**/products/**'
