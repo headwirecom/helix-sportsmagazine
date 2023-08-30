@@ -64,6 +64,10 @@ indices:
         select: head > meta[name="author-url"]
         value: |
           attribute(el, 'content')
+      videoUrl:
+        select: a[href*="brightcove"]
+        value: |
+          attribute(el, 'href')
   products:
     include:
      - '/content-v2/**/products/**'
