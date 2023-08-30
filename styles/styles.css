@@ -189,3 +189,11 @@ a:hover {
 .premium-article-banner .premium-link .red-plus {
   color: #ED3E49;
 }
+
+a .image-link-hover-animation img {
+  transition: transform 3s, -webkit-transform 3s;
+}
+
+a:hover .image-link-hover-animation img {
+  transform: scale(1.2);
+}
