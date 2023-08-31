@@ -31,7 +31,12 @@ export default async function decorate(block) {
           </div>
         </div>
         <div class="tiger-hero-image-wrapper image-link-hover-animation">
-          ${createOptimizedPicture(heroImage.src, heroImageAlt.innerText || 'Tiger Vault Hero Image', true, [{ width: '800' }]).outerHTML}
+          ${createOptimizedPicture(heroImage.src, heroImageAlt.innerText || 'Tiger Vault Hero Image', true, [
+    { media: '(max-width: 768px)', width: '750' },
+    { media: '(max-width: 1024px)', width: '500' },
+    { media: '(max-width: 2000px)', width: '990' },
+    { width: '1150' },
+  ]).outerHTML}
         </div>
         </div>
         </a>
