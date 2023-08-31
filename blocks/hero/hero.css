@@ -432,3 +432,21 @@
 .hero.block.columns:hover .hero-image-container img {
     transform: scale(1.1);
 }
+
+/* Hero dark */
+.hero.block.dark .hero-text-container {
+    background-color: #151517;
+    color: #fff;
+}
+
+.hero.block.dark .hero-text-container a {
+    justify-content: center;
+}
+
+.hero.block.dark .hero-text-container :is(h1, h2, p, a, span) {
+    color: #fff;
+}
+
+.hero.block.dark .hero-container {
+    margin-top: 90px;
+}
