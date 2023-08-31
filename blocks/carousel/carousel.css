@@ -635,6 +635,7 @@
   background-color: #1c1c1c;
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
 .carousel.block.dark 
   .carousel-main-wrapper 
   .carousel-frame 
@@ -642,6 +643,8 @@
  background-color: #1c1c1c;
  border: none;
 }
+
+
 
 /* With video variation */
 .carousel.block.with-video 
