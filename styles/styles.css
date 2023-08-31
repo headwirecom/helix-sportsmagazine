@@ -154,6 +154,16 @@ a:hover {
   margin-bottom: 40px;
 }
 
+/* Landing-page dark */
+.landing-page.dark {
+  background-color: black;
+}
+
+/* Landing-page dark */
+.landing-page.dark {
+  background-color: black;
+}
+
 /* premium banner */
 .premium-article-banner {
   border-bottom: 3px solid #ff4140;
