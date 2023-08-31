@@ -63,8 +63,10 @@ export default async function decorate(block) {
               </div>
               
               <div class="carousel-text-content">
-                ${carouselItem.rubric ? `<span class="sub-heading">${carouselItem.rubric}</span>` : ''}
+                ${!block.classList.contains('with-video') && carouselItem.rubric ? `<span class="sub-heading">${carouselItem.rubric}</span>` : ''}
                 <h3 class="carousel-item-title">${carouselItem.title}</h3>
+                <!-- TODO remove placeholder, add dynamic data time duration -->
+                ${block.classList.contains('with-video') ? '<p class="carousel-video-duration">05:35</p>' : ''}
                 ${isCourses && carouselItem.location ? `<span class="carousel-item-location">${carouselItem.location}</span>` : ''}
   
                 ${Array.isArray(carouselItem.awards) && carouselItem.awards.length ? `<ul class="carousel-item-pills">${carouselItem.awards.map((award) => `<li class="pill-item">${award}</li>`).join('')}</ul>` : ''}
@@ -272,6 +274,9 @@ export default async function decorate(block) {
       };
       window.addEventListener('resize', debouncedResizeHandler);
     }
+
+    // Render template
+    render(template, block);
 
     // Render template
     render(template, block);
