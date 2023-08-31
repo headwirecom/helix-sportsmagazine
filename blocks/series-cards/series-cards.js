@@ -53,7 +53,6 @@ export default async function decorate(block) {
   // Rendering content upon fetch complete
   document.addEventListener(`query:${id}`, (event) => {
     seriesData = event.detail.data;
-    console.log('\x1b[31m ~ event:', event);
 
     // Template rendering
     const template = parseFragment(placeholderHtml());
