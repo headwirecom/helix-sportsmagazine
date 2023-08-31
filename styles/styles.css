@@ -155,6 +155,7 @@ a:hover {
 }
 
 /* Landing-page dark */
+.the-tiger-vault.dark,
 .landing-page.dark {
   background-color: black;
 }
