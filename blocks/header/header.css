@@ -1153,8 +1153,8 @@
   }
 }
 
-
 /* Header dark */
+
 .the-tiger-vault.dark .header-wrapper .header.block,
 .landing-page.dark .header-wrapper .header.block {
   background-color: #151517;
@@ -1169,29 +1169,32 @@
 .landing-page.dark .header .header-sub-nav li.active a {
   color: white;
 }
-
-.the-tiger-vault.dark .home-page .header:not(.is-scrolling) .profile-info-button-login,
-.landing-page.dark .home-page .header:not(.is-scrolling) .profile-info-button-login {
-  color: var(--link-hover-color);
+/* stylelint-disable-next-line no-descending-specificity */
+.the-tiger-vault.dark .profile-info-button-login,
+.landing-page.dark .profile-info-button-login {
+  color: var(--link-hover-color); 
+}
+/* stylelint-disable-next-line no-descending-specificity */
+.the-tiger-vault.dark .header-logo svg path:nth-child(2),
+.the-tiger-vault.dark .header-logo svg path:nth-child(3),
+.landing-page.dark .header-logo svg path:nth-child(2),
+.landing-page.dark .header-logo svg path:nth-child(3) {
+  fill: #FFF; 
+  color: #FFF; 
 }
 
 .the-tiger-vault.dark .header .nav-menu-bottom .profile-info-button-wrapper .profile-info-button-login:hover,
 .landing-page.dark .header .nav-menu-bottom .profile-info-button-wrapper .profile-info-button-login:hover {
-  fill: #FFF; 
   color: #FFF; 
 }
 
-.the-tiger-vault.dark .header-logo svg path:nth-child(2),
-.the-tiger-vault.dark .header-logo svg path:nth-child(3),
-.the-tiger-vault.dark .header-menu-button svg path,
-.landing-page.dark .header-logo svg path:nth-child(2),
-.landing-page.dark .header-logo svg path:nth-child(3),
-.landing-page.dark .header-menu-button svg path {
-  fill: #FFF; 
-  color: #FFF; 
+.the-tiger-vault.dark .header:not(.is-scrolling) .header-menu-button svg path,
+.landing-page.dark .header:not(.is-scrolling) .header-menu-button svg path {
+  fill: #FFF;
+  color: #FFF;
 }
 
-.the-tiger-vault.dark .header-search-button svg path,
-.landing-page.dark .header-search-button svg path {
-  stroke: #FFF; 
+.the-tiger-vault.dark .header:not(.is-scrolling) .header-search-button svg path,
+.landing-page.dark .header:not(.is-scrolling) .header-search-button svg path {
+  stroke: #FFF;
 }
