@@ -1153,8 +1153,8 @@
   }
 }
 
-
 /* Header dark */
+
 .landing-page.dark .header-wrapper .header.block {
   background-color: #151517;
 }
@@ -1166,23 +1166,26 @@
 .landing-page.dark .header .header-sub-nav li.active a {
   color: white;
 }
-
-.landing-page.dark .home-page .header:not(.is-scrolling) .profile-info-button-login {
-  color: var(--link-hover-color);
+/* stylelint-disable-next-line no-descending-specificity */
+.landing-page.dark .profile-info-button-login {
+  color: var(--link-hover-color); 
+}
+/* stylelint-disable-next-line no-descending-specificity */
+.landing-page.dark .header-logo svg path:nth-child(2),
+.landing-page.dark .header-logo svg path:nth-child(3) {
+  fill: #FFF; 
+  color: #FFF; 
 }
 
 .landing-page.dark .header .nav-menu-bottom .profile-info-button-wrapper .profile-info-button-login:hover {
-  fill: #FFF; 
   color: #FFF; 
 }
 
-.landing-page.dark .header-logo svg path:nth-child(2),
-.landing-page.dark .header-logo svg path:nth-child(3),
-.landing-page.dark .header-menu-button svg path {
-  fill: #FFF; 
-  color: #FFF; 
+.landing-page.dark .header:not(.is-scrolling) .header-menu-button svg path {
+  fill: #FFF;
+  color: #FFF;
 }
 
-.landing-page.dark .header-search-button svg path {
-  stroke: #FFF; 
+.landing-page.dark .header:not(.is-scrolling) .header-search-button svg path {
+  stroke: #FFF;
 }
