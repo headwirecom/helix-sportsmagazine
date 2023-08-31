@@ -616,3 +616,31 @@ window.store = new (class {
       });
   }
 })();
+
+/**
+ * Generates HTML for the premium article banner.
+ * @param {Number} Number of leftover articles to compare to.
+ */
+export const premiumArticleBanner = (leftoverArticles = 0) => {
+  let text;
+  if (leftoverArticles > 1) {
+    text = `You have <strong>${leftoverArticles}</strong> free premium articles remaining.`;
+  }
+  if (leftoverArticles === 1) {
+    text = 'This is your last free premium article for the month.';
+  }
+  if (leftoverArticles < 1) {
+    text = 'You are out of free premium articles.';
+  }
+
+  return `
+    <div class="premium-article-banner ${leftoverArticles < 1 ? 'out-of-free-articles' : ''}">
+      <div class="premium-banner-text-wrapper">
+        <span class="premium-message">${text}</span>
+        <a class="premium-link" src="#" target="_blank">
+          Subscribe to <strong>Golf Digest<span class="red-plus">+</span></strong>
+        </a>
+      </div>
+    </div>
+  `;
+};

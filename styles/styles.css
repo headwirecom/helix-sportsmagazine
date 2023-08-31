@@ -154,7 +154,44 @@ a:hover {
   margin-bottom: 40px;
 }
 
+/* premium banner */
+.premium-article-banner {
+  border-bottom: 3px solid #ff4140;
+  padding: 21px;
+  background-color: #f2f2f2;
+}
+
+.premium-article-banner.out-of-free-articles {
+  border: 2px solid #ff4140;
+}
+
+.premium-article-banner .premium-banner-text-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 16px;
+  font-family: var(--font-gotham);
+}
+
+.premium-article-banner .premium-link {
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color .1s ease-out;
+  font-size: 16px;
+}
+
+.premium-article-banner .premium-link:hover {
+  color: #3577b1;
+}
+
+.premium-article-banner .premium-link .red-plus {
+  color: #ED3E49;
+}
+
 /* Landing-page dark */
 .landing-page.dark {
   background-color: black;
 }
+

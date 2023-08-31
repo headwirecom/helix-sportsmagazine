@@ -6,6 +6,7 @@ import {
   parseSectionMetadata,
   addPhotoCredit,
   ARTICLE_TEMPLATES,
+  premiumArticleBanner,
 } from '../../scripts/scripts.js';
 import {
   buildBlock,
@@ -18,6 +19,8 @@ import {
  * @param {HTMLDivElement} block
  */
 export default async function decorate(block) {
+  const gdPlusArticle = getMetadata('gdplus').length > 0;
+
   const rubric = getMetadata('rubric');
   const author = getMetadata('author');
   const authorURL = getMetadata('author-url');
@@ -28,16 +31,23 @@ export default async function decorate(block) {
 
   // HTML template in JS to avoid extra waterfall for LCP blocks
   const HTML_TEMPLATE = `
+${!gdPlusArticle ? '' : premiumArticleBanner(2)}
 <div class="container">
   <div class="lead">
       <div class="headline">
           <p class="rubric">
+              ${!gdPlusArticle ? '' : `
+                <img width="51" height="19" class="gd-plus-icon light" src="/icons/gd-plus-light.svg" alt="GD Plus Icon" />
+                <img width="51" height="19" class="gd-plus-icon dark" src="/icons/gd-plus-dark.svg" alt="GD Plus Icon" />
+              `}
               <span>${rubric}</span>
           </p>
           <div class="title">
               <slot name="heading"></slot>
               <slot name="description"></slot>
           </div>
+          <!-- this slot must be wrapped in a p tag otherwise other code will break the block -->
+          <p><slot name="editors-note"></slot></p>
           <div class="byline">
               <div class="attribution">
                   <span>By</span>
@@ -59,6 +69,7 @@ export default async function decorate(block) {
   <div class="container-article">
     <div class="content-wrapper">
         <article class="article-content">
+        <slot name="editors-note"></slot>
             <div class="byline">
                 <div class="attribution">
                     <span>By</span>
@@ -100,6 +111,12 @@ export default async function decorate(block) {
   const share = buildBlock('social-share', { elems: [] });
   share.setAttribute('slot', 'share');
   block.append(share);
+
+  const editorsNote = block.querySelector('.editors-note');
+  if (editorsNote) {
+    decorateBlock(editorsNote);
+    assignSlot(block, 'editors-note', '.editors-note');
+  }
 
   block.querySelectorAll('p').forEach((p) => {
     if (p.textContent.includes('• • •')) {

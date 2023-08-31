@@ -5,6 +5,7 @@ import {
   normalizeAuthorURL,
   parseFragment,
   parseSectionMetadata,
+  premiumArticleBanner,
   removeEmptyElements,
   render,
   replaceLinksWithEmbed,
@@ -17,6 +18,7 @@ import {
  * @param {HTMLDivElement} block
  */
 export default async function decorate(block) {
+  const gdPlusArticle = getMetadata('gdplus').length > 0;
   const rubric = getMetadata('rubric');
   const author = getMetadata('author');
   const publicationDate = getMetadata('publication-date');
@@ -29,7 +31,9 @@ export default async function decorate(block) {
     <div class="container">
       <div class="container-article">
         <article class="article-content">
+  ${!gdPlusArticle ? '' : premiumArticleBanner()}
           <p class="rubric">
+            ${!gdPlusArticle ? '' : '<img class="gd-plus-icon" width="51" height="19" src="/icons/gd-plus-dark.svg" alt="GD Plus Icon" />'}
             <span>${rubric}</span>
           </p>
           <div class="title">
