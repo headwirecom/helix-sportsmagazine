@@ -621,7 +621,13 @@ window.store = new (class {
  * Generates HTML for the premium article banner.
  * @param {Number} Number of leftover articles to compare to.
  */
-export const premiumArticleBanner = (leftoverArticles = 0) => {
+export const premiumArticleBanner = (customLeftoverArticles = null) => {
+  let leftoverArticles = customLeftoverArticles;
+  if (typeof customLeftoverArticles !== 'number') {
+    leftoverArticles = Number(window.sessionStorage.freeArticles || 3);
+  }
+  window.sessionStorage.freeArticles = Math.max(leftoverArticles - 1, 0);
+
   let text;
   if (leftoverArticles > 1) {
     text = `You have <strong>${leftoverArticles}</strong> free premium articles remaining.`;
