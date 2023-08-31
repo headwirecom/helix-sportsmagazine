@@ -153,3 +153,8 @@ a:hover {
 .landing-page main > div > * {
   margin-bottom: 40px;
 }
+
+/* Landing-page dark */
+.landing-page.dark {
+  background-color: black;
+}
