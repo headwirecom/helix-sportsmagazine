@@ -7,6 +7,7 @@ import {
   addPhotoCredit,
   ARTICLE_TEMPLATES,
   premiumArticleBanner,
+  generateArticleBlocker,
 } from '../../scripts/scripts.js';
 import {
   buildBlock,
@@ -155,33 +156,7 @@ ${!gdPlusArticle ? '' : premiumArticleBanner()}
     .forEach((innerBlock) => decorateBlock(innerBlock));
   loadBlocks(document.querySelector('main'));
 
-  if (gdPlusArticle && Number(window.sessionStorage.freeArticles) <= 0) {
-    const articleBody = block.querySelector('.article-body');
-
-    articleBody.style.height = '1000px';
-    articleBody.style.position = 'relative';
-    articleBody.style.overflow = 'hidden';
-
-    const articleBlocker = document.createElement('div');
-    articleBlocker.className = 'article-blocker-wrapper';
-    articleBlocker.innerHTML = `
-      <div class="article-blocker-content">
-        <img class="article-blocker-image gd-plus-logo" src="/icons/GD_Plus.png" alt="Golf Digest Plus Logo" />
-        <div class="article-blocker-lead">Subscribe to continue Reading</div>
-        <div class="article-blocker-sublead">
-          <span class="highlight">Golf Digest<span class="red-plus">+</span></span>
-          includes unlimited digital articles, exclusive course reviews, magazine access and more!
-        </div>
-        <a class="cta" href="https://www.golfdigest.com/subscribe-golf-digest-plus" target="_blank">
-          Learn More
-        </a>
-
-        <span class="login-wrapper">
-        Already have an account? <button class="login-button" onclick="console.warn('login popup not implemented yet');">Log in</button>
-        </span>
-      </div>
-    `;
-
-    articleBody.appendChild(articleBlocker);
+  if (gdPlusArticle) {
+    generateArticleBlocker(block, '.article-body');
   }
 }
