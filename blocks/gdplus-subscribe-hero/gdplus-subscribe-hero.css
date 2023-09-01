@@ -1,0 +1,296 @@
+/*
+* Main wrapper
+*/
+.gdplus-subscribe-hero.block {
+  margin: 40px 0 155px;
+  position: relative;
+}
+
+.gdplus-subscribe-hero.block .red-plus {
+  color: #ed3e49;
+}
+
+.gdplus-subscribe-hero.block .gd-plus-subscribe-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 41px 22px;
+  min-height: 700px;
+  background: url("https://i.piano.io/managedservices/golf-digest/mockup.png"), #1f2022;
+  background-position: center;
+  background-size: cover;
+  background-blend-mode: overlay;
+  color: #fff;
+}
+
+@media (max-width: 1297px) {
+  .gdplus-subscribe-hero.block .gd-plus-subscribe-content {
+    min-height: auto;
+    padding: 27px 22px 61px;
+  }
+}
+
+.gdplus-subscribe-hero.block .subscribe-title {
+  margin: 0 0 10px;
+  font-family: var(--font-tungsten);
+  font-size: 50px;
+  line-height: 104%;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.gdplus-subscribe-hero.block .subscribe-subtitle {
+  margin: 0 0 40px;
+  font-family: var(--font-gotham);
+  font-size: 20px;
+  line-height: 130%;
+  text-align: center;
+  color: #fff;
+}
+
+/*
+* Offers
+*/
+.gdplus-subscribe-hero.block .offer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  max-width: 1280px;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+}
+
+@media (max-width: 1297px) {
+  .gdplus-subscribe-hero.block .offer-list {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 60px;
+  }
+}
+
+.gdplus-subscribe-hero.block .offer-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 400px;
+  flex-shrink: 0;
+  color: #000;
+  background-color: #fff;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 0 5px rgba(17 17 17 / 10%);
+  border-radius: 6px;
+  padding: 29px 30px;
+}
+
+.gdplus-subscribe-hero.block .offer-card.most-popular {
+  padding-top: 46px;
+}
+
+@media (max-width: 1297px) {
+  .gdplus-subscribe-hero.block .offer-card {
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .gdplus-subscribe-hero.block .offer-card.most-popular {
+    order: -1;
+  }
+}
+
+.gdplus-subscribe-hero.block .offer-card.most-popular::before {
+  position: absolute;
+  top: -16px;
+  content: "Most Popular";
+  text-transform: uppercase;
+  font-family: var(--font-gotham);
+  padding: 7px 33px;
+  color: #fff;
+  font-weight: 350;
+  font-size: 16px;
+  line-height: 130%;
+  text-align: center;
+  background-color: #ed3e49;
+}
+
+.gdplus-subscribe-hero.block .offer-card .card-title {
+  margin: 0 0 18px;
+  font-family: var(--font-gotham);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 165%;
+  text-align: center;
+  color: #000;
+}
+
+.gdplus-subscribe-hero.block .offer-card .price-wrapper {
+  margin-bottom: 15px;
+}
+
+.gdplus-subscribe-hero.block .offer-card .price-wrapper > * {
+  font-family: var(--font-tungsten);
+  color: #000;
+  font-style: normal;
+  font-size: 28px;
+  line-height: 137%;
+  text-align: center;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.gdplus-subscribe-hero.block .offer-card .price-wrapper .scope {
+  margin: 0 0 15px;
+}
+
+.gdplus-subscribe-hero.block .offer-card .price-wrapper .price {
+  font-size: 89px;
+  line-height: 88%;
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+
+.gdplus-subscribe-hero.block .offer-card .billing-info {
+  margin: 0 0 25px;
+  font-family: var(--font-gotham);
+  font-weight: 325;
+  font-size: 16px;
+  line-height: 130%;
+  text-align: center;
+  color: #adb4b7;
+}
+
+.gdplus-subscribe-hero.block .offer-card .offer-button {
+  cursor: pointer;
+  margin: 0 0 30px;
+  padding: 11px 40px;
+  background-color: #fff;
+  font-family: var(--font-gotham);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 130%;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #000;
+  border: 1px solid #000;
+  transition: background-color ease 0.6s, border ease 0.6s;
+}
+
+.gdplus-subscribe-hero.block .offer-card.most-popular .offer-button {
+  color: #fff;
+  background-color: #ed3e49;
+  border-color: #ed3e49;
+}
+
+.gdplus-subscribe-hero.block .offer-card .offer-button:hover {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.gdplus-subscribe-hero.block .offer-card .offer-cancel {
+  font-family: var(--font-gotham);
+  font-weight: 325;
+  font-size: 15px;
+  line-height: 130%;
+  color: #848f91;
+  margin: 0;
+}
+
+/*
+* Gifting banner
+*/
+.gdplus-subscribe-hero.block .gift-subscription-wrapper {
+  width: 100%;
+  max-width: 768px;
+  color: #000;
+  bottom: 0;
+  position: absolute;
+  padding: 5px;
+  transform: translateY(calc(100% - 73px));
+}
+
+.gdplus-subscribe-hero.block .gift-subscription-wrapper .gift-content {
+  padding: 38px 40px;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 0 5px rgba(17 17 17 / 10%);
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.gdplus-subscribe-hero.block .gift-subscription-wrapper .gift-content .text-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.gdplus-subscribe-hero.block .gift-subscription-wrapper .gift-content .text-wrapper .gift-title {
+  font-family: var(--font-tungsten);
+  font-size: 37px;
+  line-height: 104%;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  color: #000;
+}
+
+.gdplus-subscribe-hero.block .gift-subscription-wrapper .gift-content .text-wrapper .gift-description {
+  font-family: var(--font-gotham);
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 130%;
+  text-align: left;
+  letter-spacing: 0.01em;
+  color: #000;
+  margin: 0;
+}
+
+.gdplus-subscribe-hero.block .gift-subscription-wrapper .gift-content .gift-button {
+  width: 127px;
+  height: 40px;
+  padding: 10px;
+  font-family: var(--font-gotham);
+  font-style: normal;
+  font-weight: bold;
+  letter-spacing: 0.14em;
+  border: 1px solid #000;
+  text-transform: uppercase;
+  cursor: pointer;
+  background-color: transparent;
+  transition: background-color ease 0.6s, border ease 0.6s, color ease 0.6s;
+}
+
+.gdplus-subscribe-hero.block .gift-subscription-wrapper .gift-content .gift-button:hover {
+  background-color: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+@media (max-width: 768px) {
+  .gdplus-subscribe-hero.block .gift-subscription-wrapper .gift-content .text-wrapper .gift-title {
+    text-align: center;
+  }
+
+  .gdplus-subscribe-hero.block .gift-subscription-wrapper .gift-content .text-wrapper .gift-description {
+    margin-bottom: 20px;
+  }
+
+  .gdplus-subscribe-hero.block .gift-subscription-wrapper .gift-content {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .gdplus-subscribe-hero.block .gift-subscription-wrapper .hide-on-mobile {
+    display: none;
+  }
+}
