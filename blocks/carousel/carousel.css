@@ -229,6 +229,14 @@
   flex-shrink: 0;
 }
 
+.dark .carousel.block 
+  .carousel-main-wrapper 
+  .carousel-frame 
+  .carousel-item {
+ background-color: #1c1c1c;
+ border: none;
+}
+
 .carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item {
   background: none;
   border: none;
@@ -608,7 +616,7 @@
 }
 
 /* Carousel dark */
-.carousel.block.dark 
+.dark .carousel.block
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -619,12 +627,12 @@
 
 }
 
-.carousel.block.dark {
+.dark .carousel.block {
   background-color: black;
   color: white;
 }
 
-.carousel.block.dark 
+.dark .carousel.block
   .carousel-main-wrapper 
   .carousel-frame 
   .carousel-item 
@@ -634,16 +642,6 @@
   color: #fff;
   background-color: #1c1c1c;
 }
-
-/* stylelint-disable-next-line no-descending-specificity */
-.carousel.block.dark 
-  .carousel-main-wrapper 
-  .carousel-frame 
-  .carousel-item {
- background-color: #1c1c1c;
- border: none;
-}
-
 
 
 /* With video variation */
@@ -670,7 +668,7 @@
   padding: 20px;  
 }
 
-.carousel.block.dark 
+.dark .carousel.block
   .carousel-main-wrapper 
   .carousel-frame 
   .carousel-item 
@@ -689,5 +687,12 @@
     margin-top: 10px;
     display: block;
     font-size: 10px;
+}
+
+
+@media (max-width: 768px) {
+  .carousel.block.with-video .carousel-main-wrapper {
+    max-height: 280px;
+  }
 }
 
