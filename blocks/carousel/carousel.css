@@ -229,6 +229,14 @@
   flex-shrink: 0;
 }
 
+.dark .carousel.block 
+  .carousel-main-wrapper 
+  .carousel-frame 
+  .carousel-item {
+ background-color: #1c1c1c;
+ border: none;
+}
+
 .carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item {
   background: none;
   border: none;
@@ -633,15 +641,6 @@
   .carousel-item-title {
   color: #fff;
   background-color: #1c1c1c;
-}
-
-/* stylelint-disable-next-line no-descending-specificity */
-.dark .carousel.block 
-  .carousel-main-wrapper 
-  .carousel-frame 
-  .carousel-item {
- background-color: #1c1c1c;
- border: none;
 }
 
 
