@@ -502,39 +502,38 @@ function toggleDialog(dialog, shouldOpen) {
 }
 
 function handleLoginButtonEvent() {
-  document.addEventListener('click', (event) => {
-    const loginDialog = document.getElementById('loginDialog');
-    const signupDialog = document.getElementById('signupDialog');
+  const loginButton = document.getElementById('login-button');
+  const signupLink = document.getElementById('signup-link');
+  const loginLink = document.getElementById('login-link');
+  const loginDialog = document.getElementById('loginDialog');
+  const signupDialog = document.getElementById('signupDialog');
+  const loginClose = loginDialog.querySelector('.login-dialog-close');
+  const signupClose = signupDialog.querySelector('.login-dialog-close');
 
-    switch (event.target.id) {
-      case 'login-button':
-        event.preventDefault();
-        toggleDialog(signupDialog, false);
-        toggleDialog(loginDialog, true);
-        break;
-
-      case 'signup-link':
-        event.preventDefault();
-        toggleDialog(loginDialog, false);
-        toggleDialog(signupDialog, true);
-        break;
-
-      case 'login-link':
-        event.preventDefault();
-        toggleDialog(signupDialog, false);
-        toggleDialog(loginDialog, true);
-        break;
-
-      default:
-        // intentionally left blank
-        break;
-    }
-
-    if (event.target.classList.contains('login-dialog-close')) {
-      toggleDialog(loginDialog, false);
-      toggleDialog(signupDialog, false);
-    }
+  // Show login dialog
+  loginButton.addEventListener('click', (event) => {
+    event.preventDefault();
+    signupDialog.close();
+    loginDialog.showModal();
   });
+
+  // Show signup dialog when clicking link "sign up"
+  signupLink.addEventListener('click', (event) => {
+    event.preventDefault();
+    loginDialog.close();
+    signupDialog.showModal();
+  });
+
+  // Show login dialog when clicking link "log in"
+  loginLink.addEventListener('click', (event) => {
+    event.preventDefault();
+    signupDialog.close();
+    loginDialog.showModal();
+  });
+
+  // Close dialogs
+  loginClose.addEventListener('click', () => loginDialog.close());
+  signupClose.addEventListener('click', () => signupDialog.close());
 }
 
 /**
