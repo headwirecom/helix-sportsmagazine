@@ -510,5 +510,44 @@ export default async function decorate(block) {
     registerMenuEvents();
     handleRootExpand();
     handleScrolling(header.querySelector('.header'));
+    handleLoginButtonEvent();
+  }
+}
+
+function handleLoginButtonEvent() {
+  document.addEventListener('click', (event) => {
+      const loginDialog = document.getElementById('loginDialog');
+      const signupDialog = document.getElementById('signupDialog');
+
+      switch (event.target.id) {
+          case 'login-button':
+              event.preventDefault();
+              toggleDialog(signupDialog, false);
+              toggleDialog(loginDialog, true);
+              break;
+
+          case 'signup-link':
+              event.preventDefault();
+              toggleDialog(loginDialog, false);
+              toggleDialog(signupDialog, true);
+              break;
+
+          case 'login-link':
+              event.preventDefault();
+              toggleDialog(signupDialog, false);
+              toggleDialog(loginDialog, true);
+              break;
+      }
+
+      if (event.target.classList.contains('login-dialog-close')) {
+          toggleDialog(loginDialog, false);
+          toggleDialog(signupDialog, false);
+      }
+  });
+}
+
+function toggleDialog(dialog, shouldOpen) {
+  if (dialog) {
+      shouldOpen ? dialog.classList.add('open') : dialog.classList.remove('open');
   }
 }
