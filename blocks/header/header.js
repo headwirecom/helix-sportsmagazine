@@ -491,6 +491,52 @@ function handleScrolling(el) {
   });
 }
 
+function toggleDialog(dialog, shouldOpen) {
+  if (dialog) {
+    if (shouldOpen) {
+      dialog.classList.add('open');
+    } else {
+      dialog.classList.remove('open');
+    }
+  }
+}
+
+function handleLoginButtonEvent() {
+  document.addEventListener('click', (event) => {
+    const loginDialog = document.getElementById('loginDialog');
+    const signupDialog = document.getElementById('signupDialog');
+
+    switch (event.target.id) {
+      case 'login-button':
+        event.preventDefault();
+        toggleDialog(signupDialog, false);
+        toggleDialog(loginDialog, true);
+        break;
+
+      case 'signup-link':
+        event.preventDefault();
+        toggleDialog(loginDialog, false);
+        toggleDialog(signupDialog, true);
+        break;
+
+      case 'login-link':
+        event.preventDefault();
+        toggleDialog(signupDialog, false);
+        toggleDialog(loginDialog, true);
+        break;
+
+      default:
+        // intentionally left blank
+        break;
+    }
+
+    if (event.target.classList.contains('login-dialog-close')) {
+      toggleDialog(loginDialog, false);
+      toggleDialog(signupDialog, false);
+    }
+  });
+}
+
 /**
  * decorates the header, mainly the nav
  * @param {Element} block The header block element
@@ -511,43 +557,5 @@ export default async function decorate(block) {
     handleRootExpand();
     handleScrolling(header.querySelector('.header'));
     handleLoginButtonEvent();
-  }
-}
-
-function handleLoginButtonEvent() {
-  document.addEventListener('click', (event) => {
-      const loginDialog = document.getElementById('loginDialog');
-      const signupDialog = document.getElementById('signupDialog');
-
-      switch (event.target.id) {
-          case 'login-button':
-              event.preventDefault();
-              toggleDialog(signupDialog, false);
-              toggleDialog(loginDialog, true);
-              break;
-
-          case 'signup-link':
-              event.preventDefault();
-              toggleDialog(loginDialog, false);
-              toggleDialog(signupDialog, true);
-              break;
-
-          case 'login-link':
-              event.preventDefault();
-              toggleDialog(signupDialog, false);
-              toggleDialog(loginDialog, true);
-              break;
-      }
-
-      if (event.target.classList.contains('login-dialog-close')) {
-          toggleDialog(loginDialog, false);
-          toggleDialog(signupDialog, false);
-      }
-  });
-}
-
-function toggleDialog(dialog, shouldOpen) {
-  if (dialog) {
-      shouldOpen ? dialog.classList.add('open') : dialog.classList.remove('open');
   }
 }

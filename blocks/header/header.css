@@ -1160,7 +1160,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.7);
+  background-color: rgb(0 0 0 / 70%);
   z-index: 1000;
 }
 
@@ -1172,8 +1172,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #F6F6F6;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  box-shadow: 0 0 10px rgba(0 0 0 / 50%);
   color: #5B606B;
   font-style: normal;
   font-weight: 350;
@@ -1247,13 +1246,24 @@
   margin: 10px;
 }
 
-.login-dialog-forgot a {
+.header .header-sub-nav a .login-dialog-forgot a {
   font-weight: 500;
   color: #5B606B;
   margin-right: -10px;
 }
 
-.login-dialog .login-dialog-forgot a:hover{
+.header .nav-menu a .login-dialog .login-dialog-signup a {
+  color: #5B606B;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.header .header-bottom-bar a:hover .login-dialog .login-dialog-signup a:hover {
+  color: black;
+  text-decoration: underline;  
+}
+
+.header .header-sub-nav li.active a .login-dialog .login-dialog-forgot a:hover{
   text-decoration: underline;
 }
 
@@ -1266,17 +1276,6 @@
   color: #FF003A;;
   font-weight: bold;
   margin-bottom: 35px;
-}
-
-.login-dialog .login-dialog-signup a {
-  color: #5B606B;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.login-dialog .login-dialog-signup a:hover {
-  color: black;
-  text-decoration: underline;  
 }
 
 .login-dialog .login-dialog-signup a:hover span.red {
@@ -1299,7 +1298,7 @@
 
 .login-dialog .login-dialog-button {
     height: 40px;
-    font: 14px Gotham;
+    font: 14px var(--font-gotham);
     background-color: #000; 
     width: 250px;
     font-weight: 500;
@@ -1307,18 +1306,17 @@
     border-radius: 0;
     color: #fff;
     text-decoration: none;
-    background: #ADB4B7;
     border: 1px solid #ADB4B7;
     box-sizing: border-box;
     margin: 0;
     margin-bottom: 25px;
 }
-
+/* stylelint-disable-next-line no-descending-specificity */
 .login-dialog .login-dialog-agreement a {
   text-decoration: underline;
   color: black;
 }
-
+/* stylelint-disable-next-line no-descending-specificity */
 .login-dialog .login-dialog-agreement a:hover {
   color: var(--link-hover-color)
 }
