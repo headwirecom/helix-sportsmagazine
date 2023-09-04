@@ -278,9 +278,6 @@ export default async function decorate(block) {
     // Render template
     render(template, block);
 
-    // Render template
-    render(template, block);
-
     // Post-processing
     removeEmptyElements(template, 'p');
 
