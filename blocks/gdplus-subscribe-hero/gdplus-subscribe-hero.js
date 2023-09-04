@@ -1,8 +1,5 @@
-import {
-  parseFragment,
-  removeEmptyElements,
-  render,
-} from '../../scripts/scripts.js';
+import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
+import { parseFragment, removeEmptyElements, render } from '../../scripts/scripts.js';
 
 const offerCards = [
   {
@@ -26,6 +23,35 @@ const offerCards = [
   },
 ];
 
+const benefits = [
+  {
+    title: 'Unlimited GolfDigest.com articles',
+  },
+  {
+    title: 'Digital subscription to Golf Digest magazine',
+  },
+  {
+    title: "Unlimited access to Golf Digest's 17,000+ course reviews",
+  },
+  {
+    title: 'Exclusive digital features, including interactive experiences',
+  },
+  {
+    title: 'Curated newsletters',
+  },
+  {
+    title: 'Print subscription to Golf Digest Schools',
+    info: 'Included only in the Digital + Print or Digital + Print + GD Schools plans',
+  },
+  {
+    title: 'Unlimited access to Golf Digest Schools',
+    info: 'Included only in the Digital + Print + Golf Digest Schools plans',
+  },
+  {
+    title: 'Unlimited access to the Golf Digest Archive - since 1950',
+  },
+];
+
 const HTML_TEMPLATE = `
 <div class="gd-plus-subscribe-content">
   <h1 class="subscribe-title">Become A Golf Digest<span class="red-plus">+</span> Subscriber</h1>
@@ -35,7 +61,9 @@ const HTML_TEMPLATE = `
   </p>
 
   <ul class="offer-list">
-    ${offerCards.map((card) => `
+    ${offerCards
+    .map(
+      (card) => `
         <li class="offer-card ${card.mostPopular ? 'most-popular' : ''}">
           <p class="card-title">${card.title}</p>
           <div class="price-wrapper">
@@ -50,7 +78,9 @@ const HTML_TEMPLATE = `
 
           <p class="offer-cancel">Cancel anytime</p>
         </li>
-      `).join('')}
+      `,
+    )
+    .join('')}
   </ul>
 
   <div class="gift-subscription-wrapper">
@@ -72,6 +102,30 @@ const HTML_TEMPLATE = `
       </div>
     </div>
   </div>
+</div>
+
+<h2 class="benefits-header">Subscriber Benefits</h2>
+<div class="gd-plus-benefits-content">
+  ${
+  createOptimizedPicture(
+    'https://main--helix-sportsmagazine--headwirecom.hlx.page/subscribe-device-mockup.png',
+    'Golf Digest Plus Promo Image',
+    false,
+    [{ media: '(max-width: 768px)', width: '707' }, { media: '(max-width: 1297px)', width: '1236' }, { width: '714' }],
+  ).outerHTML
+}
+  <ul class="benefits-list">
+    ${benefits
+    .map(
+      (benefit) => `
+      <li class="benefit-item">
+        <strong class="benefit-title">${benefit.title}${benefit.info ? '*' : ''}</strong>
+        ${benefit.info ? `<p class="info">*${benefit.info}</p>` : ''}
+      </li>
+    `,
+    )
+    .join('')}
+  </ul>
 </div>
 `;
 

@@ -42,7 +42,7 @@ export default async function decorate(block) {
     const isMobileWedges = isWedges && window.innerWidth < 779;
 
     const HTML_TEMPLATE = `
-    ${isLarge ? '' : `<div class="carousel-title-wrapper">
+    ${!heading ? '' : `<div class="carousel-title-wrapper">
         <${carouselHeadingType} class="carousel-title ${variants}">${heading}</${carouselHeadingType}>
       </div>
     `}
