@@ -494,7 +494,7 @@ function handleScrolling(el) {
 function handleLoginButtonEvent() {
   // get all login buttons (nav, header, homepage-header)
   const loginButtons = document.querySelectorAll('#login-button');
-  const signupButton = document.getElementById('signup-button'); 
+  const signupButton = document.getElementById('signup-button');
   const signupLink = document.getElementById('signup-link');
   const loginLink = document.getElementById('login-link');
   const loginDialog = document.getElementById('loginDialog');
@@ -512,7 +512,7 @@ function handleLoginButtonEvent() {
   });
 
   // show sign up dialog
-  signupButton.addEventListener('click', (event) => { 
+  signupButton.addEventListener('click', (event) => {
     event.preventDefault();
     loginDialog.close();
     signupDialog.showModal();
