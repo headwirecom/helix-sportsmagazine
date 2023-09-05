@@ -281,10 +281,13 @@
 /* Login dialog */
 .login-dialog {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   z-index: 1000;
+  background-color: transparent;
+  border: none;
 }
 
 ::backdrop {
@@ -357,6 +360,12 @@
   margin-bottom: 30px;
 }
 
+.login-dialog .gd-agreement-checkbox input {
+  margin: 0;
+  width: 20px;
+  height: 20px;
+}
+
 .login-dialog .login-dialog-form input:focus {
   border: 2px solid #b6bdc5b6;
   box-shadow: inset 0 3px 6px rgba(0 0 0 / 5%);
@@ -403,12 +412,6 @@
   margin-top: 10px;
 }
 
-.login-dialog .gd-agreement-checkbox input {
-  margin: 0;
-  width: 20px;
-  height: 20px;
-}
-
 .login-dialog .gd-agreement-checkbox label {
   line-height: 2.5em;
   width: 250px;
@@ -421,11 +424,6 @@
   font-weight: 500;
 }
 
-.login-dialog .login-dialog-signup a:hover {
-  color: black;
-  text-decoration: underline;  
-}
-
 .login-dialog .login-dialog-agreement a {
   text-decoration: underline;
   color: black;
@@ -433,6 +431,11 @@
 
 .login-dialog .gd-agreement-checkbox label a {
   font-size: 15px;
+}
+
+.login-dialog .login-dialog-signup a:hover {
+  color: black;
+  text-decoration: underline;  
 }
 
 .login-dialog .login-dialog-agreement {
