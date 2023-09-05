@@ -623,10 +623,14 @@ window.store = new (class {
  */
 export const premiumArticleBanner = (customLeftoverArticles = null) => {
   let leftoverArticles = customLeftoverArticles;
+  // if (typeof customLeftoverArticles !== 'number') {
+  //   leftoverArticles = Number(window.sessionStorage.freeArticles || 3);
+  // }
+  // window.sessionStorage.freeArticles = Math.max(leftoverArticles - 1, 0);
   if (typeof customLeftoverArticles !== 'number') {
-    leftoverArticles = Number(window.sessionStorage.freeArticles || 3);
+    leftoverArticles = Number(window.name || 3);
   }
-  window.sessionStorage.freeArticles = Math.max(leftoverArticles - 1, 0);
+  window.name = Math.max(leftoverArticles - 1, 0);
 
   let text;
   if (leftoverArticles > 1) {
@@ -657,7 +661,6 @@ export const premiumArticleBanner = (customLeftoverArticles = null) => {
  */
 export const generateArticleBlocker = (block, selector) => {
   if (Number(window.sessionStorage.freeArticles) > 0) {
-    console.log('\x1b[31m ~ window.sessionStorage.freeArticles:', window.sessionStorage.freeArticles);
     return;
   }
   const articleBody = block.querySelector(selector);
