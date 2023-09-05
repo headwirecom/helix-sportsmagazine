@@ -492,8 +492,7 @@ function handleScrolling(el) {
 }
 
 function handleLoginButtonEvent() {
-  // get all login buttons (nav, header, homepage-header)
-  const loginButtons = document.querySelectorAll('#login-button');
+  const loginButtons = document.querySelectorAll('.login-dialog-open-button');
   const signupButton = document.getElementById('signup-button');
   const signupLink = document.getElementById('signup-link');
   const loginLink = document.getElementById('login-link');
