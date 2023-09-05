@@ -633,12 +633,8 @@ Make sure to set a limit for \x1b[31m"${block.dataset.blockName}"\x1b[0m in \x1b
  */
 export const premiumArticleBanner = (customLeftoverArticles = null) => {
   let leftoverArticles = customLeftoverArticles;
-  // if (typeof customLeftoverArticles !== 'number') {
-  //   leftoverArticles = Number(window.sessionStorage.freeArticles || 3);
-  // }
-  // window.sessionStorage.freeArticles = Math.max(leftoverArticles - 1, 0);
   if (typeof customLeftoverArticles !== 'number') {
-    leftoverArticles = Number(window.name || 3);
+    leftoverArticles = Math.min(Number(window.name), 3);
   }
   window.name = Math.max(leftoverArticles - 1, 0);
 
@@ -683,7 +679,7 @@ export const generateArticleBlocker = (block, selector) => {
   articleBlocker.className = 'article-blocker-wrapper';
   articleBlocker.innerHTML = `
     <div class="article-blocker-content">
-      <img class="article-blocker-image gd-plus-logo" src="/icons/GD_Plus.png" alt="Golf Digest Plus Logo" />
+      <img class="article-blocker-image gd-plus-logo" src="/icons/gd-plus-logo.svg" alt="Golf Digest Plus Logo" />
       <div class="article-blocker-lead">Subscribe to continue Reading</div>
       <div class="article-blocker-sublead">
         <span class="highlight">Golf Digest<span class="red-plus">+</span></span>
