@@ -65,7 +65,7 @@ indices:
         value: |
           attribute(el, 'content')
       videoUrl:
-        select: a[href*="brightcove"]
+        select: 'a[href*="youtube.com/watch"], a[href*="youtu.be/"], a[href*="brightcove"]'
         value: |
           attribute(el, 'href')
   products:
