@@ -189,3 +189,9 @@ a:hover {
 .premium-article-banner .premium-link .red-plus {
   color: #ED3E49;
 }
+
+/* Landing-page dark */
+.landing-page.dark {
+  background-color: black;
+}
+
