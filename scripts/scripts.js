@@ -23,7 +23,6 @@ export const ARTICLE_TEMPLATES = {
   Gallery: 'gallery',
   GalleryListicle: 'gallery-listicle',
   ProductListing: 'product-listing',
-  TheTigerVault: 'the-tiger-vault',
 };
 
 const LCP_BLOCKS = [...Object.values(ARTICLE_TEMPLATES), 'hero']; // add your LCP blocks to the list
@@ -448,6 +447,7 @@ window.store = new (class {
       article: 'article-query-index',
       product: 'product-query-index',
       gallery: 'gallery-query-index',
+      'custom-data': 'custom-data',
     };
 
     // Pre-defined queries
@@ -468,6 +468,8 @@ window.store = new (class {
       carousel: 20,
       loop: 30,
       'series-cards': 100,
+      'tiger-cards': 35,
+      'tiger-vault-hero': 1,
     };
 
     this.blockNames = Object.keys(this._blockQueryLimit);
@@ -546,10 +548,16 @@ window.store = new (class {
     let query = this.getQuery(block);
 
     if (!query) {
+      // Attempt to find more blocks generated late.
+      // This usually happens when using a non-default page-
+      // type as you have to trigger block decoration manually.
       this.initQueries();
       query = this.getQuery(block);
       if (!query) {
-        console.warn(`Query missing for "${block.dataset.blockName}" with id "${id}"`);
+        console.warn(`Query missing for "${block.dataset.blockName}" with id "${id}"!
+Make sure the block definition includes the spreadsheet & sheet name like this: \x1b[37m"(example, class, SHEET_NAME SPREADSHEET_FILENAME)"\x1b[0m!
+If you created a new spreadsheet you might also need to add it to \x1b[37m"this._spreadsheets"\x1b[0m.
+`);
         return;
       }
     }

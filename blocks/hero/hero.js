@@ -1,9 +1,5 @@
 import {
-  parseFragment,
-  render,
-  removeEmptyElements,
-  assignSlot,
-  getBlockId,
+  parseFragment, render, removeEmptyElements, assignSlot, getBlockId,
 } from '../../scripts/scripts.js';
 import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
@@ -17,9 +13,7 @@ const placeholderHtml = '<div class="hero-container" style="visibility: hidden; 
 export default async function decorate(block) {
   const id = getBlockId(block);
 
-  const isFirstHero = document
-    .querySelector('.hero.block[data-block-name="hero"]')
-    .isEqualNode(block);
+  const isFirstHero = document.querySelector('.hero.block[data-block-name="hero"]').isEqualNode(block);
 
   const heroDataIndex = heroItemsIndex;
   heroItemsIndex += isFirstHero ? 5 : 1;
@@ -47,12 +41,8 @@ export default async function decorate(block) {
           (card) => `
               <a href='${card.path}'>
                 ${
-  createOptimizedPicture(
-    card.image,
-    card.imageAlt || card.title,
-    isFirstHero,
-    [{ width: '120' }],
-  ).outerHTML
+  createOptimizedPicture(card.image, card.imageAlt || card.title, isFirstHero, [{ width: '120' }])
+    .outerHTML
 }
                 <div>
                   <span>${card.rubric}</span>
@@ -77,46 +67,29 @@ export default async function decorate(block) {
     <div class="hero-container">
         <div class="hero-image-container">
         ${
-  createOptimizedPicture(
-    heroData.image,
-    heroData.imageAlt || heroData.title,
-    isFirstHero,
-    [
-      { media: '(min-width: 686px)', width: '686' },
-      { media: '(min-width: 966px)', width: '966' },
-      { media: '(min-width: 1280px)', width: '1280' },
-      { width: '1850' },
-    ],
-  ).outerHTML
+  createOptimizedPicture(heroData.image, heroData.imageAlt || heroData.title, isFirstHero, [
+    { media: '(min-width: 686px)', width: '686' },
+    { media: '(min-width: 966px)', width: '966' },
+    { media: '(min-width: 1280px)', width: '1280' },
+    { width: '1850' },
+  ]).outerHTML
 }
         </div>
         <div class="hero-text-container">
         <a href='${heroData.path}'>
             <div>
-            <${isFirstHero ? 'h1' : 'h2'}>${
-  block.classList.contains('no-cards') ? heroData.title : heroData.rubric
-}</${isFirstHero ? 'h1' : 'h2'}>
-            ${
-  block.classList.contains('no-cards')
-    ? ''
-    : `<p>${heroData.title}</p>`
-}
+            <${isFirstHero ? 'h1' : 'h2'}>${block.classList.contains('no-cards') ? heroData.title : heroData.rubric}</${
+  isFirstHero ? 'h1' : 'h2'
+}>
+            ${block.classList.contains('no-cards') ? '' : `<p>${heroData.title}</p>`}
             </div>
             <div class="button-container">
             <div class="icon-container">${arrowIcon}</div>
-            <span>${
-  block.classList.contains('no-cards')
-    ? 'Watch series'
-    : 'Read story'
-}</span>
+            <span>${block.classList.contains('no-cards') ? 'Watch series' : 'Read story'}</span>
             </div>
         </a>
         </div>
-        ${
-  cardsTemplate
-    ? `<div class="hero-cards-container">${cardsTemplate}</div>`
-    : ''
-}
+        ${cardsTemplate ? `<div class="hero-cards-container">${cardsTemplate}</div>` : ''}
     </div>
 `;
 
@@ -130,10 +103,7 @@ export default async function decorate(block) {
     removeEmptyElements(template, 'p');
 
     // Default text alignment
-    if (
-      !block.classList.contains('text-center')
-      && !block.classList.contains('text-right')
-    ) {
+    if (!block.classList.contains('text-center') && !block.classList.contains('text-right')) {
       block.classList.add('text-left');
     }
 

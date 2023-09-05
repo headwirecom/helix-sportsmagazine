@@ -2,7 +2,13 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  margin-bottom: 40px;
+  margin: 0 15px;
+}
+
+.tiger-cards-wrapper:has(.tiger-cards.block) {
+  max-width: 1024px;
+  margin: 0 auto 40px;
+
 }
 
 .tiger-cards.block .tiger-card-wrapper {
@@ -120,6 +126,7 @@
 @media (max-width: 768px) {
   .tiger-cards.block {
     gap: 0;
+    margin: 0;
   }
 
   .tiger-cards.block .tiger-card-wrapper .image-wrapper {
