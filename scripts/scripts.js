@@ -458,11 +458,15 @@ window.store = new (class {
     };
 
     // Max items per block
+    /*
+    * Add entry here for new blocks that require data to be fetched!
+    */
     this._blockQueryLimit = {
       hero: 5,
       cards: 10,
       carousel: 20,
       loop: 30,
+      'series-cards': 100,
     };
 
     const blockNames = Object.keys(this._blockQueryLimit);
@@ -543,6 +547,12 @@ window.store = new (class {
     }
 
     const queryDetails = this._queryMap[query];
+    if (queryDetails.limit < 1) {
+      console.warn(`No query limit was found for ${block.dataset.blockName} block! \x1b[1m\x1b[31mTherefore no data will be returned!\x1b[0m
+
+Make sure to set a limit for \x1b[31m"${block.dataset.blockName}"\x1b[0m in \x1b[37m${JSON.stringify(this._blockQueryLimit)}\x1b[0m
+      `);
+    }
     let url;
 
     // Use mock data if defined
@@ -553,8 +563,8 @@ window.store = new (class {
       url = `/${this._spreadsheets[queryDetails.spreadsheet]}.json?sheet=${query}`;
     }
 
-    // Use cached resource
-    if (this._cache[url]) {
+    // Use cached resource & that it has data
+    if (this._cache[url] && this._cache[url].limit) {
       // Cache is already populated
       if (this._cache[url].data.length) {
         // Only trigger if there is enough data

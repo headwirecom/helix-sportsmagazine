@@ -9,6 +9,7 @@
   transition: background-color .2s;
 }
 
+
 .home-page .header:not(.is-scrolling) {
   background: rgb(21 21 23 / 20%);
   color: #fff;
@@ -64,6 +65,12 @@
 .header a.header-logo {
   border: none;
   margin-bottom: 0;
+}
+
+.landing-page.dark .header-logo svg path:nth-child(2),
+.landing-page.dark .header-logo svg path:nth-child(3) {
+  fill: #FFF; 
+  color: #FFF; 
 }
 
 .header .header-logo svg {
@@ -908,6 +915,10 @@
   color: var(--link-hover-color);
 }
 
+.landing-page.dark .profile-info-button-login {
+  color: var(--link-hover-color); 
+}
+
 .home-page .header:not(.is-scrolling) .profile-info-button-login {
   color: #fff;
 }
@@ -1150,4 +1161,31 @@
   .leaderboard .o-leaderboard-link-container-link {
     white-space: nowrap;
   }
+}
+
+/* Header dark */
+
+.landing-page.dark .header-wrapper .header.block {
+  background-color: #151517;
+}
+
+.landing-page.dark .header.block hr {
+  border-color: #151517;
+}
+
+.landing-page.dark .header .header-sub-nav li.active a {
+  color: white;
+}
+
+.landing-page.dark .header .nav-menu-bottom .profile-info-button-wrapper .profile-info-button-login:hover {
+  color: #FFF; 
+}
+
+.landing-page.dark .header:not(.is-scrolling) .header-menu-button svg path {
+  fill: #FFF;
+  color: #FFF;
+}
+
+.landing-page.dark .header:not(.is-scrolling) .header-search-button svg path {
+  stroke: #FFF;
 }
