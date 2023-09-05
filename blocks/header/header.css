@@ -67,6 +67,12 @@
   margin-bottom: 0;
 }
 
+.landing-page.dark .header-logo svg path:nth-child(2),
+.landing-page.dark .header-logo svg path:nth-child(3) {
+  fill: #FFF; 
+  color: #FFF; 
+}
+
 .header .header-logo svg {
   width: 125px;
   height: auto;
@@ -909,6 +915,10 @@
   color: var(--link-hover-color);
 }
 
+.landing-page.dark .profile-info-button-login {
+  color: var(--link-hover-color); 
+}
+
 .home-page .header:not(.is-scrolling) .profile-info-button-login {
   color: #fff;
 }
@@ -1168,19 +1178,6 @@
 .the-tiger-vault.dark .header .header-sub-nav li.active a,
 .landing-page.dark .header .header-sub-nav li.active a {
   color: white;
-}
-/* stylelint-disable-next-line no-descending-specificity */
-.the-tiger-vault.dark .profile-info-button-login,
-.landing-page.dark .profile-info-button-login {
-  color: var(--link-hover-color); 
-}
-/* stylelint-disable-next-line no-descending-specificity */
-.the-tiger-vault.dark .header-logo svg path:nth-child(2),
-.the-tiger-vault.dark .header-logo svg path:nth-child(3),
-.landing-page.dark .header-logo svg path:nth-child(2),
-.landing-page.dark .header-logo svg path:nth-child(3) {
-  fill: #FFF; 
-  color: #FFF; 
 }
 
 .the-tiger-vault.dark .header .nav-menu-bottom .profile-info-button-wrapper .profile-info-button-login:hover,

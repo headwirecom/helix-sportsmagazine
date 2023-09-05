@@ -459,11 +459,15 @@ window.store = new (class {
     };
 
     // Max items per block
+    /*
+    * Add entry here for new blocks that require data to be fetched!
+    */
     this._blockQueryLimit = {
       hero: 5,
       cards: 10,
       carousel: 20,
       loop: 30,
+      'series-cards': 100,
     };
 
     this.blockNames = Object.keys(this._blockQueryLimit);
@@ -497,7 +501,7 @@ window.store = new (class {
           if (!this._queryMap[query]) {
             this._queryMap[query] = {
               spreadsheet,
-              limit: 50,
+              limit: 0,
             };
           }
         }
@@ -551,6 +555,12 @@ window.store = new (class {
     }
 
     const queryDetails = this._queryMap[query];
+    if (queryDetails.limit < 1) {
+      console.warn(`No query limit was found for ${block.dataset.blockName} block! \x1b[1m\x1b[31mTherefore no data will be returned!\x1b[0m
+
+Make sure to set a limit for \x1b[31m"${block.dataset.blockName}"\x1b[0m in \x1b[37m${JSON.stringify(this._blockQueryLimit)}\x1b[0m
+      `);
+    }
     let url;
 
     // Use mock data if defined
@@ -589,7 +599,7 @@ window.store = new (class {
     // and only request that with ?offset=
 
     // Fetch new data, cache it then trigger
-    fetch(queryDetails.mock ? url : `${url}&limit=${queryDetails.limit || 50}`)
+    fetch(queryDetails.mock ? url : `${url}&limit=${queryDetails.limit}`)
       .then((req) => {
         if (req.ok) {
           return req.json();

@@ -45,7 +45,7 @@
   width: 100%;
   object-fit: cover;
   object-position: 50% 50%;
-  transition: transform 3s, -webkit-transform 3s;
+  transition: transform 3s;
   color: #fff;
 }
 

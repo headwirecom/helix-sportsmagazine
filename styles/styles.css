@@ -155,7 +155,6 @@ a:hover {
 }
 
 /* Landing-page dark */
-.the-tiger-vault.dark,
 .landing-page.dark {
   background-color: black;
 }
@@ -196,10 +195,8 @@ a:hover {
   color: #ED3E49;
 }
 
-a .image-link-hover-animation img {
-  transition: transform 3s, -webkit-transform 3s;
+/* Landing-page dark */
+.landing-page.dark {
+  background-color: black;
 }
 
-a:hover .image-link-hover-animation img {
-  transform: scale(1.2);
-}
