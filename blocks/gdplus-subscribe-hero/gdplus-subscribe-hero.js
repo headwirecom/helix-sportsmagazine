@@ -54,6 +54,12 @@ const benefits = [
 
 const HTML_TEMPLATE = `
 <div class="gd-plus-subscribe-content">
+  <div class="background-image-wrapper">
+    <div class="image-overlay"></div>
+    ${createOptimizedPicture('https://main--helix-sportsmagazine--headwirecom.hlx.live/subscribe-background-mockup.jpg', 'hero background green', true, [
+    { width: '1690' },
+  ]).outerHTML}
+    </div>
   <h1 class="subscribe-title">Become A Golf Digest<span class="red-plus">+</span> Subscriber</h1>
 
   <p class="subscribe-subtitle">

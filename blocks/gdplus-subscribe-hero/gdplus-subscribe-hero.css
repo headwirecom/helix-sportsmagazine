@@ -19,12 +19,26 @@
   align-items: center;
   padding: 41px 22px;
   min-height: 700px;
-  background: url("https://main--helix-sportsmagazine--headwirecom.hlx.live/subscribe-background-mockup.jpg"), #1f2022;
-  background-position: center;
-  background-size: cover;
-  background-blend-mode: overlay;
   color: #fff;
   margin-bottom: 155px;
+}
+
+.gdplus-subscribe-hero.block .gd-plus-subscribe-content .background-image-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.gdplus-subscribe-hero.block .gd-plus-subscribe-content .background-image-wrapper .image-overlay {
+  background-color: #1f2022;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
 }
 
 @media (max-width: 1297px) {
@@ -43,6 +57,7 @@
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  z-index: 1;
 }
 
 .gdplus-subscribe-hero.block .subscribe-subtitle {
@@ -52,6 +67,7 @@
   line-height: 130%;
   text-align: center;
   color: #fff;
+  z-index: 1;
 }
 
 /*
@@ -397,5 +413,18 @@
   }
 }
 
+.gdplus-subscribe-hero.block .gd-plus-subscribe-content .background-image-wrapper picture {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
 
-
+.gdplus-subscribe-hero.block .gd-plus-subscribe-content .background-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+  mix-blend-mode: overlay;
+}
