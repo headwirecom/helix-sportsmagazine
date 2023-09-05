@@ -591,7 +591,7 @@ Make sure to set a limit for \x1b[31m"${block.dataset.blockName}"\x1b[0m in \x1b
     // and only request that with ?offset=
 
     // Fetch new data, cache it then trigger
-    fetch(queryDetails.mock ? url : `${url}&limit=${queryDetails.limit || 0}`)
+    fetch(queryDetails.mock ? url : `${url}&limit=${queryDetails.limit}`)
       .then((req) => {
         if (req.ok) {
           return req.json();
