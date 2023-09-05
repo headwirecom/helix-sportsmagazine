@@ -491,30 +491,23 @@ function handleScrolling(el) {
   });
 }
 
-function toggleDialog(dialog, shouldOpen) {
-  if (dialog) {
-    if (shouldOpen) {
-      dialog.classList.add('open');
-    } else {
-      dialog.classList.remove('open');
-    }
-  }
-}
-
 function handleLoginButtonEvent() {
-  const loginButton = document.getElementById('login-button');
+  // get all login buttons (nav, header, homepage-header)
+  const loginButtons = document.querySelectorAll('#login-button');
   const signupLink = document.getElementById('signup-link');
   const loginLink = document.getElementById('login-link');
   const loginDialog = document.getElementById('loginDialog');
   const signupDialog = document.getElementById('signupDialog');
   const loginClose = loginDialog.querySelector('.login-dialog-close');
-  const signupClose = signupDialog.querySelector('.login-dialog-close');
+  const signupClose = signupDialog.querySelector('.signup-dialog-close');
 
   // Show login dialog
-  loginButton.addEventListener('click', (event) => {
-    event.preventDefault();
-    signupDialog.close();
-    loginDialog.showModal();
+  loginButtons.forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      signupDialog.close();
+      loginDialog.showModal();
+    });
   });
 
   // Show signup dialog when clicking link "sign up"
