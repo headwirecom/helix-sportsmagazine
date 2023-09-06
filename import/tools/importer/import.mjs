@@ -62,7 +62,7 @@ async function fetchDocument(url) {
 }
 
 async function fetchLongPath(url) {
-  console.log(`fetching long path from ${url}`);
+  // console.log(`fetching long path from ${url}`);
   const doc = await fetchDocument(url);
   if (doc) {
     return doc.body.getAttribute('data-page-path');
@@ -75,12 +75,12 @@ function shouldRewriteLink(href) {
     (href.startsWith('/') && !href.startsWith('//')));
 }
 
-async function updateLink(el, err) {
+async function updateLink(el, url, rewrites, err) {
   let href = el.href;
   
   // is this an internal link?
   if (shouldRewriteLink(href)) {
-    console.log(`rewriting ${href} to franklin url`);
+    // console.log(`rewriting ${href} to franklin url`);
     href = href.replace('https:','').replace('\/\/www.golfdigest.com', '');
     let oldPath = href;
     if (!href.startsWith('/content/golfdigest-com/en/')) {
@@ -89,29 +89,31 @@ async function updateLink(el, err) {
     if (href) {
       href = mapToFranklinPath(href);
       // console.log(`Replacing internal link ${el.href} with ${href}`);
+      rewrites.push(`${el.href} to ${href}`);
       el.setAttribute('href', href);
     } else {
       const redirect = await getRedirect(`https://www.golfdigest.com${oldPath}`);
       if (redirect) {
-        console.log(`${oldPath} redirected to ${redirect}`);
+        // console.log(`${oldPath} redirected to ${redirect}`);
         err.push(`Redirect: [${el.innerHTML}](${el.href}) to ${redirect}`);
         el.setAttribute('href', redirect);
-        updateLink(el, err);
+        updateLink(el, url, rewrites, err);
       } else {
-        console.warn(`Unable to replace link ${el.href} with Franklin path. Item not found in sitemap.`);
+        // console.warn(`Unable to replace link ${el.href} with Franklin path. Item not found in sitemap.`);
         try {
           href = await fetchLongPath(`https://www.golfdigest.com${oldPath}`);
         } catch(error) {
           err.push(`Unble to map: [${el.innerHTML}](${el.href}) ${error.message}`);
-          console.warn(`Unable to map ${el.hre} Franklin path. ${error}`);
+          console.warn(`${url}: Unable to map ${el.href} to Franklin path. ${error}`);
           return;
         }
         if (href) {
           href = mapToFranklinPath(href);
           // console.log(`Replacing internal link ${el.href} with ${href}`);
+          rewrites.push(`${el.href} to ${href}`);
           el.setAttribute('href', href);
         } else {
-          console.warn(`Unable to map ${el.hre} Franklin path.`);
+          console.warn(`${url}: Unable to map ${el.href} Franklin path. Item not found in sitemap or as data-page-path body attribute.`);
           err.push(`Unble to map: [${el.innerHTML}](${el.href})`);
         }
       }
@@ -119,14 +121,18 @@ async function updateLink(el, err) {
   }
 }
 
-async function updateInternalLinks(dom, report) {
+async function updateInternalLinks(dom, url, report) {
   const err = [];
+  const rewrites = [];
   const f = async (el) => {
-    await updateLink(el, err);
+    await updateLink(el, url, rewrites, err);
   };
   const links = dom.querySelectorAll('a');
   for (let el of links) {
     await f(el);
+  }
+  if (report && rewrites.length > 0) {
+    report.linkRewrites = rewrites.join('\n');
   }
   if (report && err.length > 0) {
     report.linkRewriteErrors = err.join('\n');
@@ -705,7 +711,7 @@ function applyMarkupFixes(document) {
   fixBrInsideLinks(document)
 }
 
-async function trasformDOM(document) {
+async function trasformDOM(document, url) {
   const templateConfig = findTemplateConfig(document);
 
   let retObj = {
@@ -719,7 +725,7 @@ async function trasformDOM(document) {
   if (templateConfig) {
     applyMarkupFixes(document);
     retObj = templateConfig.transformer(document, templateConfig);
-    await updateInternalLinks(retObj.element, retObj.report);
+    await updateInternalLinks(retObj.element, url, retObj.report);
   } else {
     const bodyClass = document.querySelector('body').getAttribute('class');
     throw new Error(`Unknown page type. Body class list ${bodyClass}`);
@@ -751,7 +757,7 @@ function preprocess({ document, url, html, params }) {
    */
 async function transform({document, url, html, params}) {
   const docPath = mapToDocumentPath(document, url);
-  const retObj = await trasformDOM(document);
+  const retObj = await trasformDOM(document, url);
   return [{
     element: retObj.element,
     path: docPath,
