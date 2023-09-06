@@ -1,0 +1,145 @@
+.tiger-cards.block {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0 15px;
+}
+
+.tiger-cards-wrapper:has(.tiger-cards.block) {
+  max-width: 1024px;
+  margin: 0 auto 40px;
+
+}
+
+.tiger-cards.block .tiger-card-wrapper {
+  background-color: #1f2022;
+}
+
+.tiger-cards.block .tiger-card-wrapper .card-link {
+  display: flex;
+  text-decoration: none;
+}
+
+.tiger-cards.block .tiger-card-wrapper .image-wrapper {
+  position: relative;
+  width: 356px;
+  height: 200px;
+}
+
+.tiger-cards.block .tiger-card-wrapper .timestamp-wrapper {
+  transition: border-radius 0.2s, margin-right 0.2s, width 0.2s;
+  border-radius: 15px;
+  height: 20px;
+  position: absolute;
+  background-color: rgba(21 21 23 / 70%);
+  bottom: 0;
+  right: 0;
+  margin: 5px;
+  padding: 5px 10px;
+  font-size: 10px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+}
+
+.tiger-cards.block .tiger-card-wrapper:hover .timestamp-wrapper {
+  border-radius: 5px;
+  margin-right: 12.5px;
+  width: 30px;
+}
+
+.tiger-cards.block .tiger-card-wrapper .timestamp-wrapper .timestamp {
+  display: block;
+  font-size: 10px;
+  color: #fff;
+}
+
+.tiger-cards.block .tiger-card-wrapper .timestamp-wrapper .play-icon {
+  display: none;
+  margin-top: 2px;
+}
+
+.tiger-cards.block .tiger-card-wrapper:hover .timestamp-wrapper .timestamp {
+  display: none;
+}
+
+.tiger-cards.block .tiger-card-wrapper:hover .timestamp-wrapper .play-icon {
+  display: block;
+}
+
+.tiger-cards.block .tiger-card-wrapper .image-wrapper picture {
+  width: 100%;
+  height: 100%;
+}
+
+.tiger-cards.block .tiger-card-wrapper .image-wrapper img {
+  width: 100%;
+  height: 100%;
+}
+
+.tiger-cards.block .tiger-card-wrapper .text-wrapper {
+  padding: 20px;
+  padding-right: 80px;
+  flex: 1;
+}
+
+.tiger-cards.block .tiger-card-wrapper .text-wrapper .title-span {
+  display: block;
+  color: #fff;
+  font-family: var(--font-gotham);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 130%;
+  margin-bottom: 10px;
+}
+
+.tiger-cards.block .tiger-card-wrapper .text-wrapper .description {
+  margin: 0;
+  font-family: var(--font-gotham);
+  font-size: 14px;
+  line-height: 135%;
+  color: #adb4b7;
+}
+
+@media (max-width: 1024px) {
+  .tiger-cards.block {
+    gap: 14px;
+  }
+
+  .tiger-cards.block .tiger-card-wrapper .image-wrapper {
+    width: 230px;
+    height: 130px;
+  }
+
+  .tiger-cards.block .tiger-card-wrapper .text-wrapper {
+    padding: 15px;
+  }
+
+  .tiger-cards.block .tiger-card-wrapper .text-wrapper .title-span {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .tiger-cards.block {
+    gap: 0;
+    margin: 0;
+  }
+
+  .tiger-cards.block .tiger-card-wrapper .image-wrapper {
+    width: 150px;
+    height: 84px;
+    margin: 15px 0 15px 18px;
+  }
+
+  .tiger-cards.block .tiger-card-wrapper .text-wrapper {
+    padding: 15px;
+  }
+
+  .tiger-cards.block .tiger-card-wrapper .text-wrapper .title-span {
+    font-size: 14px;
+  }
+}

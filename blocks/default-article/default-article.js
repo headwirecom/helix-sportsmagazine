@@ -71,7 +71,6 @@ export default async function decorate(block) {
 
   // Template rendering
   const template = parseFragment(HTML_TEMPLATE);
-
   // Identify slots
   assignSlot(block, 'heading', 'h1');
   assignSlot(block, 'image', 'picture');

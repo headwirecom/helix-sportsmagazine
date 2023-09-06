@@ -447,6 +447,7 @@ window.store = new (class {
       article: 'article-query-index',
       product: 'product-query-index',
       gallery: 'gallery-query-index',
+      'custom-data': 'custom-data',
     };
 
     // Pre-defined queries
@@ -467,16 +468,33 @@ window.store = new (class {
       carousel: 20,
       loop: 30,
       'series-cards': 100,
+      'tiger-cards': 35,
+      'tiger-vault-hero': 1,
     };
 
-    const blockNames = Object.keys(this._blockQueryLimit);
-    const spreadsheets = Object.keys(this._spreadsheets);
+    this.blockNames = Object.keys(this._blockQueryLimit);
+    this.spreadsheets = Object.keys(this._spreadsheets);
 
-    // Find all dynamic queries on the page and map them out
-    // Dynamic queries end with their spreadsheet name e.g. loop-article or latest-gallery
-    const dynamicQuerySelectors = spreadsheets.map((spreadsheet) => `main .block[class*="${spreadsheet}"]`);
+    this.initQueries();
+
+    try {
+      this._cache = JSON.parse(window.sessionStorage['golf-store']);
+
+      // Forces a refresh after a long period (1d) in case window is stored in memory
+      setTimeout(() => {
+        sessionStorage.clear();
+      }, 86400);
+    } catch (e) {
+      // session storage not supported
+      this._cache = {};
+    }
+  } // Find all dynamic queries on the page and map them out
+
+  // Dynamic queries end with their spreadsheet name e.g. loop-article or latest-gallery
+  initQueries() {
+    const dynamicQuerySelectors = this.spreadsheets.map((spreadsheet) => `main .block[class*="${spreadsheet}"]`);
     document.querySelectorAll(dynamicQuerySelectors.join(',')).forEach((block) => {
-      for (const spreadsheet of spreadsheets) {
+      for (const spreadsheet of this.spreadsheets) {
         const queryClassName = [...block.classList]
           .find((className) => className.endsWith(spreadsheet));
 
@@ -494,24 +512,12 @@ window.store = new (class {
 
     // Construct limit for each query based on the blocks on the page
     const queryNames = Object.keys(this._queryMap);
-    blockNames.forEach((blockName) => {
+    this.blockNames.forEach((blockName) => {
       queryNames.forEach((queryName) => {
         const { spreadsheet } = this._queryMap[queryName];
         this._queryMap[queryName].limit += document.querySelectorAll(`main .${blockName}.${queryName}-${spreadsheet}.block`).length * this._blockQueryLimit[blockName];
       });
     });
-
-    try {
-      this._cache = JSON.parse(window.sessionStorage['golf-store']);
-
-      // Forces a refresh after a long period (1d) in case window is stored in memory
-      setTimeout(() => {
-        sessionStorage.clear();
-      }, 86400);
-    } catch (e) {
-      // session storage not supported
-      this._cache = {};
-    }
   }
 
   /**
@@ -539,11 +545,21 @@ window.store = new (class {
    */
   query(block) {
     const id = getBlockId(block);
-    const query = this.getQuery(block);
+    let query = this.getQuery(block);
 
     if (!query) {
-      console.warn(`Query missing for "${block.dataset.blockName}" with id "${id}"`);
-      return;
+      // Attempt to find more blocks generated late.
+      // This usually happens when using a non-default page-
+      // type as you have to trigger block decoration manually.
+      this.initQueries();
+      query = this.getQuery(block);
+      if (!query) {
+        console.warn(`Query missing for "${block.dataset.blockName}" with id "${id}"!
+Make sure the block definition includes the spreadsheet & sheet name like this: \x1b[37m"(example, class, SHEET_NAME SPREADSHEET_FILENAME)"\x1b[0m!
+If you created a new spreadsheet you might also need to add it to \x1b[37m"this._spreadsheets"\x1b[0m.
+`);
+        return;
+      }
     }
 
     const queryDetails = this._queryMap[query];
