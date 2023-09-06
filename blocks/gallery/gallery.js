@@ -2,15 +2,18 @@ import {
   normalizeAuthorURL,
   parseFragment,
   parseSectionMetadata,
+  premiumArticleBanner,
   render,
 } from '../../scripts/scripts.js';
 import {
   buildBlock, decorateBlock, getMetadata, loadBlocks,
 } from '../../scripts/lib-franklin.js';
 
+const gdPlusArticle = getMetadata('gdplus').length > 0;
 const rubric = getMetadata('rubric');
 const author = getMetadata('author');
-const imageCredit = getMetadata('image-credit');
+// TODO remove once importer fixes photo credit
+const photoCredit = getMetadata('image-credit') ?? getMetadata('photo-credit');
 const publicationDate = getMetadata('publication-date');
 
 // HTML template in JS to avoid extra waterfall for LCP blocks
@@ -18,16 +21,18 @@ const HTML_TEMPLATE = `
 <div class="container">
   <div class="container-article">
     <article class="article-content">
-      ${rubric ? `<p class="rubric">
-        <span>${rubric}</span>
-      </p>` : ''}
+      ${!gdPlusArticle ? '' : premiumArticleBanner()}
       <div class="headline">
         <slot name="headline"></slot>
       </div>
-      <div class="byline${author || imageCredit ? '' : ' no-author'}">
+      <p class="rubric">
+        ${!gdPlusArticle ? '' : '<img class="gd-plus-icon" width="51" height="19" src="/icons/gd-plus-dark.svg" alt="GD Plus Icon" />'}
+        <span>${rubric}</span>
+      </p>
+      <div class="byline${author || photoCredit ? '' : ' no-author'}">
         <div class="attribution">
           ${author ? `<span>By&nbsp;</span><a href="${normalizeAuthorURL(author)}">${author}</a>` : ''}
-          ${imageCredit ? `<span>Photos By&nbsp;</span><a href="${normalizeAuthorURL(imageCredit)}">${imageCredit}</a>` : ''}
+          ${photoCredit ? `<span>Photos By&nbsp;</span><a href="${normalizeAuthorURL(photoCredit)}">${photoCredit}</a>` : ''}
         </div>
         <div class="publication">
             <span>${publicationDate}</span>
@@ -152,9 +157,9 @@ export default async function decorate(block) {
     let credit;
     const metadataEl = item.querySelector('.template-section-metadata');
     if (metadataEl) {
-      const { promoHeadline, photoCredit } = parseSectionMetadata(metadataEl);
+      const { promoHeadline, photoCredit: itemPhotoCredit } = parseSectionMetadata(metadataEl);
       headline = promoHeadline;
-      credit = photoCredit;
+      credit = itemPhotoCredit;
     }
 
     // Add credits, next and prev buttons and slide counter

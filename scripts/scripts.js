@@ -11,7 +11,7 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
-  toCamelCase,
+  toCamelCase, getMetadata,
 } from './lib-franklin.js';
 
 export const ARTICLE_TEMPLATES = {
@@ -30,15 +30,21 @@ const LCP_BLOCKS = [...Object.values(ARTICLE_TEMPLATES), 'hero']; // add your LC
 const range = document.createRange();
 
 export function replaceLinksWithEmbed(block) {
-  const embeds = ['youtube', 'twitter', 'brightcove', 'instagram'];
+  const embeds = ['youtube', 'brightcove', 'instagram'];
   block.querySelectorAll(embeds.map((embed) => `a[href*="${embed}"]`).join(',')).forEach((embedLink) => {
-    // TODO Ideally duplicated instagram embeds should not be imported
     if (embedLink.textContent.startsWith('View') && embedLink.href.includes('instagram')) {
       embedLink.remove();
     } else {
-      const parent = embedLink.parentElement;
-      const embed = buildBlock('embed', { elems: [embedLink] });
-      parent.replaceWith(embed);
+      const embed = buildBlock('embed', { elems: [embedLink.cloneNode(true)] });
+      embedLink.replaceWith(embed);
+    }
+  });
+
+  // handling for Twitter links
+  block.querySelectorAll('a[href*="twitter.com"]').forEach((twitterLink) => {
+    if (twitterLink.href.includes('/status/')) {
+      const embed = buildBlock('embed', { elems: [twitterLink.cloneNode(true)] });
+      twitterLink.replaceWith(embed);
     }
   });
 }
@@ -111,6 +117,11 @@ export function render(template, fragment, type) {
       .replaceAll('</a> **', '</a></strong>')
       .replaceAll('from left to right:', 'from left to right:<br>')
       .replaceAll('</a><strong>', '</a><br><strong>');
+  } else if (type === ARTICLE_TEMPLATES.LongForm || type === ARTICLE_TEMPLATES.FullBleed) {
+    fragment.innerHTML = fragment.innerHTML
+      .replaceAll('****', '')
+      .replaceAll('</em> **', '</em></strong>&nbsp;')
+      .replaceAll('**<em>', '<strong><em>');
   }
 
   const slottedElements = fragment.querySelectorAll('[slot]');
@@ -129,6 +140,10 @@ export function render(template, fragment, type) {
   }
 }
 
+export function getAuthors() {
+  return getMetadata('author').split(',').map((author) => author.trim());
+}
+
 /**
  * Returns author URL
  *
@@ -144,23 +159,23 @@ export function normalizeAuthorURL(author) {
  * @param el
  */
 export function addPortraitClass(el) {
-  if (el.length) {
+  if (el.tagName === 'PICTURE') {
+    const img = el.querySelector('img');
+    if (img && img.height > img.width) {
+      el.classList.add('portrait');
+    }
+  } else {
     el.forEach((picture) => {
       const img = picture.querySelector('img');
       if (img && img.height > img.width) {
         picture.classList.add('portrait');
       }
     });
-  } else {
-    const img = el.querySelector('img');
-    if (img && img.height > img.width) {
-      el.classList.add('portrait');
-    }
   }
 }
 
 // TODO Remove once importer fixes photo-credit metadata for articles
-export function addImageCredit(pictures) {
+export function addPhotoCredit(pictures) {
   pictures.forEach((picture) => {
     const next = picture.parentElement.nextElementSibling;
     // Assuming name is not longer than that
@@ -193,6 +208,50 @@ function buildTemplate(main) {
         metadataEl.className = 'template-section-metadata';
       });
 
+      // TODO remove once importer fixes more cards
+      const checkForMoreCards = (el, elems) => {
+        if (el.tagName === 'P' && el.querySelector('picture') && el.querySelector('a') && el?.nextElementSibling?.tagName === 'P' && el.nextElementSibling.children[0]?.tagName === 'A' && el.nextElementSibling?.nextElementSibling.tagName === 'P' && el.nextElementSibling.nextElementSibling.children[0]?.tagName === 'A') {
+          const rubric = document.createElement('span');
+          rubric.textContent = el.nextElementSibling.textContent.trim();
+
+          const desc = document.createElement('strong');
+          desc.textContent = el.nextElementSibling.nextElementSibling.textContent.trim();
+
+          const link = document.createElement('a');
+          link.setAttribute('href', new URL(el.querySelector('a').getAttribute('href')).pathname);
+
+          link.append(el.querySelector('picture'));
+          link.append(rubric);
+          link.append(desc);
+
+          el.nextElementSibling.nextElementSibling.classList.add('remove');
+          el.nextElementSibling.classList.add('remove');
+          el.classList.add('remove');
+
+          elems.push(link);
+
+          if (el.nextElementSibling.nextElementSibling.nextElementSibling) {
+            checkForMoreCards(el.nextElementSibling.nextElementSibling.nextElementSibling, elems);
+          }
+        }
+      };
+
+      main.querySelectorAll('h2').forEach((h2) => {
+        if (h2.nextElementSibling) {
+          const elems = [];
+          checkForMoreCards(h2.nextElementSibling, elems);
+          if (elems.length) {
+            main.querySelectorAll('.remove').forEach((el) => el.remove());
+            const h3 = document.createElement('h3');
+            h3.textContent = h2.textContent;
+            h3.id = h2.id;
+            elems.unshift(h3);
+            const moreCards = buildBlock('more-cards', { elems });
+            h2.replaceWith(moreCards);
+          }
+        }
+      });
+
       const section = document.createElement('div');
       section.append(buildBlock(template, { elems: [...main.children] }));
       main.prepend(section);
@@ -205,25 +264,12 @@ function buildTemplate(main) {
 }
 
 /**
- * Builds a ceros embed block for all found ceros links
- *
- * @param {HTMLElement} main
- */
-function buildCerosEmbed(main) {
-  main.querySelectorAll('p > a[href^="https://view.ceros.com/golf-digest/"]').forEach((link) => {
-    const embed = buildBlock('embed', { elems: [link.cloneNode(true)] });
-    link.parentElement.replaceWith(embed);
-  });
-}
-
-/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
 function buildAutoBlocks(main) {
   try {
     buildTemplate(main);
-    buildCerosEmbed(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -383,10 +429,287 @@ export const convertExcelDate = (excelDate) => {
   return Number.isNaN(parsed) ? null : new Date(parsed);
 };
 
+export function getBlockId(block) {
+  block.id = block.id || window.crypto.randomUUID();
+  return block.id;
+}
+
 /**
- * Prepends an image path for images depending on window location
+ * Setting up custom fetch to cache article-query
  */
-export const prependImage = (imagePath) => {
-  const host = window.location.origin.startsWith('http://localhost') ? 'https://main--helix-sportsmagazine--headwirecom.hlx.page' : window.location.origin;
-  return host + imagePath;
+window.store = new (class {
+  constructor() {
+    // Query stack
+    this._queryStack = {};
+
+    // Indexes
+    this._spreadsheets = {
+      article: 'article-query-index',
+      product: 'product-query-index',
+      gallery: 'gallery-query-index',
+      'custom-data': 'custom-data',
+    };
+
+    // Pre-defined queries
+    this._queryMap = {
+      wedges: {
+        mock: '/mock-data/wedges.json',
+        limit: 0,
+      },
+    };
+
+    // Max items per block
+    /*
+    * Add entry here for new blocks that require data to be fetched!
+    */
+    this._blockQueryLimit = {
+      hero: 5,
+      cards: 10,
+      carousel: 20,
+      loop: 30,
+      'series-cards': 100,
+      'tiger-cards': 35,
+      'tiger-vault-hero': 1,
+    };
+
+    this.blockNames = Object.keys(this._blockQueryLimit);
+    this.spreadsheets = Object.keys(this._spreadsheets);
+
+    this.initQueries();
+
+    try {
+      this._cache = JSON.parse(window.sessionStorage['golf-store']);
+
+      // Forces a refresh after a long period (1d) in case window is stored in memory
+      setTimeout(() => {
+        sessionStorage.clear();
+      }, 86400);
+    } catch (e) {
+      // session storage not supported
+      this._cache = {};
+    }
+  } // Find all dynamic queries on the page and map them out
+
+  // Dynamic queries end with their spreadsheet name e.g. loop-article or latest-gallery
+  initQueries() {
+    const dynamicQuerySelectors = this.spreadsheets.map((spreadsheet) => `main .block[class*="${spreadsheet}"]`);
+    document.querySelectorAll(dynamicQuerySelectors.join(',')).forEach((block) => {
+      for (const spreadsheet of this.spreadsheets) {
+        const queryClassName = [...block.classList]
+          .find((className) => className.endsWith(spreadsheet));
+
+        if (queryClassName) {
+          const query = queryClassName.replace(`-${spreadsheet}`, '');
+          if (!this._queryMap[query]) {
+            this._queryMap[query] = {
+              spreadsheet,
+              limit: 0,
+            };
+          }
+        }
+      }
+    });
+
+    // Construct limit for each query based on the blocks on the page
+    const queryNames = Object.keys(this._queryMap);
+    this.blockNames.forEach((blockName) => {
+      queryNames.forEach((queryName) => {
+        const { spreadsheet } = this._queryMap[queryName];
+        this._queryMap[queryName].limit += document.querySelectorAll(`main .${blockName}.${queryName}-${spreadsheet}.block`).length * this._blockQueryLimit[blockName];
+      });
+    });
+  }
+
+  /**
+   * Looks for a query in the given block classname
+   * @param {HTMLElement} block
+   * @return {string}
+   */
+  getQuery(block) {
+    const queries = Object.keys(this._queryMap);
+
+    for (const query of queries) {
+      const found = [...block.classList].find((className) => className.startsWith(query));
+      if (found) {
+        block.dataset.query = query;
+        break;
+      }
+    }
+
+    return block.dataset.query;
+  }
+
+  /**
+   * Triggers an index fetch
+   * @param {HTMLElement} block
+   */
+  query(block) {
+    const id = getBlockId(block);
+    let query = this.getQuery(block);
+
+    if (!query) {
+      // Attempt to find more blocks generated late.
+      // This usually happens when using a non-default page-
+      // type as you have to trigger block decoration manually.
+      this.initQueries();
+      query = this.getQuery(block);
+      if (!query) {
+        console.warn(`Query missing for "${block.dataset.blockName}" with id "${id}"!
+Make sure the block definition includes the spreadsheet & sheet name like this: \x1b[37m"(example, class, SHEET_NAME SPREADSHEET_FILENAME)"\x1b[0m!
+If you created a new spreadsheet you might also need to add it to \x1b[37m"this._spreadsheets"\x1b[0m.
+`);
+        return;
+      }
+    }
+
+    const queryDetails = this._queryMap[query];
+    if (!queryDetails.mock && queryDetails.limit < 1) {
+      console.warn(`No query limit was found for ${block.dataset.blockName} block! \x1b[1m\x1b[31mTherefore no data will be returned!\x1b[0m
+
+Make sure to set a limit for \x1b[31m"${block.dataset.blockName}"\x1b[0m in \x1b[37m${JSON.stringify(this._blockQueryLimit)}\x1b[0m
+      `);
+    }
+    let url;
+
+    // Use mock data if defined
+    if (queryDetails.mock) {
+      url = queryDetails.mock;
+    } else {
+      // Build query sheet url
+      url = `/${this._spreadsheets[queryDetails.spreadsheet]}.json?sheet=${query}`;
+    }
+
+    // Use cached resource & that it has data
+    if (this._cache[url] && this._cache[url].limit) {
+      // Cache is already populated
+      if (this._cache[url].data.length) {
+        // Only trigger if there is enough data
+        if (queryDetails.limit <= this._cache[url].data.length) {
+          // "Return" data for given id
+          document.dispatchEvent(new CustomEvent(`query:${id}`, { detail: this._cache[url] }));
+          return;
+        }
+      } else {
+        // Stack query
+        this._queryStack = {
+          ...this._queryStack,
+          [id]: url,
+        };
+
+        return;
+      }
+    }
+
+    // Start setting cache to avoid multiple requests or invalid cache if not enough items
+    this._cache[url] = { data: [] };
+
+    // TODO store the delta between the number of cached items and the number of items requested
+    // and only request that with ?offset=
+
+    // Fetch new data, cache it then trigger
+    fetch(queryDetails.mock ? url : `${url}&limit=${queryDetails.limit}`)
+      .then((req) => {
+        if (req.ok) {
+          return req.json();
+        }
+        throw new Error(req.statusText);
+      })
+      .then((res) => {
+        // Set cache with data
+        this._cache[url] = res;
+
+        // Store cached data in session storage
+        try {
+          window.sessionStorage['golf-store'] = JSON.stringify(this._cache);
+        } catch (e) {
+          // Session storage not supported
+        }
+
+        // "Return" data for given id
+        document.dispatchEvent(new CustomEvent(`query:${id}`, { detail: this._cache[url] }));
+
+        // Unstack and "return" data
+        for (const stackId in this._queryStack) {
+          if (url === this._queryStack[stackId]) {
+            document.dispatchEvent(new CustomEvent(`query:${stackId}`, { detail: this._cache[url] }));
+            // Pop stack id
+            delete this._queryStack[stackId];
+          }
+        }
+      })
+      .catch((error) => {
+        console.warn(error);
+      });
+  }
+})();
+
+/**
+ * Generates HTML for the premium article banner.
+ * @param {Number} Number of leftover articles to compare to.
+ */
+export const premiumArticleBanner = (customLeftoverArticles = null) => {
+  let leftoverArticles = customLeftoverArticles;
+  if (typeof customLeftoverArticles !== 'number') {
+    leftoverArticles = Math.min(Number(window.name), 3);
+  }
+  window.name = Math.max(leftoverArticles - 1, 0);
+
+  let text;
+  if (leftoverArticles > 1) {
+    text = `You have <strong>${leftoverArticles}</strong> free premium articles remaining.`;
+  }
+  if (leftoverArticles === 1) {
+    text = 'This is your last free premium article for the month.';
+  }
+  if (leftoverArticles < 1) {
+    text = 'You are out of free premium articles.';
+  }
+
+  return `
+    <div class="premium-article-banner ${leftoverArticles < 1 ? 'out-of-free-articles' : ''}">
+      <div class="premium-banner-text-wrapper">
+        <span class="premium-message">${text}</span>
+        <a class="premium-link" src="#" target="_blank">
+          Subscribe to <strong>Golf Digest<span class="red-plus">+</span></strong>
+        </a>
+      </div>
+    </div>
+  `;
+};
+/**
+ * Generates HTML for the premium article blocker.
+ * @param {block} Block where the selector exists.
+ * @param {Selector} Selector for article body that should be covered.
+ */
+export const generateArticleBlocker = (block, selector) => {
+  if (Number(window.sessionStorage.freeArticles) > 0) {
+    return;
+  }
+  const articleBody = block.querySelector(selector);
+
+  articleBody.style.height = '1000px';
+  articleBody.style.position = 'relative';
+  articleBody.style.overflow = 'hidden';
+
+  const articleBlocker = document.createElement('div');
+  articleBlocker.className = 'article-blocker-wrapper';
+  articleBlocker.innerHTML = `
+    <div class="article-blocker-content">
+      <img class="article-blocker-image gd-plus-logo" src="/icons/gd-plus-logo.svg" alt="Golf Digest Plus Logo" />
+      <div class="article-blocker-lead">Subscribe to continue Reading</div>
+      <div class="article-blocker-sublead">
+        <span class="highlight">Golf Digest<span class="red-plus">+</span></span>
+        includes unlimited digital articles, exclusive course reviews, magazine access and more!
+      </div>
+      <a class="cta" href="https://www.golfdigest.com/subscribe-golf-digest-plus" target="_blank">
+        Learn More
+      </a>
+
+      <span class="login-wrapper">
+      Already have an account? <button class="login-button" onclick="console.warn('login popup not implemented yet');">Log in</button>
+      </span>
+    </div>
+  `;
+
+  articleBody.appendChild(articleBlocker);
 };

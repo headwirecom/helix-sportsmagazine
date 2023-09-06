@@ -12,12 +12,17 @@
 .cards-wrapper .cards.block picture {
   width: 100%;
   height: 100%;
+  position: absolute;
 }
 
 .cards-wrapper .cards.block.latest,
 .cards-wrapper .cards.block.columns,
 .cards-wrapper .cards.block.hero {
   height: auto;
+}
+
+.cards-wrapper .cards.block.columns {
+  margin-bottom: 100px;
 }
 
 .cards-wrapper .cards.block .date-string {
@@ -107,12 +112,6 @@
   color: white;
 }
 
-@media (max-width: 769px) {
-  .cards-wrapper .cards.block .card-block-wrapper .main-card .main-text-wrapper .headline > h3 {
-    font-size: 28px;
-  }
-}
-
 .cards-wrapper .cards.block .card-block-wrapper .main-card .main-text-wrapper .section {
   color: #adb4b7;
   text-transform: uppercase;
@@ -140,20 +139,19 @@
   margin-bottom: 25px;
 }
 
+.cards-wrapper .cards.block .cards-title-wrapper .cards-title {
+  font-size: 28px;
+}
+
 .cards-wrapper .cards.block.latest .cards-title-wrapper .cards-title,
 .cards-wrapper .cards.block.columns .cards-title-wrapper .cards-title {
   display: flex;
   align-items: center;
   margin: 0;
   font-weight: 600;
-  font-size: 24px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-family: var(--font-tungsten);
-}
-
-.cards-wrapper .cards.block.columns .cards-title-wrapper .cards-title {
-  font-size: 28px;
 }
 
 .cards-wrapper .cards.block.latest .cards-title-wrapper .cards-title::before,
@@ -168,6 +166,7 @@
 
 .cards-wrapper .cards.block.latest .card-block-wrapper {
   justify-content: space-between;
+  flex-direction: row-reverse;
 }
 
 .cards-wrapper .cards.block.latest .card-block-wrapper .latest-rail {
@@ -278,6 +277,10 @@
 }
 
 @media (max-width: 1280px) {
+  .cards-wrapper .cards.block .cards-title-wrapper .cards-title {
+    font-size: 24px;
+  }
+
   .cards-wrapper .cards.block:not(.hero) {
     height: auto;
   }
@@ -304,7 +307,7 @@
     padding: 18px;
   }
 
-  .cards-wrapper .cards.block.columns .card-block-wrapper .secondary-cards {
+  .cards-wrapper .cards.block.columns .card-block-wrapper div.secondary-cards {
     width: 100%;
   }
 
@@ -359,14 +362,14 @@
     font-size: 16px;
   }
 
-  .cards-wrapper .cards.block.latest .card-block-wrapper .secondary-cards {
+  .cards-wrapper .cards.block.latest .card-block-wrapper div.secondary-cards {
     width: 100%;
     max-width: 708px;
     gap: 14px;
     margin-bottom: 40px;
   }
 
-  .cards-wrapper .cards.block.latest .card-block-wrapper .secondary-cards .small-card {
+  .cards-wrapper .cards.block.latest .card-block-wrapper div.secondary-cards .small-card {
     min-height: 132px;
   }
 
@@ -386,11 +389,20 @@
 }
 
 @media (max-width: 768px) {
+  .cards-wrapper .cards.block.columns {
+    margin-bottom: 40px;
+  }
+
+  .cards-wrapper .cards.block .card-block-wrapper .main-card .main-text-wrapper .headline > h3 {
+    font-size: 28px;
+  }
+
   .cards-wrapper .cards.block .card-block-wrapper .secondary-cards {
     gap: 0;
   }
 
-  .cards-wrapper .cards.block.latest .card-block-wrapper .secondary-cards {
+  .cards-wrapper .cards.block.latest .card-block-wrapper div.secondary-cards {
+    width: 100%;
     max-width: none;
     gap: 0;
   }
@@ -432,16 +444,9 @@
     border-color: #e5e5e5;
   }
 
-  .cards-wrapper .cards.block.columns .card-block-wrapper .secondary-cards .small-card {
+  .cards-wrapper .cards.block.columns .card-block-wrapper div.secondary-cards .small-card {
     flex-direction: row;
     min-height: min-content;
-    height: auto;
-  }
-
-  .cards-wrapper .cards.block.latest .card-block-wrapper .secondary-cards .small-card,
-  .cards-wrapper .cards.block.latest .card-block-wrapper .secondary-cards .small-card:first-child {
-    min-height: auto;
-    max-height: none;
     height: auto;
   }
 
@@ -450,6 +455,13 @@
     border-top: 0.5px;
     border-style: solid;
     border-color: #e5e5e5;
+  }
+
+  .cards-wrapper .cards.block.latest .card-block-wrapper .secondary-cards a.small-card,
+  .cards-wrapper .cards.block.latest .card-block-wrapper .secondary-cards a.small-card:first-child {
+    min-height: auto;
+    max-height: none;
+    height: auto;
   }
 
   .cards-wrapper .cards.block .card-block-wrapper .secondary-cards .small-card .small-text-wrapper {
@@ -479,7 +491,7 @@
     min-height: 85px;
   }
 
-  .cards-wrapper .cards.block.columns .card-block-wrapper .secondary-cards {
+  .cards-wrapper .cards.block.columns .card-block-wrapper div.secondary-cards {
     display: flex;
   }
 
@@ -528,6 +540,12 @@
 
 .cards-wrapper .cards.block.gd .card-block-wrapper .main-card {
   max-width: 693px;
+}
+
+@media (max-width: 1280px) {
+  .cards-wrapper .cards.block.gd .card-block-wrapper .main-card {
+    max-width: none;
+  }
 }
 
 .cards-wrapper .cards.block.gd .secondary-cards {

@@ -15,7 +15,9 @@ import {
 export default async function decorate(block) {
   const author = getMetadata('author');
   const publicationDate = getMetadata('publication-date');
-  const imageCredit = parseSectionMetadata(block.querySelector('.template-section-metadata'))?.imageCredit;
+  const headlineMetadata = parseSectionMetadata(block.querySelector('.template-section-metadata'));
+  // TODO fix once importer fixes photo credit
+  const photoCredit = headlineMetadata?.imageCredit ?? headlineMetadata?.photoCredit;
 
   const HTML_TEMPLATE = `
     <article class="article-content">
@@ -25,7 +27,7 @@ export default async function decorate(block) {
       <div class="byline">
         <div class="attribution">
           ${author ? `<span>By&nbsp;</span><a href="${normalizeAuthorURL(author)}">${author}</a>` : ''}
-          ${imageCredit ? `<span>Photos By&nbsp;</span><a href="${normalizeAuthorURL(imageCredit)}">${imageCredit}</a>` : ''}
+          ${photoCredit ? `<span>Photos By&nbsp;</span><a href="${normalizeAuthorURL(photoCredit)}">${photoCredit}</a>` : ''}
         </div>
         <div class="publication">
             <span>${publicationDate}</span>
@@ -59,7 +61,7 @@ export default async function decorate(block) {
 
   replaceLinksWithEmbed(block);
 
-  block.querySelectorAll('.social-share, .embed').forEach((innerBlock) => decorateBlock(innerBlock));
+  block.querySelectorAll('.social-share, .embed, .more-cards').forEach((innerBlock) => decorateBlock(innerBlock));
   loadBlocks(document.querySelector('main'));
 
   // Template rendering
