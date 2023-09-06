@@ -18,7 +18,7 @@
   src: local("Arial");
   ascent-override: 84.58%;
   descent-override: 21.14%;
-  line-gap-override: 0.00%;
+  line-gap-override: 0%;
   size-adjust: 113.51%;
 }
 
@@ -30,13 +30,50 @@
   ascent-override: 135.83%;
   descent-override: 33.96%;
   line-gap-override: 33.96%;
-  size-adjust: 58.90%;
+  size-adjust: 58.9%;
+}
+
+@font-face {
+  font-family: "Archivo Fallback";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Arial");
+  ascent-override: 70.47%;
+  descent-override: 16.86%;
+  line-gap-override: 0%;
+  size-adjust: 124.59%;
+}
+
+@font-face {
+  font-family: "Chivo Black Fallback";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Arial");
+  ascent-override: 84.64%;
+  descent-override: 22.51%;
+  line-gap-override: 0%;
+  size-adjust: 111.06%;
+}
+
+@font-face {
+  font-family: "Work Sans Fallback";
+  font-style: normal;
+  font-weight: 700;
+  src: local("Arial");
+  ascent-override: 82.24%;
+  descent-override: 21.49%;
+  line-gap-override: 0%;
+  size-adjust: 113.08%;
 }
 
 :root {
   /* CSS vars */
   --font-gotham: "Gotham", "Gotham Fallback", helvetica, ubuntu, roboto, noto, sans-serif;
   --font-tungsten: "Tungsten", "Tungsten Fallback", helvetica, ubuntu, roboto, noto, sans-serif;
+  --font-archivo: "Archivo", "Archivo Fallback", helvetica, ubuntu, roboto, noto, sans-serif;
+  --font-chivo-black: "Chivo Black", "Chivo Black Fallback", helvetica, ubuntu, roboto, noto, sans-serif;
+  --font-chivo-bold: "Chivo Bold", "Chivo Bold Fallback", helvetica, ubuntu, roboto, noto, sans-serif;
+  --font-work: "Work Sans", "Work Sans Fallback", helvetica, ubuntu, roboto, noto, sans-serif;
   --header-height: 120px;
   --leaderboard-height: 80px;
   --link-hover-color: #ed3e49;
@@ -116,3 +153,184 @@ a:hover {
 .landing-page main > div > * {
   margin-bottom: 40px;
 }
+
+/* Landing-page dark */
+.landing-page.dark {
+  background-color: black;
+}
+
+/* premium banner */
+.premium-article-banner {
+  border-bottom: 3px solid #ff4140;
+  padding: 21px;
+  background-color: #f2f2f2;
+}
+
+.premium-article-banner.out-of-free-articles {
+  border: 2px solid #ff4140;
+}
+
+.premium-article-banner .premium-banner-text-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 16px;
+  font-family: var(--font-gotham);
+}
+
+.premium-article-banner .premium-link {
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.1s ease-out;
+  font-size: 16px;
+}
+
+.premium-article-banner .premium-link:hover {
+  color: #3577b1;
+}
+
+.premium-article-banner .premium-link .red-plus {
+  color: #ed3e49;
+}
+
+/* article blocker */
+.article-blocker-wrapper {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.article-blocker-wrapper .article-blocker-content {
+  position: relative;
+  padding: 40px;
+  background-color: #f6f6f6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.article-blocker-wrapper .article-blocker-content::before {
+  content: "";
+  position: absolute;
+  height: 400px;
+  right: 0;
+  top: -400px;
+  width: 100%;
+  text-align: center;
+  margin: 0;
+  padding: 30px 0;
+  background-image: linear-gradient(180deg, transparent, #fff);
+  box-sizing: border-box;
+}
+
+.article-blocker-wrapper .article-blocker-content img.gd-plus-logo.article-blocker-image {
+  width: 287px !important;
+}
+
+.article-blocker-wrapper .article-blocker-content .article-blocker-lead {
+  font-family: var(--font-tungsten);
+  font-weight: 600;
+  font-size: 50px;
+  line-height: 104%;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-align: center;
+  color: #000;
+  margin: 27px auto 25px;
+}
+
+.article-blocker-wrapper .article-blocker-content .article-blocker-sublead {
+  font-family: var(--font-gotham);
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 167%;
+  text-align: center;
+  color: #1f2022;
+  margin-bottom: 25px;
+  max-width: 684px;
+}
+
+.article-blocker-wrapper .article-blocker-content .article-blocker-sublead .highlight {
+  font-weight: 500;
+}
+
+.article-blocker-wrapper .article-blocker-content .article-blocker-sublead .red-plus {
+  color: #ed3e49;
+}
+
+div.article-blocker-wrapper div.article-blocker-content a.cta {
+  font-family: var(--font-gotham);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  width: 192px;
+  padding: 11px 20px;
+  background: #ed3e49;
+}
+
+div.article-blocker-wrapper div.article-blocker-content a.cta:hover {
+  color: #fff;
+  background-color: #000;
+}
+
+.article-blocker-wrapper .article-blocker-content .login-wrapper {
+  font-family: var(--font-gotham);
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 162%;
+  text-align: center;
+  color: #151517;
+  margin-top: 36px;
+}
+
+.article-blocker-wrapper .article-blocker-content .login-wrapper .login-button {
+  text-transform: uppercase;
+  font-family: var(--font-gotham);
+  font-size: 14px;
+  color: #ed3e49;
+  vertical-align: unset;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  background-color: transparent;
+  box-shadow: none;
+  text-shadow: none;
+  border: 0;
+  cursor: pointer;
+}
+
+@media (max-width: 557px) {
+  .article-blocker-wrapper .article-blocker-content {
+    padding: 24px 45px 30px;
+  }
+
+  .article-blocker-wrapper .article-blocker-content .article-blocker-lead {
+    font-size: 28px;
+    margin: 10px auto 5px;
+  }
+
+  .article-blocker-wrapper .article-blocker-content img.gd-plus-logo.article-blocker-image {
+    width: 130px !important;
+  }
+
+  .article-blocker-wrapper .article-blocker-content .article-blocker-sublead {
+    font-size: 14px;
+    line-height: 18px;
+    margin-bottom: 20px;
+  }
+
+  div.article-blocker-wrapper div.article-blocker-content a.cta {
+    font-size: 12px;
+    padding: 10px 35px;
+    max-width: 200px;
+  }
+}
+

@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo TODO",
     "test:watch": "npm test -- --watch",
+    "dev": "hlx up --no-open",
     "lint:js": "eslint .",
     "lint:js:fix": "eslint . --fix",
     "lint:css": "stylelint 'blocks/**/*.css' 'styles/*.css'",

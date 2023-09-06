@@ -12,7 +12,6 @@ let carouselData;
 
 export default async function decorate(block) {
   const id = getBlockId(block);
-  const query = window.store.getQuery(block);
 
   const isWedges = block.classList.contains('wedges');
   const isLarge = block.classList.contains('large');
@@ -33,6 +32,7 @@ export default async function decorate(block) {
 
   // Render content upon fetch complete
   document.addEventListener(`query:${id}`, (event) => {
+    // TODO Support multiple queries
     carouselData = event.detail.data;
 
     const carouselHeadingType = isWedges ? 'h2' : 'h4';
@@ -59,12 +59,14 @@ export default async function decorate(block) {
           <a class="carousel-item" href="${carouselItem.path}" >
             <div class="carousel-item-wrapper">
               <div class="carousel-image-wrapper">
-                ${createOptimizedPicture(carouselItem.image, carouselItem.imageAlt || 'carousel cover image', false, isLarge ? [{ width: '700' }] : [{ width: '500' }]).outerHTML}
+                ${createOptimizedPicture(carouselItem.image, carouselItem.imageAlt || carouselItem.title, false, isLarge ? [{ width: '700' }] : [{ width: '500' }]).outerHTML}
               </div>
               
               <div class="carousel-text-content">
-                ${carouselItem.rubric ? `<span class="sub-heading">${carouselItem.rubric}</span>` : ''}
+                ${!block.classList.contains('with-video') && carouselItem.rubric ? `<span class="sub-heading">${carouselItem.rubric}</span>` : ''}
                 <h3 class="carousel-item-title">${carouselItem.title}</h3>
+                <!-- TODO remove placeholder, add dynamic data time duration -->
+                ${block.classList.contains('with-video') ? '<p class="carousel-video-duration">05:35</p>' : ''}
                 ${isCourses && carouselItem.location ? `<span class="carousel-item-location">${carouselItem.location}</span>` : ''}
   
                 ${Array.isArray(carouselItem.awards) && carouselItem.awards.length ? `<ul class="carousel-item-pills">${carouselItem.awards.map((award) => `<li class="pill-item">${award}</li>`).join('')}</ul>` : ''}
@@ -283,5 +285,5 @@ export default async function decorate(block) {
     block.append(...template.children);
   });
 
-  window.store.query({ id, query, limit: 20 });
+  window.store.query(block);
 }

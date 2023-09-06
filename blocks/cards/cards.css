@@ -166,6 +166,7 @@
 
 .cards-wrapper .cards.block.latest .card-block-wrapper {
   justify-content: space-between;
+  flex-direction: row-reverse;
 }
 
 .cards-wrapper .cards.block.latest .card-block-wrapper .latest-rail {

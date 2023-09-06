@@ -491,6 +491,51 @@ function handleScrolling(el) {
   });
 }
 
+function handleLoginButtonEvent() {
+  const loginButtons = document.querySelectorAll('.login-dialog-open-button');
+  const signupButton = document.getElementById('signup-button');
+  const signupLink = document.getElementById('signup-link');
+  const loginLink = document.getElementById('login-link');
+  const loginDialog = document.getElementById('loginDialog');
+  const signupDialog = document.getElementById('signupDialog');
+  const loginClose = loginDialog.querySelector('.login-dialog-close');
+  const signupClose = signupDialog.querySelector('.signup-dialog-close');
+
+  // Show login dialog
+  loginButtons.forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      signupDialog.close();
+      loginDialog.showModal();
+    });
+  });
+
+  // show sign up dialog
+  signupButton.addEventListener('click', (event) => {
+    event.preventDefault();
+    loginDialog.close();
+    signupDialog.showModal();
+  });
+
+  // Show signup dialog when clicking link "sign up"
+  signupLink.addEventListener('click', (event) => {
+    event.preventDefault();
+    loginDialog.close();
+    signupDialog.showModal();
+  });
+
+  // Show login dialog when clicking link "log in"
+  loginLink.addEventListener('click', (event) => {
+    event.preventDefault();
+    signupDialog.close();
+    loginDialog.showModal();
+  });
+
+  // Close dialogs
+  loginClose.addEventListener('click', () => loginDialog.close());
+  signupClose.addEventListener('click', () => signupDialog.close());
+}
+
 /**
  * decorates the header, mainly the nav
  * @param {Element} block The header block element
@@ -510,5 +555,6 @@ export default async function decorate(block) {
     registerMenuEvents();
     handleRootExpand();
     handleScrolling(header.querySelector('.header'));
+    handleLoginButtonEvent();
   }
 }
