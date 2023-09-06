@@ -2,6 +2,7 @@ import {
   addPhotoCredit,
   addPortraitClass,
   assignSlot,
+  generateArticleBlocker,
   normalizeAuthorURL,
   parseFragment,
   parseSectionMetadata,
@@ -110,4 +111,8 @@ export default async function decorate(block) {
   // Inner block loading
   block.querySelectorAll('.social-share, .embed, .more-cards').forEach((innerBlock) => decorateBlock(innerBlock));
   loadBlocks(document.querySelector('main'));
+
+  if (gdPlusArticle) {
+    generateArticleBlocker(block, '.article-body');
+  }
 }

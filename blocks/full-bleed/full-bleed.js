@@ -7,6 +7,7 @@ import {
   addPhotoCredit,
   ARTICLE_TEMPLATES,
   premiumArticleBanner,
+  generateArticleBlocker,
 } from '../../scripts/scripts.js';
 import {
   buildBlock,
@@ -31,7 +32,7 @@ export default async function decorate(block) {
 
   // HTML template in JS to avoid extra waterfall for LCP blocks
   const HTML_TEMPLATE = `
-${!gdPlusArticle ? '' : premiumArticleBanner(2)}
+${!gdPlusArticle ? '' : premiumArticleBanner()}
 <div class="container">
   <div class="lead">
       <div class="headline">
@@ -154,4 +155,8 @@ ${!gdPlusArticle ? '' : premiumArticleBanner(2)}
     .querySelectorAll('.social-share, .embed, .more-cards')
     .forEach((innerBlock) => decorateBlock(innerBlock));
   loadBlocks(document.querySelector('main'));
+
+  if (gdPlusArticle) {
+    generateArticleBlocker(block, '.article-body');
+  }
 }
