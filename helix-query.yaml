@@ -27,6 +27,9 @@ indices:
         select: head > meta[name="publication-date"]
         value: |
           attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
   article:
     include:
      - '/content-v2/**/article/**'
@@ -65,9 +68,12 @@ indices:
         value: |
           attribute(el, 'content')
       videoUrl:
-        select: a[href*="brightcove"]
+        select: 'a[href*="youtube.com/watch"], a[href*="youtu.be/"], a[href*="brightcove"]'
         value: |
           attribute(el, 'href')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
   products:
     include:
      - '/content-v2/**/products/**'
@@ -89,3 +95,6 @@ indices:
         select: head > meta[name="category"]
         value: |
           attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
