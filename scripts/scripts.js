@@ -563,7 +563,7 @@ If you created a new spreadsheet you might also need to add it to \x1b[37m"this.
     }
 
     const queryDetails = this._queryMap[query];
-    if (queryDetails.limit < 1) {
+    if (!queryDetails.mock && queryDetails.limit < 1) {
       console.warn(`No query limit was found for ${block.dataset.blockName} block! \x1b[1m\x1b[31mTherefore no data will be returned!\x1b[0m
 
 Make sure to set a limit for \x1b[31m"${block.dataset.blockName}"\x1b[0m in \x1b[37m${JSON.stringify(this._blockQueryLimit)}\x1b[0m
