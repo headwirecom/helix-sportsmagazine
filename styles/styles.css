@@ -195,3 +195,7 @@ a:hover {
   background-color: black;
 }
 
+/* subscribe to newsletter page */
+.newsletter-subscribe main {
+  background-color: rgb(246 246 246);
+}

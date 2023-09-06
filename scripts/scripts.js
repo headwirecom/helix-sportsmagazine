@@ -23,6 +23,7 @@ export const ARTICLE_TEMPLATES = {
   Gallery: 'gallery',
   GalleryListicle: 'gallery-listicle',
   ProductListing: 'product-listing',
+  NewsletterSubscribe: 'newsletter-subscribe',
 };
 
 const LCP_BLOCKS = [...Object.values(ARTICLE_TEMPLATES), 'hero']; // add your LCP blocks to the list
@@ -653,4 +654,14 @@ export const premiumArticleBanner = (leftoverArticles = 0) => {
       </div>
     </div>
   `;
+};
+
+export const validateEmail = (email) => email.match(
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+);
+
+export const debouncedFunction = (fn, ms) => {
+  let timeout;
+  clearTimeout(timeout);
+  timeout = setTimeout(fn, ms);
 };
