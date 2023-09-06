@@ -61,7 +61,7 @@ export default async function decorate(block) {
 
   replaceLinksWithEmbed(block);
 
-  block.querySelectorAll('.social-share, .embed, .more-cards').forEach((innerBlock) => decorateBlock(innerBlock));
+  block.querySelectorAll('.social-share, .embed').forEach((innerBlock) => decorateBlock(innerBlock));
   loadBlocks(document.querySelector('main'));
 
   // Template rendering

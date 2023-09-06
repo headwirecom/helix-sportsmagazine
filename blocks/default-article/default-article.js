@@ -2,11 +2,9 @@ import {
   addPhotoCredit,
   addPortraitClass,
   assignSlot,
-  generateArticleBlocker,
   normalizeAuthorURL,
   parseFragment,
   parseSectionMetadata,
-  premiumArticleBanner,
   removeEmptyElements,
   render,
   replaceLinksWithEmbed,
@@ -19,7 +17,6 @@ import {
  * @param {HTMLDivElement} block
  */
 export default async function decorate(block) {
-  const gdPlusArticle = getMetadata('gdplus').length > 0;
   const rubric = getMetadata('rubric');
   const author = getMetadata('author');
   const publicationDate = getMetadata('publication-date');
@@ -32,9 +29,7 @@ export default async function decorate(block) {
     <div class="container">
       <div class="container-article">
         <article class="article-content">
-  ${!gdPlusArticle ? '' : premiumArticleBanner()}
           <p class="rubric">
-            ${!gdPlusArticle ? '' : '<img class="gd-plus-icon" width="51" height="19" src="/icons/gd-plus-dark.svg" alt="GD Plus Icon" />'}
             <span>${rubric}</span>
           </p>
           <div class="title">
@@ -72,19 +67,17 @@ export default async function decorate(block) {
 
   // Template rendering
   const template = parseFragment(HTML_TEMPLATE);
+
   // Identify slots
   assignSlot(block, 'heading', 'h1');
   assignSlot(block, 'image', 'picture');
 
   const picture = block.querySelector('picture');
-  // Picture is optional
-  if (picture) {
-    addPortraitClass(picture);
+  addPortraitClass(picture);
 
-    const caption = picture.parentElement.nextElementSibling;
-    if (caption && caption.tagName === 'P') {
-      caption.setAttribute('slot', 'caption');
-    }
+  const caption = picture.parentElement.nextElementSibling;
+  if (caption && caption.tagName === 'P') {
+    caption.setAttribute('slot', 'caption');
   }
 
   // Pre-processing
@@ -109,10 +102,6 @@ export default async function decorate(block) {
   block.append(template);
 
   // Inner block loading
-  block.querySelectorAll('.social-share, .embed, .more-cards').forEach((innerBlock) => decorateBlock(innerBlock));
+  block.querySelectorAll('.social-share, .embed').forEach((innerBlock) => decorateBlock(innerBlock));
   loadBlocks(document.querySelector('main'));
-
-  if (gdPlusArticle) {
-    generateArticleBlocker(block, '.article-body');
-  }
 }

@@ -327,8 +327,3 @@
 .footer .social-links li:last-of-type {
   margin-right: 0;
 }
-
-/* Footer dark */
-.landing-page.dark .footer-logo {
-  background-color: #1f2022;;
-} 

@@ -2,14 +2,12 @@ import {
   normalizeAuthorURL,
   parseFragment,
   parseSectionMetadata,
-  premiumArticleBanner,
   render,
 } from '../../scripts/scripts.js';
 import {
   buildBlock, decorateBlock, getMetadata, loadBlocks,
 } from '../../scripts/lib-franklin.js';
 
-const gdPlusArticle = getMetadata('gdplus').length > 0;
 const rubric = getMetadata('rubric');
 const author = getMetadata('author');
 // TODO remove once importer fixes photo credit
@@ -21,14 +19,12 @@ const HTML_TEMPLATE = `
 <div class="container">
   <div class="container-article">
     <article class="article-content">
-      ${!gdPlusArticle ? '' : premiumArticleBanner()}
+      ${rubric ? `<p class="rubric">
+        <span>${rubric}</span>
+      </p>` : ''}
       <div class="headline">
         <slot name="headline"></slot>
       </div>
-      <p class="rubric">
-        ${!gdPlusArticle ? '' : '<img class="gd-plus-icon" width="51" height="19" src="/icons/gd-plus-dark.svg" alt="GD Plus Icon" />'}
-        <span>${rubric}</span>
-      </p>
       <div class="byline${author || photoCredit ? '' : ' no-author'}">
         <div class="attribution">
           ${author ? `<span>By&nbsp;</span><a href="${normalizeAuthorURL(author)}">${author}</a>` : ''}

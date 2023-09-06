@@ -103,6 +103,7 @@ indices:
         select: head > meta[name="category"]
         value: |
           attribute(el, 'content')
-      lastModified:
-        select: none
-        value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
+      date:
+        select: head > meta[name="publication-date"]
+        value: |
+          attribute(el, 'content')
