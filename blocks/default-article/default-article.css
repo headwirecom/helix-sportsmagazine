@@ -4,12 +4,6 @@
     padding: 20px;
 }
 
-.default-article.block .container .gd-plus-icon {
-    border-right: 2px solid #f6f6f6;
-    margin-right: 10px;
-    padding-right: 10px;
-}
-
 .default-article.block .container-article {
     display: flex;
     justify-content: space-between;

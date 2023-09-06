@@ -4,7 +4,8 @@ function append(s) {
   const logEL = document.querySelector('.log');
   const el = document.createElement('div');
   if (isJSONOutput) {
-    el.innerText = s;
+    const txt = `"${s}",`;
+    el.innerText = txt;
   } else {
     el.innerHTML = s;
   }
@@ -15,25 +16,13 @@ let counter = 0;
 let totalCounter = 0;
 let isJSONOutput = false;
 let _showCount = false;
-let callback = (url, props = {}, doc) => {
+let callback = (url, doc) => {
   counter++;
   if (isJSONOutput) {
-    if (props && props.longURL) {
-      append(`{ "${url}": "${props.longURL}" },`);
-    } else {
-      append(`"${url}",`);
-    }
+    append(url);
   } else {
-    let output = `<a href="${url}" target="_blank">${url}</a>`;
-    if (props && props.longURL) {
-      output = output + ` : <a href="${props.longURL}" target="_blank">${props.longURL}</a>`
-    }
-    if (_showCount) append(`${counter} ${output}`);
-    else append(output);
-  }
-
-  if (props.updateImporter) {
-    (props.longURL) ? addToBulkImport(props.longURL) : addToBulkImport(url);
+    if (_showCount) append(`${counter} <a href="${url}" target="_blank">${url}</a>`);
+    else append(`<a href="${url}" target="_blank">${url}</a>`);
   }
 };
 
@@ -72,7 +61,7 @@ async function isPageType(url, pageTypeSelector, doc) {
   return isPageTypeDocument(d, pageTypeSelector);
 }
 
-export function addToBulkImport(url) {
+function addToBulkImport(url) {
   // console.log(`Add ${url} to importer localStorage`);
   let urls = localStorage.getItem(BULK_URLS_STORAGE_ID);
   if (urls) {
@@ -105,10 +94,9 @@ function getLongURL(doc, shortURL) {
 }
 
 async function process(options) {
-  let {url, showCount, updateImporter, pageTypeSelector, longForm, shortToLongMap} = options;
+  let {url, showCount, updateImporter, pageTypeSelector, longForm} = options;
   let longUrl = url;
   let doc = null;
-  let props = { showCount, updateImporter };
   if (longForm) {
     doc = await fetchDocument(longUrl);
     if (doc) {
@@ -117,17 +105,9 @@ async function process(options) {
       return;
     }
   }
-  if (shortToLongMap) {
-    doc = await fetchDocument(longUrl);
-    if (doc) {
-      props.longURL = getLongURL(doc, longUrl);
-    } else {
-      return;
-    }
-  }
   const matchPageType = (!pageTypeSelector || pageTypeSelector === 'all') ? true : await isPageType(longUrl, pageTypeSelector, doc);
   if (matchPageType) {
-    callback(url, props, doc);
+    callback(url, doc);
   }
 } 
 
@@ -152,10 +132,6 @@ async function processAll(urls, options, concurrency = 1) {
   }
 }
 
-export function setCallback(f) {
-  callback = f;
-}
-
 export const urlsFilter = [];
 
 export async function parse(options) {
@@ -175,8 +151,7 @@ export async function parseSitemap(options) {
     showCount, 
     updateImporter, 
     pageTypeSelector,
-    longForm,
-    shortToLongMap 
+    longForm 
   } = options;
 
   _showCount = showCount;
@@ -205,7 +180,7 @@ export async function parseSitemap(options) {
 
   for(const sitemap of sitemaps) {
     const url = sitemap.querySelector('loc').childNodes[0].nodeValue;
-    await parseSitemap({path: url, showCount, updateImporter, pageTypeSelector, longForm: longForm, shortToLongMap});
+    await parseSitemap({path: url, showCount, updateImporter, pageTypeSelector, longForm: longForm});
   }
 
   let urls = [];
@@ -220,9 +195,9 @@ export async function parseSitemap(options) {
     }
 
     if (urls.length > 500) {
-      await processAll(urls, {showCount, updateImporter, pageTypeSelector, longForm, shortToLongMap}, 4);
+      await processAll(urls, {showCount, updateImporter, pageTypeSelector, longForm}, 4);
     }
   }
   
-  await processAll(urls, {showCount, updateImporter, pageTypeSelector, longForm, shortToLongMap}, 1);
+  await processAll(urls, {showCount, updateImporter, pageTypeSelector, longForm}, 1);
 }
