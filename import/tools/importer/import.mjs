@@ -232,6 +232,15 @@ function appendPageMetadata(document, metadata) {
     const value = metaEl.getAttribute('content');
     if (name && value) appendMetadata(metadata, name, value);
   });
+
+  // add og:image
+  const ogImageMetaEL = document.querySelector('meta[property="og:image"]');
+  if (ogImageMetaEL) {
+    const imgPath = ogImageMetaEL.getAttribute('content');
+    const imgSrc = (imgPath.includes('.rend.')) ? imgPath.split('.rend.')[0] : imgPath;
+    const metaVal = `<img src="${imgSrc}"/>`
+    appendMetadata(metadata, "og:image", metaVal);
+  }
 }
 
 function addEl(main, el) {
