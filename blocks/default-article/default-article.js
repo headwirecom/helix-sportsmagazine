@@ -2,6 +2,7 @@ import {
   addPhotoCredit,
   addPortraitClass,
   assignSlot,
+  generateArticleBlocker,
   normalizeAuthorURL,
   parseFragment,
   parseSectionMetadata,
@@ -71,7 +72,6 @@ export default async function decorate(block) {
 
   // Template rendering
   const template = parseFragment(HTML_TEMPLATE);
-
   // Identify slots
   assignSlot(block, 'heading', 'h1');
   assignSlot(block, 'image', 'picture');
@@ -111,4 +111,8 @@ export default async function decorate(block) {
   // Inner block loading
   block.querySelectorAll('.social-share, .embed, .more-cards').forEach((innerBlock) => decorateBlock(innerBlock));
   loadBlocks(document.querySelector('main'));
+
+  if (gdPlusArticle) {
+    generateArticleBlocker(block, '.article-body');
+  }
 }

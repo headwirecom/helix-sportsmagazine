@@ -448,6 +448,7 @@ window.store = new (class {
       article: 'article-query-index',
       product: 'product-query-index',
       gallery: 'gallery-query-index',
+      'custom-data': 'custom-data',
     };
 
     // Pre-defined queries
@@ -468,16 +469,33 @@ window.store = new (class {
       carousel: 20,
       loop: 30,
       'series-cards': 100,
+      'tiger-cards': 35,
+      'tiger-vault-hero': 1,
     };
 
-    const blockNames = Object.keys(this._blockQueryLimit);
-    const spreadsheets = Object.keys(this._spreadsheets);
+    this.blockNames = Object.keys(this._blockQueryLimit);
+    this.spreadsheets = Object.keys(this._spreadsheets);
 
-    // Find all dynamic queries on the page and map them out
-    // Dynamic queries end with their spreadsheet name e.g. loop-article or latest-gallery
-    const dynamicQuerySelectors = spreadsheets.map((spreadsheet) => `main .block[class*="${spreadsheet}"]`);
+    this.initQueries();
+
+    try {
+      this._cache = JSON.parse(window.sessionStorage['golf-store']);
+
+      // Forces a refresh after a long period (1d) in case window is stored in memory
+      setTimeout(() => {
+        sessionStorage.clear();
+      }, 86400);
+    } catch (e) {
+      // session storage not supported
+      this._cache = {};
+    }
+  } // Find all dynamic queries on the page and map them out
+
+  // Dynamic queries end with their spreadsheet name e.g. loop-article or latest-gallery
+  initQueries() {
+    const dynamicQuerySelectors = this.spreadsheets.map((spreadsheet) => `main .block[class*="${spreadsheet}"]`);
     document.querySelectorAll(dynamicQuerySelectors.join(',')).forEach((block) => {
-      for (const spreadsheet of spreadsheets) {
+      for (const spreadsheet of this.spreadsheets) {
         const queryClassName = [...block.classList]
           .find((className) => className.endsWith(spreadsheet));
 
@@ -495,24 +513,12 @@ window.store = new (class {
 
     // Construct limit for each query based on the blocks on the page
     const queryNames = Object.keys(this._queryMap);
-    blockNames.forEach((blockName) => {
+    this.blockNames.forEach((blockName) => {
       queryNames.forEach((queryName) => {
         const { spreadsheet } = this._queryMap[queryName];
         this._queryMap[queryName].limit += document.querySelectorAll(`main .${blockName}.${queryName}-${spreadsheet}.block`).length * this._blockQueryLimit[blockName];
       });
     });
-
-    try {
-      this._cache = JSON.parse(window.sessionStorage['golf-store']);
-
-      // Forces a refresh after a long period (1d) in case window is stored in memory
-      setTimeout(() => {
-        sessionStorage.clear();
-      }, 86400);
-    } catch (e) {
-      // session storage not supported
-      this._cache = {};
-    }
   }
 
   /**
@@ -540,15 +546,25 @@ window.store = new (class {
    */
   query(block) {
     const id = getBlockId(block);
-    const query = this.getQuery(block);
+    let query = this.getQuery(block);
 
     if (!query) {
-      console.warn(`Query missing for "${block.dataset.blockName}" with id "${id}"`);
-      return;
+      // Attempt to find more blocks generated late.
+      // This usually happens when using a non-default page-
+      // type as you have to trigger block decoration manually.
+      this.initQueries();
+      query = this.getQuery(block);
+      if (!query) {
+        console.warn(`Query missing for "${block.dataset.blockName}" with id "${id}"!
+Make sure the block definition includes the spreadsheet & sheet name like this: \x1b[37m"(example, class, SHEET_NAME SPREADSHEET_FILENAME)"\x1b[0m!
+If you created a new spreadsheet you might also need to add it to \x1b[37m"this._spreadsheets"\x1b[0m.
+`);
+        return;
+      }
     }
 
     const queryDetails = this._queryMap[query];
-    if (queryDetails.limit < 1) {
+    if (!queryDetails.mock && queryDetails.limit < 1) {
       console.warn(`No query limit was found for ${block.dataset.blockName} block! \x1b[1m\x1b[31mTherefore no data will be returned!\x1b[0m
 
 Make sure to set a limit for \x1b[31m"${block.dataset.blockName}"\x1b[0m in \x1b[37m${JSON.stringify(this._blockQueryLimit)}\x1b[0m
@@ -632,7 +648,13 @@ Make sure to set a limit for \x1b[31m"${block.dataset.blockName}"\x1b[0m in \x1b
  * Generates HTML for the premium article banner.
  * @param {Number} Number of leftover articles to compare to.
  */
-export const premiumArticleBanner = (leftoverArticles = 0) => {
+export const premiumArticleBanner = (customLeftoverArticles = null) => {
+  let leftoverArticles = customLeftoverArticles;
+  if (typeof customLeftoverArticles !== 'number') {
+    leftoverArticles = Math.min(Number(window.name), 3);
+  }
+  window.name = Math.max(leftoverArticles - 1, 0);
+
   let text;
   if (leftoverArticles > 1) {
     text = `You have <strong>${leftoverArticles}</strong> free premium articles remaining.`;
@@ -682,3 +704,40 @@ export const extractQueryFromTemplateMetaData = (metaDataTemplateString) => {
     console.log(error)
   }
 }
+/**
+ * Generates HTML for the premium article blocker.
+ * @param {block} Block where the selector exists.
+ * @param {Selector} Selector for article body that should be covered.
+ */
+export const generateArticleBlocker = (block, selector) => {
+  if (Number(window.sessionStorage.freeArticles) > 0) {
+    return;
+  }
+  const articleBody = block.querySelector(selector);
+
+  articleBody.style.height = '1000px';
+  articleBody.style.position = 'relative';
+  articleBody.style.overflow = 'hidden';
+
+  const articleBlocker = document.createElement('div');
+  articleBlocker.className = 'article-blocker-wrapper';
+  articleBlocker.innerHTML = `
+    <div class="article-blocker-content">
+      <img class="article-blocker-image gd-plus-logo" src="/icons/gd-plus-logo.svg" alt="Golf Digest Plus Logo" />
+      <div class="article-blocker-lead">Subscribe to continue Reading</div>
+      <div class="article-blocker-sublead">
+        <span class="highlight">Golf Digest<span class="red-plus">+</span></span>
+        includes unlimited digital articles, exclusive course reviews, magazine access and more!
+      </div>
+      <a class="cta" href="https://www.golfdigest.com/subscribe-golf-digest-plus" target="_blank">
+        Learn More
+      </a>
+
+      <span class="login-wrapper">
+      Already have an account? <button class="login-button" onclick="console.warn('login popup not implemented yet');">Log in</button>
+      </span>
+    </div>
+  `;
+
+  articleBody.appendChild(articleBlocker);
+};

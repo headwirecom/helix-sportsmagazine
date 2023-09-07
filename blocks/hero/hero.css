@@ -450,3 +450,7 @@
 .dark .hero.block .hero-container {
     margin-top: 90px;
 }
+
+.dark .hero.block.columns .hero-container {
+    margin-top: 0;
+}

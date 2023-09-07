@@ -47,12 +47,8 @@ export default async function decorate(block) {
           (card) => `
               <a href='${card.path}'>
                 ${
-  createOptimizedPicture(
-    card.image,
-    card.imageAlt || card.title,
-    isFirstHero,
-    [{ width: '120' }],
-  ).outerHTML
+  createOptimizedPicture(card.image, card.imageAlt || card.title, isFirstHero, [{ width: '120' }])
+    .outerHTML
 }
                 <div>
                   <span>${card.rubric}</span>

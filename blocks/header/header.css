@@ -257,6 +257,12 @@
   }
 }
 
+.login-dialog-forgot a {
+  font-weight: 500;
+  color: #5B606B;
+  margin-right: -10px;
+}
+
 .header .header-sub-nav a {
   white-space: nowrap;
   color: inherit;
@@ -277,6 +283,202 @@
 
 .header .nav-menu-nav-link a {
   color: inherit;
+}
+
+/* Login dialog */
+.login-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  background-color: transparent;
+  border: none;
+}
+
+.login-dialog::backdrop {
+  background-color: rgb(0 0 0 / 70%)
+}
+
+.login-dialog .login-dialog-content {
+  font-family: var(--font-gotham);
+  width: 437px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #F6F6F6;
+  box-shadow: 0 0 10px rgba(0 0 0 / 50%);
+  color: #5B606B;
+  font-style: normal;
+  font-weight: 350;
+  font-size: 12px;
+  letter-spacing: 0; 
+  text-transform: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 25px 30px;
+}
+
+.login-dialog .login-dialog-close, 
+.login-dialog .signup-dialog-close {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.login-dialog .login-dialog-logo {
+  display: block;
+  width: 220px;
+  margin: 0 auto;
+  height: 100%;
+  padding-bottom: 18px;
+}
+
+.login-dialog h2 {
+  font-family: var(--font-tungsten);
+  font-size: 35px;
+  font-style: semibold;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin: 15px auto 0;
+  color: #151C2C;
+  line-height: normal;
+  padding-bottom: 25px;
+}
+
+.login-dialog .login-dialog-form input[type="email"],
+.login-dialog .login-dialog-form input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 14px;
+  font-weight: normal;
+  border: 1px solid #E7E7E7;
+  background-color: #fff;
+  height: 66px;
+}
+
+.login-dialog .login-dialog-form input[type="email"] {
+  margin-bottom: 30px;
+}
+
+.login-dialog .gd-agreement-checkbox input {
+  margin: 0;
+  width: 20px;
+  height: 20px;
+}
+
+.login-dialog .login-dialog-form input:focus {
+  border: 2px solid #b6bdc5b6;
+  box-shadow: inset 0 3px 6px rgba(0 0 0 / 5%);
+  outline: none;
+}
+
+.login-dialog .login-dialog-form label {
+  font-weight: 500;
+}
+
+.login-dialog .login-dialog-button-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 14px;
+  padding: 5px;
+}
+
+.login-dialog .login-dialog-forgot {
+  text-align: right;
+  margin: 10px;
+}
+
+.login-dialog .login-dialog-signup {
+  text-align: center;
+  margin: 0 20px 20px;
+}
+
+.login-dialog-signup .red {
+  color: #FF003A;
+  font-weight: bold;
+  margin-bottom: 35px;
+}
+
+.login-dialog .login-dialog-signup a:hover span.red {
+  color: black;
+  text-decoration: underline;
+}
+
+.login-dialog .gd-agreement-checkbox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 10px;
+}
+
+.login-dialog .gd-agreement-checkbox label {
+  line-height: 2.5em;
+  width: 250px;
+  font-size: 10px;
+}
+
+.login-dialog .login-dialog-signup a {
+  color: #5B606B;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.login-dialog .login-dialog-agreement a {
+  text-decoration: underline;
+  color: black;
+}
+
+.login-dialog .gd-agreement-checkbox label a {
+  font-size: 15px;
+}
+
+.login-dialog .login-dialog-signup a:hover {
+  color: black;
+  text-decoration: underline;  
+}
+
+.login-dialog .login-dialog-agreement {
+  text-align: center;
+  margin-top: 20px;
+  font-weight: 500;
+  font-size: 10px;
+  color: #5B606B;
+}
+
+.login-dialog .required {
+  color: #FF003A;
+}
+
+.login-dialog .login-dialog-button {
+  height: 40px;
+  font: 14px var(--font-gotham);
+  background-color: #ADB4B7;
+  width: 250px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  border-radius: 0;
+  color: #fff;
+  text-decoration: none;
+  border: 1px solid #ADB4B7;
+  box-sizing: border-box;
+  margin: 0;
+  margin-bottom: 25px;
+}
+
+.login-dialog .login-dialog-forgot a:hover{
+  text-decoration: underline;
+}
+
+.login-dialog .login-dialog-agreement a:hover {
+  color: var(--link-hover-color)
 }
 
 .header .header-bottom-bar a:hover {
