@@ -1,3 +1,5 @@
+name: Publish Webhook
+
 on:
   repository_dispatch:
     types:
