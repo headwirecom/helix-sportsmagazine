@@ -1,40 +1,34 @@
-import {
-  assignSlot,
-  parseFragment,
-  render,
-  ARTICLE_TEMPLATES,
-  validateEmail,
-  debouncedFunction,
-} from '../../scripts/scripts.js';
-import {
-  createOptimizedPicture,
-} from '../../scripts/lib-franklin.js';
+import { assignSlot, parseFragment, render, ARTICLE_TEMPLATES, validateEmail, extractQueryFromTemplateMetaData } from "../../scripts/scripts.js";
+import { createOptimizedPicture, getMetadata } from "../../scripts/lib-franklin.js";
 
 /**
  * @param {HTMLDivElement} block
  */
 export default async function decorate(block) {
-  const response = await fetch('/custom-data.json?sheet=email-subscribe-list&limit=25');
+  const templateMetaData = getMetadata('template');
+  extractQueryFromTemplateMetaData(templateMetaData)
+  extractQueryFromTemplateMetaData('test-template (class, class2, query thing, class3)')
+
+
+  const response = await fetch("/custom-data.json?sheet=email-subscribe-list&limit=25");
   const { data } = await response.json();
 
   const subscriptionsObj = {};
 
   const generateListItem = (
-    {
-      title = '', description = '', image = '', imageAlt = '', subscriptionValue = '',
-    } = {},
-    index=0,
+    { title = "", description = "", image = "", imageAlt = "", subscriptionValue = "" } = {},
+    index = 0
   ) => {
     subscriptionsObj[subscriptionValue] = true;
     return `
   <li class="subscribe-item">
     <div class="image-wrapper">
       ${
-  createOptimizedPicture(image, imageAlt, index < 2, [
-    { media: '(max-width: 600px)', width: '115' },
-    { width: '285' },
-  ]).outerHTML
-}
+        createOptimizedPicture(image, imageAlt, index < 2, [
+          { media: "(max-width: 600px)", width: "115" },
+          { width: "285" },
+        ]).outerHTML
+      }
     </div>
 
     <div class="text-wrapper">
@@ -76,14 +70,12 @@ export default async function decorate(block) {
 
     <div class="subscribe-list-wrapper">
       <ul class="subscribe-list">
-        ${data.map((item, index) => generateListItem(item, index)).join('')}
+        ${data.map((item, index) => generateListItem(item, index)).join("")}
       </ul>
     </div>
 
     <div class="form-footer">
-      <input type="submit" class="sign-up-button">
-        Sign Up
-      </input>
+      <input type="submit" class="sign-up-button" value="Sign Up"></input>
 
       <slot name="footer-privacy"></slot>
       <slot name="footer-tos-links"></slot>
@@ -96,41 +88,45 @@ export default async function decorate(block) {
   const template = parseFragment(HTML_TEMPLATE);
 
   // Identify slots
-  assignSlot(block, 'title', 'h1, h2, h3');
-  assignSlot(block, 'description', '.newsletter-subscribe.block > div > div > div:has(h2) + div:has(p)');
-  assignSlot(block, 'tos-top', '.newsletter-subscribe.block > div > div > div:has(h2) + div:has(p) + div:has(p a)');
+  assignSlot(block, "title", "h1, h2, h3");
+  assignSlot(block, "description", ".newsletter-subscribe.block > div > div > div:has(h2) + div:has(p)");
+  assignSlot(block, "tos-top", ".newsletter-subscribe.block > div > div > div:has(h2) + div:has(p) + div:has(p a)");
   assignSlot(
     block,
-    'footer-privacy',
-    '.newsletter-subscribe.block > div > div > div:has(h2) + div:has(p) + div:has(p a) + div:has(p a)',
+    "footer-privacy",
+    ".newsletter-subscribe.block > div > div > div:has(h2) + div:has(p) + div:has(p a) + div:has(p a)"
   );
   assignSlot(
     block,
-    'footer-tos-links',
-    '.newsletter-subscribe.block > div > div > div:has(h2) + div:has(p) + div:has(p a) + div:has(p a) + div:has(p a)',
+    "footer-tos-links",
+    ".newsletter-subscribe.block > div > div > div:has(h2) + div:has(p) + div:has(p a) + div:has(p a) + div:has(p a)"
   );
 
   render(template, block, ARTICLE_TEMPLATES.NewsletterSubscribe);
 
   // Update block with rendered template
-  block.innerHTML = '';
+  block.innerHTML = "";
   block.append(template);
 
   // handle email input & debounced validation
-  const emailField = document.querySelector('.subscribe-form .email-input');
+  const emailField = document.querySelector(".subscribe-form .email-input");
 
-  emailField.oninput = () => {
-    debouncedFunction(() => {
+  let timer;
+  const debouncedInputValidation = () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
       const valid = !!validateEmail(emailField.value);
       if (valid) {
-        emailField.classList.remove('invalid');
-        emailField.classList.add('valid');
+        emailField.classList.remove("invalid");
+        emailField.classList.add("valid");
       } else {
-        emailField.classList.remove('valid');
-        emailField.classList.add('invalid');
+        emailField.classList.remove("valid");
+        emailField.classList.add("invalid");
       }
     }, 1000);
   };
+
+  emailField.oninput = debouncedInputValidation;
 
   // handle on clicks
   const subscribeToAllCheckbox = document.querySelector('.subscribe-form input[type="checkbox"]#all-checkbox');
@@ -140,7 +136,7 @@ export default async function decorate(block) {
       for (const subscription in subscriptionsObj) {
         subscriptionsObj[subscription] = true;
         document.querySelector(
-          `.subscribe-form .subscribe-list input[type="checkbox"][value="${subscription}"]`,
+          `.subscribe-form .subscribe-list input[type="checkbox"][value="${subscription}"]`
         ).checked = true;
       }
     }
@@ -161,19 +157,19 @@ export default async function decorate(block) {
   });
 
   // handling submit
-  const subscribeForm = document.querySelector('form.subscribe-form');
+  const subscribeForm = document.querySelector("form.subscribe-form");
 
   subscribeForm.onsubmit = (e) => {
     e.preventDefault();
     if (validateEmail(emailField.value)) {
-      emailField.classList.remove('valid');
-      emailField.classList.add('invalid');
+      emailField.classList.remove("valid");
+      emailField.classList.add("invalid");
       emailField.focus();
       return;
     }
     const selectedSubscriptions = Object.keys(subscriptionsObj)
       .filter((subscription) => subscriptionsObj[subscription])
-      .join(', ');
+      .join(", ");
 
     console.warn(`Form Submit not implemented\n
 \x1b[34memail: ${emailField.value}

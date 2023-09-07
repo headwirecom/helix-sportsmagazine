@@ -193,7 +193,7 @@ export function addPhotoCredit(pictures) {
  * @return {string|null}
  */
 function findTemplate(className) {
-  return Object.values(ARTICLE_TEMPLATES).find((template) => template === className);
+  return Object.values(ARTICLE_TEMPLATES).find((template) => className.startsWith(template));
 }
 
 /**
@@ -660,8 +660,25 @@ export const validateEmail = (email) => email.match(
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 );
 
-export const debouncedFunction = (fn, ms) => {
-  let timeout;
-  clearTimeout(timeout);
-  timeout = setTimeout(fn, ms);
-};
+/**
+   * Creates a class name compatible with window.store.query
+   * so page templates can also use that functionality like blocks.
+   * @param {string} Metadata string of the page that includes "(SHEET_NAME SPREADSHEET_NAME)"
+   * @return {string} String that is a valid class for window.store.query
+   */
+export const extractQueryFromTemplateMetaData = (metaDataTemplateString) => {
+  try {
+    // console.log("\x1b[31m ~ metaDataTemplateString:", metaDataTemplateString)
+    const regex = /\((.*)\)/
+    const textWithinBrackets = metaDataTemplateString.match(regex)[1]
+    const classesArray = textWithinBrackets.split(',').map(string => string.trim())
+
+    console.log("\x1b[31m ~ textWithinBrackets:", classesArray)
+    
+    
+
+  } catch (error) {
+    console.log('Something went wrong while trying to get query from '+metaDataTemplateString)
+    console.log(error)
+  }
+}
