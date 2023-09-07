@@ -30,6 +30,10 @@ indices:
       lastModified:
         select: none
         value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
+      gdPlus:
+        select: head > meta[name="gd-plus"]
+        value: |
+          attribute(el, 'content')
   article:
     include:
      - '/content-v2/**/article/**'
@@ -74,6 +78,10 @@ indices:
       lastModified:
         select: none
         value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
+      gdPlus:
+        select: head > meta[name="gd-plus"]
+        value: |
+          attribute(el, 'content')
   products:
     include:
      - '/content-v2/**/products/**'
@@ -98,3 +106,7 @@ indices:
       lastModified:
         select: none
         value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
+      gdPlus:
+        select: head > meta[name="gd-plus"]
+        value: |
+          attribute(el, 'content')
