@@ -11,11 +11,12 @@
   flex-direction: column;
   gap: 30px;
 }
+
 .newsletter-subscribe.block .subscribe-form a:hover {
   color: inherit;
 }
 
-.newsletter-subscribe.block .subscribe-form label[for*='checkbox'] {
+.newsletter-subscribe.block .subscribe-form label[for*="checkbox"] {
   cursor: pointer;
 }
 
@@ -26,15 +27,15 @@
   border-radius: 15px;
   margin: 0;
   appearance: none;
-  background: var(--circle-svg), #E1E1E3;
+  background: var(--circle-svg), #e1e1e3;
   background-size: 22px 22px;
   background-repeat: no-repeat;
   background-position: 4px 4px;
-  transition: background .4s ease;
+  transition: background 0.4s ease;
 }
 
 .newsletter-subscribe.block .subscribe-form input.toggle:checked {
-  background: var(--circle-svg), #1F2022;
+  background: var(--circle-svg), #1f2022;
   background-size: 22px 22px;
   background-repeat: no-repeat;
   background-position: 26px 4px;
@@ -72,22 +73,13 @@
   line-height: 30px;
 }
 
-.newsletter-subscribe.block .subscribe-form .title-wrapper [slot="description"] p:first-child {
-  line-height: 135%;
-  color: #151517;
-}
-.newsletter-subscribe.block .subscribe-form .title-wrapper [slot="description"] p:last-child {
-  margin-bottom: 30px;
-}
-
 .newsletter-subscribe.block .subscribe-form .title-wrapper [slot="tos-top"] {
   color: #1f2022;
   text-align: center;
   font-family: "Times New Roman", Times, serif;
   font-size: 10px;
-  font-weight: 350;
   line-height: 13px;
-  letter-spacing: 0em;
+  letter-spacing: 0;
   margin-bottom: 20px;
 }
 
@@ -99,8 +91,18 @@
   margin: 0;
 }
 
+.newsletter-subscribe.block .subscribe-form .title-wrapper [slot="description"] p:first-child {
+  line-height: 135%;
+  color: #151517;
+}
+
+.newsletter-subscribe.block .subscribe-form .title-wrapper [slot="description"] p:last-child {
+  margin-bottom: 30px;
+}
+
 .newsletter-subscribe.block .subscribe-form .controls-wrapper {
-  width: 600px;
+  width: 100%;
+  max-width: 600px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -120,7 +122,7 @@
   outline: none;
   font-size: 18px;
   line-height: 30px;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
 }
 
 .newsletter-subscribe.block .subscribe-form .controls-wrapper .email-input:focus {
@@ -130,7 +132,7 @@
 }
 
 .newsletter-subscribe.block .subscribe-form .controls-wrapper .email-input::placeholder {
-  color: #ADB4B7;
+  color: #adb4b7;
 }
 
 .newsletter-subscribe.block .subscribe-form .controls-wrapper .email-input.invalid {
@@ -141,7 +143,7 @@
 }
 
 .newsletter-subscribe.block .subscribe-form .controls-wrapper .email-input.valid {
-  background-image: url('https://cdns1.gigya.com/gs/i//screenSet/checkmarkValid.png');
+  background-image: url("https://cdns1.gigya.com/gs/i//screenSet/checkmarkValid.png");
   background-position: right 5px center;
   background-repeat: no-repeat;
   padding-right: 25px;
@@ -151,7 +153,7 @@
   display: none;
   height: 23px;
   font-size: 13px;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
   color: #e76468;
   font-weight: 700;
   line-height: 15px;
@@ -166,7 +168,7 @@
 .newsletter-subscribe.block .subscribe-form .subscribe-to-all-wrapper {
   max-width: 550px;
   width: 100%;
-  margin: 0 auto 60px auto;
+  margin: 0 auto 60px;
   padding-top: 7px;
   display: flex;
   justify-content: space-between;
@@ -181,7 +183,7 @@
   letter-spacing: 0.3em;
   float: left;
   color: #151517;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
 }
 
 .newsletter-subscribe.block .subscribe-form .subscribe-list {
@@ -198,13 +200,22 @@
   background-color: #fff;
   gap: 25px;
   padding-right: 31px;
+  height: 203px;
 }
 
-.newsletter-subscribe.block .subscribe-form .subscribe-list .subscribe-item .image-wrapper,
-.newsletter-subscribe.block .subscribe-form .subscribe-list .subscribe-item .image-wrapper picture,
-.newsletter-subscribe.block .subscribe-form .subscribe-list .subscribe-item .image-wrapper img {
+.newsletter-subscribe.block .subscribe-form .subscribe-list .subscribe-item .image-wrapper {
   width: 285px;
   height: 203px;
+  min-width: 285px;
+  min-height: 203px;
+  overflow: hidden;
+}
+
+.newsletter-subscribe.block .subscribe-form .subscribe-list .subscribe-item .image-wrapper picture,
+.newsletter-subscribe.block .subscribe-form .subscribe-list .subscribe-item .image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .newsletter-subscribe.block .subscribe-form .subscribe-list .subscribe-item .text-wrapper {
@@ -213,6 +224,7 @@
   gap: 12px;
   margin: 25px 0 5px;
 }
+
 .newsletter-subscribe.block .subscribe-form .subscribe-list .subscribe-item .text-wrapper .item-title {
   font-family: var(--font-tungsten);
   font-size: 42px;
@@ -222,16 +234,18 @@
   text-align: left;
   text-transform: uppercase;
   color: #000;
+  height: 44px;
 }
+
 .newsletter-subscribe.block .subscribe-form .subscribe-list .subscribe-item .text-wrapper p {
   margin: 0;
   font-size: 14px;
   font-weight: 325;
   line-height: 23px;
-  letter-spacing: 0em;
+  letter-spacing: 0;
   text-align: left;
   color: #000;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
 }
 
 .newsletter-subscribe.block .subscribe-form .subscribe-list .subscribe-item .checkbox-wrapper {
@@ -254,7 +268,7 @@
   background-color: #ed3e49;
   border-color: #ed3e49;
   font-size: 18px;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
   font-weight: 400;
   line-height: 43px;
   letter-spacing: 0.3em;
@@ -263,7 +277,7 @@
   height: 43px;
   border-radius: 1.79px;
   cursor: pointer;
-  box-shadow: 0 0 1px 0 rgba(0, 0, 0, .4);
+  box-shadow: 0 0 1px 0 rgba(0 0 0 / 40%);
   margin-bottom: 10px;
 }
 
@@ -275,14 +289,83 @@
 .newsletter-subscribe.block .subscribe-form .form-footer [slot="footer-tos-links"] {
   color: #1f2022;
   text-align: center;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
   font-size: 10px;
   font-weight: 350;
   line-height: 13px;
-  letter-spacing: 0em;
+  letter-spacing: 0;
 }
 
 .newsletter-subscribe.block .subscribe-form .form-footer [slot="footer-privacy"] a,
 .newsletter-subscribe.block .subscribe-form .form-footer [slot="footer-tos-links"] a {
   font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .newsletter-subscribe.block .subscribe-form .title-wrapper h1,
+  .newsletter-subscribe.block .subscribe-form .title-wrapper h2,
+  .newsletter-subscribe.block .subscribe-form .title-wrapper h3 {
+    font-size: 50px;
+    line-height: 52px;
+  }
+
+  .newsletter-subscribe.block .subscribe-form .subscribe-list .subscribe-item .text-wrapper .item-title {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 700px) {
+  .newsletter-subscribe.block .subscribe-form .subscribe-list .subscribe-item .text-wrapper .item-title {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 600px) {
+  .newsletter-subscribe.block .subscribe-form .subscribe-list .subscribe-item .image-wrapper {
+    width: 115px;
+    height: 115px;
+    min-width: 115px;
+    min-height: 115px;
+  }
+
+  .newsletter-subscribe.block .subscribe-form .subscribe-list .subscribe-item {
+    height: 115px;
+    padding-right: 12px;
+    gap: 14px;
+  }
+
+  .newsletter-subscribe.block .subscribe-form .subscribe-list .subscribe-item .text-wrapper {
+    margin-top: 10px;
+    gap: 0;
+  }
+
+  .newsletter-subscribe.block .subscribe-form .subscribe-list .subscribe-item .text-wrapper .item-title {
+    height: 38px;
+    font-size: 28px;
+    line-height: 38px;
+  }
+
+  .newsletter-subscribe.block .subscribe-form .subscribe-list .subscribe-item .checkbox-wrapper {
+    margin-top: 14px;
+    margin-left: auto;
+  }
+
+  .newsletter-subscribe.block .subscribe-form .form-footer .sign-up-button {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 500px) {
+  .newsletter-subscribe.block .subscribe-form .controls-wrapper .email-input {
+    height: 36px;
+    font-size: 13px;
+  }
+
+  .newsletter-subscribe.block .subscribe-form .subscribe-list .subscribe-item .text-wrapper p {
+    font-size: 13px;
+  }
+  
+  .newsletter-subscribe.block .subscribe-form .subscribe-list .subscribe-item .text-wrapper .item-title {
+    font-size: 20px;
+  }
 }
