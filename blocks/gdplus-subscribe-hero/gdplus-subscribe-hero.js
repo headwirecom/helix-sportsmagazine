@@ -13,9 +13,13 @@ export default async function decorate(block) {
   <div class="gd-plus-subscribe-content">
     <div class="background-image-wrapper">
       <div class="image-overlay"></div>
-      ${createOptimizedPicture('/subscribe-background-mockup.jpg', 'hero background green', true, [
-    { media: '(max-width: 768px)', width: '1135' }, { media: '(max-width: 1297px)', width: '1280' }, { width: '1690' },
-  ]).outerHTML}
+      ${
+  createOptimizedPicture('/subscribe-background-mockup.jpg', 'hero background green', true, [
+    { media: '(max-width: 768px)', width: '1135' },
+    { media: '(max-width: 1297px)', width: '1280' },
+    { width: '1690' },
+  ]).outerHTML
+}
       </div>
     <h1 class="subscribe-title">Become A Golf Digest<span class="red-plus">+</span> Subscriber</h1>
   
@@ -70,12 +74,11 @@ export default async function decorate(block) {
   <h2 class="benefits-header">Subscriber Benefits</h2>
   <div class="gd-plus-benefits-content">
     ${
-  createOptimizedPicture(
-    '/subscribe-device-mockup.png',
-    'Golf Digest Plus Promo Image',
-    false,
-    [{ media: '(max-width: 768px)', width: '707' }, { media: '(max-width: 1297px)', width: '1236' }, { width: '714' }],
-  ).outerHTML
+  createOptimizedPicture('/subscribe-device-mockup.png', 'Golf Digest Plus Promo Image', false, [
+    { media: '(max-width: 768px)', width: '707' },
+    { media: '(max-width: 1297px)', width: '1236' },
+    { width: '714' },
+  ]).outerHTML
 }
     <ul class="benefits-list">
       ${benefits
