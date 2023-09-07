@@ -4,8 +4,7 @@ function append(s) {
   const logEL = document.querySelector('.log');
   const el = document.createElement('div');
   if (isJSONOutput) {
-    const txt = `"${s}",`;
-    el.innerText = txt;
+    el.innerText = s;
   } else {
     el.innerHTML = s;
   }
@@ -16,13 +15,25 @@ let counter = 0;
 let totalCounter = 0;
 let isJSONOutput = false;
 let _showCount = false;
-let callback = (url, doc) => {
+let callback = (url, props = {}, doc) => {
   counter++;
   if (isJSONOutput) {
-    append(url);
+    if (props && props.longURL) {
+      append(`{ "${url}": "${props.longURL}" },`);
+    } else {
+      append(`"${url}",`);
+    }
   } else {
-    if (_showCount) append(`${counter} <a href="${url}" target="_blank">${url}</a>`);
-    else append(`<a href="${url}" target="_blank">${url}</a>`);
+    let output = `<a href="${url}" target="_blank">${url}</a>`;
+    if (props && props.longURL) {
+      output = output + ` : <a href="${props.longURL}" target="_blank">${props.longURL}</a>`
+    }
+    if (_showCount) append(`${counter} ${output}`);
+    else append(output);
+  }
+
+  if (props.updateImporter) {
+    (props.longURL) ? addToBulkImport(props.longURL) : addToBulkImport(url);
   }
 };
 
@@ -61,7 +72,7 @@ async function isPageType(url, pageTypeSelector, doc) {
   return isPageTypeDocument(d, pageTypeSelector);
 }
 
-function addToBulkImport(url) {
+export function addToBulkImport(url) {
   // console.log(`Add ${url} to importer localStorage`);
   let urls = localStorage.getItem(BULK_URLS_STORAGE_ID);
   if (urls) {
@@ -94,9 +105,10 @@ function getLongURL(doc, shortURL) {
 }
 
 async function process(options) {
-  let {url, showCount, updateImporter, pageTypeSelector, longForm} = options;
+  let {url, showCount, updateImporter, pageTypeSelector, longForm, shortToLongMap} = options;
   let longUrl = url;
   let doc = null;
+  let props = { showCount, updateImporter };
   if (longForm) {
     doc = await fetchDocument(longUrl);
     if (doc) {
@@ -105,11 +117,19 @@ async function process(options) {
       return;
     }
   }
+  if (shortToLongMap) {
+    doc = await fetchDocument(longUrl);
+    if (doc) {
+      props.longURL = getLongURL(doc, longUrl);
+    } else {
+      return;
+    }
+  }
   const matchPageType = (!pageTypeSelector || pageTypeSelector === 'all') ? true : await isPageType(longUrl, pageTypeSelector, doc);
   if (matchPageType) {
-    callback(url, doc);
+    callback(url, props, doc);
   }
-} 
+}
 
 const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
 
@@ -126,10 +146,14 @@ async function processAll(urls, options, concurrency = 1) {
         }
       }
     }
-    
+
     dequeue();
     await sleep(200);
   }
+}
+
+export function setCallback(f) {
+  callback = f;
 }
 
 export const urlsFilter = [];
@@ -147,15 +171,16 @@ export async function parse(options) {
 
 export async function parseSitemap(options) {
   let {
-    path, 
-    showCount, 
-    updateImporter, 
+    path,
+    showCount,
+    updateImporter,
     pageTypeSelector,
-    longForm 
+    longForm,
+    shortToLongMap
   } = options;
 
   _showCount = showCount;
-  
+
   if (updateImporter && counter === 0) {
     clearBulkImport();
   }
@@ -180,7 +205,7 @@ export async function parseSitemap(options) {
 
   for(const sitemap of sitemaps) {
     const url = sitemap.querySelector('loc').childNodes[0].nodeValue;
-    await parseSitemap({path: url, showCount, updateImporter, pageTypeSelector, longForm: longForm});
+    await parseSitemap({path: url, showCount, updateImporter, pageTypeSelector, longForm: longForm, shortToLongMap});
   }
 
   let urls = [];
@@ -195,9 +220,9 @@ export async function parseSitemap(options) {
     }
 
     if (urls.length > 500) {
-      await processAll(urls, {showCount, updateImporter, pageTypeSelector, longForm}, 4);
+      await processAll(urls, {showCount, updateImporter, pageTypeSelector, longForm, shortToLongMap}, 4);
     }
   }
-  
-  await processAll(urls, {showCount, updateImporter, pageTypeSelector, longForm}, 1);
+
+  await processAll(urls, {showCount, updateImporter, pageTypeSelector, longForm, shortToLongMap}, 1);
 }
