@@ -3,11 +3,11 @@ export default async function bulkImport({ fetch, name, offset, limit }) {
   const reqIndex = await fetch(`${origin}/${name}-query-index.json?sheet=latest&offset=${offset}&limit=${limit}`);
 
   if (!reqIndex.ok) {
-    console.log(`${reqIndex.status}: ${reqIndex.text()}`);
+    console.log(`${reqIndex.status}: ${await reqIndex.text()}`);
     return;
   }
 
-  const { data } = reqIndex.json();
+  const { data } = await reqIndex.json();
   for (const { path } of data) {
     // eslint-disable-next-line no-await-in-loop
     const reqImport = await fetch(`${origin}/webhook`, {
@@ -19,7 +19,7 @@ export default async function bulkImport({ fetch, name, offset, limit }) {
     });
 
     if (!reqImport.ok) {
-      console.log(`${reqImport.status}: ${reqImport.text()}`);
+      console.log(`${reqImport.status}: ${await reqImport.text()}`);
       break;
     }
 
