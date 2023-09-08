@@ -1,0 +1,30 @@
+name: "Bulk Import"
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Index name (article|product|gallery)'
+        required: true
+        default: 'article'
+      offset:
+        description: 'Index offset'
+        required: true
+        default: '0'
+      limit:
+        description: 'Index limit'
+        required: true
+        default: '500'
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    name: Import Vanity URLs
+    steps:
+      - uses: actions/github-script@v6
+        env:
+          GD_TOKEN: '${{ secrets.GD_TOKEN }}'
+        with:
+          script: |
+            const { default: bulkImport } = await import('${{ github.workspace }}/bin/bulk-import.js')
+            await bulkImport({github, fetch});
