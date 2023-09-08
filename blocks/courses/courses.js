@@ -48,7 +48,14 @@ buttonElements.forEach((button) => {
 const courseBlocks = document.querySelectorAll('.courses.block > div > div');
 
 courseBlocks.forEach((block) => {
-  const selectors = ['p > picture', '.photo-credit', 'h5', 'h6', '.courses-rating'];
+  const baseSelectors = ['p > picture', '.photo-credit', 'h5', 'h6', '.courses-rating'];
+  const additionalSelector = '.courses-tags';
+  const selectors = [...baseSelectors];
+
+  if (block.querySelector(additionalSelector)) {
+    selectors.push(additionalSelector);
+  }
+
   const elementsToWrap = selectors.map((selector) => block.querySelector(selector)).filter(Boolean);
 
   let wrapperDiv;
@@ -73,7 +80,7 @@ infoWrappers?.forEach((wrapper) => {
     textWrapper.className = 'courses-text-wrapper';
     pictureElement.parentNode.insertBefore(textWrapper, pictureElement.nextSibling);
 
-    const elementsToMove = ['.courses-photo-credit', '.courses-title', '.courses-subtitle', '.courses-rating'];
+    const elementsToMove = ['.courses-photo-credit', '.courses-title', '.courses-subtitle', '.courses-rating', '.courses-tags'];
     elementsToMove.forEach((selector) => {
       const el = wrapper.querySelector(selector);
       if (el) {

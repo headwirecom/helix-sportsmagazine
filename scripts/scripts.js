@@ -280,13 +280,17 @@ function buildTemplate(main) {
             .nextElementSibling
             .nextElementSibling
             .nextElementSibling;
+
           const classesToAdd = ['courses-rating', 'courses-panelists', 'courses-info', 'courses-button'];
 
           for (let i = 0; i < 4; i += 1) {
             if (currentEl) {
               const clonedNode = currentEl.cloneNode(true);
 
-              if (clonedNode.className) {
+              if (currentEl.tagName.toLowerCase() === 'ul') {
+                clonedNode.className = 'courses-tags';
+                i -= 1;
+              } else if (clonedNode.className) {
                 clonedNode.className += ` ${classesToAdd[i]}`;
               } else {
                 clonedNode.className = classesToAdd[i];
@@ -298,7 +302,6 @@ function buildTemplate(main) {
               currentEl = currentEl.nextElementSibling;
             }
           }
-
           el.nextElementSibling.nextElementSibling.nextElementSibling.classList.add('remove');
           el.nextElementSibling.nextElementSibling.classList.add('remove');
           el.nextElementSibling.classList.add('remove');
