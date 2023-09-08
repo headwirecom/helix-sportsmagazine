@@ -6,3 +6,18 @@
 <script src="/scripts/scripts.js" type="module"></script>
 <link rel="stylesheet" href="/styles/styles.css"/>
 <link rel="icon" href="data:,">
+<script>
+  // Fixes vanity url relative images
+  const prodHostname = 'gd.headwire.workers.dev';
+  const findVanityURL = (pathname) => ['story', 'gallery', 'products'].find((prefix) => pathname.startsWith(`/${prefix}/`));
+  const { pathname, hostname, origin } = window.location;
+
+  if (hostname === prodHostname) {
+    const vanityURL = findVanityURL(pathname);
+    if (vanityURL) {
+      const base = document.createElement('base');
+      base.href = origin;
+      document.head.appendChild(base);
+    }
+  }
+</script>

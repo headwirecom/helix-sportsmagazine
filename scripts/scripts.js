@@ -370,7 +370,15 @@ function loadDelayed() {
   // load anything that can be postponed to the latest here
 }
 
+// TODO Remove once all URLs pointing to GD are fixed
+function fixURLsWithGD() {
+  document.body.querySelectorAll('a[href^="https://www.golfdigest.com/"]').forEach((link) => {
+    link.setAttribute('href', link.getAttribute('href').slice(26));
+  });
+}
+
 async function loadPage() {
+  fixURLsWithGD();
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();
