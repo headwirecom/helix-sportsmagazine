@@ -21,10 +21,14 @@ jobs:
     runs-on: ubuntu-latest
     name: Import Vanity URLs
     steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts/bulk-import.js
+          sparse-checkout-cone-mode: false
       - uses: actions/github-script@v6
         env:
           GD_TOKEN: '${{ secrets.GD_TOKEN }}'
         with:
           script: |
-            const { default: bulkImport } = await import('${{ github.workspace }}/bin/bulk-import.js')
+            const { default: bulkImport } = await import('${{ github.workspace }}/.github/scripts/bulk-import.js')
             await bulkImport({github, fetch});
