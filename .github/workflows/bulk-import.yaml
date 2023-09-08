@@ -22,9 +22,6 @@ jobs:
     name: Import Vanity URLs
     steps:
       - uses: actions/checkout@v4
-        with:
-          sparse-checkout: .github/scripts/bulk-import.js
-          sparse-checkout-cone-mode: false
       - uses: actions/github-script@v6
         env:
           GD_TOKEN: '${{ secrets.GD_TOKEN }}'
