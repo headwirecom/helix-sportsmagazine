@@ -1,5 +1,4 @@
-export default async function bulkImport({ github, fetch }) {
-  const { name, offset, limit } = github.event.inputs;
+export default async function bulkImport({ fetch, name, offset, limit }) {
   const origin = 'https://gd.headwire.workers.dev';
   const reqIndex = await fetch(`${origin}/${name}-query-index.json?sheet=latest&offset=${offset}&limit=${limit}`);
 

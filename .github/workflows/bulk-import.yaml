@@ -27,5 +27,10 @@ jobs:
           GD_TOKEN: '${{ secrets.GD_TOKEN }}'
         with:
           script: |
-            const { default: bulkImport } = await import('${{ github.workspace }}/.github/scripts/bulk-import.js')
-            await bulkImport({github, fetch});
+            const { default: bulkImport } = await import('${{ github.workspace }}/.github/scripts/bulk-import.mjs')
+            await bulkImport({
+              fetch, 
+              name: '${{ github.event.inputs.name }}', 
+              offset: '${{ github.event.inputs.offset }}', 
+              limit: '${{ github.event.inputs.limit }}'
+            });
