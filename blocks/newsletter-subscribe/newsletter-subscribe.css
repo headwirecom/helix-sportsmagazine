@@ -62,7 +62,7 @@
 }
 
 .newsletter-subscribe.block .subscribe-form .title-wrapper [slot="description"] p {
-  font-family: "Times New Roman", Times, serif;
+  font-family: var(--font-times);
   text-align: center;
   max-width: 500px;
   font-style: normal;
@@ -76,7 +76,7 @@
 .newsletter-subscribe.block .subscribe-form .title-wrapper [slot="tos-top"] {
   color: #1f2022;
   text-align: center;
-  font-family: "Times New Roman", Times, serif;
+  font-family: var(--font-times);
   font-size: 10px;
   line-height: 13px;
   letter-spacing: 0;
@@ -122,7 +122,7 @@
   outline: none;
   font-size: 18px;
   line-height: 30px;
-  font-family: "Times New Roman", Times, serif;
+  font-family: var(--font-times);
 }
 
 .newsletter-subscribe.block .subscribe-form .controls-wrapper .email-input:focus {
@@ -143,7 +143,7 @@
 }
 
 .newsletter-subscribe.block .subscribe-form .controls-wrapper .email-input.valid {
-  background-image: url("https://cdns1.gigya.com/gs/i//screenSet/checkmarkValid.png");
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAMAAAAolt3jAAAApVBMVEUAAAAAc5kAbZ4AdKIGcJ8GcJ4Gb58GcZ4GcJ8GcZ4GcJ4FcJ4Fb54FcJ4FcJ4FcJ4FcJ4FcJ4FcJ4FcJ4FcJ4FcJ4NdKEQdqIUeKQWeqQcfacdfacggKkmg6s3jbE5jrJHlrdJl7hWn75aoL9hpcJurMdyrsiEuc+YxNeiytujytuy0+Hc6/Hi7vTl8PXp8/fq8/fy+Pr6/P39/v7+/v7+/v////9mbyKVAAAAFXRSTlMAFBUWUlRVgYKDhM3Oz9Dw8fLz9P7FJ1F0AAAAAWJLR0Q2R7+I0QAAAIZJREFUCB0twQcWgjAARMFVQERRCPLtDXvv5v5HMw+ckeO1Or1eHHkqNQwlE8hp5PzlgeQZKrMNaV0tKoOLndJUl8rBniFWBn1g+X2MwciweO0ZXu0KSNVhcre7kz3ixIpg/vzY2wgnlGegeNsCJ6lJQQ7rLU7uywlSSomvUr3ZzrJ2WJP0AxPADxwFmQlQAAAAAElFTkSuQmCC");
   background-position: right 5px center;
   background-repeat: no-repeat;
   padding-right: 25px;
@@ -153,7 +153,7 @@
   display: none;
   height: 23px;
   font-size: 13px;
-  font-family: "Times New Roman", Times, serif;
+  font-family: var(--font-times);
   color: #e76468;
   font-weight: 700;
   line-height: 15px;
@@ -183,7 +183,7 @@
   letter-spacing: 0.3em;
   float: left;
   color: #151517;
-  font-family: "Times New Roman", Times, serif;
+  font-family: var(--font-times);
 }
 
 .newsletter-subscribe.block .subscribe-form .subscribe-list {
@@ -245,7 +245,7 @@
   letter-spacing: 0;
   text-align: left;
   color: #000;
-  font-family: "Times New Roman", Times, serif;
+  font-family: var(--font-times);
 }
 
 .newsletter-subscribe.block .subscribe-form .subscribe-list .subscribe-item .checkbox-wrapper {
@@ -265,10 +265,10 @@
   border: none;
   color: white;
   text-transform: uppercase;
-  background-color: #ed3e49;
-  border-color: #ed3e49;
+  background-color: var(--link-hover-color);
+  border-color: var(--link-hover-color);
   font-size: 18px;
-  font-family: "Times New Roman", Times, serif;
+  font-family: var(--font-times);
   font-weight: 400;
   line-height: 43px;
   letter-spacing: 0.3em;
@@ -289,7 +289,7 @@
 .newsletter-subscribe.block .subscribe-form .form-footer [slot="footer-tos-links"] {
   color: #1f2022;
   text-align: center;
-  font-family: "Times New Roman", Times, serif;
+  font-family: var(--font-times);
   font-size: 10px;
   font-weight: 350;
   line-height: 13px;
