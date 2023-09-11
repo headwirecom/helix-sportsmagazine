@@ -70,14 +70,14 @@ async function fetchLongPath(url) {
 }
 
 function shouldRewriteLink(href) {
-  return (href.startsWith('https://www.golfdigest.com/') ||
+  return (href.startsWith('https://www.golfdigest.com/') || 
     href.startsWith('//www.golfdigest.com/') ||
     (href.startsWith('/') && !href.startsWith('//')));
 }
 
 async function updateLink(el, url, rewrites, err) {
   let href = el.href;
-
+  
   // is this an internal link?
   if (shouldRewriteLink(href)) {
     // console.log(`rewriting ${href} to franklin url`);
@@ -89,7 +89,8 @@ async function updateLink(el, url, rewrites, err) {
     if (href) {
       href = mapToFranklinPath(href);
       // console.log(`Replacing internal link ${el.href} with ${href}`);
-      rewrites.push(`${el.href} to ${href}`);
+      rewrites.old.push(`${el.href}`);
+      rewrites.new.push(`${href}`);
       el.setAttribute('href', href);
     } else {
       const redirect = await getRedirect(`https://www.golfdigest.com${oldPath}`);
@@ -110,7 +111,8 @@ async function updateLink(el, url, rewrites, err) {
         if (href) {
           href = mapToFranklinPath(href);
           // console.log(`Replacing internal link ${el.href} with ${href}`);
-          rewrites.push(`${el.href} to ${href}`);
+          rewrites.old.push(`${el.href}`);
+          rewrites.new.push(`${href}`);
           el.setAttribute('href', href);
         } else {
           console.warn(`${url}: Unable to map ${el.href} Franklin path. Item not found in sitemap or as data-page-path body attribute.`);
@@ -123,7 +125,11 @@ async function updateLink(el, url, rewrites, err) {
 
 async function updateInternalLinks(dom, url, report) {
   const err = [];
-  const rewrites = [];
+  const rewrites = {
+    text: [],
+    old: [],
+    new: []
+  };
   const f = async (el) => {
     await updateLink(el, url, rewrites, err);
   };
@@ -131,8 +137,9 @@ async function updateInternalLinks(dom, url, report) {
   for (let el of links) {
     await f(el);
   }
-  if (report && rewrites.length > 0) {
-    report.linkRewrites = rewrites.join('\n');
+  if (report && rewrites.text.length > 0) {
+    report.linkRewritesOld = rewrites.old.join('\n');
+    report.linkRewritesNew = rewrites.new.join('\n');
   }
   if (report && err.length > 0) {
     report.linkRewriteErrors = err.join('\n');
@@ -191,7 +198,7 @@ function getRubric(document) {
     el.remove();
     return text;
   } else {
-    // try getting rubric from page meta tag
+    // try getting rubric from page meta tag 
     const metaTag = document.querySelector('meta[name="parsely-metadata"]');
     if (metaTag) {
       const val = metaTag.getAttribute('content');
@@ -311,9 +318,9 @@ function transformArticleDOM(document, templateConfig) {
 
   const articleHero = document.querySelector('.o-ArticleHero');
   const imageEmbed = document.querySelector('.o-ImageEmbed');
-  const imageEmbedCredit = document.querySelector('.o-ImageEmbed__a-Credit') ?
-    document.querySelector('.o-ImageEmbed__a-Credit') :
-    document.querySelector('.o-ArticleHero .o-ArticleInfo .a-Credit');
+  const imageEmbedCredit = document.querySelector('.o-ImageEmbed__a-Credit') ? 
+      document.querySelector('.o-ImageEmbed__a-Credit') : 
+      document.querySelector('.o-ArticleHero .o-ArticleInfo .a-Credit');
   const imageEmbedCaption = document.querySelector('.o-ImageEmbed .o-ImageEmbed__a-Caption');
   const articleTitle = document.querySelector('.o-AssetTitle');
   const articleDescription = document.querySelector('.o-AssetDescription__a-Description');
@@ -372,7 +379,7 @@ function transformArticleDOM(document, templateConfig) {
   if (main.querySelector('.o-ArticleHero__a-Info')) {
     main.querySelector('.o-ArticleHero__a-Info').remove();
   }
-
+ 
   // reinsert original document section separators
   articleBody.querySelectorAll('.importer-section-separator').forEach(el => { el.replaceWith(document.createElement('hr')); });
 
@@ -395,7 +402,7 @@ function transformArticleDOM(document, templateConfig) {
         appendToBlock(sectionBlock, 'Photo Caption', imageEmbedCaptionTxt);
         imageEmbedCaption.remove()
       }
-
+    
       imageEmbed.insertAdjacentHTML('beforebegin', '<hr/>');
       imageEmbed.insertAdjacentElement('afterend', sectionBlock);
       sectionBlock.insertAdjacentHTML('afterend', '<hr/>');
@@ -489,7 +496,7 @@ function transformGalleryDOM(document, templateConfig) {
   addEl(main, document.querySelector('.assetDescription'));
 
   main.insertAdjacentHTML('beforeend', '<hr/>');
-
+  
   const gallery = document.querySelector('.photoGalleryPromo');
   if (gallery) {
     const postcards = gallery.querySelector('.photocards');
@@ -535,7 +542,7 @@ function transformGalleryDOM(document, templateConfig) {
         if (!hasMetadata) {
           block.remove();
         }
-
+        
         if (slideCount < totalSlides-1) {
           main.insertAdjacentHTML('beforeend', '<hr/>');
         }
@@ -557,7 +564,7 @@ function transformGalleryDOM(document, templateConfig) {
         if (slideCount < slideInfos.length) {
           const slideInfo = slideInfos.item(slideCount);
           main.append(slideInfo);
-
+          
           let block = createSectionMetadata(document, main);
           let hasMetadata = false;
 
@@ -747,7 +754,7 @@ function preprocess({ document, url, html, params }) {
   if (isArticle(document)) {
     // For articles keep hr tags as section separators.
     // These are removed by importer preprocessing step. So, use temporary div tags.
-    document.querySelectorAll('hr').forEach(el => {
+    document.querySelectorAll('hr').forEach(el => { 
       const tmpEl = document.createElement('div');
       tmpEl.classList.add('importer-section-separator');
       el.replaceWith(tmpEl);
@@ -756,14 +763,14 @@ function preprocess({ document, url, html, params }) {
 }
 
 /**
- * Apply DOM operations to the provided document and return
- * the root element to be then transformed to Markdown.
- * @param {HTMLDocument} document The document
- * @param {string} url The url of the page imported
- * @param {string} html The raw html (the document is cleaned up during preprocessing)
- * @param {object} params Object containing some parameters given by the import process.
- * @returns {HTMLElement} The root element to be transformed
- */
+   * Apply DOM operations to the provided document and return
+   * the root element to be then transformed to Markdown.
+   * @param {HTMLDocument} document The document
+   * @param {string} url The url of the page imported
+   * @param {string} html The raw html (the document is cleaned up during preprocessing)
+   * @param {object} params Object containing some parameters given by the import process.
+   * @returns {HTMLElement} The root element to be transformed
+   */
 async function transform({document, url, html, params}) {
   const docPath = mapToDocumentPath(document, url);
   const retObj = await trasformDOM(document, url);
