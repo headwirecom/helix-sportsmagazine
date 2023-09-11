@@ -62,7 +62,7 @@
 }
 
 .newsletter-subscribe.block .subscribe-form .title-wrapper [slot="description"] p {
-  font-family: var(--font-times);
+  font-family: var(--font-gotham);
   text-align: center;
   max-width: 500px;
   font-style: normal;
@@ -76,7 +76,7 @@
 .newsletter-subscribe.block .subscribe-form .title-wrapper [slot="tos-top"] {
   color: #1f2022;
   text-align: center;
-  font-family: var(--font-times);
+  font-family: var(--font-gotham);
   font-size: 10px;
   line-height: 13px;
   letter-spacing: 0;
@@ -122,7 +122,7 @@
   outline: none;
   font-size: 18px;
   line-height: 30px;
-  font-family: var(--font-times);
+  font-family: var(--font-gotham);
 }
 
 .newsletter-subscribe.block .subscribe-form .controls-wrapper .email-input:focus {
@@ -153,7 +153,7 @@
   display: none;
   height: 23px;
   font-size: 13px;
-  font-family: var(--font-times);
+  font-family: var(--font-gotham);
   color: #e76468;
   font-weight: 700;
   line-height: 15px;
@@ -183,7 +183,7 @@
   letter-spacing: 0.3em;
   float: left;
   color: #151517;
-  font-family: var(--font-times);
+  font-family: var(--font-gotham);
 }
 
 .newsletter-subscribe.block .subscribe-form .subscribe-list {
@@ -245,7 +245,7 @@
   letter-spacing: 0;
   text-align: left;
   color: #000;
-  font-family: var(--font-times);
+  font-family: var(--font-gotham);
 }
 
 .newsletter-subscribe.block .subscribe-form .subscribe-list .subscribe-item .checkbox-wrapper {
@@ -268,7 +268,7 @@
   background-color: var(--link-hover-color);
   border-color: var(--link-hover-color);
   font-size: 18px;
-  font-family: var(--font-times);
+  font-family: var(--font-gotham);
   font-weight: 400;
   line-height: 43px;
   letter-spacing: 0.3em;
@@ -289,7 +289,7 @@
 .newsletter-subscribe.block .subscribe-form .form-footer [slot="footer-tos-links"] {
   color: #1f2022;
   text-align: center;
-  font-family: var(--font-times);
+  font-family: var(--font-gotham);
   font-size: 10px;
   font-weight: 350;
   line-height: 13px;
