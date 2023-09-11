@@ -127,7 +127,7 @@ ${!gdPlusArticle ? '' : premiumArticleBanner()}
 
   const picture = block.querySelector('picture');
 
-  const caption = picture.parentElement.nextElementSibling;
+  const caption = picture?.parentElement?.nextElementSibling;
   if (caption && caption.tagName === 'P') {
     caption.setAttribute('slot', 'caption');
   }

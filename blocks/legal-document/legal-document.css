@@ -1,0 +1,44 @@
+.legal-document.block {
+  width: 100%;
+  max-width: 940px;
+  margin: 40px auto 0;
+  padding: 20px;
+}
+
+.legal-document.block .title-wrapper {
+  margin-bottom: 150px;
+}
+
+.legal-document.block .last-changes-wrapper {
+  margin: 0 0 70px;
+  font-family: var(--font-gotham);
+  font-size: 80%;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 30px;
+}
+
+.legal-document.block .content p {
+  font-family: var(--font-gotham);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 30px;
+  margin-bottom: 60px;
+}
+
+.legal-document.block .content a {
+  font-weight: 500;
+}
+
+.legal-document.block .content ul {
+  padding: 0;
+  margin-bottom: 60px;
+}
+
+.legal-document.block .content li {
+  font-family: var(--font-gotham);
+  list-style-position: inside;
+  padding-left: 0;
+  line-height: 30px;
+}
