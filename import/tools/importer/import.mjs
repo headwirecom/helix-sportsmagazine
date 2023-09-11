@@ -89,7 +89,8 @@ async function updateLink(el, url, rewrites, err) {
     if (href) {
       href = mapToFranklinPath(href);
       // console.log(`Replacing internal link ${el.href} with ${href}`);
-      rewrites.push(`${el.href} to ${href}`);
+      rewrites.old.push(`${el.href}`);
+      rewrites.new.push(`${href}`);
       el.setAttribute('href', href);
     } else {
       const redirect = await getRedirect(`https://www.golfdigest.com${oldPath}`);
@@ -110,7 +111,8 @@ async function updateLink(el, url, rewrites, err) {
         if (href) {
           href = mapToFranklinPath(href);
           // console.log(`Replacing internal link ${el.href} with ${href}`);
-          rewrites.push(`${el.href} to ${href}`);
+          rewrites.old.push(`${el.href}`);
+          rewrites.new.push(`${href}`);
           el.setAttribute('href', href);
         } else {
           console.warn(`${url}: Unable to map ${el.href} Franklin path. Item not found in sitemap or as data-page-path body attribute.`);
@@ -123,7 +125,11 @@ async function updateLink(el, url, rewrites, err) {
 
 async function updateInternalLinks(dom, url, report) {
   const err = [];
-  const rewrites = [];
+  const rewrites = {
+    text: [],
+    old: [],
+    new: []
+  };
   const f = async (el) => {
     await updateLink(el, url, rewrites, err);
   };
@@ -131,8 +137,9 @@ async function updateInternalLinks(dom, url, report) {
   for (let el of links) {
     await f(el);
   }
-  if (report && rewrites.length > 0) {
-    report.linkRewrites = rewrites.join('\n');
+  if (report && rewrites.text.length > 0) {
+    report.linkRewritesOld = rewrites.old.join('\n');
+    report.linkRewritesNew = rewrites.new.join('\n');
   }
   if (report && err.length > 0) {
     report.linkRewriteErrors = err.join('\n');
