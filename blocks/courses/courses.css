@@ -170,7 +170,7 @@
     color: #fff;
     width: 20px;
     height: 20px;
-    background: #ed3e49;
+    background-color: var(--link-hover-color);
     transition: background .2s;
 }
 
@@ -178,27 +178,27 @@
     background: #000;
 }
 
-/* Rating stars / panelists  */
-.courses.block .stars {
-    color: #ed3e49;;
-    display: inline-block;
-    letter-spacing: 3px;
+@media only screen and (max-width: 768px) {
+    .courses.block .courses-info-wrapper picture img:not(.gd-plus-icon) {
+        width: 100%; 
+        height: auto; 
+        max-height: 300px;
+    }
+
+    .courses.block .courses-info-wrapper {
+        flex-direction: column;
+    }
+
+    .courses.block p.courses-picture {
+        flex-basis: 100%; 
+        max-width: 100%;
+        margin-right: 0;
+    }
+
+    .courses.block .courses-text-wrapper {
+        margin-left: 0;
+        width: 100%;
+        margin-bottom: 30px;
+    }
 }
 
-.courses-rating .courses-panelist-count {
-    margin-left: 5px;
-    font-size: 10px;
-    font-weight: 325;
-    line-height: 12px;
-    letter-spacing: 0;
-    color: #adb4b7;
-}
-
-.courses-rating .courses-panelist-text {
-    color: black;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    margin-left: 20px;
-}
