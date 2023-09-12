@@ -72,7 +72,7 @@ courseBlocks.forEach((block) => {
 // wrap courses text info
 const infoWrappers = document.querySelectorAll('.courses-info-wrapper');
 
-infoWrappers?.forEach((wrapper) => {
+infoWrappers.forEach((wrapper) => {
   const pictureElement = wrapper.querySelector('.courses-info-wrapper > picture');
 
   if (pictureElement) {
