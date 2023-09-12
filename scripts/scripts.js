@@ -369,20 +369,24 @@ async function loadEager(doc) {
 }
 
 /**
- * Adds the favicon.
- * @param {string} href The favicon URL
+ * Adds the favicons.
  */
-export function addFavIcon(href) {
-  const link = document.createElement('link');
-  link.rel = 'icon';
-  link.type = 'image/svg+xml';
-  link.href = href;
-  const existingLink = document.querySelector('head link[rel="icon"]');
-  if (existingLink) {
-    existingLink.parentElement.replaceChild(link, existingLink);
-  } else {
-    document.getElementsByTagName('head')[0].appendChild(link);
-  }
+export function addFavIcons() {
+  const faviconSizes = [16, 32, 96, 160, 192];
+  const appleIconSizes = [57, 60, 72, 76, 114, 120, 144, 152, 180];
+
+  const favicons = `
+    <meta name="msapplication-TileColor" content="#0fadc4">
+    <meta name="msapplication-TileImage" content="/favicons/mstile-144x144.png">
+    ${faviconSizes.map((size) => `<link rel="icon" type="image/png" href="/favicons/favicon-${size}x${size}.png" sizes="${size}x${size}">`).join('')}
+    ${appleIconSizes.map((size) => `<link rel="apple-touch-icon" sizes="${size}x${size}" href="/favicons/apple-touch-icon-${size}x${size}.png">`).join('')}
+  `;
+
+  // Remove placeholder
+  document.head.querySelector('head link[rel="icon"]').remove();
+
+  // Add favicons
+  document.head.insertAdjacentHTML('beforeend', favicons);
 }
 
 export function createTag(tag, attributes, html) {
@@ -418,7 +422,7 @@ async function loadLazy(doc) {
   loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
-  addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
+  addFavIcons(`${window.hlx.codeBasePath}/styles/favicon.svg`);
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
