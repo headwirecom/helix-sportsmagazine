@@ -1,14 +1,14 @@
 "use strict";
 
 async function _sitemap() {
-  console.log('fetching sitemap');
+  // console.log('fetching sitemap');
   let sitemap = [];
   const resp = await fetch('http://localhost:3001/tools/importer/data/sitemap.json');
   if (resp.ok) {
     const text = await resp.text();
-    console.log('Parsing sitemap to JSON');
+    // console.log('Parsing sitemap to JSON');
     sitemap = JSON.parse(text);
-    console.log('Parsed sitemap');
+    // console.log('Parsed sitemap');
   } else {
     console.error(`Unable to get sitemap. Response status ${resp.status}`);
   }
@@ -320,13 +320,15 @@ function getImgName(imgSrc) {
 
 function updateImage(el) {
   const img = (el.tagName === 'IMG') ? el : el.querySelector('img');
-  let imgSrc = img.getAttribute('src');
-  imgSrc = (imgSrc.includes('.rend.')) ? imgSrc.split('.rend.')[0] : imgSrc;
-  img.setAttribute('src', imgSrc);
-  let altText = img.getAttribute('alt');
-  if (!altText || !isNaN(altText)) {
-    altText = getImgName(imgSrc);
-    img.setAttribute('alt', altText);
+  if (img) {
+    let imgSrc = img.getAttribute('src');
+    imgSrc = (imgSrc.includes('.rend.')) ? imgSrc.split('.rend.')[0] : imgSrc;
+    img.setAttribute('src', imgSrc);
+    let altText = img.getAttribute('alt');
+    if (!altText || !isNaN(altText)) {
+      altText = getImgName(imgSrc);
+      img.setAttribute('alt', altText);
+    }
   }
 }
 
