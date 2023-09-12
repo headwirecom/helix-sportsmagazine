@@ -22,7 +22,6 @@ export const ARTICLE_TEMPLATES = {
   LiveStream: 'live-stream',
   Gallery: 'gallery',
   GalleryListicle: 'gallery-listicle',
-  LegalDocument: 'legal-document',
   ProductListing: 'product-listing',
 };
 
@@ -47,6 +46,30 @@ export function replaceLinksWithEmbed(block) {
       const embed = buildBlock('embed', { elems: [twitterLink.cloneNode(true)] });
       twitterLink.replaceWith(embed);
     }
+  });
+
+  // handling legal privacy iframes
+  block.querySelectorAll('a[href*="view.ceros.com"]').forEach((legalEmbed) => {
+    const searchParams = new URLSearchParams(`?${legalEmbed.href.split('?')[1]}`);
+    for (const [key, value] of searchParams.entries()) {
+      console.log(`${key}, ${value}`);
+    }
+    const heightOverride = searchParams.get('heightOverride');
+
+    legalEmbed.outerHTML = `
+    <iframe
+      allowfullscreen=""
+      src="${legalEmbed.href}"
+      style="inset: 0px; margin: 0px; padding: 0px; border: 0px none; max-height: ${Number(heightOverride)}px; width: 100%; max-width: 900px; aspect-ratio: ${900 / Number(heightOverride)};"
+      frameborder="0"
+      class="ceros-experience"
+      title="UK/EU Info you provide"
+      scrolling="no"
+      data-ceros-subpixel-oversize="true"
+      data-ceros-subpixel-original-width="1px"
+      data-ceros-subpixel-original-height="1px">
+    </iframe>
+    `;
   });
 }
 
@@ -188,8 +211,8 @@ export function addPhotoCredit(pictures) {
 
 export const extractClassesFromBrackets = (metaDataString) => {
   const regex = /\((.*)\)/;
-  const textWithinBrackets = metaDataString.match(regex)[1];
-  return textWithinBrackets.split(',').map((classString) => toClassName(classString.trim()));
+  const textWithinBrackets = metaDataString.match(regex)?.[1];
+  return textWithinBrackets?.split(',').map((classString) => toClassName(classString.trim()));
 };
 
 /**
@@ -207,7 +230,6 @@ function buildTemplate(main) {
     // template metadata entry are combine which will cause CSS issues.
     // example: "Template (sheet query)" has a class of: "template-sheet-query"
     document.body.classList.add(template);
-    additionalClasses?.forEach((classString) => document.body.classList.add(classString));
     main.querySelectorAll('.section-metadata').forEach((metadataEl) => {
       metadataEl.className = 'template-section-metadata';
     });
@@ -257,7 +279,10 @@ function buildTemplate(main) {
     });
 
     const section = document.createElement('div');
-    section.append(buildBlock(template, { elems: [...main.children] }));
+    const templateBlock = buildBlock(template, { elems: [...main.children] });
+
+    additionalClasses?.forEach((classString) => templateBlock.classList.add(classString));
+    section.append(templateBlock);
     main.prepend(section);
 
     return true;
