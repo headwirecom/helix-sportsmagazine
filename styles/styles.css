@@ -334,3 +334,7 @@ div.article-blocker-wrapper div.article-blocker-content a.cta:hover {
   }
 }
 
+/* subscribe to newsletter page */
+.newsletter-subscribe main {
+  background-color: rgb(246 246 246);
+}
