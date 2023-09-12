@@ -247,6 +247,76 @@ function buildTemplate(main) {
       }
     });
 
+    // TODO remove once importer fixes courses block
+    const checkForCourses = (el, elems) => {
+      if (el.tagName === 'P' && el.querySelector('picture')
+          && el.nextElementSibling?.tagName === 'P'
+          && el.nextElementSibling.nextElementSibling?.tagName === 'H5'
+          && el.nextElementSibling.nextElementSibling.nextElementSibling?.tagName === 'H6') {
+        elems.push(el.cloneNode(true)); // <p> with <picture>
+
+        const creditP = el.nextElementSibling.cloneNode(true);
+        creditP.className = 'courses-photo-credit';
+        elems.push(creditP);
+
+        const titleH5 = el.nextElementSibling.nextElementSibling.cloneNode(true);
+        titleH5.className = 'courses-title';
+        elems.push(titleH5);
+
+        const subtitleH6 = el.nextElementSibling
+          .nextElementSibling
+          .nextElementSibling
+          .cloneNode(true);
+        subtitleH6.className = 'courses-subtitle';
+        elems.push(subtitleH6);
+
+        // Handle the next four p's after h6
+        let currentEl = el.nextElementSibling
+          .nextElementSibling
+          .nextElementSibling
+          .nextElementSibling;
+
+        const classesToAdd = ['courses-rating', 'courses-panelists', 'courses-info', 'courses-button'];
+
+        for (let i = 0; i < 4; i += 1) {
+          if (currentEl) {
+            const clonedNode = currentEl.cloneNode(true);
+
+            if (currentEl.tagName.toLowerCase() === 'ul') {
+              clonedNode.className = 'courses-tags';
+              i -= 1;
+            } else if (clonedNode.className) {
+              clonedNode.className += ` ${classesToAdd[i]}`;
+            } else {
+              clonedNode.className = classesToAdd[i];
+            }
+
+            elems.push(clonedNode);
+
+            currentEl.classList.add('remove');
+            currentEl = currentEl.nextElementSibling;
+          }
+        }
+        el.nextElementSibling.nextElementSibling.nextElementSibling.classList.add('remove');
+        el.nextElementSibling.nextElementSibling.classList.add('remove');
+        el.nextElementSibling.classList.add('remove');
+        el.classList.add('remove');
+      }
+    };
+
+    main.querySelectorAll('p > picture').forEach((picture) => {
+      const pTag = picture.parentElement;
+      if (pTag.nextElementSibling) {
+        const elems = [];
+        checkForCourses(pTag, elems);
+        if (elems.length) {
+          const courseBlock = buildBlock('courses', { elems });
+          pTag.replaceWith(courseBlock);
+          main.querySelectorAll('.remove').forEach((el) => el.remove());
+        }
+      }
+    });
+
     const section = document.createElement('div');
     section.append(buildBlock(template, { elems: [...main.children] }));
     main.prepend(section);

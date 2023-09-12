@@ -152,7 +152,7 @@ ${!gdPlusArticle ? '' : premiumArticleBanner()}
   });
 
   block
-    .querySelectorAll('.social-share, .embed, .more-cards')
+    .querySelectorAll('.social-share, .embed, .more-cards, .courses')
     .forEach((innerBlock) => decorateBlock(innerBlock));
   loadBlocks(document.querySelector('main'));
 
