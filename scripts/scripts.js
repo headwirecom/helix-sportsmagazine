@@ -11,7 +11,7 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
-  toCamelCase, getMetadata,
+  toCamelCase, getMetadata, toClassName,
 } from './lib-franklin.js';
 
 export const ARTICLE_TEMPLATES = {
@@ -23,6 +23,7 @@ export const ARTICLE_TEMPLATES = {
   Gallery: 'gallery',
   GalleryListicle: 'gallery-listicle',
   ProductListing: 'product-listing',
+  NewsletterSubscribe: 'newsletter-subscribe',
 };
 
 const LCP_BLOCKS = [...Object.values(ARTICLE_TEMPLATES), 'hero']; // add your LCP blocks to the list
@@ -186,151 +187,144 @@ export function addPhotoCredit(pictures) {
 }
 
 /**
- * Find the template corresponding to the provided classname
- *
- * @param className
- * @return {string|null}
- */
-function findTemplate(className) {
-  return Object.values(ARTICLE_TEMPLATES).find((template) => template === className);
-}
-
-/**
  * Builds a template block if any found
  *
  * @param {HTMLElement} main
  */
 function buildTemplate(main) {
-  [...document.body.classList].some((className) => {
-    const template = findTemplate(className);
-    if (template) {
-      main.querySelectorAll('.section-metadata').forEach((metadataEl) => {
-        metadataEl.className = 'template-section-metadata';
-      });
+  const template = toClassName(getMetadata('template').split('(')[0].trim());
 
-      // TODO remove once importer fixes more cards
-      const checkForMoreCards = (el, elems) => {
-        if (el.tagName === 'P' && el.querySelector('picture') && el.querySelector('a') && el?.nextElementSibling?.tagName === 'P' && el.nextElementSibling.children[0]?.tagName === 'A' && el.nextElementSibling?.nextElementSibling.tagName === 'P' && el.nextElementSibling.nextElementSibling.children[0]?.tagName === 'A') {
-          const rubric = document.createElement('span');
-          rubric.textContent = el.nextElementSibling.textContent.trim();
+  if (template && Object.values(ARTICLE_TEMPLATES).includes(template)) {
+    // Adding base template class to body because any queries added to the
+    // template metadata entry are combine which will cause CSS issues.
+    // example: "Template (sheet query)" has a class of: "template-sheet-query"
+    document.body.classList.add(template);
+    main.querySelectorAll('.section-metadata').forEach((metadataEl) => {
+      metadataEl.className = 'template-section-metadata';
+    });
 
-          const desc = document.createElement('strong');
-          desc.textContent = el.nextElementSibling.nextElementSibling.textContent.trim();
+    // TODO remove once importer fixes more cards
+    const checkForMoreCards = (el, elems) => {
+      if (el.tagName === 'P' && el.querySelector('picture') && el.querySelector('a') && el?.nextElementSibling?.tagName === 'P' && el.nextElementSibling.children[0]?.tagName === 'A' && el.nextElementSibling?.nextElementSibling.tagName === 'P' && el.nextElementSibling.nextElementSibling.children[0]?.tagName === 'A') {
+        const rubric = document.createElement('span');
+        rubric.textContent = el.nextElementSibling.textContent.trim();
 
-          const link = document.createElement('a');
-          link.setAttribute('href', new URL(el.querySelector('a').getAttribute('href')).pathname);
+        const desc = document.createElement('strong');
+        desc.textContent = el.nextElementSibling.nextElementSibling.textContent.trim();
 
-          link.append(el.querySelector('picture'));
-          link.append(rubric);
-          link.append(desc);
+        const link = document.createElement('a');
+        link.setAttribute('href', new URL(el.querySelector('a').getAttribute('href')).pathname);
 
-          el.nextElementSibling.nextElementSibling.classList.add('remove');
-          el.nextElementSibling.classList.add('remove');
-          el.classList.add('remove');
+        link.append(el.querySelector('picture'));
+        link.append(rubric);
+        link.append(desc);
 
-          elems.push(link);
+        el.nextElementSibling.nextElementSibling.classList.add('remove');
+        el.nextElementSibling.classList.add('remove');
+        el.classList.add('remove');
 
-          if (el.nextElementSibling.nextElementSibling.nextElementSibling) {
-            checkForMoreCards(el.nextElementSibling.nextElementSibling.nextElementSibling, elems);
-          }
+        elems.push(link);
+
+        if (el.nextElementSibling.nextElementSibling.nextElementSibling) {
+          checkForMoreCards(el.nextElementSibling.nextElementSibling.nextElementSibling, elems);
         }
-      };
+      }
+    };
 
-      main.querySelectorAll('h2').forEach((h2) => {
-        if (h2.nextElementSibling) {
-          const elems = [];
-          checkForMoreCards(h2.nextElementSibling, elems);
-          if (elems.length) {
-            main.querySelectorAll('.remove').forEach((el) => el.remove());
-            const h3 = document.createElement('h3');
-            h3.textContent = h2.textContent;
-            h3.id = h2.id;
-            elems.unshift(h3);
-            const moreCards = buildBlock('more-cards', { elems });
-            h2.replaceWith(moreCards);
-          }
+    main.querySelectorAll('h2').forEach((h2) => {
+      if (h2.nextElementSibling) {
+        const elems = [];
+        checkForMoreCards(h2.nextElementSibling, elems);
+        if (elems.length) {
+          main.querySelectorAll('.remove').forEach((el) => el.remove());
+          const h3 = document.createElement('h3');
+          h3.textContent = h2.textContent;
+          h3.id = h2.id;
+          elems.unshift(h3);
+          const moreCards = buildBlock('more-cards', { elems });
+          h2.replaceWith(moreCards);
         }
-      });
+      }
+    });
 
-      // TODO remove once importer fixes courses block
-      const checkForCourses = (el, elems) => {
-        if (el.tagName === 'P' && el.querySelector('picture')
-            && el.nextElementSibling?.tagName === 'P'
-            && el.nextElementSibling.nextElementSibling?.tagName === 'H5'
-            && el.nextElementSibling.nextElementSibling.nextElementSibling?.tagName === 'H6') {
-          elems.push(el.cloneNode(true)); // <p> with <picture>
+    // TODO remove once importer fixes courses block
+    const checkForCourses = (el, elems) => {
+      if (el.tagName === 'P' && el.querySelector('picture')
+          && el.nextElementSibling?.tagName === 'P'
+          && el.nextElementSibling.nextElementSibling?.tagName === 'H5'
+          && el.nextElementSibling.nextElementSibling.nextElementSibling?.tagName === 'H6') {
+        elems.push(el.cloneNode(true)); // <p> with <picture>
 
-          const creditP = el.nextElementSibling.cloneNode(true);
-          creditP.className = 'courses-photo-credit';
-          elems.push(creditP);
+        const creditP = el.nextElementSibling.cloneNode(true);
+        creditP.className = 'courses-photo-credit';
+        elems.push(creditP);
 
-          const titleH5 = el.nextElementSibling.nextElementSibling.cloneNode(true);
-          titleH5.className = 'courses-title';
-          elems.push(titleH5);
+        const titleH5 = el.nextElementSibling.nextElementSibling.cloneNode(true);
+        titleH5.className = 'courses-title';
+        elems.push(titleH5);
 
-          const subtitleH6 = el.nextElementSibling
-            .nextElementSibling
-            .nextElementSibling
-            .cloneNode(true);
-          subtitleH6.className = 'courses-subtitle';
-          elems.push(subtitleH6);
+        const subtitleH6 = el.nextElementSibling
+          .nextElementSibling
+          .nextElementSibling
+          .cloneNode(true);
+        subtitleH6.className = 'courses-subtitle';
+        elems.push(subtitleH6);
 
-          // Handle the next four p's after h6
-          let currentEl = el.nextElementSibling
-            .nextElementSibling
-            .nextElementSibling
-            .nextElementSibling;
+        // Handle the next four p's after h6
+        let currentEl = el.nextElementSibling
+          .nextElementSibling
+          .nextElementSibling
+          .nextElementSibling;
 
-          const classesToAdd = ['courses-rating', 'courses-panelists', 'courses-info', 'courses-button'];
+        const classesToAdd = ['courses-rating', 'courses-panelists', 'courses-info', 'courses-button'];
 
-          for (let i = 0; i < 4; i += 1) {
-            if (currentEl) {
-              const clonedNode = currentEl.cloneNode(true);
+        for (let i = 0; i < 4; i += 1) {
+          if (currentEl) {
+            const clonedNode = currentEl.cloneNode(true);
 
-              if (currentEl.tagName.toLowerCase() === 'ul') {
-                clonedNode.className = 'courses-tags';
-                i -= 1;
-              } else if (clonedNode.className) {
-                clonedNode.className += ` ${classesToAdd[i]}`;
-              } else {
-                clonedNode.className = classesToAdd[i];
-              }
-
-              elems.push(clonedNode);
-
-              currentEl.classList.add('remove');
-              currentEl = currentEl.nextElementSibling;
+            if (currentEl.tagName.toLowerCase() === 'ul') {
+              clonedNode.className = 'courses-tags';
+              i -= 1;
+            } else if (clonedNode.className) {
+              clonedNode.className += ` ${classesToAdd[i]}`;
+            } else {
+              clonedNode.className = classesToAdd[i];
             }
-          }
-          el.nextElementSibling.nextElementSibling.nextElementSibling.classList.add('remove');
-          el.nextElementSibling.nextElementSibling.classList.add('remove');
-          el.nextElementSibling.classList.add('remove');
-          el.classList.add('remove');
-        }
-      };
 
-      main.querySelectorAll('p > picture').forEach((picture) => {
-        const pTag = picture.parentElement;
-        if (pTag.nextElementSibling) {
-          const elems = [];
-          checkForCourses(pTag, elems);
-          if (elems.length) {
-            const courseBlock = buildBlock('courses', { elems });
-            pTag.replaceWith(courseBlock);
-            main.querySelectorAll('.remove').forEach((el) => el.remove());
+            elems.push(clonedNode);
+
+            currentEl.classList.add('remove');
+            currentEl = currentEl.nextElementSibling;
           }
         }
-      });
+        el.nextElementSibling.nextElementSibling.nextElementSibling.classList.add('remove');
+        el.nextElementSibling.nextElementSibling.classList.add('remove');
+        el.nextElementSibling.classList.add('remove');
+        el.classList.add('remove');
+      }
+    };
 
-      const section = document.createElement('div');
-      section.append(buildBlock(template, { elems: [...main.children] }));
-      main.prepend(section);
+    main.querySelectorAll('p > picture').forEach((picture) => {
+      const pTag = picture.parentElement;
+      if (pTag.nextElementSibling) {
+        const elems = [];
+        checkForCourses(pTag, elems);
+        if (elems.length) {
+          const courseBlock = buildBlock('courses', { elems });
+          pTag.replaceWith(courseBlock);
+          main.querySelectorAll('.remove').forEach((el) => el.remove());
+        }
+      }
+    });
 
-      return true;
-    }
+    const section = document.createElement('div');
+    section.append(buildBlock(template, { elems: [...main.children] }));
+    main.prepend(section);
 
-    return false;
-  });
+    return true;
+  }
+
+  return false;
 }
 
 /**
@@ -440,7 +434,15 @@ function loadDelayed() {
   // load anything that can be postponed to the latest here
 }
 
+// TODO Remove once all URLs pointing to GD are fixed
+function fixURLsWithGD() {
+  document.body.querySelectorAll('a[href^="https://www.golfdigest.com/"]').forEach((link) => {
+    link.setAttribute('href', link.getAttribute('href').slice(26));
+  });
+}
+
 async function loadPage() {
+  fixURLsWithGD();
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();
@@ -540,6 +542,7 @@ window.store = new (class {
       'series-cards': 100,
       'tiger-cards': 35,
       'tiger-vault-hero': 1,
+      'newsletter-subscribe': 25,
     };
 
     this.blockNames = Object.keys(this._blockQueryLimit);
@@ -633,7 +636,7 @@ If you created a new spreadsheet you might also need to add it to \x1b[37m"this.
     }
 
     const queryDetails = this._queryMap[query];
-    if (queryDetails.limit < 1) {
+    if (!queryDetails.mock && queryDetails.limit < 1) {
       console.warn(`No query limit was found for ${block.dataset.blockName} block! \x1b[1m\x1b[31mTherefore no data will be returned!\x1b[0m
 
 Make sure to set a limit for \x1b[31m"${block.dataset.blockName}"\x1b[0m in \x1b[37m${JSON.stringify(this._blockQueryLimit)}\x1b[0m
@@ -746,6 +749,41 @@ export const premiumArticleBanner = (customLeftoverArticles = null) => {
     </div>
   `;
 };
+
+export const validateEmail = (email) => email.match(
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+);
+
+/**
+   * Creates a class name compatible with window.store.query
+   * so page templates can also use that functionality like blocks.
+   * @param {string} Metadata string of the page that includes "(SHEET_NAME SPREADSHEET_NAME)"
+   * @return {string} String that is a valid class for window.store.query
+   */
+export const extractQueryFromTemplateMetaData = (metaDataTemplateString) => {
+  try {
+    const regex = /\((.*)\)/;
+    const textWithinBrackets = metaDataTemplateString.match(regex)[1];
+    const classesArray = textWithinBrackets.split(',').map((string) => string.trim());
+
+    const foundSpreadsheet = classesArray.find((classString) => {
+      const convertedString = toClassName(classString);
+      for (const spreadsheet of window.store.spreadsheets) {
+        if (convertedString.endsWith(spreadsheet)) {
+          return true;
+        }
+      }
+      return false;
+    });
+
+    return foundSpreadsheet ? toClassName(foundSpreadsheet) : false;
+  } catch (error) {
+    console.log(`Something went wrong while trying to get query from ${metaDataTemplateString}`);
+    console.log(error);
+    return false;
+  }
+};
+
 /**
  * Generates HTML for the premium article blocker.
  * @param {block} Block where the selector exists.

@@ -1,0 +1,17 @@
+name: Publish Webhook
+
+on:
+  repository_dispatch:
+    types:
+      - resource-published
+jobs:
+  webhook:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Webhook
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: 'https://gd.headwire.workers.dev/webhook'
+          method: 'POST'
+          bearerToken: ${{ secrets.GD_TOKEN }}
+          data: ${{ github.event.client_payload.path }}
