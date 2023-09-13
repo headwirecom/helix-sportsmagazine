@@ -539,7 +539,7 @@ window.store = new (class {
     * Add entry here for new blocks that require data to be fetched!
     */
     this._blockQueryLimit = {
-      hero: 5,
+      hero: 4,
       cards: 10,
       carousel: 20,
       loop: 30,
