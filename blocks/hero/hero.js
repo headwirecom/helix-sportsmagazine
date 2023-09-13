@@ -22,7 +22,7 @@ export default async function decorate(block) {
     .isEqualNode(block);
 
   const heroDataIndex = heroItemsIndex;
-  heroItemsIndex += isFirstHero ? 5 : 1;
+  heroItemsIndex += isFirstHero ? 4 : 1;
 
   // settings placeholder data
   if (!heroItems) {
@@ -35,7 +35,7 @@ export default async function decorate(block) {
 
     const heroData = heroItems[heroDataIndex];
     // TODO Add support for multiple queries
-    const cards = heroItems.slice(heroDataIndex + 1, heroDataIndex + 5);
+    const cards = heroItems.slice(heroDataIndex + 1, heroDataIndex + 4);
 
     assignSlot(block, 'image', 'picture');
 
