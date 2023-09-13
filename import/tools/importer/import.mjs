@@ -318,17 +318,33 @@ function getImgName(imgSrc) {
   return parts[parts.length-1];
 }
 
+function fixImg(img) {
+  let imgSrc = img.getAttribute('src');
+  // remove AEM generated rendition
+  imgSrc = (imgSrc.includes('.rend.')) ? imgSrc.split('.rend.')[0] : imgSrc;
+  // add protocol and host name if needed.
+  if (imgSrc.startsWith('//')) {
+    imgSrc = `https:${imgSrc}`;
+  } else if (imgSrc.startsWith('/')) {
+    imgSrc = `https://golfdigest.sports.sndimg.com${imgSrc}`;
+  }
+  img.setAttribute('src', imgSrc);
+  let altText = img.getAttribute('alt');
+  if (!altText || !isNaN(altText)) {
+    altText = getImgName(imgSrc);
+    img.setAttribute('alt', altText);
+  }
+  let title = img.getAttribute('title');
+  if (!title) {
+    title = altText;
+    img.setAttribute('title', title);
+  }
+}
+
 function updateImage(el) {
   const img = (el.tagName === 'IMG') ? el : el.querySelector('img');
   if (img) {
-    let imgSrc = img.getAttribute('src');
-    imgSrc = (imgSrc.includes('.rend.')) ? imgSrc.split('.rend.')[0] : imgSrc;
-    img.setAttribute('src', imgSrc);
-    let altText = img.getAttribute('alt');
-    if (!altText || !isNaN(altText)) {
-      altText = getImgName(imgSrc);
-      img.setAttribute('alt', altText);
-    }
+    fixImg(img);
   }
 }
 
@@ -743,9 +759,16 @@ function fixBrInsideLinks(document) {
   });
 }
 
+function fixImages(document) {
+  document.querySelectorAll('img').forEach((img) => {
+    fixImg(img);
+  });
+}
+
 function applyMarkupFixes(document) {
   fixBoldText(document);
-  fixBrInsideLinks(document)
+  fixBrInsideLinks(document);
+  fixImages(document);
 }
 
 async function trasformDOM(document, url) {
