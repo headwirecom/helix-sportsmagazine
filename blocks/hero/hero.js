@@ -47,7 +47,7 @@ export default async function decorate(block) {
           (card) => `
               <a href='${card.path}'>
                 ${
-  createOptimizedPicture(card.image, card.imageAlt || card.title, isFirstHero, [{ width: '120' }])
+  createOptimizedPicture(card.image, card.imageAlt || card.title, isFirstHero, [{ width: '240' }])
     .outerHTML
 }
                 <div>
@@ -78,10 +78,11 @@ export default async function decorate(block) {
     heroData.imageAlt || heroData.title,
     isFirstHero,
     [
-      { media: '(min-width: 686px)', width: '686' },
-      { media: '(min-width: 966px)', width: '966' },
-      { media: '(min-width: 1280px)', width: '1280' },
-      { width: '1850' },
+      { media: '(min-width: 686px)', width: '1500' },
+      { media: '(min-width: 768px)', width: '2000' },
+      { media: '(min-width: 1024px)', width: '1280' },
+      { media: '(min-width: 1280px)', width: '2500' },
+      { width: '3000' },
     ],
   ).outerHTML
 }

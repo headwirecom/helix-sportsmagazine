@@ -101,8 +101,8 @@ export default async function decorate(block) {
   <div class="image-wrapper">
     ${
   createOptimizedPicture(image, imageAlt, index < 2, [
-    { media: '(max-width: 600px)', width: '115' },
-    { width: '285' },
+    { media: '(max-width: 600px)', width: '230' },
+    { width: '570' },
   ]).outerHTML
 }
   </div>
