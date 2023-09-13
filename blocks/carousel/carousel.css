@@ -229,9 +229,9 @@
   flex-shrink: 0;
 }
 
-.dark .carousel.block 
-  .carousel-main-wrapper 
-  .carousel-frame 
+.dark .carousel.block
+  .carousel-main-wrapper
+  .carousel-frame
   .carousel-item {
  background-color: #1c1c1c;
  border: none;
@@ -419,6 +419,7 @@
   justify-content: flex-end;
   padding: 40px;
   gap: 10px;
+  z-index: 1;
 }
 
 .carousel.block.wedges
@@ -633,11 +634,11 @@
 }
 
 .dark .carousel.block
-  .carousel-main-wrapper 
-  .carousel-frame 
-  .carousel-item 
-  .carousel-item-wrapper 
-  .carousel-text-content 
+  .carousel-main-wrapper
+  .carousel-frame
+  .carousel-item
+  .carousel-item-wrapper
+  .carousel-text-content
   .carousel-item-title {
   color: #fff;
   background-color: #1c1c1c;
@@ -645,35 +646,35 @@
 
 
 /* With video variation */
-.carousel.block.with-video 
+.carousel.block.with-video
   .carousel-main-wrapper {
     max-height: 330px;
 }
 
 .carousel.block.with-video
-  .carousel-main-wrapper 
-  .carousel-frame 
+  .carousel-main-wrapper
+  .carousel-frame
   .carousel-item
-  .carousel-item-wrapper 
+  .carousel-item-wrapper
   .carousel-image-wrapper::before {
-  padding-top: 55%;  
+  padding-top: 55%;
 }
 
-.carousel.block.with-video 
-  .carousel-main-wrapper 
-  .carousel-frame 
-  .carousel-item 
-  .carousel-item-wrapper 
+.carousel.block.with-video
+  .carousel-main-wrapper
+  .carousel-frame
+  .carousel-item
+  .carousel-item-wrapper
   .carousel-text-content {
-  padding: 20px;  
+  padding: 20px;
 }
 
 .dark .carousel.block
-  .carousel-main-wrapper 
-  .carousel-frame 
-  .carousel-item 
-  .carousel-item-wrapper 
-  .carousel-text-content 
+  .carousel-main-wrapper
+  .carousel-frame
+  .carousel-item
+  .carousel-item-wrapper
+  .carousel-text-content
   .carousel-video-duration {
     font-family: var(--font-gotham);
     font-weight: 500;
