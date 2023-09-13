@@ -66,11 +66,11 @@ export default async function decorate(block) {
       <a class="main-card" href="${card.href || card.path}">
         <div class="image-bg">
           ${createOptimizedPicture(card.image, card.imageAlt || card.title, false, [
-            { media: '(max-width: 768px)', width: '1440' },
-            { media: '(max-width: 1024px)', width: '1960' },
-            { media: '(max-width: 1280px)', width: '2460' },
-            { width: '1400' },
-          ]).outerHTML}
+    { media: '(max-width: 768px)', width: '1440' },
+    { media: '(max-width: 1024px)', width: '1960' },
+    { media: '(max-width: 1280px)', width: '2460' },
+    { width: '1400' },
+  ]).outerHTML}
         </div>
         <div class="main-text-wrapper">
           <div class="section">${card.rubric}</div>
@@ -93,9 +93,9 @@ export default async function decorate(block) {
         <a class="small-card" href="${card.href || card.path}">
           <div class="image-wrapper">
             ${createOptimizedPicture(card.image, card.imageAlt || card.title, false, [
-              { media: '(max-width: 768px)', width: '430' },
-              { width: '650' },
-            ]).outerHTML}
+    { media: '(max-width: 768px)', width: '430' },
+    { width: '650' },
+  ]).outerHTML}
           </div>
           <div class="small-text-wrapper">
             <div class="section">${card.rubric}</div>

@@ -60,16 +60,16 @@ export default async function decorate(block) {
             <div class="carousel-item-wrapper">
               <div class="carousel-image-wrapper">
                 ${createOptimizedPicture(carouselItem.image, carouselItem.imageAlt || carouselItem.title, false, isLarge ? [
-                  {media: '(max-width: 768px)', width: '1300'},
-                  {media: '(max-width: 1024px)', width: '1000'},
-                  {media: '(max-width: 1280px)', width: '1200'},
-                  { width: '1400' }
-                ] : [
-                  {media: '(max-width: 768px)', width: '660'},
-                  {media: '(max-width: 1024px)', width: '1000'},
-                  {media: '(max-width: 1280px)', width: '560'},
-                  { width: '650' }
-                ]).outerHTML}
+    { media: '(max-width: 768px)', width: '1300' },
+    { media: '(max-width: 1024px)', width: '1000' },
+    { media: '(max-width: 1280px)', width: '1200' },
+    { width: '1400' },
+  ] : [
+    { media: '(max-width: 768px)', width: '660' },
+    { media: '(max-width: 1024px)', width: '1000' },
+    { media: '(max-width: 1280px)', width: '560' },
+    { width: '650' },
+  ]).outerHTML}
               </div>
               
               <div class="carousel-text-content">
