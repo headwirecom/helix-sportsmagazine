@@ -52,11 +52,9 @@ export default async function decorate(block) {
   // Rendering content upon fetch complete
   document.addEventListener(`query:${id}`, (event) => {
     cardData = event.detail.data;
+    console.log("\x1b[34m ~ cardData:", cardData)
 
-    // TODO Add support for multiple queries
-    const cardList = cardData.slice(currentBlockIndex, currentBlockIndex + cardOffset);
-
-    const mainCard = cardList[0];
+    const mainCard = cardData[0];
 
     const generateMainCard = (card = mainCard) => {
       if (isLatestCardBlock) {
@@ -82,7 +80,7 @@ export default async function decorate(block) {
       `;
     };
 
-    const generateSecondaryCards = (cardArray = cardList.splice(1)) => cardArray
+    const generateSecondaryCards = (cardArray = cardData.splice(1)) => cardArray
       .map(
         (card) => `
         <a class="small-card" href="${card.href || card.path}">
@@ -109,13 +107,13 @@ export default async function decorate(block) {
     <div class="card-block-wrapper ${reverse ? 'reverse' : ''}">
       ${
   block.classList.contains('hero')
-    ? cardList.map((card) => generateMainCard(card)).join('')
+    ? cardData.map((card) => generateMainCard(card)).join('')
     : `
         ${generateMainCard()}
         ${!gdPlusCards ? '' : '<div class="gd-cards-wrapper">'}
         <div class="secondary-cards">
           ${!gdPlusCards ? '' : '<h2 class="gd-plus-title">GD+ Latest</h2>'}
-          ${generateSecondaryCards(isLatestCardBlock ? cardList : cardList.splice(1))}
+          ${generateSecondaryCards(isLatestCardBlock ? cardData : cardData.splice(1))}
         </div>
         ${!gdPlusCards ? '' : '</div>'}
     `

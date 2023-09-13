@@ -510,6 +510,21 @@ export function getBlockId(block) {
   return block.id;
 }
 
+export const pathAlreadyExists = (inputPath) => {
+  if (!window.store._cache) {
+    return false
+  }
+
+  for (const query in window.store._cache) {
+    for (const {path} of window.store._cache[query].data) {
+      if (path === inputPath) {
+        console.log(inputPath + ' is already linked to')
+        return true
+      }
+    }
+  }
+}
+
 /**
  * Setting up custom fetch to cache article-query
  */
@@ -517,6 +532,9 @@ window.store = new (class {
   constructor() {
     // Query stack
     this._queryStack = {};
+
+    // for testing
+    window.sessionStorage.clear()
 
     // Indexes
     this._spreadsheets = {
@@ -656,14 +674,25 @@ Make sure to set a limit for \x1b[31m"${block.dataset.blockName}"\x1b[0m in \x1b
       url = `/${this._spreadsheets[queryDetails.spreadsheet]}.json?sheet=${query}`;
     }
 
+    const dispatchData = (id) => {
+      // using queryselect in case this is called during query stack cleanup
+      const blockToDispatchTo = document.getElementById(id)
+      const previousOffset = this._cache[url].blockRequestOffset || 0
+      this._cache[url].blockRequestOffset = previousOffset + this._blockQueryLimit[blockToDispatchTo.dataset.blockName]
+
+      const slicedData = this._cache[url].data.slice(previousOffset, this._cache[url].blockRequestOffset+1)
+      console.log("\x1b[31m ~ slicedData:", slicedData)
+      document.dispatchEvent(new CustomEvent(`query:${id}`, { detail: {...this._cache[url], data: slicedData} }));
+    }
+
     // Use cached resource & that it has data
-    if (this._cache[url] && this._cache[url].limit) {
+    if (this._cache[url]) {
       // Cache is already populated
       if (this._cache[url].data.length) {
         // Only trigger if there is enough data
         if (queryDetails.limit <= this._cache[url].data.length) {
           // "Return" data for given id
-          document.dispatchEvent(new CustomEvent(`query:${id}`, { detail: this._cache[url] }));
+          dispatchData(id, block)
           return;
         }
       } else {
@@ -672,13 +701,13 @@ Make sure to set a limit for \x1b[31m"${block.dataset.blockName}"\x1b[0m in \x1b
           ...this._queryStack,
           [id]: url,
         };
-
+        
         return;
       }
     }
 
     // Start setting cache to avoid multiple requests or invalid cache if not enough items
-    this._cache[url] = { data: [] };
+    this._cache[url] = { data: [], limit: queryDetails.limit };
 
     // TODO store the delta between the number of cached items and the number of items requested
     // and only request that with ?offset=
@@ -703,12 +732,12 @@ Make sure to set a limit for \x1b[31m"${block.dataset.blockName}"\x1b[0m in \x1b
         }
 
         // "Return" data for given id
-        document.dispatchEvent(new CustomEvent(`query:${id}`, { detail: this._cache[url] }));
+          dispatchData(id)
 
         // Unstack and "return" data
         for (const stackId in this._queryStack) {
           if (url === this._queryStack[stackId]) {
-            document.dispatchEvent(new CustomEvent(`query:${stackId}`, { detail: this._cache[url] }));
+            dispatchData(stackId)
             // Pop stack id
             delete this._queryStack[stackId];
           }
