@@ -151,25 +151,13 @@ export default function decorate(block) {
     });
     block.append(wrapper);
   } else {
-    const searchParams = new URLSearchParams(window.location.search)
-
     let timer;
     const triggerEmbedLoad = () => {
-      console.log("\x1b[35m ~ triggered:", block)
-      loadEmbed(block, link, autoplay)
-      window.removeEventListener('scroll', triggerEmbedLoad)
-      clearTimeout(timer)
+      loadEmbed(block, link, autoplay);
+      window.removeEventListener('scroll', triggerEmbedLoad);
+      clearTimeout(timer);
     };
-    setTimeout(triggerEmbedLoad, Number(searchParams.get('iframeTimeout')) || 3000)
-    searchParams.get('disableIframeScroll') !== 'true' && window.addEventListener('scroll', triggerEmbedLoad)
-
-    // const observer = new IntersectionObserver((entries) => {
-    //   if (entries.some((e) => e.isIntersecting)) {
-    //     console.log("\x1b[34m ~ TEST:",entries )
-    //     observer.disconnect();
-    //     loadEmbed(block, link, autoplay);
-    //   }
-    // });
-    // observer.observe(block);
+    setTimeout(triggerEmbedLoad, 6000);
+    window.addEventListener('scroll', triggerEmbedLoad);
   }
 }
