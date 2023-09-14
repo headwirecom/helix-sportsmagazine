@@ -151,12 +151,23 @@ export default function decorate(block) {
     });
     block.append(wrapper);
   } else {
-    const observer = new IntersectionObserver((entries) => {
-      if (entries.some((e) => e.isIntersecting)) {
-        observer.disconnect();
-        loadEmbed(block, link, autoplay);
-      }
-    });
-    observer.observe(block);
+    let timer;
+    const triggerEmbedLoad = () => {
+      console.log("\x1b[35m ~ triggered:", block)
+      loadEmbed(block, link, autoplay)
+      window.removeEventListener('scroll', triggerEmbedLoad)
+      clearTimeout(timer)
+    };
+    setTimeout(triggerEmbedLoad, 3000)
+    window.addEventListener('scroll', triggerEmbedLoad)
+
+    // const observer = new IntersectionObserver((entries) => {
+    //   if (entries.some((e) => e.isIntersecting)) {
+    //     console.log("\x1b[34m ~ TEST:",entries )
+    //     observer.disconnect();
+    //     loadEmbed(block, link, autoplay);
+    //   }
+    // });
+    // observer.observe(block);
   }
 }
