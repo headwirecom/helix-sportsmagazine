@@ -29,15 +29,6 @@ export default async function decorate(block) {
 
   const reverse = !(indexInPage <= 0 || indexInPage % 2 === 0);
 
-  // let cardOffset = 4;
-  // if (block.classList.contains('hero')) {
-  //   cardOffset = 2;
-  // } else if (block.classList.contains('latest')) {
-  //   cardOffset = 10;
-  // } else if (block.classList.contains('columns')) {
-  //   cardOffset = 5;
-  // }
-
   // using placeholder html
   block.innerHTML = placeholderHtml;
 

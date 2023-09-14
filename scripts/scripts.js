@@ -518,9 +518,6 @@ window.store = new (class {
     // Query stack
     this._queryStack = {};
 
-    // for testing
-    window.sessionStorage.clear();
-
     // Indexes
     this._spreadsheets = {
       article: 'article-query-index',
