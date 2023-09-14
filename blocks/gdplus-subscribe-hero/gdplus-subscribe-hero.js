@@ -4,7 +4,6 @@ import { parseFragment, removeEmptyElements, render } from '../../scripts/script
 export default async function decorate(block) {
   const response = await fetch('/custom-data.json?sheet=gd-plus-offers&sheet=gd-plus-benefits&limit=10');
   const data = await response.json();
-  console.log('\x1b[31m ~ data:', data);
 
   const offerCards = data['gd-plus-offers'].data;
   const benefits = data['gd-plus-benefits'].data;

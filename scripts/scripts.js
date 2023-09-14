@@ -539,14 +539,31 @@ window.store = new (class {
     * Add entry here for new blocks that require data to be fetched!
     */
     this._blockQueryLimit = {
-      hero: 4,
-      cards: 10,
-      carousel: 20,
-      loop: 30,
-      'series-cards': 100,
-      'tiger-cards': 35,
-      'tiger-vault-hero': 1,
-      'newsletter-subscribe': 25,
+      hero: (block) => {
+        const firstHero = document.querySelector('.hero.block[data-block-name="hero"]');
+        if (firstHero.isEqualNode(block)) {
+          return 4;
+        }
+        return 1;
+      },
+      cards: (block) => {
+        if (block.classList.contains('hero')) {
+          return 2;
+        }
+        if (block.classList.contains('latest')) {
+          return 10;
+        }
+        if (block.classList.contains('columns')) {
+          return 5;
+        }
+        return 4;
+      },
+      carousel: () => 20,
+      loop: () => 30,
+      'series-cards': () => 100,
+      'tiger-cards': () => 35,
+      'tiger-vault-hero': () => 1,
+      'newsletter-subscribe': () => 25,
     };
 
     this.blockNames = Object.keys(this._blockQueryLimit);
@@ -592,7 +609,9 @@ window.store = new (class {
     this.blockNames.forEach((blockName) => {
       queryNames.forEach((queryName) => {
         const { spreadsheet } = this._queryMap[queryName];
-        this._queryMap[queryName].limit += document.querySelectorAll(`main .${blockName}.${queryName}-${spreadsheet}.block`).length * this._blockQueryLimit[blockName];
+        document.querySelectorAll(`main .${blockName}.${queryName}-${spreadsheet}.block`).forEach((blockEl) => {
+          this._queryMap[queryName].limit += this._blockQueryLimit[blockName](blockEl);
+        });
       });
     });
   }
@@ -643,7 +662,7 @@ If you created a new spreadsheet you might also need to add it to \x1b[37m"this.
     if (!queryDetails.mock && queryDetails.limit < 1) {
       console.warn(`No query limit was found for ${block.dataset.blockName} block! \x1b[1m\x1b[31mTherefore no data will be returned!\x1b[0m
 
-Make sure to set a limit for \x1b[31m"${block.dataset.blockName}"\x1b[0m in \x1b[37m${JSON.stringify(this._blockQueryLimit)}\x1b[0m
+Make sure to set a limit for \x1b[31m"${block.dataset.blockName}"\x1b[0m in \x1b[37m"this._blockQueryLimit"\x1b[0m
       `);
     }
     let url;
@@ -656,14 +675,29 @@ Make sure to set a limit for \x1b[31m"${block.dataset.blockName}"\x1b[0m in \x1b
       url = `/${this._spreadsheets[queryDetails.spreadsheet]}.json?sheet=${query}`;
     }
 
+    const dispatchData = (dispatchId) => {
+      // using queryselect in case this is called during query stack cleanup
+      const blockToDispatchTo = document.getElementById(dispatchId);
+      const previousOffset = this._cache[url].blockRequestOffset || 0;
+      this._cache[url].blockRequestOffset = (
+        previousOffset
+        + this._blockQueryLimit[blockToDispatchTo.dataset.blockName](blockToDispatchTo)
+      );
+
+      const slicedData = this._cache[url].data
+        .slice(previousOffset, this._cache[url].blockRequestOffset);
+
+      document.dispatchEvent(new CustomEvent(`query:${dispatchId}`, { detail: { ...this._cache[url], data: slicedData } }));
+    };
+
     // Use cached resource & that it has data
-    if (this._cache[url] && this._cache[url].limit) {
+    if (this._cache[url]) {
       // Cache is already populated
       if (this._cache[url].data.length) {
         // Only trigger if there is enough data
         if (queryDetails.limit <= this._cache[url].data.length) {
           // "Return" data for given id
-          document.dispatchEvent(new CustomEvent(`query:${id}`, { detail: this._cache[url] }));
+          dispatchData(id, block);
           return;
         }
       } else {
@@ -678,7 +712,7 @@ Make sure to set a limit for \x1b[31m"${block.dataset.blockName}"\x1b[0m in \x1b
     }
 
     // Start setting cache to avoid multiple requests or invalid cache if not enough items
-    this._cache[url] = { data: [] };
+    this._cache[url] = { data: [], limit: queryDetails.limit };
 
     // TODO store the delta between the number of cached items and the number of items requested
     // and only request that with ?offset=
@@ -703,12 +737,12 @@ Make sure to set a limit for \x1b[31m"${block.dataset.blockName}"\x1b[0m in \x1b
         }
 
         // "Return" data for given id
-        document.dispatchEvent(new CustomEvent(`query:${id}`, { detail: this._cache[url] }));
+        dispatchData(id);
 
         // Unstack and "return" data
         for (const stackId in this._queryStack) {
           if (url === this._queryStack[stackId]) {
-            document.dispatchEvent(new CustomEvent(`query:${stackId}`, { detail: this._cache[url] }));
+            dispatchData(stackId);
             // Pop stack id
             delete this._queryStack[stackId];
           }
