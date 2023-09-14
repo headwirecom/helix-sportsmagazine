@@ -18,7 +18,6 @@ export default async function decorate(block) {
     .querySelector('.hero.block[data-block-name="hero"]')
     .isEqualNode(block);
 
-
   // setting placeholder data
   block.innerHTML = placeholderHtml;
 

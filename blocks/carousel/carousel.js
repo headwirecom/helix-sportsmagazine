@@ -2,7 +2,6 @@ import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 import {
   getBlockId,
   parseFragment,
-  pathAlreadyExists,
   removeEmptyElements,
   render,
 } from '../../scripts/scripts.js';
@@ -56,14 +55,7 @@ export default async function decorate(block) {
       <div class="carousel-frame" style="transform: translateX(0px);">
         ${carouselData
     .map(
-      (carouselItem) => {
-      // if (document.querySelector(`a[href="${carouselItem.path}"]`)) {
-      //   return ''
-      // }
-      // if (pathAlreadyExists(carouselItem.path)) {
-      //   return ''
-      // }
-      return `
+      (carouselItem) => `
           <a class="carousel-item" href="${carouselItem.path}" >
             <div class="carousel-item-wrapper">
               <div class="carousel-image-wrapper">
@@ -80,8 +72,8 @@ export default async function decorate(block) {
                 ${Array.isArray(carouselItem.awards) && carouselItem.awards.length ? `<ul class="carousel-item-pills">${carouselItem.awards.map((award) => `<li class="pill-item">${award}</li>`).join('')}</ul>` : ''}
               </div>
             </div>
-          </a>`
-        }).join('')}
+          </a>`,
+    ).join('')}
       </div>
       </div>
     </div>

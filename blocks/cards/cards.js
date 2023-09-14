@@ -8,9 +8,6 @@ import {
   getBlockId,
 } from '../../scripts/scripts.js';
 
-let cardData;
-let cardDataIndex = 0;
-
 const placeholderHtml = `
 <div class="card-block-wrapper" style="visibility: hidden;">
   <div class="main-card" style="aspect-ratio: 1/1; width: 50%; flex: 0;"></div>
@@ -32,27 +29,21 @@ export default async function decorate(block) {
 
   const reverse = !(indexInPage <= 0 || indexInPage % 2 === 0);
 
-  let cardOffset = 4;
-  if (block.classList.contains('hero')) {
-    cardOffset = 2;
-  } else if (block.classList.contains('latest')) {
-    cardOffset = 10;
-  } else if (block.classList.contains('columns')) {
-    cardOffset = 5;
-  }
-
-  const currentBlockIndex = cardDataIndex;
-  cardDataIndex += cardOffset;
+  // let cardOffset = 4;
+  // if (block.classList.contains('hero')) {
+  //   cardOffset = 2;
+  // } else if (block.classList.contains('latest')) {
+  //   cardOffset = 10;
+  // } else if (block.classList.contains('columns')) {
+  //   cardOffset = 5;
+  // }
 
   // using placeholder html
-  if (!cardData) {
-    block.innerHTML = placeholderHtml;
-  }
+  block.innerHTML = placeholderHtml;
 
   // Rendering content upon fetch complete
   document.addEventListener(`query:${id}`, (event) => {
-    cardData = event.detail.data;
-    console.log("\x1b[34m ~ cardData:", cardData)
+    const cardData = event.detail.data;
 
     const mainCard = cardData[0];
 
