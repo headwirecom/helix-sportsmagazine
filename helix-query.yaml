@@ -27,6 +27,10 @@ indices:
         select: head > meta[name="publication-date"]
         value: |
           attribute(el, 'content')
+      keywords:
+        select: head > meta[name="keywords"]
+        value: |
+          attribute(el, 'content')
       lastModified:
         select: none
         value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
@@ -75,6 +79,10 @@ indices:
         select: 'a[href*="youtube.com/watch"], a[href*="youtu.be/"], a[href*="brightcove"]'
         value: |
           attribute(el, 'href')
+      keywords:
+        select: head > meta[name="keywords"]
+        value: |
+          attribute(el, 'content')
       lastModified:
         select: none
         value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
@@ -101,6 +109,10 @@ indices:
           attribute(el, 'content')
       category:
         select: head > meta[name="category"]
+        value: |
+          attribute(el, 'content')
+      keywords:
+        select: head > meta[name="keywords"]
         value: |
           attribute(el, 'content')
       lastModified:
