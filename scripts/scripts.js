@@ -571,17 +571,20 @@ window.store = new (class {
 
     this.initQueries();
 
-    try {
-      this._cache = JSON.parse(window.sessionStorage['golf-store']);
+    this._cache = {};
 
-      // Forces a refresh after a long period (1d) in case window is stored in memory
-      setTimeout(() => {
-        sessionStorage.clear();
-      }, 86400);
-    } catch (e) {
-      // session storage not supported
-      this._cache = {};
-    }
+    // TODO sessionStorage caching breaks on page reload
+    // try {
+    //   this._cache = JSON.parse(window.sessionStorage['golf-store']);
+    //
+    //   // Forces a refresh after a long period (1d) in case window is stored in memory
+    //   setTimeout(() => {
+    //     sessionStorage.clear();
+    //   }, 86400);
+    // } catch (e) {
+    //   // session storage not supported
+    //   this._cache = {};
+    // }
   } // Find all dynamic queries on the page and map them out
 
   // Dynamic queries end with their spreadsheet name e.g. loop-article or latest-gallery
@@ -729,12 +732,13 @@ Make sure to set a limit for \x1b[31m"${block.dataset.blockName}"\x1b[0m in \x1b
         // Set cache with data
         this._cache[url] = res;
 
-        // Store cached data in session storage
-        try {
-          window.sessionStorage['golf-store'] = JSON.stringify(this._cache);
-        } catch (e) {
-          // Session storage not supported
-        }
+        // TODO sessionStorage caching breaks on page reload
+        // // Store cached data in session storage
+        // try {
+        //   window.sessionStorage['golf-store'] = JSON.stringify(this._cache);
+        // } catch (e) {
+        //   // Session storage not supported
+        // }
 
         // "Return" data for given id
         dispatchData(id);
