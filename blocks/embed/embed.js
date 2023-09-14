@@ -151,6 +151,8 @@ export default function decorate(block) {
     });
     block.append(wrapper);
   } else {
+    const searchParams = new URLSearchParams(window.location.search)
+
     let timer;
     const triggerEmbedLoad = () => {
       console.log("\x1b[35m ~ triggered:", block)
@@ -158,8 +160,8 @@ export default function decorate(block) {
       window.removeEventListener('scroll', triggerEmbedLoad)
       clearTimeout(timer)
     };
-    setTimeout(triggerEmbedLoad, 3000)
-    window.addEventListener('scroll', triggerEmbedLoad)
+    setTimeout(triggerEmbedLoad, Number(searchParams.get('iframeTimeout')) || 3000)
+    searchParams.get('disableIframeScroll') !== 'true' && window.addEventListener('scroll', triggerEmbedLoad)
 
     // const observer = new IntersectionObserver((entries) => {
     //   if (entries.some((e) => e.isIntersecting)) {
