@@ -2,7 +2,7 @@
   padding: 60px 20px;
 }
 
-.open-article.block h1 {
+.open-article-wrapper .open-article.block h1 {
   font-size: 40px;
   font-family: var(--font-gotham);
   font-style: normal;
@@ -12,12 +12,12 @@
   margin: 20px 0;
 }
 
-.open-article.block {
+.open-article-wrapper .open-article.block {
   max-width: 900px;
   margin: 0 auto;
 }
 
-.open-article.block .article-body p {
+.open-article-wrapper .open-article.block .article-body p {
   font-family: var(--font-gotham);
   font-size: 16px;
   font-style: normal;
@@ -28,7 +28,7 @@
   margin: 0 0 30px;
 }
 
-.open-article.block .article-body p::first-letter {
+.open-article-wrapper .open-article.block .article-body p::first-letter {
   font-weight: 700;
   line-height: 100%;
   letter-spacing: 0;
@@ -38,25 +38,25 @@
 }
 
 @media (min-width: 769px) {
-  .open-article.block .article-body p::first-letter {
+  .open-article-wrapper .open-article.block .article-body p::first-letter {
     font-size: 150px;
     line-height: 85%;
   }
 }
 
-.open-article.block .lead {
+.open-article-wrapper .open-article.block .lead {
   overflow: hidden;
   margin-bottom: 20px;
   vertical-align: baseline;
 }
 
-.open-article.block .lead img {
+.open-article-wrapper .open-article.block .lead img {
   width: auto;
   height: auto;
   max-width: 100%;
 }
 
-.open-article.block .byline {
+.open-article-wrapper .open-article.block .byline {
   display: flex;
   color: black;
   font-family: var(--font-gotham);
@@ -68,17 +68,17 @@
   height: 73px;
 }
 
-.open-article.block .byline .attribution * {
+.open-article-wrapper .open-article.block .byline .attribution * {
   color: black;
   text-decoration: none;
 }
 
-.open-article.block .byline .publication {
+.open-article-wrapper .open-article.block .byline .publication {
   display: flex;
   font-weight: 400;
 }
 
-.open-article.block .byline .publication::before {
+.open-article-wrapper .open-article.block .byline .publication::before {
   content: "";
   display: block;
   border-left: 2px solid #e6e6e6;
@@ -87,7 +87,7 @@
   margin: 0 5px;
 }
 
-.open-article.block .article-body .photo-credit {
+.open-article-wrapper .open-article.block .article-body .photo-credit {
   font-size: 12px;
   line-height: 16px;
   color: #adb4b7;
@@ -95,16 +95,16 @@
   margin-bottom: 50px;
 }
 
-.open-article.block .article-body img {
+.open-article-wrapper .open-article.block .article-body img {
   width: 100%;
   height: auto;
 }
 
-.open-article.block .article-body .portrait {
+.open-article-wrapper .open-article.block .article-body .portrait {
   display: flex;
   justify-content: center;
 }
 
-.open-article.block .article-body .portrait img {
+.open-article-wrapper .open-article.block .article-body .portrait img {
   max-width: 600px;
 }

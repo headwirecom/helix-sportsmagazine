@@ -1,27 +1,27 @@
-.text-box.block {
+.text-box-wrapper .text-box.block {
   max-width: 1024px;
   margin: 0 auto;
 }
 
-.text-box.block .text-box-content {
+.text-box-wrapper .text-box.block .text-box-content {
   padding: 40px 80px;
   background-color: rgb(223 223 223);
   color: #000;
   margin: 0 15px 14px;
 }
 
-.text-box.block.dark .text-box-content {
+.text-box-wrapper .text-box.block.dark .text-box-content {
   background-color: #1f2022;
   color: #fff;
 }
 
-.text-box.block .text-box-content * {
+.text-box-wrapper .text-box.block .text-box-content * {
   margin: 0;
 }
 
-.text-box.block .text-box-content h1,
-.text-box.block .text-box-content h2,
-.text-box.block .text-box-content h3 {
+.text-box-wrapper .text-box.block .text-box-content h1,
+.text-box-wrapper .text-box.block .text-box-content h2,
+.text-box-wrapper .text-box.block .text-box-content h3 {
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -32,9 +32,9 @@
   margin-bottom: 25px;
 }
 
-.text-box.block .text-box-content h1::before,
-.text-box.block .text-box-content h2::before,
-.text-box.block .text-box-content h3::before {
+.text-box-wrapper .text-box.block .text-box-content h1::before,
+.text-box-wrapper .text-box.block .text-box-content h2::before,
+.text-box-wrapper .text-box.block .text-box-content h3::before {
   content: "";
   display: block;
   width: 5px;
@@ -43,7 +43,7 @@
   background-color: #ed3e49;
 }
 
-.text-box.block .text-box-content p {
+.text-box-wrapper .text-box.block .text-box-content p {
   text-align: left;
   font-size: 16px;
   line-height: 25.6px;
@@ -51,26 +51,26 @@
 }
 
 @media (max-width: 1280px) {
-  .text-box.block .text-box-content h1,
-  .text-box.block .text-box-content h2,
-  .text-box.block .text-box-content h3 {
+  .text-box-wrapper .text-box.block .text-box-content h1,
+  .text-box-wrapper .text-box.block .text-box-content h2,
+  .text-box-wrapper .text-box.block .text-box-content h3 {
     font-size: 24px;
     padding: 0 15px;
   }
   
-  .text-box.block .text-box-content p {
+  .text-box-wrapper .text-box.block .text-box-content p {
     margin: 0 24px;
   }
 }
 
 @media (max-width: 1024px) {
-  .text-box.block .text-box-content {
+  .text-box-wrapper .text-box.block .text-box-content {
     padding: 20px 15px;
   }
 }
 
 @media (max-width: 768px) {
-  .text-box.block .text-box-content {
+  .text-box-wrapper .text-box.block .text-box-content {
     margin: 0 15px 14px;
   }
 }
