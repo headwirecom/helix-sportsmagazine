@@ -136,22 +136,27 @@ const loadEmbed = (block, link, autoplay) => {
 };
 
 export default function decorate(block) {
+  console.log("\x1b[31m ~ block:", block)
   const autoplay = block.classList.contains('autoplay') || !!block.closest('.autoplay.block');
   const placeholder = block.querySelector('picture');
   const link = block.querySelector('a').href;
+  block.dataset.embedLink = link
   block.textContent = '';
+  console.log("\x1b[31m ~ placeholder:", placeholder)
 
+  const wrapper = document.createElement('div');
+  wrapper.className = 'embed-placeholder';
+  wrapper.style = "left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.25%;"
   if (placeholder) {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'embed-placeholder';
+    
     wrapper.innerHTML = '<div class="embed-placeholder-play"><button title="Play"></button></div>';
     wrapper.prepend(placeholder);
-    wrapper.addEventListener('click', () => {
-      loadEmbed(block, link, autoplay);
-    });
-    block.append(wrapper);
-  } else {
-    let timer;
+  }
+  // wrapper.addEventListener('click', () => {
+  //   loadEmbed(block, link, autoplay);
+  // });
+  block.append(wrapper);
+    // let timer;
 
     const triggerEmbedLoad = (event) => {
       if (event && window.scrollY < 1) {
@@ -162,7 +167,7 @@ export default function decorate(block) {
       clearTimeout(timer);
     };
 
-    timer = setTimeout(triggerEmbedLoad, 3000);
+    // timer = setTimeout(triggerEmbedLoad, 10000);
     window.addEventListener('scroll', triggerEmbedLoad);
-  }
+  
 }

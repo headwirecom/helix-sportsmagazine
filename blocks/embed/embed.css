@@ -68,10 +68,12 @@ main .embed.block:has(div > iframe, iframe) {
     max-width: 100%;
 }
 
+main .embed.block[data-embed-link^="https://view.ceros.com/golf-digest/"],
 main .embed.block:has(iframe[src^="https://view.ceros.com/golf-digest/"]) {
     max-width: var(--layout-width);
 }
 
+main .embed.block[data-embed-link^="https://view.ceros.com/golf-digest/"] .embed-placeholder,
 main .embed.block iframe[src^="https://view.ceros.com/golf-digest/"] {
     padding: 0 15px;
 }
