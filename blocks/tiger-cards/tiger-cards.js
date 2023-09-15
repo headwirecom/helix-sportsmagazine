@@ -23,9 +23,9 @@ const placeholderSeriesCard = ({
       ${
   image
     ? createOptimizedPicture(image, imageAlt || title, false, [
-      { media: '(max-width: 768px)', width: '150' },
-      { media: '(max-width: 1024px)', width: '256' },
-      { width: '356' },
+      { media: '(max-width: 768px)', width: '300' },
+      { media: '(max-width: 1024px)', width: '460' },
+      { width: '712' },
     ]).outerHTML
     : '<picture></picture>'
 }

@@ -4,7 +4,6 @@ import { parseFragment, removeEmptyElements, render } from '../../scripts/script
 export default async function decorate(block) {
   const response = await fetch('/custom-data.json?sheet=gd-plus-offers&sheet=gd-plus-benefits&limit=10');
   const data = await response.json();
-  console.log('\x1b[31m ~ data:', data);
 
   const offerCards = data['gd-plus-offers'].data;
   const benefits = data['gd-plus-benefits'].data;
@@ -15,9 +14,9 @@ export default async function decorate(block) {
       <div class="image-overlay"></div>
       ${
   createOptimizedPicture('/subscribe-background-mockup.jpg', 'hero background green', true, [
-    { media: '(max-width: 768px)', width: '1135' },
-    { media: '(max-width: 1297px)', width: '1280' },
-    { width: '1690' },
+    { media: '(max-width: 768px)', width: '2270' },
+    { media: '(max-width: 1297px)', width: '2560' },
+    { width: '3380' },
   ]).outerHTML
 }
       </div>
@@ -75,9 +74,9 @@ export default async function decorate(block) {
   <div class="gd-plus-benefits-content">
     ${
   createOptimizedPicture('/subscribe-device-mockup.png', 'Golf Digest Plus Promo Image', false, [
-    { media: '(max-width: 768px)', width: '707' },
-    { media: '(max-width: 1297px)', width: '1236' },
-    { width: '714' },
+    { media: '(max-width: 768px)', width: '1414' },
+    { media: '(max-width: 1297px)', width: '2472' },
+    { width: '1428' },
   ]).outerHTML
 }
     <ul class="benefits-list">

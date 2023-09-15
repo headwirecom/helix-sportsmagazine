@@ -380,20 +380,24 @@ async function loadEager(doc) {
 }
 
 /**
- * Adds the favicon.
- * @param {string} href The favicon URL
+ * Adds the favicons.
  */
-export function addFavIcon(href) {
-  const link = document.createElement('link');
-  link.rel = 'icon';
-  link.type = 'image/svg+xml';
-  link.href = href;
-  const existingLink = document.querySelector('head link[rel="icon"]');
-  if (existingLink) {
-    existingLink.parentElement.replaceChild(link, existingLink);
-  } else {
-    document.getElementsByTagName('head')[0].appendChild(link);
-  }
+export function addFavIcons() {
+  const faviconSizes = [16, 32, 96, 160, 192];
+  const appleIconSizes = [57, 60, 72, 76, 114, 120, 144, 152, 180];
+
+  const favicons = `
+    <meta name="msapplication-TileColor" content="#0fadc4">
+    <meta name="msapplication-TileImage" content="/favicons/mstile-144x144.png">
+    ${faviconSizes.map((size) => `<link rel="icon" type="image/png" href="/favicons/favicon-${size}x${size}.png" sizes="${size}x${size}">`).join('')}
+    ${appleIconSizes.map((size) => `<link rel="apple-touch-icon" sizes="${size}x${size}" href="/favicons/apple-touch-icon-${size}x${size}.png">`).join('')}
+  `;
+
+  // Remove placeholder
+  document.head.querySelector('head link[rel="icon"]').remove();
+
+  // Add favicons
+  document.head.insertAdjacentHTML('beforeend', favicons);
 }
 
 export function createTag(tag, attributes, html) {
@@ -429,7 +433,7 @@ async function loadLazy(doc) {
   loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
-  addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
+  addFavIcons(`${window.hlx.codeBasePath}/styles/favicon.svg`);
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
@@ -546,14 +550,31 @@ window.store = new (class {
     * Add entry here for new blocks that require data to be fetched!
     */
     this._blockQueryLimit = {
-      hero: 5,
-      cards: 10,
-      carousel: 20,
-      loop: 30,
-      'series-cards': 100,
-      'tiger-cards': 35,
-      'tiger-vault-hero': 1,
-      'newsletter-subscribe': 25,
+      hero: (block) => {
+        const firstHero = document.querySelector('.hero.block[data-block-name="hero"]');
+        if (firstHero.isEqualNode(block)) {
+          return 4;
+        }
+        return 1;
+      },
+      cards: (block) => {
+        if (block.classList.contains('hero')) {
+          return 2;
+        }
+        if (block.classList.contains('latest')) {
+          return 10;
+        }
+        if (block.classList.contains('columns')) {
+          return 5;
+        }
+        return 4;
+      },
+      carousel: () => 20,
+      loop: () => 30,
+      'series-cards': () => 100,
+      'tiger-cards': () => 35,
+      'tiger-vault-hero': () => 1,
+      'newsletter-subscribe': () => 25,
     };
 
     this.blockNames = Object.keys(this._blockQueryLimit);
@@ -561,17 +582,20 @@ window.store = new (class {
 
     this.initQueries();
 
-    try {
-      this._cache = JSON.parse(window.sessionStorage['golf-store']);
+    this._cache = {};
 
-      // Forces a refresh after a long period (1d) in case window is stored in memory
-      setTimeout(() => {
-        sessionStorage.clear();
-      }, 86400);
-    } catch (e) {
-      // session storage not supported
-      this._cache = {};
-    }
+    // TODO sessionStorage caching breaks on page reload
+    // try {
+    //   this._cache = JSON.parse(window.sessionStorage['golf-store']);
+    //
+    //   // Forces a refresh after a long period (1d) in case window is stored in memory
+    //   setTimeout(() => {
+    //     sessionStorage.clear();
+    //   }, 86400);
+    // } catch (e) {
+    //   // session storage not supported
+    //   this._cache = {};
+    // }
   } // Find all dynamic queries on the page and map them out
 
   // Dynamic queries end with their spreadsheet name e.g. loop-article or latest-gallery
@@ -599,7 +623,9 @@ window.store = new (class {
     this.blockNames.forEach((blockName) => {
       queryNames.forEach((queryName) => {
         const { spreadsheet } = this._queryMap[queryName];
-        this._queryMap[queryName].limit += document.querySelectorAll(`main .${blockName}.${queryName}-${spreadsheet}.block`).length * this._blockQueryLimit[blockName];
+        document.querySelectorAll(`main .${blockName}.${queryName}-${spreadsheet}.block`).forEach((blockEl) => {
+          this._queryMap[queryName].limit += this._blockQueryLimit[blockName](blockEl);
+        });
       });
     });
   }
@@ -650,7 +676,7 @@ If you created a new spreadsheet you might also need to add it to \x1b[37m"this.
     if (!queryDetails.mock && queryDetails.limit < 1) {
       console.warn(`No query limit was found for ${block.dataset.blockName} block! \x1b[1m\x1b[31mTherefore no data will be returned!\x1b[0m
 
-Make sure to set a limit for \x1b[31m"${block.dataset.blockName}"\x1b[0m in \x1b[37m${JSON.stringify(this._blockQueryLimit)}\x1b[0m
+Make sure to set a limit for \x1b[31m"${block.dataset.blockName}"\x1b[0m in \x1b[37m"this._blockQueryLimit"\x1b[0m
       `);
     }
     let url;
@@ -663,14 +689,29 @@ Make sure to set a limit for \x1b[31m"${block.dataset.blockName}"\x1b[0m in \x1b
       url = `/${this._spreadsheets[queryDetails.spreadsheet]}.json?sheet=${query}`;
     }
 
+    const dispatchData = (dispatchId) => {
+      // using queryselect in case this is called during query stack cleanup
+      const blockToDispatchTo = document.getElementById(dispatchId);
+      const previousOffset = this._cache[url].blockRequestOffset || 0;
+      this._cache[url].blockRequestOffset = (
+        previousOffset
+        + this._blockQueryLimit[blockToDispatchTo.dataset.blockName](blockToDispatchTo)
+      );
+
+      const slicedData = this._cache[url].data
+        .slice(previousOffset, this._cache[url].blockRequestOffset);
+
+      document.dispatchEvent(new CustomEvent(`query:${dispatchId}`, { detail: { ...this._cache[url], data: slicedData } }));
+    };
+
     // Use cached resource & that it has data
-    if (this._cache[url] && this._cache[url].limit) {
+    if (this._cache[url]) {
       // Cache is already populated
       if (this._cache[url].data.length) {
         // Only trigger if there is enough data
         if (queryDetails.limit <= this._cache[url].data.length) {
           // "Return" data for given id
-          document.dispatchEvent(new CustomEvent(`query:${id}`, { detail: this._cache[url] }));
+          dispatchData(id, block);
           return;
         }
       } else {
@@ -685,7 +726,7 @@ Make sure to set a limit for \x1b[31m"${block.dataset.blockName}"\x1b[0m in \x1b
     }
 
     // Start setting cache to avoid multiple requests or invalid cache if not enough items
-    this._cache[url] = { data: [] };
+    this._cache[url] = { data: [], limit: queryDetails.limit };
 
     // TODO store the delta between the number of cached items and the number of items requested
     // and only request that with ?offset=
@@ -702,20 +743,21 @@ Make sure to set a limit for \x1b[31m"${block.dataset.blockName}"\x1b[0m in \x1b
         // Set cache with data
         this._cache[url] = res;
 
-        // Store cached data in session storage
-        try {
-          window.sessionStorage['golf-store'] = JSON.stringify(this._cache);
-        } catch (e) {
-          // Session storage not supported
-        }
+        // TODO sessionStorage caching breaks on page reload
+        // // Store cached data in session storage
+        // try {
+        //   window.sessionStorage['golf-store'] = JSON.stringify(this._cache);
+        // } catch (e) {
+        //   // Session storage not supported
+        // }
 
         // "Return" data for given id
-        document.dispatchEvent(new CustomEvent(`query:${id}`, { detail: this._cache[url] }));
+        dispatchData(id);
 
         // Unstack and "return" data
         for (const stackId in this._queryStack) {
           if (url === this._queryStack[stackId]) {
-            document.dispatchEvent(new CustomEvent(`query:${stackId}`, { detail: this._cache[url] }));
+            dispatchData(stackId);
             // Pop stack id
             delete this._queryStack[stackId];
           }

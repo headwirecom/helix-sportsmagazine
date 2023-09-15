@@ -1,26 +1,26 @@
-.gallery.block {
+.gallery-wrapper .gallery.block {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
 }
 
-.gallery.block .container {
+.gallery-wrapper .gallery.block .container {
   max-width: var(--layout-width);
   margin: 0 auto;
   padding: 20px;
 }
 
-.gallery.block .container-article {
+.gallery-wrapper .gallery.block .container-article {
   display: flex;
   justify-content: space-between;
   margin-bottom: 30px;
 }
 
-.gallery.block .container-article picture {
+.gallery-wrapper .gallery.block .container-article picture {
   display: flex;
   background-color: #f2f2f2;
 }
 
-.gallery.block .container-article img:not(.gd-plus-icon) {
+.gallery-wrapper .gallery.block .container-article img:not(.gd-plus-icon) {
   width: 100%;
   height: auto;
   object-fit: contain;
@@ -28,33 +28,33 @@
   padding: 15px;
 }
 
-.gallery.block .container-article img.portrait {
+.gallery-wrapper .gallery.block .container-article img.portrait {
   width: 50%;
   padding: 0;
 }
 
 @media (max-width: 768px) {
-  .gallery.block .container-article {
+  .gallery-wrapper .gallery.block .container-article {
     flex-direction: column;
   }
 }
 
-.gallery.block .article-content,
-.gallery.block .container-aside {
+.gallery-wrapper .gallery.block .article-content,
+.gallery-wrapper .gallery.block .container-aside {
   padding: 0 10px;
 }
 
 @media (min-width: 1024px) {
-  .gallery.block .article-content {
+  .gallery-wrapper .gallery.block .article-content {
     width: 72%;
   }
 
-  .gallery.block .container-aside {
+  .gallery-wrapper .gallery.block .container-aside {
     width: 28%;
   }
 }
 
-.gallery.block .rubric {
+.gallery-wrapper .gallery.block .rubric {
   color: #adb4b7;
   display: flex;
   align-items: center;
@@ -68,24 +68,24 @@
 }
 
 @media (min-width: 769px) {
-  .gallery.block .rubric {
+  .gallery-wrapper .gallery.block .rubric {
     font-size: 13px;
     line-height: 12.44px;
   }
 }
 
-.gallery.block .headline h1 {
+.gallery-wrapper .gallery.block .headline h1 {
   font-size: 40px;
   margin: 0.67em 0 20px;
 }
 
 @media (max-width: 1280px) {
-  .gallery.block .headline h1 {
+  .gallery-wrapper .gallery.block .headline h1 {
     margin-block-start: 20px
   }
 }
 
-.gallery.block .article-body > div p {
+.gallery-wrapper .gallery.block .article-body > div p {
   margin: 0 auto 30px;
   font-size: 14px;
   font-style: normal;
@@ -93,24 +93,24 @@
   line-height: 19px;
 }
 
-.gallery.block .headline h1 + p {
+.gallery-wrapper .gallery.block .headline h1 + p {
   font-size: 18px;
   line-height: 30px;
   margin: 20px 0;
 }
 
-.gallery.block .headline h1 + p,
-.gallery.block .headline h1 + p strong {
+.gallery-wrapper .gallery.block .headline h1 + p,
+.gallery-wrapper .gallery.block .headline h1 + p strong {
   font-weight: 500;
 }
 
-.gallery.block .byline {
+.gallery-wrapper .gallery.block .byline {
   display: flex;
   justify-content: flex-start;
   align-items: baseline;
 }
 
-.gallery.block .attribution {
+.gallery-wrapper .gallery.block .attribution {
   font-style: normal;
   font-weight: 700;
   letter-spacing: 0;
@@ -120,41 +120,41 @@
 }
 
 @media (min-width: 769px) {
-  .gallery.block .attribution {
+  .gallery-wrapper .gallery.block .attribution {
     font-size: 16px;
     line-height: 22px;
   }
 }
 
 @media (min-width: 1025px) {
-  .gallery.block .attribution {
+  .gallery-wrapper .gallery.block .attribution {
     margin-bottom: 10px;
   }
 }
 
-.gallery.block .byline.no-author .attribution {
+.gallery-wrapper .gallery.block .byline.no-author .attribution {
   display: none;
 }
 
-.gallery.block .attribution a {
+.gallery-wrapper .gallery.block .attribution a {
   color: #000;
   text-decoration: none;
 }
 
-.gallery.block .article-body > div a {
+.gallery-wrapper .gallery.block .article-body > div a {
   color: black;
   text-decoration: none;
 }
 
-.gallery.block .article-body > div a:hover {
+.gallery-wrapper .gallery.block .article-body > div a:hover {
   color: var(--link-hover-color);
 }
 
-.gallery.block .article-body .social-share {
+.gallery-wrapper .gallery.block .article-body .social-share {
   margin-top: 72px;
 }
 
-.gallery.block .publication {
+.gallery-wrapper .gallery.block .publication {
   display: flex;
   align-items: baseline;
   color: #adb4b7;
@@ -162,7 +162,7 @@
   font-weight: 700;
 }
 
-.gallery.block .publication::before {
+.gallery-wrapper .gallery.block .publication::before {
   content: "";
   display: block;
   border-left: 2px solid #e6e6e6;
@@ -170,46 +170,46 @@
   margin: 0 5px;
 }
 
-.gallery.block .byline.no-author .publication::before {
+.gallery-wrapper .gallery.block .byline.no-author .publication::before {
   display: none;
 }
 
-.gallery.block .byline .sharing {
+.gallery-wrapper .gallery.block .byline .sharing {
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
 }
 
-.gallery.block .byline .sharing .social-share .label {
+.gallery-wrapper .gallery.block .byline .sharing .social-share .label {
   display: none;
 }
 
 @media (max-width: 768px) {
-  .gallery.block .byline .sharing {
+  .gallery-wrapper .gallery.block .byline .sharing {
     display: none;
   }
 }
 
-.gallery.block .social-share .columns {
+.gallery-wrapper .gallery.block .social-share .columns {
   gap: 8px;
 }
 
-.gallery.block .carousel {
+.gallery-wrapper .gallery.block .carousel {
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
 }
 
-.gallery.block .carousel.is-transitioning {
+.gallery-wrapper .gallery.block .carousel.is-transitioning {
   visibility: hidden;
 }
 
-.gallery.block .carousel > div {
+.gallery-wrapper .gallery.block .carousel > div {
   width: 100%;
 }
 
-.gallery.block .carousel > div h3 {
+.gallery-wrapper .gallery.block .carousel > div h3 {
   margin: 0;
   padding-left: 20px;
   font-size: 24px;
@@ -217,12 +217,12 @@
   line-height: 23px;
 }
 
-.gallery.block .carousel > div > p:first-of-type {
+.gallery-wrapper .gallery.block .carousel > div > p:first-of-type {
   position: relative;
   margin: 0;
 }
 
-.gallery.block .carousel > div > p:not(:first-of-type) {
+.gallery-wrapper .gallery.block .carousel > div > p:not(:first-of-type) {
   padding-top: 20px;
   padding-left: 20px;
   max-width: 780px;
@@ -230,12 +230,12 @@
   margin-top: 0;
 }
 
-.gallery.block .carousel > div > p:last-of-type {
+.gallery-wrapper .gallery.block .carousel > div > p:last-of-type {
   margin-bottom: 0;
 }
 
-.gallery.block .carousel .next,
-.gallery.block .carousel .prev {
+.gallery-wrapper .gallery.block .carousel .next,
+.gallery-wrapper .gallery.block .carousel .prev {
   position: absolute;
   top: calc(50% - 25px);
   color: #fff;
@@ -250,26 +250,26 @@
   border-radius: 50%;
 }
 
-.gallery.block .carousel .next {
+.gallery-wrapper .gallery.block .carousel .next {
   right: 27px;
 }
 
-.gallery.block .carousel .next span {
+.gallery-wrapper .gallery.block .carousel .next span {
   display: none;
 }
 
-.gallery.block .carousel .prev {
+.gallery-wrapper .gallery.block .carousel .prev {
   left: 27px;
 }
 
-.gallery.block .carousel .next.has-label {
+.gallery-wrapper .gallery.block .carousel .next.has-label {
   border-radius: 3rem;
   height: 50px;
   width: auto;
   padding-left: 28px;
 }
 
-.gallery.block .carousel .next.has-label span {
+.gallery-wrapper .gallery.block .carousel .next.has-label span {
   display: inline ;
   text-transform: uppercase;
   font-size: 12px;
@@ -280,20 +280,20 @@
   padding-right: 10px;
 }
 
-.gallery.block .carousel .next svg,
-.gallery.block .carousel .prev svg {
+.gallery-wrapper .gallery.block .carousel .next svg,
+.gallery-wrapper .gallery.block .carousel .prev svg {
   width: 27px;
   height: 27px;
 }
 
-.gallery.block .carousel .count {
+.gallery-wrapper .gallery.block .carousel .count {
   font-weight: 500;
   text-align: right;
   margin-right: 8px;
   margin-top: 8px;
 }
 
-.gallery.block .carousel div.photo-credit {
+.gallery-wrapper .gallery.block .carousel div.photo-credit {
   position: absolute;
   bottom: 52px;
   left: 20px;
@@ -307,7 +307,7 @@
   display: inline-block;
 }
 
-.gallery.block .carousel span.photo-credit {
+.gallery-wrapper .gallery.block .carousel span.photo-credit {
   color: #adb4b7;
   font-size: 14px;
   padding-left: 20px;

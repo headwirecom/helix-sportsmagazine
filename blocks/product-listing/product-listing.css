@@ -1,60 +1,60 @@
-.product-listing.block {
+.product-listing-wrapper .product-listing.block {
     background-color: #f6f6f6;
 }
 
-.product-listing.block .container {
+.product-listing-wrapper .product-listing.block .container {
     max-width: var(--layout-width);
     margin: 0 auto;
     padding: 30px 0;
 }
 
-.product-listing.block .article-content {
+.product-listing-wrapper .product-listing.block .article-content {
     display: flex;
     margin-bottom: 80px;
     background-color: white;
     flex-wrap: wrap;
 }
 
-.product-listing.block .article-content .content {
+.product-listing-wrapper .product-listing.block .article-content .content {
     margin-top: 40px;
     margin-left: 5%;
     width: 45%;
 }
 
 @media (max-width: 1649px) {
-    .product-listing.block .article-content .content {
+    .product-listing-wrapper .product-listing.block .article-content .content {
         margin-left: 7.5%;
         width: 42.5%;
     }
 }
 
 @media (max-width: 768px) {
-    .product-listing.block .article-content .content {
+    .product-listing-wrapper .product-listing.block .article-content .content {
         padding: 32px 18px 0;
     }
 }
 
 @media (max-width: 1280px) {
-    .product-listing.block .article-content .content {
+    .product-listing-wrapper .product-listing.block .article-content .content {
         width: 100%;
         margin: 0;
     }
 }
 
-.product-listing.block .article-content picture {
+.product-listing-wrapper .product-listing.block .article-content picture {
     width: 50%;
     display: flex;
 }
 
 @media (max-width: 1280px) {
-    .product-listing.block .article-content picture {
+    .product-listing-wrapper .product-listing.block .article-content picture {
         width: 100%;
         margin-bottom: 30px;
         border-bottom: 1px solid #e6e6e6;
     }
 }
 
-.product-listing.block .article-content h1 {
+.product-listing-wrapper .product-listing.block .article-content h1 {
     font-weight: 400;
     margin-bottom: 20px;
     margin-top: 0;
@@ -64,7 +64,7 @@
     font-size: 2.25em;
 }
 
-.product-listing.block .article-content .brand {
+.product-listing-wrapper .product-listing.block .article-content .brand {
     font-weight: 600;
     margin-bottom: 5px;
     margin-top: 0;
@@ -74,12 +74,12 @@
     font-size: 2.25em;
 }
 
-.product-listing.block .article-content .awards {
+.product-listing-wrapper .product-listing.block .article-content .awards {
     display: flex;
     margin-bottom: 25px;
 }
 
-.product-listing.block .article-content .description {
+.product-listing-wrapper .product-listing.block .article-content .description {
     padding-bottom: 18px;
     margin-bottom: 30px;
     border-bottom: 1px solid #e6e6e6;
@@ -87,31 +87,31 @@
 }
 
 @media (max-width: 1280px) {
-    .product-listing.block .article-content .description {
+    .product-listing-wrapper .product-listing.block .article-content .description {
         border-bottom: 0;
         padding-bottom: 0;
     }
 }
 
-.product-listing.block .article-content .description p:last-of-type {
+.product-listing-wrapper .product-listing.block .article-content .description p:last-of-type {
     margin: 0;
 }
 
-.product-listing.block .article-content .details {
+.product-listing-wrapper .product-listing.block .article-content .details {
     margin-bottom: 20px;
 }
 
-.product-listing.block .article-content .details .separator,
-.product-listing.block .article-content .details .separator + span {
+.product-listing-wrapper .product-listing.block .article-content .details .separator,
+.product-listing-wrapper .product-listing.block .article-content .details .separator + span {
     color: #adb4b7;
 }
 
-.product-listing.block .article-content .link {
+.product-listing-wrapper .product-listing.block .article-content .link {
     display: flex;
     margin-bottom: 20px;
 }
 
-.product-listing.block .article-content .link a {
+.product-listing-wrapper .product-listing.block .article-content .link a {
     background-color: #ed3e49;
     color: #fff;
     border: 0.5px solid #ed3e49;
@@ -129,19 +129,19 @@
     transition-duration: .25s;
 }
 
-.product-listing.block .article-content .link a:hover {
+.product-listing-wrapper .product-listing.block .article-content .link a:hover {
     background-color: #151517;
     color: #fff;
     border-color: #151517;
 }
 
-.product-listing.block .article-content .disclaimer {
+.product-listing-wrapper .product-listing.block .article-content .disclaimer {
     font-size: 10px;
     color: #7d8fa0;
     margin-bottom: 35px;
 }
 
-.product-listing.block .article-content picture img {
+.product-listing-wrapper .product-listing.block .article-content picture img {
     width: 100%;
     height: auto;
 }

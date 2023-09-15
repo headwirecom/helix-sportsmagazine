@@ -8,9 +8,6 @@ import {
   getBlockId,
 } from '../../scripts/scripts.js';
 
-let cardData;
-let cardDataIndex = 0;
-
 const placeholderHtml = `
 <div class="card-block-wrapper" style="visibility: hidden;">
   <div class="main-card" style="aspect-ratio: 1/1; width: 50%; flex: 0;"></div>
@@ -32,31 +29,14 @@ export default async function decorate(block) {
 
   const reverse = !(indexInPage <= 0 || indexInPage % 2 === 0);
 
-  let cardOffset = 4;
-  if (block.classList.contains('hero')) {
-    cardOffset = 2;
-  } else if (block.classList.contains('latest')) {
-    cardOffset = 10;
-  } else if (block.classList.contains('columns')) {
-    cardOffset = 5;
-  }
-
-  const currentBlockIndex = cardDataIndex;
-  cardDataIndex += cardOffset;
-
   // using placeholder html
-  if (!cardData) {
-    block.innerHTML = placeholderHtml;
-  }
+  block.innerHTML = placeholderHtml;
 
   // Rendering content upon fetch complete
   document.addEventListener(`query:${id}`, (event) => {
-    cardData = event.detail.data;
+    const cardData = event.detail.data;
 
-    // TODO Add support for multiple queries
-    const cardList = cardData.slice(currentBlockIndex, currentBlockIndex + cardOffset);
-
-    const mainCard = cardList[0];
+    const mainCard = cardData[0];
 
     const generateMainCard = (card = mainCard) => {
       if (isLatestCardBlock) {
@@ -65,7 +45,12 @@ export default async function decorate(block) {
       return `
       <a class="main-card" href="${card.href || card.path}">
         <div class="image-bg">
-          ${createOptimizedPicture(card.image, card.imageAlt || card.title, false, [{ width: '700' }]).outerHTML}
+          ${createOptimizedPicture(card.image, card.imageAlt || card.title, false, [
+    { media: '(max-width: 768px)', width: '1440' },
+    { media: '(max-width: 1024px)', width: '1960' },
+    { media: '(max-width: 1280px)', width: '2460' },
+    { width: '1400' },
+  ]).outerHTML}
         </div>
         <div class="main-text-wrapper">
           <div class="section">${card.rubric}</div>
@@ -82,12 +67,15 @@ export default async function decorate(block) {
       `;
     };
 
-    const generateSecondaryCards = (cardArray = cardList.splice(1)) => cardArray
+    const generateSecondaryCards = (cardArray = cardData.splice(1)) => cardArray
       .map(
         (card) => `
         <a class="small-card" href="${card.href || card.path}">
           <div class="image-wrapper">
-            ${createOptimizedPicture(card.image, card.imageAlt || card.title, false, [{ width: '350' }]).outerHTML}
+            ${createOptimizedPicture(card.image, card.imageAlt || card.title, false, [
+    { media: '(max-width: 768px)', width: '430' },
+    { width: '650' },
+  ]).outerHTML}
           </div>
           <div class="small-text-wrapper">
             <div class="section">${card.rubric}</div>
@@ -109,13 +97,13 @@ export default async function decorate(block) {
     <div class="card-block-wrapper ${reverse ? 'reverse' : ''}">
       ${
   block.classList.contains('hero')
-    ? cardList.map((card) => generateMainCard(card)).join('')
+    ? cardData.map((card) => generateMainCard(card)).join('')
     : `
         ${generateMainCard()}
         ${!gdPlusCards ? '' : '<div class="gd-cards-wrapper">'}
         <div class="secondary-cards">
           ${!gdPlusCards ? '' : '<h2 class="gd-plus-title">GD+ Latest</h2>'}
-          ${generateSecondaryCards(isLatestCardBlock ? cardList : cardList.splice(1))}
+          ${generateSecondaryCards(isLatestCardBlock ? cardData : cardData.splice(1))}
         </div>
         ${!gdPlusCards ? '' : '</div>'}
     `

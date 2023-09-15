@@ -30,9 +30,9 @@ const placeholderLoopCardHtml = ({
       <a class="loop-card" href="${path}"> 
         <div class="image-wrapper">
           ${image ? createOptimizedPicture(image, imageAlt, index <= numberOfEagerCards, [
-    { media: '(max-width: 768px)', width: !isEven ? '710' : '591' },
-    { media: '(max-width: 1024px)', width: !isEven ? '474' : '254' },
-    { width: !isEven ? '345' : '225' },
+    { media: '(max-width: 768px)', width: !isEven ? '1180' : '1420' },
+    { media: '(max-width: 1024px)', width: !isEven ? '950' : '700' },
+    { width: !isEven ? '690' : '450' },
   ]).outerHTML : '<picture></picture>'}
         </div>
         <div class="text-wrapper">
@@ -56,8 +56,8 @@ const placeholderTrendingItemHtml = ({
     <a class="trending-link" href="${path}">
       <div class="trending-image-wrapper">
         ${image ? createOptimizedPicture(image, imageAlt, true, [
-    { media: '(max-width: 768px)', width: '180' },
-    { width: '220' },
+    { media: '(max-width: 768px)', width: '360' },
+    { width: '440' },
   ]).outerHTML : '<picture></picture>'}
       </div>
       <div class="trending-text-wrapper">

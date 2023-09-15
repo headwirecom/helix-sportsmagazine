@@ -443,7 +443,7 @@ function getHeaderTemplate() {
               <a data-logged-in="false" class="profile-info-profile-photo" id="nav-photo"
                  href="/my-account">
               </a>
-              <a class="login-dialog-open-button profile-info-button-login" href="#" data-type="gigya-login">Log In</class=>
+              <a class="login-dialog-open-button profile-info-button-login" href="#" data-type="gigya-login">Log In</a>
           </div>
       </div>
   </div>

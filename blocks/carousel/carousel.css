@@ -1,4 +1,4 @@
-.carousel.block {
+.carousel-wrapper .carousel.block {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -8,13 +8,13 @@
   --carousel-card-gap: 28px;
 }
 
-.carousel.block.large {
+.carousel-wrapper .carousel.block.large {
   --carousel-card-gap: 12px;
 
   position: relative;
 }
 
-.carousel.block.wedges {
+.carousel-wrapper .carousel.block.wedges {
   width: 100%;
   margin: 100px 0;
   background-color: #0b3b40;
@@ -23,7 +23,7 @@
   --carousel-card-gap: 40px;
 }
 
-.carousel.block picture {
+.carousel-wrapper .carousel.block picture {
   width: 100%;
   height: 100%;
   position: absolute;
@@ -32,19 +32,19 @@
 }
 
 @media (max-width: 1280px) {
-  .carousel.block.wedges {
+  .carousel-wrapper .carousel.block.wedges {
     --carousel-card-gap: 11px;
   }
 }
 
-.carousel-title-wrapper {
+.carousel-wrapper .carousel.block .carousel-title-wrapper {
   display: flex;
   width: 100%;
   max-width: 1440px;
   padding: 15px;
 }
 
-.carousel-title-wrapper .carousel-title {
+.carousel-wrapper .carousel.block .carousel-title-wrapper .carousel-title {
   margin: 0;
   font-family: var(--font-tungsten);
   text-transform: uppercase;
@@ -55,7 +55,7 @@
   align-items: center;
 }
 
-.carousel-title-wrapper .carousel-title::before {
+.carousel-wrapper .carousel.block .carousel-title-wrapper .carousel-title::before {
   content: "";
   display: block;
   width: 5px;
@@ -64,32 +64,32 @@
   background-color: #ed3e49;
 }
 
-.carousel-title-wrapper .carousel-title.courses::before {
+.carousel-wrapper .carousel.block .carousel-title-wrapper .carousel-title.courses::before {
   background-color: #105259;
 }
 
-.carousel-title-wrapper .carousel-title.loop::before {
+.carousel-wrapper .carousel.block .carousel-title-wrapper .carousel-title.loop::before {
   background-color: #e8b94d;
 }
 
-.carousel-title-wrapper:has(.carousel-title.wedges) {
+.carousel-wrapper .carousel.block .carousel-title-wrapper:has(.carousel-title.wedges) {
   margin-top: 45px;
   margin-bottom: 34px;
   justify-content: center;
 }
 
-.carousel-title-wrapper .carousel-title.wedges {
+.carousel-wrapper .carousel.block .carousel-title-wrapper .carousel-title.wedges {
   font-size: 67px;
   font-weight: 600;
   color: white;
   margin-bottom: 15px;
 }
 
-.carousel-title-wrapper .carousel-title.wedges::before {
+.carousel-wrapper .carousel.block .carousel-title-wrapper .carousel-title.wedges::before {
   display: none;
 }
 
-.carousel.block .carousel-main-wrapper {
+.carousel-wrapper .carousel.block .carousel-main-wrapper {
   padding: 0 15px;
   margin-bottom: 40px;
   height: 395px;
@@ -100,42 +100,42 @@
 }
 
 @media (max-width: 1024px) {
-  .carousel.block.wedges {
+  .carousel-wrapper .carousel.block.wedges {
     margin: 100px 0 40px;
   }
 
-  .carousel.block .carousel-main-wrapper {
+  .carousel-wrapper .carousel.block .carousel-main-wrapper {
     height: auto;
   }
 }
 
-.carousel.block.wedges .carousel-main-wrapper {
+.carousel-wrapper .carousel.block.wedges .carousel-main-wrapper {
   max-width: 1630px;
   padding: 0;
   margin-bottom: 55px;
   height: auto;
 }
 
-.carousel.block .carousel-main-wrapper .carousel-inner-wrapper {
+.carousel-wrapper .carousel.block .carousel-main-wrapper .carousel-inner-wrapper {
   height: 100%;
   width: 100%;
 }
 
-.carousel.block.large .carousel-main-wrapper .carousel-inner-wrapper {
+.carousel-wrapper .carousel.block.large .carousel-main-wrapper .carousel-inner-wrapper {
   height: 100%;
   width: 100%;
 }
 
-.carousel.block.wedges .carousel-main-wrapper .carousel-inner-wrapper {
+.carousel-wrapper .carousel.block.wedges .carousel-main-wrapper .carousel-inner-wrapper {
   overflow: hidden;
 }
 
-.carousel.block.wedges .carousel-main-wrapper.mobile-wedges {
+.carousel-wrapper .carousel.block.wedges .carousel-main-wrapper.mobile-wedges {
   overflow: visible;
   width: 100%;
 }
 
-.carousel.block .controls {
+.carousel-wrapper .carousel.block .controls {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -144,17 +144,17 @@
   justify-content: space-between;
 }
 
-.carousel.block.wedges .controls {
+.carousel-wrapper .carousel.block.wedges .controls {
   max-width: 1630px;
 }
 
 @media (max-width: 779px) {
-  .carousel.block .controls {
+  .carousel-wrapper .carousel.block .controls {
     display: none;
   }
 }
 
-.carousel.block .controls button {
+.carousel-wrapper .carousel.block .controls button {
   border: none;
   background-color: #151517;
   background-image: url("/icons/carousel-next-arrow.svg");
@@ -170,37 +170,37 @@
   top: 96px;
 }
 
-.carousel.block.wedges .controls button {
+.carousel-wrapper .carousel.block.wedges .controls button {
   top: 170px;
 }
 
-.carousel.block.large .controls button {
+.carousel-wrapper .carousel.block.large .controls button {
   top: calc(50% - 40px);
 }
 
-.carousel.block .controls button.hidden {
+.carousel-wrapper .carousel.block .controls button.hidden {
   visibility: hidden;
 }
 
-.carousel.block .controls button.right-button {
+.carousel-wrapper .carousel.block .controls button.right-button {
   left: auto;
   right: 26px;
 }
 
-.carousel.block.large .controls button.right-button {
+.carousel-wrapper .carousel.block.large .controls button.right-button {
   right: 16px;
 }
 
-.carousel.block.wedges .controls button.right-button {
+.carousel-wrapper .carousel.block.wedges .controls button.right-button {
   right: -10px;
 }
 
 
-.carousel.block .controls button.left-button {
+.carousel-wrapper .carousel.block .controls button.left-button {
   transform: rotate(180deg);
 }
 
-.carousel.block .carousel-main-wrapper .carousel-frame {
+.carousel-wrapper .carousel.block .carousel-main-wrapper .carousel-frame {
   display: flex;
   gap: var(--carousel-card-gap);
   height: 100%;
@@ -208,18 +208,18 @@
   transition: all 0.25s ease 0s;
 }
 
-.carousel.block .carousel-main-wrapper.grabbed .carousel-frame {
+.carousel-wrapper .carousel.block .carousel-main-wrapper.grabbed .carousel-frame {
   transition: none;
 }
 
-.carousel.block.wedges .carousel-main-wrapper.mobile-wedges .carousel-frame {
+.carousel-wrapper .carousel.block.wedges .carousel-main-wrapper.mobile-wedges .carousel-frame {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   flex-wrap: wrap;
   width: 100%;
 }
 
-.carousel.block .carousel-main-wrapper .carousel-frame .carousel-item {
+.carousel-wrapper .carousel.block .carousel-main-wrapper .carousel-frame .carousel-item {
   width: calc(25% - var(--carousel-card-gap) + 4px);
   display: flex;
   flex-direction: column;
@@ -229,15 +229,15 @@
   flex-shrink: 0;
 }
 
-.dark .carousel.block 
-  .carousel-main-wrapper 
-  .carousel-frame 
+.dark .carousel-wrapper .carousel.block
+  .carousel-main-wrapper
+  .carousel-frame
   .carousel-item {
  background-color: #1c1c1c;
  border: none;
 }
 
-.carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item {
+.carousel-wrapper .carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item {
   background: none;
   border: none;
   width: calc(16.66% - var(--carousel-card-gap) + 6px);
@@ -245,61 +245,61 @@
   height: auto;
 }
 
-.carousel.block.large .carousel-main-wrapper {
+.carousel-wrapper .carousel.block.large .carousel-main-wrapper {
   height: auto;
 }
 
-.carousel.block.large .carousel-main-wrapper .carousel-frame .carousel-item {
+.carousel-wrapper .carousel.block.large .carousel-main-wrapper .carousel-frame .carousel-item {
   width: calc(50% - var(--carousel-card-gap) + 7px);
   aspect-ratio: 1/1;
   height: auto;
   position: relative;
 }
 
-.carousel.block.wedges .carousel-main-wrapper.mobile-wedges .carousel-frame .carousel-item {
+.carousel-wrapper .carousel.block.wedges .carousel-main-wrapper.mobile-wedges .carousel-frame .carousel-item {
   width: 100%;
 }
 
 @media (max-width: 1280px) {
-  .carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item {
+  .carousel-wrapper .carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item {
     width: calc(33.33% - var(--carousel-card-gap) + 6px);
   }
 
-  .carousel.block.wedges .carousel-main-wrapper.mobile-wedges .carousel-frame {
+  .carousel-wrapper .carousel.block.wedges .carousel-main-wrapper.mobile-wedges .carousel-frame {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .carousel.block.wedges .carousel-main-wrapper.mobile-wedges .carousel-frame .carousel-item {
+  .carousel-wrapper .carousel.block.wedges .carousel-main-wrapper.mobile-wedges .carousel-frame .carousel-item {
     width: 100%;
   }
 }
 
 @media (max-width: 779px) {
-  .carousel.block.wedges .carousel-main-wrapper {
+  .carousel-wrapper .carousel.block.wedges .carousel-main-wrapper {
     padding: 0;
   }
 
-  .carousel.block.wedges .carousel-main-wrapper.mobile-wedges .carousel-frame {
+  .carousel-wrapper .carousel.block.wedges .carousel-main-wrapper.mobile-wedges .carousel-frame {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .carousel.block.wedges .carousel-main-wrapper.mobile-wedges .carousel-frame .carousel-item {
+  .carousel-wrapper .carousel.block.wedges .carousel-main-wrapper.mobile-wedges .carousel-frame .carousel-item {
     width: 100%;
   }
 }
 
-.carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item div.carousel-image-wrapper {
+.carousel-wrapper .carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item div.carousel-image-wrapper {
   aspect-ratio: 1/1;
   margin: 0 0 21px;
 }
 
-.carousel.block.large .carousel-main-wrapper .carousel-frame .carousel-item div.carousel-image-wrapper {
+.carousel-wrapper .carousel.block.large .carousel-main-wrapper .carousel-frame .carousel-item div.carousel-image-wrapper {
   width: 100%;
   height: 100%;
   position: absolute;
 }
 
-.carousel.block.wedges
+.carousel-wrapper .carousel.block.wedges
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -309,7 +309,7 @@
   object-position: 0% 0%;
 }
 
-.carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item .carousel-image-wrapper picture::before {
+.carousel-wrapper .carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item .carousel-image-wrapper picture::before {
   content: "";
   display: block;
   position: absolute;
@@ -317,7 +317,7 @@
   width: 100%;
 }
 
-.carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item .carousel-image-wrapper picture::after {
+.carousel-wrapper .carousel.block.wedges .carousel-main-wrapper .carousel-frame .carousel-item .carousel-image-wrapper picture::after {
   top: 35%;
   pointer-events: all;
   content: "";
@@ -329,29 +329,29 @@
 }
 
 @media (max-width: 1024px) {
-  .carousel.block .carousel-main-wrapper .carousel-frame {
+  .carousel-wrapper .carousel.block .carousel-main-wrapper .carousel-frame {
     height: auto;
   }
 
-  .carousel.block .carousel-main-wrapper .carousel-frame .carousel-item {
+  .carousel-wrapper .carousel.block .carousel-main-wrapper .carousel-frame .carousel-item {
     width: calc(50% - 24px);
   }
 }
 
-.carousel.block .carousel-main-wrapper .carousel-frame .carousel-item .carousel-item-wrapper {
+.carousel-wrapper .carousel.block .carousel-main-wrapper .carousel-frame .carousel-item .carousel-item-wrapper {
   width: 100%;
   height: 100%;
 }
 
 @media (max-width: 1024px) {
-  .carousel.block .carousel-main-wrapper .carousel-frame .carousel-item .carousel-item-wrapper {
+  .carousel-wrapper .carousel.block .carousel-main-wrapper .carousel-frame .carousel-item .carousel-item-wrapper {
     width: 100%;
     height: 100%;
     aspect-ratio: 1/1;
   }
 }
 
-.carousel.block .carousel-main-wrapper .carousel-frame .carousel-item .carousel-item-wrapper .carousel-image-wrapper {
+.carousel-wrapper .carousel.block .carousel-main-wrapper .carousel-frame .carousel-item .carousel-item-wrapper .carousel-image-wrapper {
   margin: -0.5px;
   width: calc(100% - 1px);
   height: auto;
@@ -360,7 +360,7 @@
   flex-shrink: 0;
 }
 
-.carousel.block
+.carousel-wrapper .carousel.block
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -372,7 +372,7 @@
   width: 100%;
 }
 
-.carousel.block
+.carousel-wrapper .carousel.block
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -392,7 +392,7 @@
   z-index: 1;
 }
 
-.carousel.block
+.carousel-wrapper .carousel.block
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item:hover
@@ -402,14 +402,14 @@
   transform: scale(1.2);
 }
 
-.carousel.block .carousel-main-wrapper .carousel-frame .carousel-item .carousel-item-wrapper .carousel-text-content {
+.carousel-wrapper .carousel.block .carousel-main-wrapper .carousel-frame .carousel-item .carousel-item-wrapper .carousel-text-content {
   display: flex;
   flex-direction: column;
   padding: 20px;
   gap: 10px;
 }
 
-.carousel.large .carousel-main-wrapper .carousel-frame .carousel-item .carousel-item-wrapper .carousel-text-content {
+.carousel-wrapper .carousel.block.large .carousel-main-wrapper .carousel-frame .carousel-item .carousel-item-wrapper .carousel-text-content {
   background: linear-gradient(180deg, transparent 50%, #000);
   display: flex;
   position: relative;
@@ -419,9 +419,10 @@
   justify-content: flex-end;
   padding: 40px;
   gap: 10px;
+  z-index: 1;
 }
 
-.carousel.block.wedges
+.carousel-wrapper .carousel.block.wedges
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -431,7 +432,7 @@
   padding: 0;
 }
 
-.carousel.block
+.carousel-wrapper .carousel.block
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -447,7 +448,7 @@
   font-family: var(--font-gotham);
 }
 
-.carousel.block.wedges
+.carousel-wrapper .carousel.block.wedges
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -458,11 +459,11 @@
 }
 
 @media (max-width: 779px) {
-  .carousel.block.large .carousel-main-wrapper .carousel-frame .carousel-item {
+  .carousel-wrapper .carousel.block.large .carousel-main-wrapper .carousel-frame .carousel-item {
     width: 90%;
   }
 
-  .carousel.block.large
+  .carousel-wrapper .carousel.block.large
     .carousel-main-wrapper
     .carousel-frame
     .carousel-item
@@ -471,7 +472,7 @@
     padding: 18px;
   }
 
-  .carousel.block.large
+  .carousel-wrapper .carousel.block.large
     .carousel-main-wrapper
     .carousel-frame
     .carousel-item
@@ -482,7 +483,7 @@
   }
 }
 
-.carousel.block
+.carousel-wrapper .carousel.block
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -498,7 +499,7 @@
   margin: 0;
 }
 
-.carousel.block.wedges
+.carousel-wrapper .carousel.block.wedges
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -516,7 +517,7 @@
   text-align: center;
 }
 
-.carousel.block.large
+.carousel-wrapper .carousel.block.large
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -534,7 +535,7 @@
   margin: 0;
 }
 
-.carousel.block
+.carousel-wrapper .carousel.block
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -548,7 +549,7 @@
   line-height: 130%;
 }
 
-.carousel.block.large
+.carousel-wrapper .carousel.block.large
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -558,7 +559,7 @@
   display: none;
 }
 
-.carousel.block.wedges
+.carousel-wrapper .carousel.block.wedges
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -568,7 +569,7 @@
   display: none;
 }
 
-.carousel.block
+.carousel-wrapper .carousel.block
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -584,7 +585,7 @@
   margin-top: 6px;
 }
 
-.carousel.block.wedges
+.carousel-wrapper .carousel.block.wedges
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -594,7 +595,7 @@
   display: none;
 }
 
-.carousel.block
+.carousel-wrapper .carousel.block
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -616,7 +617,7 @@
 }
 
 /* Carousel dark */
-.dark .carousel.block
+.dark .carousel-wrapper .carousel.block
   .carousel-main-wrapper
   .carousel-frame
   .carousel-item
@@ -627,17 +628,17 @@
 
 }
 
-.dark .carousel.block {
+.dark .carousel-wrapper .carousel.block {
   background-color: black;
   color: white;
 }
 
-.dark .carousel.block
-  .carousel-main-wrapper 
-  .carousel-frame 
-  .carousel-item 
-  .carousel-item-wrapper 
-  .carousel-text-content 
+.dark .carousel-wrapper .carousel.block
+  .carousel-main-wrapper
+  .carousel-frame
+  .carousel-item
+  .carousel-item-wrapper
+  .carousel-text-content
   .carousel-item-title {
   color: #fff;
   background-color: #1c1c1c;
@@ -645,35 +646,35 @@
 
 
 /* With video variation */
-.carousel.block.with-video 
+.carousel-wrapper .carousel.block.with-video
   .carousel-main-wrapper {
     max-height: 330px;
 }
 
-.carousel.block.with-video
-  .carousel-main-wrapper 
-  .carousel-frame 
+.carousel-wrapper .carousel.block.with-video
+  .carousel-main-wrapper
+  .carousel-frame
   .carousel-item
-  .carousel-item-wrapper 
+  .carousel-item-wrapper
   .carousel-image-wrapper::before {
-  padding-top: 55%;  
+  padding-top: 55%;
 }
 
-.carousel.block.with-video 
-  .carousel-main-wrapper 
-  .carousel-frame 
-  .carousel-item 
-  .carousel-item-wrapper 
+.carousel-wrapper .carousel.block.with-video
+  .carousel-main-wrapper
+  .carousel-frame
+  .carousel-item
+  .carousel-item-wrapper
   .carousel-text-content {
-  padding: 20px;  
+  padding: 20px;
 }
 
-.dark .carousel.block
-  .carousel-main-wrapper 
-  .carousel-frame 
-  .carousel-item 
-  .carousel-item-wrapper 
-  .carousel-text-content 
+.dark .carousel-wrapper .carousel.block
+  .carousel-main-wrapper
+  .carousel-frame
+  .carousel-item
+  .carousel-item-wrapper
+  .carousel-text-content
   .carousel-video-duration {
     font-family: var(--font-gotham);
     font-weight: 500;
@@ -691,7 +692,7 @@
 
 
 @media (max-width: 768px) {
-  .carousel.block.with-video .carousel-main-wrapper {
+  .carousel-wrapper .carousel.block.with-video .carousel-main-wrapper {
     max-height: 280px;
   }
 }
