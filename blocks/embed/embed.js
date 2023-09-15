@@ -155,7 +155,7 @@ export default function decorate(block) {
 
     const triggerEmbedLoad = (event) => {
       if (event && window.scrollY < 1) {
-        return
+        return;
       }
       loadEmbed(block, link, autoplay);
       window.removeEventListener('scroll', triggerEmbedLoad);
