@@ -22,6 +22,19 @@ const getDefaultEmbed = (url) => `<div style="left: 0; width: 100%; height: 0; p
     </iframe>
   </div>`;
 
+const embedCeros = (url) => {
+  const heightOverride = url.searchParams.get('heightOverride');
+
+  // height override is used the privacy and cookies page.
+  const conditionalStyles = heightOverride ? `max-height: ${Number(heightOverride)}px; max-width: 900px; aspect-ratio: ${900 / Number(heightOverride)};` : 'height: 0; padding-bottom: 56.25%; ';
+
+  return `<div style="left: 0; width: 100%; position: relative; ${conditionalStyles}">
+    <iframe src="${url.href}" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" allowfullscreen=""
+      scrolling="no" allow="encrypted-media" title="Content from ${url.hostname}" loading="lazy">
+    </iframe>
+  </div>`;
+};
+
 const embedInstagram = (url) => {
   url.pathname = `/${url.pathname.split('/').filter((s) => s).join('/')}/embed`;
 
@@ -120,6 +133,10 @@ const loadEmbed = (block, link, autoplay) => {
     {
       match: ['players.brightcove.net'],
       embed: embedBrightcove,
+    },
+    {
+      match: ['view.ceros.com'],
+      embed: embedCeros,
     },
   ];
 

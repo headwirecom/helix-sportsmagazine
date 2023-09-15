@@ -402,7 +402,7 @@
   text-align: center;
   line-height: 58px;
   letter-spacing: 0.05em;
-  font-family: Tungsten, arial, sans-serif;
+  font-family: var(--font-tungsten);
   font-size: 37px;
   box-decoration-break: clone;
 }

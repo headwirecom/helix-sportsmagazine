@@ -48,30 +48,6 @@ export function replaceLinksWithEmbed(block) {
       twitterLink.replaceWith(embed);
     }
   });
-
-  // handling legal privacy iframes
-  block.querySelectorAll('a[href*="view.ceros.com"]').forEach((legalEmbed) => {
-    const searchParams = new URLSearchParams(`?${legalEmbed.href.split('?')[1]}`);
-    for (const [key, value] of searchParams.entries()) {
-      console.log(`${key}, ${value}`);
-    }
-    const heightOverride = searchParams.get('heightOverride');
-
-    legalEmbed.outerHTML = `
-    <iframe
-      allowfullscreen=""
-      src="${legalEmbed.href}"
-      style="inset: 0px; margin: 0px; padding: 0px; border: 0px none; max-height: ${Number(heightOverride)}px; width: 100%; max-width: 900px; aspect-ratio: ${900 / Number(heightOverride)};"
-      frameborder="0"
-      class="ceros-experience"
-      title="UK/EU Info you provide"
-      scrolling="no"
-      data-ceros-subpixel-oversize="true"
-      data-ceros-subpixel-original-width="1px"
-      data-ceros-subpixel-original-height="1px">
-    </iframe>
-    `;
-  });
 }
 
 /**
