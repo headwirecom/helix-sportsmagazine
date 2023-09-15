@@ -24,6 +24,25 @@ const getDefaultEmbed = (
     </iframe>
 `;
 
+const embedCeros = (url, _, block) => {
+  const heightOverride = url.searchParams.get('heightOverride');
+
+  // height override is used the privacy and cookies page.
+  if (heightOverride) {
+    block.style.maxHeight = `${Number(heightOverride)}px`;
+    block.style.maxWidth = '900px';
+    block.style.aspectRatio = 900 / Number(heightOverride);
+    block.style.height = 'auto';
+    block.paddingBottom = 0;
+  }
+
+  return `
+    <iframe src="${url.href}" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" allowfullscreen=""
+      scrolling="no" allow="encrypted-media" title="Content from ${url.hostname}" loading="lazy">
+    </iframe>
+  `;
+};
+
 const embedInstagram = (url) => {
   url.pathname = `/${url.pathname
     .split('/')
@@ -126,23 +145,39 @@ const loadEmbed = (block, link, autoplay) => {
       match: ['players.brightcove.net'],
       embed: embedBrightcove,
     },
+    {
+      match: ['view.ceros.com'],
+      embed: embedCeros,
+    },
   ];
 
   const config = EMBEDS_CONFIG.find((e) => e.match.some((match) => link.includes(match)));
   const url = new URL(link);
   if (config) {
-    block.insertAdjacentHTML('beforeend', config.embed(url, autoplay))
+    block.insertAdjacentHTML('beforeend', config.embed(url, autoplay, block));
     block.classList = `block embed embed-${config.match[0]}`;
   } else {
     block.insertAdjacentHTML('beforeend', getDefaultEmbed(url));
     block.classList = 'block embed';
   }
   block.classList.add('embed-is-loading');
-  const iframe = block.querySelector('iframe')
+
+  // observer hides the placeholder, ideally the iframe will already be loaded.
+  // const observer = new IntersectionObserver((entries) => {
+  //   if (entries.some((e) => e.isIntersecting)) {
+  //     observer.disconnect();
+  //     block.classList.add('embed-is-loaded');
+  //   }
+  // });
+  // observer.observe(block);
+
+  // hides placeholder after 2sec.
+  const iframe = block.querySelector('iframe');
   iframe.addEventListener('load', () => {
-    console.log("\x1b[34m ~ TEST:", )
-    block.classList.add('embed-is-loaded')
-  })
+    setTimeout(() => {
+      block.classList.add('embed-is-loaded');
+    }, 2000);
+  });
 };
 
 export default function decorate(block) {
@@ -156,7 +191,6 @@ export default function decorate(block) {
   wrapper.className = 'embed-placeholder';
 
   if (placeholder) {
-    // wrapper.innerHTML = '<div class="embed-placeholder-play"><button title="Play"></button></div>';
     wrapper.prepend(placeholder);
   }
 

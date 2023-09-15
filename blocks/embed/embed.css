@@ -21,6 +21,7 @@ main .embed .embed-placeholder {
     position: relative;
     z-index: 1;
 }
+
 main .embed.embed-is-loaded .embed-placeholder {
     display: none;
 }
@@ -84,5 +85,4 @@ main .embed.block:has(iframe[src^="https://view.ceros.com/golf-digest/"]) {
 main .embed.block[data-embed-link^="https://view.ceros.com/golf-digest/"] .embed-placeholder picture,
 main .embed.block iframe[src^="https://view.ceros.com/golf-digest/"] {
     padding: 0 15px;
-    /* margin: 0 15px; */
 }
