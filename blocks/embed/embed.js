@@ -152,11 +152,16 @@ export default function decorate(block) {
     block.append(wrapper);
   } else {
     let timer;
-    const triggerEmbedLoad = () => {
+
+    const triggerEmbedLoad = (event) => {
+      if (event && window.scrollY < 1) {
+        return
+      }
       loadEmbed(block, link, autoplay);
       window.removeEventListener('scroll', triggerEmbedLoad);
       clearTimeout(timer);
     };
+
     timer = setTimeout(triggerEmbedLoad, 7000);
     window.addEventListener('scroll', triggerEmbedLoad);
   }
