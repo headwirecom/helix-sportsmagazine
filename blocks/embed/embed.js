@@ -157,7 +157,7 @@ export default function decorate(block) {
       window.removeEventListener('scroll', triggerEmbedLoad);
       clearTimeout(timer);
     };
-    setTimeout(triggerEmbedLoad, 6000);
+    timer = setTimeout(triggerEmbedLoad, 7000);
     window.addEventListener('scroll', triggerEmbedLoad);
   }
 }
