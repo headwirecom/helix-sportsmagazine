@@ -162,7 +162,7 @@ export default function decorate(block) {
       clearTimeout(timer);
     };
 
-    timer = setTimeout(triggerEmbedLoad, 7000);
+    timer = setTimeout(triggerEmbedLoad, 3000);
     window.addEventListener('scroll', triggerEmbedLoad);
   }
 }
