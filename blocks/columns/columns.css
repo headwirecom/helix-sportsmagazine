@@ -4,7 +4,7 @@
   color: white;
 }
 
-.columns.block {
+.columns-wrapper .columns.block {
   max-width: var(--layout-width);
   margin: auto;
   padding: 20px 0;
@@ -104,7 +104,7 @@
 }
 
 @media (max-width: 1281px) {
-  .columns.block {
+  .columns-wrapper .columns.block {
     padding: 0;
   }
 
