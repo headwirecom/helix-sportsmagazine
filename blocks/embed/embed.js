@@ -16,14 +16,19 @@ const loadScript = (url, callback, type) => {
   return script;
 };
 
-const getDefaultEmbed = (url) => `<div style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.25%;">
+const getDefaultEmbed = (
+  url,
+) => `<div style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.25%;">
     <iframe src="${url.href}" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" allowfullscreen=""
       scrolling="no" allow="encrypted-media" title="Content from ${url.hostname}" loading="lazy">
     </iframe>
   </div>`;
 
 const embedInstagram = (url) => {
-  url.pathname = `/${url.pathname.split('/').filter((s) => s).join('/')}/embed`;
+  url.pathname = `/${url.pathname
+    .split('/')
+    .filter((s) => s)
+    .join('/')}/embed`;
 
   return `<div style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.25%;">
     <iframe src="${url.href}" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" allowfullscreen=""
@@ -136,38 +141,29 @@ const loadEmbed = (block, link, autoplay) => {
 };
 
 export default function decorate(block) {
-  console.log("\x1b[31m ~ block:", block)
   const autoplay = block.classList.contains('autoplay') || !!block.closest('.autoplay.block');
   const placeholder = block.querySelector('picture');
   const link = block.querySelector('a').href;
-  block.dataset.embedLink = link
+  block.dataset.embedLink = link;
   block.textContent = '';
-  console.log("\x1b[31m ~ placeholder:", placeholder)
 
   const wrapper = document.createElement('div');
   wrapper.className = 'embed-placeholder';
-  wrapper.style = "left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.25%;"
+  wrapper.style = 'left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.25%;';
+
   if (placeholder) {
-    
     wrapper.innerHTML = '<div class="embed-placeholder-play"><button title="Play"></button></div>';
     wrapper.prepend(placeholder);
   }
-  // wrapper.addEventListener('click', () => {
-  //   loadEmbed(block, link, autoplay);
-  // });
+
   block.append(wrapper);
-    // let timer;
 
-    const triggerEmbedLoad = (event) => {
-      if (event && window.scrollY < 1) {
-        return;
-      }
-      loadEmbed(block, link, autoplay);
-      window.removeEventListener('scroll', triggerEmbedLoad);
-      clearTimeout(timer);
-    };
-
-    // timer = setTimeout(triggerEmbedLoad, 10000);
-    window.addEventListener('scroll', triggerEmbedLoad);
-  
+  const triggerEmbedLoad = (event) => {
+    if (event && window.scrollY < 1) {
+      return;
+    }
+    loadEmbed(block, link, autoplay);
+    window.removeEventListener('scroll', triggerEmbedLoad);
+  };
+  window.addEventListener('scroll', triggerEmbedLoad);
 }
