@@ -74,10 +74,14 @@
   --font-chivo-black: "Chivo Black", "Chivo Black Fallback", helvetica, ubuntu, roboto, noto, sans-serif;
   --font-chivo-bold: "Chivo Bold", "Chivo Bold Fallback", helvetica, ubuntu, roboto, noto, sans-serif;
   --font-work: "Work Sans", "Work Sans Fallback", helvetica, ubuntu, roboto, noto, sans-serif;
-  --header-height: 120px;
+  --header-height: 152px;
   --leaderboard-height: 80px;
   --link-hover-color: #ed3e49;
   --layout-width: 1440px;
+}
+
+:root body:not(.landing-page) {
+  --header-height: 82px;
 }
 
 @media (max-width: 768px) {
@@ -121,7 +125,7 @@ header {
 }
 
 main {
-  padding-top: 20px;
+  /* padding-top: 20px; */
 }
 
 .icon {

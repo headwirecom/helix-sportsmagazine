@@ -208,6 +208,10 @@
   height: 70px;
 }
 
+body:not(.landing-page) .header .header-bottom-bar {
+  display: none;
+}
+
 @media (max-width: 1024px) {
   .header .header-bottom-bar {
     height: 65px;
@@ -581,13 +585,16 @@
 }
 
 .header .search-form {
-  background-color: #fff;
+  /* background-color: #fff; */
   overflow: hidden;
   width: 0;
   transition: transform 0.3s, opacity 0.3s, width 0.3s;
   opacity: 0;
   pointer-events: none;
-  transform: translateX(50px);
+
+  /* GD site uses 50px, but this causes a X axis scroll
+  that would need to be handled with javascript. */
+  transform: translateX(14px);
   visibility: hidden;
 }
 
@@ -627,6 +634,21 @@
   height: 40px;
   padding: 12px 15px;
   color: #151517;
+}
+
+.home-page .header:not(.is-scrolling) .search-form-input {
+  background-color: rgba(21,21,23,.2);
+  border: none;
+  color: #fff;
+}
+
+.home-page .header:not(.is-scrolling) .search-form-input::placeholder {
+  color: #fff;
+  opacity: 0.8;
+}
+
+.home-page .header:not(.is-scrolling) .header-CancelSearchButton > svg line {
+  stroke: #fff;
 }
 
 .header .search-form-input:focus-visible {
@@ -1132,6 +1154,10 @@
 
 .home-page .header:not(.is-scrolling) .profile-info-button-login {
   color: #fff;
+}
+
+.home-page .header:not(.is-scrolling) .profile-info-button-login:hover {
+  color: var(--link-hover-color);
 }
 
 .header .nav-menu-bottom .profile-info-button-wrapper .profile-info-button-login {
