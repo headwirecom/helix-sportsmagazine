@@ -43,8 +43,10 @@ export default async function decorate(block) {
   decorateBlock(embed);
   loadBlock(embed);
 
-  fetch('/icons/arrow-icon.svg').then((req) => req.text()).then((svg) => {
-    const link = block.querySelector('.content-container a');
-    link.insertAdjacentHTML('afterbegin', `<div class="arrow-icon">${svg}</div>`);
-  });
+  const link = block.querySelector('.content-container a');
+  if (link) {
+    fetch('/icons/arrow-icon.svg').then((req) => req.text()).then((svg) => {
+      link.insertAdjacentHTML('afterbegin', `<div class="arrow-icon">${svg}</div>`);
+    });
+  }
 }
