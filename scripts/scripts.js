@@ -557,7 +557,7 @@ window.store = new (class {
     this._blockQueryLimit = {
       hero: (block) => {
         const firstHero = document.querySelector('.hero.block[data-block-name="hero"]');
-        if (firstHero?.isEqualNode(block)) {
+        if (firstHero.isEqualNode(block)) {
           return 4;
         }
         return 1;
