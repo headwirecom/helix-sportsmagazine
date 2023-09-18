@@ -4,6 +4,8 @@
  * https://www.hlx.live/developer/block-collection/embed
  */
 
+const CEROS_HOST = 'view.ceros.com';
+
 const loadScript = (url, callback, type) => {
   const head = document.querySelector('head');
   const script = document.createElement('script');
@@ -109,6 +111,7 @@ const embedTwitter = (url) => {
 };
 
 const loadEmbed = (block, link, autoplay) => {
+  console.log('\x1b[31m ~ link:', link);
   if (block.classList.contains('embed-is-loaded')) {
     return;
   }
@@ -135,27 +138,52 @@ const loadEmbed = (block, link, autoplay) => {
       embed: embedBrightcove,
     },
     {
-      match: ['view.ceros.com'],
+      match: [CEROS_HOST],
       embed: embedCeros,
     },
   ];
 
   const config = EMBEDS_CONFIG.find((e) => e.match.some((match) => link.includes(match)));
   const url = new URL(link);
+
+  const isCerosEmbed = url.host === CEROS_HOST;
+
   if (config) {
-    block.innerHTML = config.embed(url, autoplay);
+    const embedHtml = config.embed(url, autoplay);
+
+    // when a ceros embed has a placeholder, place it inside for the swapping functionality.
+    const placeholderWrapper = block.querySelector('.embed-placeholder');
+    if (isCerosEmbed && placeholderWrapper) {
+      placeholderWrapper.insertAdjacentHTML('afterbegin', embedHtml);
+    } else {
+      block.innerHTML = embedHtml;
+    }
+
     block.classList = `block embed embed-${config.match[0]}`;
   } else {
     block.innerHTML = getDefaultEmbed(url);
     block.classList = 'block embed';
   }
-  block.classList.add('embed-is-loaded');
+
+  // ceros embed placeholders are shown for 2 extra seconds while iframe is loading
+  if (isCerosEmbed) {
+    block.classList.add('ceros-loading');
+    const iframe = block.querySelector('iframe');
+    iframe.addEventListener('load', () => {
+      setTimeout(() => {
+        block.classList.add('embed-is-loaded');
+      }, 2000);
+    });
+  } else {
+    block.classList.add('embed-is-loaded');
+  }
 };
 
 export default function decorate(block) {
   const autoplay = block.classList.contains('autoplay') || !!block.closest('.autoplay.block');
   const placeholder = block.querySelector('picture');
   const link = block.querySelector('a').href;
+  block.dataset.embedLink = link;
   block.textContent = '';
 
   if (placeholder) {
@@ -163,17 +191,27 @@ export default function decorate(block) {
     wrapper.className = 'embed-placeholder';
     wrapper.innerHTML = '<div class="embed-placeholder-play"><button title="Play"></button></div>';
     wrapper.prepend(placeholder);
-    wrapper.addEventListener('click', () => {
-      loadEmbed(block, link, autoplay);
-    });
     block.append(wrapper);
-  } else {
-    const observer = new IntersectionObserver((entries) => {
-      if (entries.some((e) => e.isIntersecting)) {
-        observer.disconnect();
+
+    // add click listener to wrapper if it isn't a ceros embed
+    if (!link.includes(CEROS_HOST)) {
+      wrapper.addEventListener('click', () => {
         loadEmbed(block, link, autoplay);
-      }
-    });
-    observer.observe(block);
+      });
+      return;
+    }
+
+    // hide play button on ceros embed
+    wrapper.classList.add('hide-play-button');
   }
+
+  // load embeds without a placeholder (& always ceros embeds) on first scroll
+  const triggerEmbedLoad = (event) => {
+    if (event && window.scrollY < 1) {
+      return;
+    }
+    loadEmbed(block, link, autoplay);
+    window.removeEventListener('scroll', triggerEmbedLoad);
+  };
+  window.addEventListener('scroll', triggerEmbedLoad);
 }
