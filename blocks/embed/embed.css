@@ -3,6 +3,7 @@ main .embed {
     text-align: center;
     max-width: 800px;
     margin: 32px auto;
+    position: relative;
 }
 
 main .embed > div {
@@ -21,7 +22,8 @@ main .embed .embed-placeholder {
     position: relative;
 }
 
-main .embed .embed-placeholder > * {
+main .embed .embed-placeholder > picture,
+main .embed .embed-placeholder > .embed-placeholder-play {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -30,6 +32,15 @@ main .embed .embed-placeholder > * {
     left: 0;
     right: 0;
     bottom: 0;
+}
+
+main .embed .embed-placeholder.hide-play-button .embed-placeholder-play {
+    display: none;
+}
+
+main .embed.ceros-loading.embed-is-loaded .embed-placeholder > picture,
+main .embed.ceros-loading.embed-is-loaded .embed-placeholder > .embed-placeholder-play {
+    display: none;
 }
 
 main .embed .embed-placeholder picture img {
@@ -68,10 +79,15 @@ main .embed.block:has(div > iframe, iframe) {
     max-width: 100%;
 }
 
-main .embed.block:has(iframe[src^="https://view.ceros.com/golf-digest/"]) {
+main .embed.block[data-embed-link^="https://view.ceros.com/golf-digest/"] {
     max-width: var(--layout-width);
 }
 
+main .embed.block[data-embed-link^="https://view.ceros.com/golf-digest/"]:not(:has(.embed-placeholder)) {
+    aspect-ratio: 16/9;
+}
+
+main .embed.block[data-embed-link^="https://view.ceros.com/golf-digest/"] .embed-placeholder picture,
 main .embed.block iframe[src^="https://view.ceros.com/golf-digest/"] {
     padding: 0 15px;
 }
