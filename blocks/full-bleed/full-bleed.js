@@ -27,6 +27,10 @@ export default async function decorate(block) {
   const authorURL = getMetadata('author-url');
   const publicationDate = getMetadata('publication-date');
   const headlineMetadata = parseSectionMetadata(block.querySelector('.template-section-metadata'));
+
+  const legalUpdatedOn = getMetadata('latest-changes');
+  const templateMetadataString = getMetadata('template');
+  const isPrivacyLegalDoc = templateMetadataString.includes('legal') && templateMetadataString.includes('privacy');
   // TODO remove once importer fixes photo credit
   const photoCredit = headlineMetadata?.imageCredit ?? headlineMetadata?.photoCredit;
 
@@ -58,6 +62,8 @@ ${!gdPlusArticle ? '' : premiumArticleBanner()}
                   <span>${publicationDate}</span>
               </div>
           </div>
+          ${legalUpdatedOn ? `<div class="latest-changes-wrapper"><span class="latest-changes ${isPrivacyLegalDoc ? 'privacy' : ''}">${isPrivacyLegalDoc ? 'Last updated' : 'Last Changes to Visitor Agreement'}: ${legalUpdatedOn}.</span></div>` : ''}
+          ${isPrivacyLegalDoc ? '<div class="privacy-update-note"><span class="update-note">NOTE: The Privacy Notice has been updated. Please review the updated Privacy Notice carefully before using the Services.</span></div>' : ''}
       </div>
       <div class="image">
           <slot name="image"></slot>
@@ -104,7 +110,7 @@ ${!gdPlusArticle ? '' : premiumArticleBanner()}
   assignSlot(block, 'image', 'picture');
   const h1Element = block.querySelector('h1');
   const nextSibling = h1Element?.nextElementSibling;
-  if (nextSibling && nextSibling.tagName === 'P' && !nextSibling.querySelector('picture')) {
+  if (!isPrivacyLegalDoc && nextSibling && nextSibling.tagName === 'P' && !nextSibling.querySelector('picture')) {
     assignSlot(block, 'description', 'h1 + p:not(:has(picture))');
   }
 
@@ -127,7 +133,7 @@ ${!gdPlusArticle ? '' : premiumArticleBanner()}
 
   const picture = block.querySelector('picture');
 
-  const caption = picture.parentElement.nextElementSibling;
+  const caption = picture?.parentElement?.nextElementSibling;
   if (caption && caption.tagName === 'P') {
     caption.setAttribute('slot', 'caption');
   }

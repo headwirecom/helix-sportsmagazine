@@ -186,13 +186,21 @@ export function addPhotoCredit(pictures) {
   });
 }
 
+export const extractClassesFromBrackets = (metaDataString) => {
+  const regex = /\((.*)\)/;
+  const textWithinBrackets = metaDataString.match(regex)?.[1];
+  return textWithinBrackets?.split(',').map((classString) => toClassName(classString.trim()));
+};
+
 /**
  * Builds a template block if any found
  *
  * @param {HTMLElement} main
  */
 function buildTemplate(main) {
-  const template = toClassName(getMetadata('template').split('(')[0].trim());
+  const metaDataTemplateString = getMetadata('template');
+  const template = toClassName(metaDataTemplateString.split('(')[0].trim());
+  const additionalClasses = extractClassesFromBrackets(metaDataTemplateString);
 
   if (template && Object.values(ARTICLE_TEMPLATES).includes(template)) {
     // Adding base template class to body because any queries added to the
@@ -318,7 +326,10 @@ function buildTemplate(main) {
     });
 
     const section = document.createElement('div');
-    section.append(buildBlock(template, { elems: [...main.children] }));
+    const templateBlock = buildBlock(template, { elems: [...main.children] });
+
+    additionalClasses?.forEach((classString) => templateBlock.classList.add(classString));
+    section.append(templateBlock);
     main.prepend(section);
 
     return true;
