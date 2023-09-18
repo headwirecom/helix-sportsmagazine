@@ -451,8 +451,13 @@ function loadDelayed() {
 
 // TODO Remove once all URLs pointing to GD are fixed
 function fixURLsWithGD() {
-  document.body.querySelectorAll('a[href^="https://www.golfdigest.com/"]').forEach((link) => {
-    link.setAttribute('href', link.getAttribute('href').slice(26));
+  document.body.querySelectorAll('a[href*="www.golfdigest.com"]').forEach((link) => {
+    const url = new URL(link.href);
+    const { host, protocol } = window.location;
+    url.host = host;
+    url.protocol = protocol;
+
+    link.setAttribute('href', url.toString());
   });
 }
 

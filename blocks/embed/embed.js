@@ -24,25 +24,6 @@ const getDefaultEmbed = (
     </iframe>
 `;
 
-const embedCeros = (url, _, block) => {
-  const heightOverride = url.searchParams.get('heightOverride');
-
-  // height override is used the privacy and cookies page.
-  if (heightOverride) {
-    block.style.maxHeight = `${Number(heightOverride)}px`;
-    block.style.maxWidth = '900px';
-    block.style.aspectRatio = 900 / Number(heightOverride);
-    block.style.height = 'auto';
-    block.paddingBottom = 0;
-  }
-
-  return `
-    <iframe src="${url.href}" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" allowfullscreen=""
-      scrolling="no" allow="encrypted-media" title="Content from ${url.hostname}" loading="lazy">
-    </iframe>
-  `;
-};
-
 const embedCeros = (url) => {
   const heightOverride = url.searchParams.get('heightOverride');
 
@@ -167,7 +148,7 @@ const loadEmbed = (block, link, autoplay) => {
   const config = EMBEDS_CONFIG.find((e) => e.match.some((match) => link.includes(match)));
   const url = new URL(link);
   if (config) {
-    block.insertAdjacentHTML('beforeend', config.embed(url, autoplay, block));
+    block.insertAdjacentHTML('beforeend', config.embed(url, autoplay));
     block.classList = `block embed embed-${config.match[0]}`;
   } else {
     block.insertAdjacentHTML('beforeend', getDefaultEmbed(url));
