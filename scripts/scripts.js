@@ -557,7 +557,8 @@ window.store = new (class {
     this._blockQueryLimit = {
       hero: (block) => {
         const firstHero = document.querySelector('.hero.block[data-block-name="hero"]');
-        if (firstHero.isEqualNode(block)) {
+        debugger
+        if (firstHero?.isEqualNode(block)) {
           return 4;
         }
         return 1;
@@ -628,7 +629,7 @@ window.store = new (class {
     this.blockNames.forEach((blockName) => {
       queryNames.forEach((queryName) => {
         const { spreadsheet } = this._queryMap[queryName];
-        document.querySelectorAll(`main .${blockName}.${queryName}-${spreadsheet}.block`).forEach((blockEl) => {
+        document.querySelectorAll(`main .${queryName}-${spreadsheet}.block[data-block-name="${blockName}"]`).forEach((blockEl) => {
           this._queryMap[queryName].limit += this._blockQueryLimit[blockName](blockEl);
         });
       });
