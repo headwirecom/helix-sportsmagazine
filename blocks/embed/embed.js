@@ -16,11 +16,32 @@ const loadScript = (url, callback, type) => {
   return script;
 };
 
-const getDefaultEmbed = (url) => `<div style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.25%;">
+const getDefaultEmbed = (
+  url,
+) => `
     <iframe src="${url.href}" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" allowfullscreen=""
       scrolling="no" allow="encrypted-media" title="Content from ${url.hostname}" loading="lazy">
     </iframe>
-  </div>`;
+`;
+
+const embedCeros = (url, _, block) => {
+  const heightOverride = url.searchParams.get('heightOverride');
+
+  // height override is used the privacy and cookies page.
+  if (heightOverride) {
+    block.style.maxHeight = `${Number(heightOverride)}px`;
+    block.style.maxWidth = '900px';
+    block.style.aspectRatio = 900 / Number(heightOverride);
+    block.style.height = 'auto';
+    block.paddingBottom = 0;
+  }
+
+  return `
+    <iframe src="${url.href}" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" allowfullscreen=""
+      scrolling="no" allow="encrypted-media" title="Content from ${url.hostname}" loading="lazy">
+    </iframe>
+  `;
+};
 
 const embedCeros = (url) => {
   const heightOverride = url.searchParams.get('heightOverride');
@@ -36,13 +57,16 @@ const embedCeros = (url) => {
 };
 
 const embedInstagram = (url) => {
-  url.pathname = `/${url.pathname.split('/').filter((s) => s).join('/')}/embed`;
+  url.pathname = `/${url.pathname
+    .split('/')
+    .filter((s) => s)
+    .join('/')}/embed`;
 
-  return `<div style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.25%;">
+  return `
     <iframe src="${url.href}" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" allowfullscreen=""
       scrolling="no" allow="encrypted-media" title="Content from ${url.hostname}" loading="lazy">
     </iframe>
-  </div>`;
+`;
 };
 
 const embedYoutube = (url, autoplay) => {
@@ -63,10 +87,10 @@ const embedYoutube = (url, autoplay) => {
       params.set('autoplay', '1');
     }
   }
-  const embedHTML = `<div style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.25%;">
+  const embedHTML = `
       <iframe src="${youtubeUrl.toString()}" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" 
       allow="autoplay; fullscreen; picture-in-picture; encrypted-media; accelerometer; gyroscope; picture-in-picture" allowfullscreen="" scrolling="no" title="Content from Youtube" loading="lazy"></iframe>
-    </div>`;
+`;
   return embedHTML;
 };
 
@@ -78,12 +102,12 @@ const embedVimeo = (url, autoplay) => {
     params.set('autoplay', '1');
   }
   vimeoURL.search = params.toString();
-  const embedHTML = `<div style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.25%;">
+  const embedHTML = `
       <iframe src="${vimeoURL.toString()}" 
       style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" 
       frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen  
       title="Content from Vimeo" loading="lazy"></iframe>
-    </div>`;
+`;
   return embedHTML;
 };
 
@@ -94,11 +118,11 @@ const embedBrightcove = (url, autoplay) => {
     params.set('muted', '1');
     params.set('autoplay', '1');
   }
-  const embedHTML = `<div style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.25%;">
+  const embedHTML = `
       <iframe src="${brightcoveUrl.toString()}" 
       style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" 
       allowfullscreen="" scrolling="no" title="Content from Brightcove" loading="lazy"></iframe>
-    </div>`;
+`;
   return embedHTML;
 };
 
@@ -109,7 +133,7 @@ const embedTwitter = (url) => {
 };
 
 const loadEmbed = (block, link, autoplay) => {
-  if (block.classList.contains('embed-is-loaded')) {
+  if (block.classList.contains('embed-is-loaded') || block.classList.contains('embed-is-loading')) {
     return;
   }
 
@@ -143,37 +167,54 @@ const loadEmbed = (block, link, autoplay) => {
   const config = EMBEDS_CONFIG.find((e) => e.match.some((match) => link.includes(match)));
   const url = new URL(link);
   if (config) {
-    block.innerHTML = config.embed(url, autoplay);
+    block.insertAdjacentHTML('beforeend', config.embed(url, autoplay, block));
     block.classList = `block embed embed-${config.match[0]}`;
   } else {
-    block.innerHTML = getDefaultEmbed(url);
+    block.insertAdjacentHTML('beforeend', getDefaultEmbed(url));
     block.classList = 'block embed';
   }
-  block.classList.add('embed-is-loaded');
+  block.classList.add('embed-is-loading');
+
+  // observer hides the placeholder, ideally the iframe will already be loaded.
+  // const observer = new IntersectionObserver((entries) => {
+  //   if (entries.some((e) => e.isIntersecting)) {
+  //     observer.disconnect();
+  //     block.classList.add('embed-is-loaded');
+  //   }
+  // });
+  // observer.observe(block);
+
+  // hides placeholder after 2sec.
+  const iframe = block.querySelector('iframe');
+  iframe.addEventListener('load', () => {
+    setTimeout(() => {
+      block.classList.add('embed-is-loaded');
+    }, 2000);
+  });
 };
 
 export default function decorate(block) {
   const autoplay = block.classList.contains('autoplay') || !!block.closest('.autoplay.block');
   const placeholder = block.querySelector('picture');
   const link = block.querySelector('a').href;
+  block.dataset.embedLink = link;
   block.textContent = '';
 
+  const wrapper = document.createElement('div');
+  wrapper.className = 'embed-placeholder';
+
   if (placeholder) {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'embed-placeholder';
-    wrapper.innerHTML = '<div class="embed-placeholder-play"><button title="Play"></button></div>';
     wrapper.prepend(placeholder);
-    wrapper.addEventListener('click', () => {
-      loadEmbed(block, link, autoplay);
-    });
-    block.append(wrapper);
-  } else {
-    const observer = new IntersectionObserver((entries) => {
-      if (entries.some((e) => e.isIntersecting)) {
-        observer.disconnect();
-        loadEmbed(block, link, autoplay);
-      }
-    });
-    observer.observe(block);
   }
+
+  block.append(wrapper);
+
+  const triggerEmbedLoad = (event) => {
+    if (event && window.scrollY < 1) {
+      return;
+    }
+    loadEmbed(block, link, autoplay);
+    window.removeEventListener('scroll', triggerEmbedLoad);
+  };
+  window.addEventListener('scroll', triggerEmbedLoad);
 }
