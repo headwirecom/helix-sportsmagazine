@@ -5,11 +5,18 @@
     justify-content: space-between;
     font-family: var(--font-gotham);
     padding: 20px;
-    margin: 20px;
+    margin: 20px auto;
+    max-width: 800px;
 }
 
 .courses-wrapper .courses.block .courses-info-wrapper {
     display: flex;
+}
+
+.courses-wrapper .courses.block .courses-info {
+    line-height: 26.4px;
+    letter-spacing: 0;
+    text-align: left;
 }
 
 .courses-wrapper .courses.block .courses-info-wrapper + p {

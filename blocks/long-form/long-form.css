@@ -1,5 +1,6 @@
 .long-form-wrapper .long-form.block .container {
     margin: 0 auto;
+    --article-width: 800px;
 }
 
 .long-form-wrapper .long-form.block .container-article {
@@ -26,6 +27,7 @@
 .long-form-wrapper .long-form.block .article-body a {
     color: #000;
     text-decoration: none;
+    font-weight: 500;
 }
 
 .long-form-wrapper .long-form.block .article-body strong > a {
@@ -115,10 +117,11 @@
     margin: 20px 0;
 }
 
-.long-form-wrapper .long-form.block .article-body div > p {
+.long-form-wrapper .long-form.block .article-body > div > div > div > p {
     line-height: 30px;
-    margin-bottom: 20px;
+    margin: 0 auto 20px;
     padding: 0 20px;
+    max-width: var(--article-width);
 }
 
 .long-form-wrapper .long-form.block .article-body h2 {
@@ -142,8 +145,8 @@
 }
 
 @media (min-width: 1025px) {
-    .long-form-wrapper .long-form.block .article-body div > p {
-        padding: 0 35px;
+    .long-form-wrapper .long-form.block .article-body > div > div > div > p {
+        padding: 0 15px 0 35px;
         margin-bottom: 60px;
     }
 
@@ -307,7 +310,6 @@
 }
 
 .long-form-wrapper .long-form.block .article-body {
-    max-width: 800px;
     margin: auto;
     padding-bottom: 60px;
 }
