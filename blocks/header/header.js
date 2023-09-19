@@ -5,6 +5,9 @@ const DEFAULT_NAV = '/golf-nav';
 
 const isHomePage = document.body.classList.contains('home-page');
 
+const searchIcon = '<button class="header-search-button" data-type="button-search-toggle" aria-label="Search Toggle"><svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Search Icon"><path d="M10.7954 3.125C9.27835 3.125 7.79535 3.57486 6.53396 4.4177C5.27257 5.26053 4.28943 6.45849 3.70888 7.86007C3.12832 9.26166 2.97642 10.8039 3.27239 12.2918C3.56835 13.7797 4.29889 15.1465 5.37161 16.2192C6.44434 17.2919 7.81108 18.0225 9.29899 18.3184C10.7869 18.6144 12.3292 18.4625 13.7308 17.8819C15.1323 17.3014 16.3303 16.3183 17.1731 15.0569C18.016 13.7955 18.4658 12.3125 18.4658 10.7954C18.4657 8.76113 17.6575 6.81021 16.2191 5.37175C14.7806 3.9333 12.8297 3.12513 10.7954 3.125V3.125Z" stroke="black" stroke-width="2" stroke-miterlimit="10"></path><path d="M16.5181 16.5181L21.875 21.875" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round"></path></svg></button>';
+const searchForm = '<form action="/search" method="get" data-module="search-form" class="search-form" data-mobile-search-box=""id="mod-search-form-1"><div class="search-form-area"><span class="search-form-inputWrap"><input aria-label="Search Input" id="typeaheadinput" class="search-form-input" type="text"autocomplete="off" data-type="search-input" placeholder="Search"></span><input type="submit"><button aria-label="Cancel Search" class="header-cancel-search-button" data-type="button-search-cancel"><svg width="36" height="35" viewBox="0 0 36 35" fill="none" xmlns="http://www.w3.org/2000/svg"role="img" aria-label="Close Icon Black"><line x1="25.9165" y1="25.6572" x2="9.83687" y2="9.57762" stroke="#151517" stroke-width="2"stroke-linecap="round" stroke-linejoin="round"></line><line x1="9.83655" y1="25.41" x2="25.9162" y2="9.3304" stroke="#151517" stroke-width="2"stroke-linecap="round" stroke-linejoin="round"></line></svg></button></div></form>';
+
 const config = {
   setNavTop: true,
   searchExposed: false,
@@ -138,7 +141,7 @@ function getNavTemplate() {
             <div class="o-leaderboard-players"></div>
             <div class="o-leaderboard-link-container">
                 <a target="_blank" rel="noopener noreferrer" href="https://www.pgatour.com/leaderboard.html" class="o-leaderboard-link-container-link">
-                Full Leaderboard
+                See Full Leaderboard
                 <svg width="6" height="9" viewBox="0 0 6 9" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Arrow Icon">
                     <path d="M1.70612 0.819317L1.53333 0.654091L1.36055 0.819317L0.827218 1.32933L0.638272 1.51001L0.827218 1.69069L3.57161 4.31506L0.827218 6.93943L0.638272 7.12012L0.827218 7.3008L1.36055 7.81081L1.53333 7.97604L1.70612 7.81081L5.17278 4.49575L5.36173 4.31506L5.17278 4.13438L1.70612 0.819317Z" fill="#151517" stroke="#151517" stroke-width="0.5"></path>
                 </svg>
@@ -263,34 +266,8 @@ function getHeaderTemplate() {
       </div>
       <div class="header-sub-nav"></div>
       <div class="header-bottom-right">
-          <form action="/search" method="get" data-module="search-form" class="search-form" data-mobile-search-box=""
-                id="mod-search-form-1">
-              <div class="search-form-area">
-                      <span class="search-form-inputWrap">
-                      <input aria-label="Search Input" id="typeaheadinput" class="search-form-input" type="text"
-                             autocomplete="off" data-type="search-input" placeholder="Search">
-                      </span>
-                  <input type="submit">
-                  <button aria-label="Cancel Search" class="header-CancelSearchButton" data-type="button-search-cancel">
-                      <svg width="36" height="35" viewBox="0 0 36 35" fill="none" xmlns="http://www.w3.org/2000/svg"
-                           role="img" aria-label="Close Icon Black">
-                          <line x1="25.9165" y1="25.6572" x2="9.83687" y2="9.57762" stroke="#151517" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round"></line>
-                          <line x1="9.83655" y1="25.41" x2="25.9162" y2="9.3304" stroke="#151517" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round"></line>
-                      </svg>
-                  </button>
-              </div>
-          </form>
-          <button class="header-search-button" data-type="button-search-toggle" aria-label="Search Toggle">
-              <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg" role="img"
-                   aria-label="Search Icon">
-                  <path d="M10.7954 3.125C9.27835 3.125 7.79535 3.57486 6.53396 4.4177C5.27257 5.26053 4.28943 6.45849 3.70888 7.86007C3.12832 9.26166 2.97642 10.8039 3.27239 12.2918C3.56835 13.7797 4.29889 15.1465 5.37161 16.2192C6.44434 17.2919 7.81108 18.0225 9.29899 18.3184C10.7869 18.6144 12.3292 18.4625 13.7308 17.8819C15.1323 17.3014 16.3303 16.3183 17.1731 15.0569C18.016 13.7955 18.4658 12.3125 18.4658 10.7954C18.4657 8.76113 17.6575 6.81021 16.2191 5.37175C14.7806 3.9333 12.8297 3.12513 10.7954 3.125V3.125Z"
-                        stroke="black" stroke-width="2" stroke-miterlimit="10"></path>
-                  <path d="M16.5181 16.5181L21.875 21.875" stroke="black" stroke-width="2" stroke-miterlimit="10"
-                        stroke-linecap="round"></path>
-              </svg>
-          </button>
+          ${searchForm}
+          ${searchIcon}
       </div>
   </div>
   <hr>
@@ -321,7 +298,7 @@ function getHeaderTemplate() {
                 <path fill="#A8A9A3"
                       d="M114.7 35.1v-.3c2.9-.3 6-1.4 6-3.8 0-1.4-1-1.9-2.5-1.9h-7.6c-2.9 0-5-1.4-5-4.6 0-2.6 2.3-4 4-4.8l.2.2c-.3.2-.6.5-.6 1.1 0 .7.5 1 1.2 1h8.3c4.2 0 6.6 1.6 6.6 5.8 0 3.9-4.5 6.9-10.6 7.3m-1.1 0c-5.8 0-8.6-1-8.6-3 0-1.5 1.7-2.3 4.9-2.5l.1.2c-.4.3-1 1-1 2.3 0 1.9 1.9 2.5 4.5 2.7v.3m1.3-15v-.3c.7-.2 1.2-1.9 1.2-5.6 0-3.8-.6-5.6-1.2-5.7v-.4c3.4.2 7.9 1.9 7.9 6s-4.5 5.9-7.9 6m-.9 0c-3.4-.2-8-1.9-8-5.9s4.6-5.9 8-6v.3c-.7.2-1.3 1.9-1.3 5.7 0 3.8.7 5.5 1.3 5.6v.3m9.9-9.4c-1.3 0-2.4-1.1-2.4-2.5s1.1-2.5 2.4-2.5c1.4 0 2.5 1.1 2.5 2.5-.1 1.5-1.2 2.5-2.5 2.5M82.5 26.7v-.5c3.3-.3 5-3.1 5-11.6 0-8.9-1.6-11.3-5.1-11.6v-.6c8.5.1 14 3.5 14 12.2.1 7.9-5.2 12-13.9 12.1m-1.4 0h-8.7V2.4h8.7v24.3M104.8 26.7h-7.5V9.1l7.5-.7v18.3M164.8 27c-3.5 0-6.1-1.6-6.1-5.9v-10h-2.3V8.5h2.4v-4l7.7-2.7-.2 6.7h4.8v2.6h-4.8v9.3c0 2.2.9 3 2.9 3 .8 0 2-.3 2.4-.5v.6c-1.1 1.9-3.4 3.5-6.8 3.5M148.8 27v-.4c1.2-.2 2.2-.8 2.2-2.2 0-1.2-.7-1.8-2.6-2.7l-2.4-1.1c-2.2-1-4.2-2.7-4.2-5.9 0-3.3 3.2-6.3 7.7-6.6v.4c-1 .1-2.1.6-2.1 2 0 1.3.8 1.9 2.1 2.5l3.3 1.5c2 .9 3.7 2.8 3.7 5.4.1 4.4-2.2 6.9-7.7 7.1m-.9 0c-1.9 0-4.3-.3-5.7-.7v-4.7c1.9 2 4 4.2 5.7 5v.4m7.7-14c-1.6-2.2-3.2-3.7-5.1-4.4v-.5c1.8 0 3.9.4 5.1.8V13M132.9 27c-6.5 0-9.3-4.7-9.3-9.5 0-5.1 4-9 9.2-9.4v.4c-1.1.3-1.6 1.4-1.6 6.5 0 4.2 1.7 6.5 5.2 6.5 2 0 3.8-.5 4.9-1.4v.7c-.7 2.2-2.8 6.2-8.4 6.2m8.2-11.2h-9v-.5l2.5-.4c0-4-.5-6.2-1.2-6.4v-.4c5.6.3 7.7 4.3 7.7 7.7"></path>
             </svg>
-            <span class="login-dialog-close">X</span>
+            <span class="login-dialog-close"></span>
         </div>
         <h2>LOG IN</h2>
         <form class="login-dialog-form">
@@ -430,15 +407,8 @@ function getHeaderTemplate() {
       </a>
       <div class="header-top-right">
           <a target="_blank" href="/subscribe-golf-digest-plus" class="header-mobile-subscribe header-link">Subscribe</a>
-          <button class="header-search-button" data-type="button-search-toggle" aria-label="Search Toggle">
-              <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg" role="img"
-                   aria-label="Search Icon">
-                  <path d="M10.7954 3.125C9.27835 3.125 7.79535 3.57486 6.53396 4.4177C5.27257 5.26053 4.28943 6.45849 3.70888 7.86007C3.12832 9.26166 2.97642 10.8039 3.27239 12.2918C3.56835 13.7797 4.29889 15.1465 5.37161 16.2192C6.44434 17.2919 7.81108 18.0225 9.29899 18.3184C10.7869 18.6144 12.3292 18.4625 13.7308 17.8819C15.1323 17.3014 16.3303 16.3183 17.1731 15.0569C18.016 13.7955 18.4658 12.3125 18.4658 10.7954C18.4657 8.76113 17.6575 6.81021 16.2191 5.37175C14.7806 3.9333 12.8297 3.12513 10.7954 3.125V3.125Z"
-                        stroke="black" stroke-width="2" stroke-miterlimit="10"></path>
-                  <path d="M16.5181 16.5181L21.875 21.875" stroke="black" stroke-width="2" stroke-miterlimit="10"
-                        stroke-linecap="round"></path>
-              </svg>
-          </button>
+          ${searchForm}
+          ${searchIcon}
           <div class="profile-info">
               <a data-logged-in="false" class="profile-info-profile-photo" id="nav-photo"
                  href="/my-account">
@@ -454,25 +424,6 @@ function getHeaderTemplate() {
       <div class="separator"></div>
       <div class="header-sub-nav"></div>
       <div class="header-bottom-right">
-          <form action="/search" method="get" data-module="search-form" class="search-form" data-mobile-search-box=""
-                id="mod-search-form-1">
-              <div class="search-form-area">
-                      <span class="search-form-inputWrap">
-                      <input aria-label="Search Input" id="typeaheadinput" class="search-form-input" type="text"
-                             autocomplete="off" data-type="search-input" placeholder="Search">
-                      </span>
-                  <input type="submit">
-                  <button aria-label="Cancel Search" class="header-CancelSearchButton" data-type="button-search-cancel">
-                      <svg width="36" height="35" viewBox="0 0 36 35" fill="none" xmlns="http://www.w3.org/2000/svg"
-                           role="img" aria-label="Close Icon Black">
-                          <line x1="25.9165" y1="25.6572" x2="9.83687" y2="9.57762" stroke="#151517" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round"></line>
-                          <line x1="9.83655" y1="25.41" x2="25.9162" y2="9.3304" stroke="#151517" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round"></line>
-                      </svg>
-                  </button>
-              </div>
-          </form>
       </div>
   </div>
   <hr>
@@ -503,7 +454,7 @@ function getHeaderTemplate() {
                   <path fill="#A8A9A3"
                         d="M114.7 35.1v-.3c2.9-.3 6-1.4 6-3.8 0-1.4-1-1.9-2.5-1.9h-7.6c-2.9 0-5-1.4-5-4.6 0-2.6 2.3-4 4-4.8l.2.2c-.3.2-.6.5-.6 1.1 0 .7.5 1 1.2 1h8.3c4.2 0 6.6 1.6 6.6 5.8 0 3.9-4.5 6.9-10.6 7.3m-1.1 0c-5.8 0-8.6-1-8.6-3 0-1.5 1.7-2.3 4.9-2.5l.1.2c-.4.3-1 1-1 2.3 0 1.9 1.9 2.5 4.5 2.7v.3m1.3-15v-.3c.7-.2 1.2-1.9 1.2-5.6 0-3.8-.6-5.6-1.2-5.7v-.4c3.4.2 7.9 1.9 7.9 6s-4.5 5.9-7.9 6m-.9 0c-3.4-.2-8-1.9-8-5.9s4.6-5.9 8-6v.3c-.7.2-1.3 1.9-1.3 5.7 0 3.8.7 5.5 1.3 5.6v.3m9.9-9.4c-1.3 0-2.4-1.1-2.4-2.5s1.1-2.5 2.4-2.5c1.4 0 2.5 1.1 2.5 2.5-.1 1.5-1.2 2.5-2.5 2.5M82.5 26.7v-.5c3.3-.3 5-3.1 5-11.6 0-8.9-1.6-11.3-5.1-11.6v-.6c8.5.1 14 3.5 14 12.2.1 7.9-5.2 12-13.9 12.1m-1.4 0h-8.7V2.4h8.7v24.3M104.8 26.7h-7.5V9.1l7.5-.7v18.3M164.8 27c-3.5 0-6.1-1.6-6.1-5.9v-10h-2.3V8.5h2.4v-4l7.7-2.7-.2 6.7h4.8v2.6h-4.8v9.3c0 2.2.9 3 2.9 3 .8 0 2-.3 2.4-.5v.6c-1.1 1.9-3.4 3.5-6.8 3.5M148.8 27v-.4c1.2-.2 2.2-.8 2.2-2.2 0-1.2-.7-1.8-2.6-2.7l-2.4-1.1c-2.2-1-4.2-2.7-4.2-5.9 0-3.3 3.2-6.3 7.7-6.6v.4c-1 .1-2.1.6-2.1 2 0 1.3.8 1.9 2.1 2.5l3.3 1.5c2 .9 3.7 2.8 3.7 5.4.1 4.4-2.2 6.9-7.7 7.1m-.9 0c-1.9 0-4.3-.3-5.7-.7v-4.7c1.9 2 4 4.2 5.7 5v.4m7.7-14c-1.6-2.2-3.2-3.7-5.1-4.4v-.5c1.8 0 3.9.4 5.1.8V13M132.9 27c-6.5 0-9.3-4.7-9.3-9.5 0-5.1 4-9 9.2-9.4v.4c-1.1.3-1.6 1.4-1.6 6.5 0 4.2 1.7 6.5 5.2 6.5 2 0 3.8-.5 4.9-1.4v.7c-.7 2.2-2.8 6.2-8.4 6.2m8.2-11.2h-9v-.5l2.5-.4c0-4-.5-6.2-1.2-6.4v-.4c5.6.3 7.7 4.3 7.7 7.7"></path>
               </svg>
-              <span class="login-dialog-close">X</span>
+              <span class="login-dialog-close"></span>
           </div>
           <h2>LOG IN</h2>
           <form class="login-dialog-form">
