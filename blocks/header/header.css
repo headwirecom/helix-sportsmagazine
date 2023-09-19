@@ -306,8 +306,15 @@ body:not(.landing-page) .header .header-bottom-bar {
   border: none;
 }
 
+@keyframes backdrop-opacity {
+  from {opacity: 1;}
+  to {opacity: 0.9;}
+}
+
 .login-dialog::backdrop {
-  background-color: rgb(0 0 0 / 70%)
+  background: #121214;
+  opacity: 0.9;
+  animation: backdrop-opacity .5s ;
 }
 
 .login-dialog .login-dialog-content {
@@ -336,8 +343,12 @@ body:not(.landing-page) .header .header-bottom-bar {
   position: absolute;
   right: 15px;
   top: 15px;
+  width: 30px;
+  height: 30px;
   font-size: 20px;
   cursor: pointer;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAiIGhlaWdodD0iMjkiIHZpZXdCb3g9IjAgMCAzMCAyOSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGxpbmUgeDE9IjIxLjgzNTkiIHkxPSIyMC43NDEyIiB4Mj0iOC40MDA4MyIgeTI9IjcuMzA2MTgiIHN0cm9rZT0iIzE1MUMyQyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxsaW5lIHgxPSI4LjQwMDYzIiB5MT0iMjAuOTc4IiB4Mj0iMjEuODM1NyIgeTI9IjcuNTQyOTIiIHN0cm9rZT0iIzE1MUMyQyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+Cjwvc3ZnPgo=");
+  background-size: 100% 100%;
 }
 
 .login-dialog .login-dialog-logo {
@@ -636,8 +647,12 @@ body:not(.landing-page) .header .header-bottom-bar {
   color: #151517;
 }
 
+.header .search-form-input:focus-visible {
+  outline: none;
+}
+
 .home-page .header:not(.is-scrolling) .search-form-input {
-  background-color: rgba(21,21,23,.2);
+  background-color: rgba(21 21 23 / 20%);
   border: none;
   color: #fff;
 }
@@ -647,12 +662,8 @@ body:not(.landing-page) .header .header-bottom-bar {
   opacity: 0.8;
 }
 
-.home-page .header:not(.is-scrolling) .header-CancelSearchButton > svg line {
+.home-page .header:not(.is-scrolling) .header-cancel-search-button > svg line {
   stroke: #fff;
-}
-
-.header .search-form-input:focus-visible {
-  outline: none;
 }
 
 .header .header-overlay {
@@ -1156,12 +1167,12 @@ body:not(.landing-page) .header .header-bottom-bar {
   color: #fff;
 }
 
-.home-page .header:not(.is-scrolling) .profile-info-button-login:hover {
-  color: var(--link-hover-color);
-}
-
 .header .nav-menu-bottom .profile-info-button-wrapper .profile-info-button-login {
   color: #fff;
+}
+
+.home-page .header:not(.is-scrolling) .profile-info-button-login:hover {
+  color: var(--link-hover-color);
 }
 
 .header .nav-menu-bottom .profile-info-button-wrapper .profile-info-button-login:hover {
@@ -1210,6 +1221,16 @@ body:not(.landing-page) .header .header-bottom-bar {
 .header .profile-info {
   display: flex;
   align-items: center;
+  overflow: hidden;
+  width: 65px;
+  text-wrap: nowrap;
+  transition: opacity .3s, width .3s, margin .3s;
+}
+
+.header.has-open-search .profile-info {
+  opacity: 0;
+  width: 0;
+  margin: 0;
 }
 
 @media (min-width: 1025px) {
@@ -1230,7 +1251,7 @@ body:not(.landing-page) .header .header-bottom-bar {
   background-color: #f6f6f6;
   border-top: 1px solid #e6e6e6;
   border-bottom: 1px solid #e6e6e6;
-  width: 100vw;
+  width: 100%;
   position: absolute;
   top: 0;
   z-index: 2;
@@ -1257,7 +1278,6 @@ body:not(.landing-page) .header .header-bottom-bar {
   background-color: #fff;
   padding: 5px 10px;
   border: 1px solid #e6e6e6;
-  border-bottom: 0;
 }
 
 .leaderboard .o-leaderboard-players-player-score p {

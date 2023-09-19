@@ -75,13 +75,9 @@
   --font-chivo-bold: "Chivo Bold", "Chivo Bold Fallback", helvetica, ubuntu, roboto, noto, sans-serif;
   --font-work: "Work Sans", "Work Sans Fallback", helvetica, ubuntu, roboto, noto, sans-serif;
   --header-height: 152px;
-  --leaderboard-height: 80px;
+  --leaderboard-height: 70px;
   --link-hover-color: #ed3e49;
   --layout-width: 1440px;
-}
-
-:root body:not(.landing-page) {
-  --header-height: 82px;
 }
 
 @media (max-width: 768px) {
@@ -112,6 +108,10 @@ body {
   display: none;
 }
 
+:root body:not(.landing-page) {
+  --header-height: 82px;
+}
+
 body.appear {
   display: unset;
 }
@@ -122,10 +122,6 @@ header {
   z-index: 5000000;
   position: sticky;
   top: -1px;
-}
-
-main {
-  /* padding-top: 20px; */
 }
 
 .icon {
