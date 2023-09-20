@@ -879,3 +879,167 @@ export const generateArticleBlocker = (block, selector) => {
 
   articleBody.appendChild(articleBlocker);
 };
+
+/**
+ * Generates an auto-carousel for articles
+ * @param {Image Element Array} 
+ */
+
+export const generateAutoCarousel = (imageElementArray) => {
+  const images = imageElementArray.map((element) => element.nodeName.toLowerCase() === 'picture' ? element : element.querySelector('picture'))
+
+  for (let i = 1; i < imageElementArray.length; i++) {
+    imageElementArray[i].outerHTML = ''
+  }
+
+
+  let htmlTemplate = document.createElement('div')
+  htmlTemplate.className = 'auto-carousel-wrapper'
+  htmlTemplate.innerHTML = `
+    <div class="auto-carousel">
+      <div class="controls">
+        <div class="button-wrapper">
+          <button class="auto-carousel-button left-button"></button>
+        </div>
+        
+        <div class="button-wrapper">
+          <button class="auto-carousel-button right-button"></button>
+        </div>
+      </div>
+
+      <div class="carousel-inner-wrapper">
+        <div class="carousel-frame" style="transform: translateX(0px);">
+          ${images.map((image) => {
+            return `
+              <div class="image-wrapper">
+                ${image.outerHTML}
+              </div>
+            `
+          }).join('')}
+        </div>
+      </div>
+  </div>
+  `;
+
+  const carouselWrapper = htmlTemplate.querySelector('.auto-carousel')
+  const carouselFrame = htmlTemplate.querySelector('.carousel-frame');
+  const rightButton = htmlTemplate.querySelector('.controls .right-button');
+  const leftButton = htmlTemplate.querySelector('.controls .left-button');
+  let pressed = false;
+  let x = 0;
+  let maxScroll = 1440;
+
+  const updateButtonVisibility = () => {
+    if (x > -40) {
+      leftButton.classList.add('hidden');
+    } else {
+      leftButton.classList.remove('hidden');
+    }
+    if (x < -maxScroll + 40) {
+      rightButton.classList.add('hidden');
+    } else {
+      rightButton.classList.remove('hidden');
+    }
+  };
+  updateButtonVisibility();
+
+  const refreshMaxScroll = () => {
+    maxScroll = (images.length - 1) * document.body.getBoundingClientRect().width || window.innerWidth
+  };
+  refreshMaxScroll()
+  
+  const roundX = (step = document.body.getBoundingClientRect().width || window.innerWidth) => {
+    const rounded = Math.round(x / step) * step;
+    x = Math.min(0, Math.max(rounded, -maxScroll));
+  };
+
+  const addToX = (addValue) => {
+    const newValue = x + addValue;
+    // while dragging over the edge, value is reduced
+    if (newValue > 0) {
+      x = !pressed ? 0 : x + addValue / 8;
+    } else if (newValue < -maxScroll) {
+      x = !pressed ? -maxScroll : x + addValue / 8;
+    } else {
+      x = newValue;
+    }
+  };
+
+  // button logic
+  const rightOnClick = () => {
+    refreshMaxScroll()
+    addToX(-carouselFrame.getBoundingClientRect().width);
+    roundX();
+    carouselFrame.style.transform = `translateX(${x}px)`;
+    updateButtonVisibility();
+  };
+
+  const leftOnClick = () => {
+    addToX(carouselFrame.getBoundingClientRect().width);
+    roundX();
+    carouselFrame.style.transform = `translateX(${x}px)`;
+    updateButtonVisibility();
+  };
+
+  // drag logic starting with initialization for mobile
+  let previousTouch;
+
+  const mouseMoveHandler = (e) => {
+    if (!pressed) return;
+    if (!e?.touches?.[0]) {
+      e.preventDefault();
+    }
+    addToX(e.movementX);
+    carouselFrame.style.transform = `translateX(${x}px)`;
+    // prettier-ignore
+  };
+
+  const touchMoveHandler = (e) => {
+    const touch = e.touches[0];
+    if (previousTouch) {
+      e.movementX = touch.pageX - previousTouch.pageX;
+      mouseMoveHandler(e);
+    }
+    previousTouch = touch;
+  };
+
+  // mouse drag handlers
+  const mouseUpHandler = () => {
+    pressed = false;
+    carouselWrapper.classList.remove('grabbed');
+    roundX();
+    carouselFrame.style.transform = `translateX(${x}px)`;
+    updateButtonVisibility();
+    // cleanup
+    window.removeEventListener('mouseup', mouseUpHandler);
+    window.removeEventListener('touchend', mouseUpHandler);
+
+    window.removeEventListener('mousemove', mouseMoveHandler);
+    window.removeEventListener('touchmove', touchMoveHandler);
+  };
+
+  const mouseDownHandler = (e) => {
+    if (e?.touches?.[0]) {
+      [previousTouch] = e.touches;
+    }
+    carouselWrapper.classList.add('grabbed');
+    pressed = true;
+    refreshMaxScroll();
+
+    window.addEventListener('mouseup', mouseUpHandler);
+    window.addEventListener('touchend', mouseUpHandler);
+
+    window.addEventListener('mousemove', mouseMoveHandler);
+    window.addEventListener('touchmove', touchMoveHandler);
+  };
+  carouselWrapper.onmousedown = mouseDownHandler;
+  carouselWrapper.addEventListener('touchstart', mouseDownHandler);
+
+  
+  rightButton.onclick = rightOnClick
+  leftButton.onclick = leftOnClick
+
+  imageElementArray[0].replaceWith(htmlTemplate)
+  const overwrittenHtml = imageElementArray[0];
+  
+}
