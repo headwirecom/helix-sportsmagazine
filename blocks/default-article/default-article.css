@@ -1,3 +1,8 @@
+.default-article-wrapper .default-article.block .center-seperator {
+    display: flex;
+    justify-content: center;
+}
+
 .default-article-wrapper .default-article.block .container {
     max-width: var(--layout-width);
     margin: 0 auto;
@@ -149,10 +154,6 @@
     justify-content: center;
 }
 
-.default-article-wrapper .default-article.block .lead .portrait img {
-    max-width: 400px;
-}
-
 .default-article-wrapper .default-article.block .credit {
     margin: 0 auto;
     padding-top: 15px;
@@ -229,4 +230,16 @@
 
 .default-article-wrapper .default-article.block .article-body .portrait img {
     max-width: 600px;
+}
+
+.default-article-wrapper .default-article.block .article-body h2 {
+    font-family: var(--font-tungsten);
+    font-size: 37px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 38px;
+    letter-spacing: .05em;
+    border-bottom: 2px solid #ed3e49;
+    margin: 60px auto;
+    width: max-content;
 }

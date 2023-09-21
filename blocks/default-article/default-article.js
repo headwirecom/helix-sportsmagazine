@@ -92,6 +92,12 @@ export default async function decorate(block) {
   share.setAttribute('slot', 'share');
   block.append(share);
 
+  block.querySelectorAll('p').forEach((p) => {
+    if (p.textContent.includes('• • •')) {
+      p.classList.add('center-seperator');
+    }
+  });
+
   replaceLinksWithEmbed(block);
 
   // Render template

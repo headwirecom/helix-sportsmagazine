@@ -31,7 +31,7 @@ const LCP_BLOCKS = [...Object.values(ARTICLE_TEMPLATES), 'hero']; // add your LC
 const range = document.createRange();
 
 export function replaceLinksWithEmbed(block) {
-  const embeds = ['youtube', 'brightcove', 'instagram'];
+  const embeds = ['youtube', 'brightcove', 'instagram', 'ceros'];
   block.querySelectorAll(embeds.map((embed) => `a[href*="${embed}"]`).join(',')).forEach((embedLink) => {
     if (embedLink.textContent.startsWith('View') && embedLink.href.includes('instagram')) {
       embedLink.remove();

@@ -122,7 +122,7 @@
 
 
 .full-bleed-wrapper .full-bleed.block .article-body div > p {
-  margin: 0 auto 30px;
+  margin: 0 auto 60px;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -138,7 +138,7 @@
 }
 
 @media (min-width: 769px) {
-  .full-bleed-wrapper .full-bleed.block .article-body div > p {
+  .full-bleed-wrapper .full-bleed.block .article-body p {
     margin-bottom: 60px;
   }
 }
@@ -329,7 +329,7 @@
 
 .full-bleed-wrapper .full-bleed.block .article-body a {
   color: #000;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .full-bleed-wrapper .full-bleed.block .attribution a:hover {

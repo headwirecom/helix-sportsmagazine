@@ -26,7 +26,7 @@
 
 .long-form-wrapper .long-form.block .article-body a {
     color: #000;
-    text-decoration: none;
+    /* text-decoration: none; */
     font-weight: 500;
 }
 
@@ -117,7 +117,8 @@
     margin: 20px 0;
 }
 
-.long-form-wrapper .long-form.block .article-body > div > div > div > p {
+.long-form-wrapper .long-form.block .article-body > div > div > div > * {
+    display: block;
     line-height: 30px;
     margin: 0 auto 20px;
     padding: 0 20px;
@@ -128,7 +129,7 @@
     font-family: var(--font-tungsten);
     font-size: 37px;
     font-style: normal;
-    font-weight: 700;
+    font-weight: 600;
     line-height: 38px;
     letter-spacing: .05em;
     text-decoration: underline;
@@ -145,7 +146,7 @@
 }
 
 @media (min-width: 1025px) {
-    .long-form-wrapper .long-form.block .article-body > div > div > div > p {
+    .long-form-wrapper .long-form.block .article-body > div > div > div > * {
         padding: 0 15px 0 35px;
         margin-bottom: 60px;
     }

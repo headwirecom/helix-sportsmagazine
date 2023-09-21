@@ -60,7 +60,7 @@
 
 .article-body .courses-text-wrapper .courses-tags > li > a {
     text-decoration: none; 
-    color: #fff;
+    color: #fff !important;
     background: #105259;
     white-space: nowrap;
     font-family: var(--font-gotham);
