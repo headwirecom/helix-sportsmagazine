@@ -332,6 +332,10 @@
   font-weight: 500;
 }
 
+.full-bleed-wrapper .full-bleed.block .article-body strong a {
+  font-weight: 600;
+}
+
 .full-bleed-wrapper .full-bleed.block .attribution a:hover {
   text-decoration: underline;
 }

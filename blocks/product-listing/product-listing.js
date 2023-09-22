@@ -42,7 +42,7 @@ export default async function decorate(block) {
             </div>
             <div class="details">
                 <span>${sectionMetadata.price}</span>
-                ${sectionMetadata.price && sectionMetadata.advertiser ? '<span class="separator">|</span>' : ''}
+                ${sectionMetadata.advertiser ? '<span class="separator">|</span>' : ''}
                 <span class="advertiser">${sectionMetadata.advertiser}</span>
             </div>
             <div class="link">

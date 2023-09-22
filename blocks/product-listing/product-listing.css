@@ -102,7 +102,7 @@
 }
 
 .product-listing-wrapper .product-listing.block .article-content .details .separator,
-.product-listing-wrapper .product-listing.block .article-content .details .separator + span {
+.product-listing-wrapper .product-listing.block .article-content .details .advertiser {
     color: #adb4b7;
 }
 

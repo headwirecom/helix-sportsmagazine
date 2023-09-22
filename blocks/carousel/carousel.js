@@ -1,18 +1,19 @@
-import { createOptimizedPicture } from "../../scripts/lib-franklin.js";
-import { getBlockId, parseFragment, removeEmptyElements, render } from "../../scripts/scripts.js";
+import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
+import {
+  getBlockId, parseFragment, removeEmptyElements, render,
+} from '../../scripts/scripts.js';
 
-const placeholderHtml = (isLarge) =>
-  `<div class="carousel-main-wrapper" style="${
-    isLarge ? "aspect-ratio: 2/1; " : "height: 949px;"
-  } width: 100%; visibility: hidden;"><div>`;
+const placeholderHtml = (isLarge) => `<div class="carousel-main-wrapper" style="${
+  isLarge ? 'aspect-ratio: 2/1; ' : 'height: 949px;'
+} width: 100%; visibility: hidden;"><div>`;
 
 const enableCarouselFunctionality = (template, { isWedges, isLarge, isAutoCarousel }) => {
   // initialize variables & functions required for carousel features
-  const carouselWrapper = template.querySelector(".carousel-main-wrapper");
-  const carouselFrame = template.querySelector(".carousel-frame");
+  const carouselWrapper = template.querySelector('.carousel-main-wrapper');
+  const carouselFrame = template.querySelector('.carousel-frame');
   const carouselCardLinks = carouselFrame.children;
-  const rightButton = template.querySelector(".controls .right-button");
-  const leftButton = template.querySelector(".controls .left-button");
+  const rightButton = template.querySelector('.controls .right-button');
+  const leftButton = template.querySelector('.controls .left-button');
   let pressed = false;
   let x = 0;
   let maxScroll = 1440;
@@ -37,13 +38,13 @@ const enableCarouselFunctionality = (template, { isWedges, isLarge, isAutoCarous
 
   const refreshMaxScroll = () => {
     if (isAutoCarousel) {
-      maxScroll = (carouselCardLinks.length - 1) * (document.body.getBoundingClientRect().width || window.innerWidth);
+      maxScroll = (carouselCardLinks.length - 1)
+        * (document.body.getBoundingClientRect().width || window.innerWidth);
       return;
     }
-    maxScroll =
-      carouselCardLinks.length
-      * (carouselCardLinks[0].getBoundingClientRect().width + gapOffset) - // prettier-ignore
-      carouselFrame.getBoundingClientRect().width;
+    maxScroll = carouselCardLinks.length
+      * (carouselCardLinks[0].getBoundingClientRect().width + gapOffset) // prettier-ignore
+      - carouselFrame.getBoundingClientRect().width;
   };
 
   const roundX = (step = carouselCardLinks[0].getBoundingClientRect().width + gapOffset) => {
@@ -65,14 +66,14 @@ const enableCarouselFunctionality = (template, { isWedges, isLarge, isAutoCarous
 
   const updateButtonVisibility = () => {
     if (x > -40) {
-      leftButton.classList.add("hidden");
+      leftButton.classList.add('hidden');
     } else {
-      leftButton.classList.remove("hidden");
+      leftButton.classList.remove('hidden');
     }
     if (x < -maxScroll + 40) {
-      rightButton.classList.add("hidden");
+      rightButton.classList.add('hidden');
     } else {
-      rightButton.classList.remove("hidden");
+      rightButton.classList.remove('hidden');
     }
   };
   updateButtonVisibility();
@@ -102,34 +103,34 @@ const enableCarouselFunctionality = (template, { isWedges, isLarge, isAutoCarous
   // mouse drag handlers
   const mouseUpHandler = () => {
     pressed = false;
-    carouselWrapper.classList.remove("grabbed");
+    carouselWrapper.classList.remove('grabbed');
     roundX();
     carouselFrame.style.transform = `translateX(${x}px)`;
     updateButtonVisibility();
     // cleanup
-    window.removeEventListener("mouseup", mouseUpHandler);
-    window.removeEventListener("touchend", mouseUpHandler);
+    window.removeEventListener('mouseup', mouseUpHandler);
+    window.removeEventListener('touchend', mouseUpHandler);
 
-    window.removeEventListener("mousemove", mouseMoveHandler);
-    window.removeEventListener("touchmove", touchMoveHandler);
+    window.removeEventListener('mousemove', mouseMoveHandler);
+    window.removeEventListener('touchmove', touchMoveHandler);
   };
 
   const mouseDownHandler = (e) => {
     if (e?.touches?.[0]) {
       [previousTouch] = e.touches;
     }
-    carouselWrapper.classList.add("grabbed");
+    carouselWrapper.classList.add('grabbed');
     pressed = true;
     refreshMaxScroll();
 
-    window.addEventListener("mouseup", mouseUpHandler);
-    window.addEventListener("touchend", mouseUpHandler);
+    window.addEventListener('mouseup', mouseUpHandler);
+    window.addEventListener('touchend', mouseUpHandler);
 
-    window.addEventListener("mousemove", mouseMoveHandler);
-    window.addEventListener("touchmove", touchMoveHandler);
+    window.addEventListener('mousemove', mouseMoveHandler);
+    window.addEventListener('touchmove', touchMoveHandler);
   };
   carouselWrapper.onmousedown = mouseDownHandler;
-  carouselWrapper.addEventListener("touchstart", mouseDownHandler);
+  carouselWrapper.addEventListener('touchstart', mouseDownHandler);
 
   // button logic
   const rightOnClick = () => {
@@ -168,16 +169,16 @@ const enableCarouselFunctionality = (template, { isWedges, isLarge, isAutoCarous
       if (e.keyCode === 9) {
         cardFocusHandler(anchor, index);
       }
-      window.removeEventListener("keyup", keyUpHandler);
+      window.removeEventListener('keyup', keyUpHandler);
     };
     anchor.onkeyup = (e) => {
-      if (e.key === "Enter") {
-        window.location.href = anchor.href.startsWith("#") ? window.location.href + anchor.href : anchor.href;
+      if (e.key === 'Enter') {
+        window.location.href = anchor.href.startsWith('#') ? window.location.href + anchor.href : anchor.href;
       }
     };
     // waiting for keyup stops mouse clicks from triggering the focus logic
     anchor.onfocus = () => {
-      window.addEventListener("keyup", keyUpHandler);
+      window.addEventListener('keyup', keyUpHandler);
     };
     anchor.onmousedown = (e) => {
       e.preventDefault();
@@ -208,13 +209,13 @@ const enableCarouselFunctionality = (template, { isWedges, isLarge, isAutoCarous
       }
     }, 150);
   };
-  window.addEventListener("resize", debouncedResizeHandler);
+  window.addEventListener('resize', debouncedResizeHandler);
 };
 
 export default async function decorate(block) {
   //
-  if (block.classList.contains("auto-carousel")) {
-    const images = [...block.querySelectorAll("picture")];
+  if (block.classList.contains('auto-carousel')) {
+    const images = [...block.querySelectorAll('picture')];
     const HTML_TEMPLATE = `
       <div class="carousel-main-wrapper">
         <div class="controls">
@@ -226,14 +227,12 @@ export default async function decorate(block) {
         <div class="carousel-inner-wrapper">
           <div class="carousel-frame" style="transform: translateX(0px);">
             ${images
-              .map((image) => {
-                return `
+    .map((image) => `
                 <div class="image-wrapper">
                   ${image.outerHTML}
                 </div>
-              `;
-              })
-              .join("")}
+              `)
+    .join('')}
           </div>
         </div>
     </div>
@@ -246,24 +245,24 @@ export default async function decorate(block) {
     render(template, block);
 
     // Post-processing
-    removeEmptyElements(template, "p");
+    removeEmptyElements(template, 'p');
 
-    block.innerHTML = "";
+    block.innerHTML = '';
     block.append(...template.children);
     return;
   }
   const id = getBlockId(block);
 
-  const isWedges = block.classList.contains("wedges");
-  const isLarge = block.classList.contains("large");
-  const isCourses = block.classList.contains("courses");
+  const isWedges = block.classList.contains('wedges');
+  const isLarge = block.classList.contains('large');
+  const isCourses = block.classList.contains('courses');
   const variants = Array.from(block.classList)
-    .filter((className) => className !== "carousel" && className !== "block")
-    .join(" ");
+    .filter((className) => className !== 'carousel' && className !== 'block')
+    .join(' ');
 
-  let heading = block.querySelector("h3")?.textContent ?? "";
+  let heading = block.querySelector('h3')?.textContent ?? '';
   if (isWedges) {
-    heading = heading.replace("(year)", new Date().getFullYear());
+    heading = heading.replace('(year)', new Date().getFullYear());
   }
 
   // Adding placeholder html
@@ -274,7 +273,7 @@ export default async function decorate(block) {
     // TODO Support multiple queries
     const carouselData = event.detail.data;
 
-    const carouselHeadingType = isWedges ? "h2" : "h4";
+    const carouselHeadingType = isWedges ? 'h2' : 'h4';
 
     // Mobile version of wedges displays them all and disables swiping,
     // but is only checked for on the initial render
@@ -282,14 +281,14 @@ export default async function decorate(block) {
 
     const HTML_TEMPLATE = `
     ${
-      !heading
-        ? ""
-        : `<div class="carousel-title-wrapper">
+  !heading
+    ? ''
+    : `<div class="carousel-title-wrapper">
         <${carouselHeadingType} class="carousel-title ${variants}">${heading}</${carouselHeadingType}>
       </div>
     `
-    }
-  <div class="carousel-main-wrapper ${isMobileWedges ? "mobile-wedges" : ""}">
+}
+  <div class="carousel-main-wrapper ${isMobileWedges ? 'mobile-wedges' : ''}">
   <div class="controls">
     <button aria-label="Scroll Left" class="left-button"></button>
     <button aria-label="Scroll Right" class="right-button"></button>
@@ -297,60 +296,60 @@ export default async function decorate(block) {
   <div class="carousel-inner-wrapper">
       <div class="carousel-frame" style="transform: translateX(0px);">
         ${carouselData
-          .map(
-            (carouselItem) => `
+    .map(
+      (carouselItem) => `
           <a class="carousel-item" href="${carouselItem.path}" >
             <div class="carousel-item-wrapper">
               <div class="carousel-image-wrapper">
                 ${
-                  createOptimizedPicture(
-                    carouselItem.image,
-                    carouselItem.imageAlt || carouselItem.title,
-                    false,
-                    isLarge
-                      ? [
-                          { media: "(max-width: 768px)", width: "1300" },
-                          { media: "(max-width: 1024px)", width: "1000" },
-                          { media: "(max-width: 1280px)", width: "1200" },
-                          { width: "1400" },
-                        ]
-                      : [
-                          { media: "(max-width: 768px)", width: "660" },
-                          { media: "(max-width: 1024px)", width: "1000" },
-                          { media: "(max-width: 1280px)", width: "560" },
-                          { width: "650" },
-                        ]
-                  ).outerHTML
-                }
+  createOptimizedPicture(
+    carouselItem.image,
+    carouselItem.imageAlt || carouselItem.title,
+    false,
+    isLarge
+      ? [
+        { media: '(max-width: 768px)', width: '1300' },
+        { media: '(max-width: 1024px)', width: '1000' },
+        { media: '(max-width: 1280px)', width: '1200' },
+        { width: '1400' },
+      ]
+      : [
+        { media: '(max-width: 768px)', width: '660' },
+        { media: '(max-width: 1024px)', width: '1000' },
+        { media: '(max-width: 1280px)', width: '560' },
+        { width: '650' },
+      ],
+  ).outerHTML
+}
               </div>
               
               <div class="carousel-text-content">
                 ${
-                  !block.classList.contains("with-video") && carouselItem.rubric
-                    ? `<span class="sub-heading">${carouselItem.rubric}</span>`
-                    : ""
-                }
+  !block.classList.contains('with-video') && carouselItem.rubric
+    ? `<span class="sub-heading">${carouselItem.rubric}</span>`
+    : ''
+}
                 <h3 class="carousel-item-title">${carouselItem.title}</h3>
                 <!-- TODO remove placeholder, add dynamic data time duration -->
-                ${block.classList.contains("with-video") ? '<p class="carousel-video-duration">05:35</p>' : ""}
+                ${block.classList.contains('with-video') ? '<p class="carousel-video-duration">05:35</p>' : ''}
                 ${
-                  isCourses && carouselItem.location
-                    ? `<span class="carousel-item-location">${carouselItem.location}</span>`
-                    : ""
-                }
+  isCourses && carouselItem.location
+    ? `<span class="carousel-item-location">${carouselItem.location}</span>`
+    : ''
+}
   
                 ${
-                  Array.isArray(carouselItem.awards) && carouselItem.awards.length
-                    ? `<ul class="carousel-item-pills">${carouselItem.awards
-                        .map((award) => `<li class="pill-item">${award}</li>`)
-                        .join("")}</ul>`
-                    : ""
-                }
+  Array.isArray(carouselItem.awards) && carouselItem.awards.length
+    ? `<ul class="carousel-item-pills">${carouselItem.awards
+      .map((award) => `<li class="pill-item">${award}</li>`)
+      .join('')}</ul>`
+    : ''
+}
               </div>
             </div>
-          </a>`
-          )
-          .join("")}
+          </a>`,
+    )
+    .join('')}
       </div>
       </div>
     </div>
@@ -367,9 +366,9 @@ export default async function decorate(block) {
     render(template, block);
 
     // Post-processing
-    removeEmptyElements(template, "p");
+    removeEmptyElements(template, 'p');
 
-    block.innerHTML = "";
+    block.innerHTML = '';
     block.append(...template.children);
   });
 

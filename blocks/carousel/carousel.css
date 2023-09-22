@@ -420,6 +420,27 @@
 }
 
 .carousel-wrapper
+  .carousel.block.auto-carousel
+  .carousel-main-wrapper
+  .carousel-inner-wrapper
+  .carousel-frame
+  .image-wrapper
+  picture,
+.carousel-wrapper
+  .carousel.block.auto-carousel
+  .carousel-main-wrapper
+  .carousel-inner-wrapper
+  .carousel-frame
+  .image-wrapper
+  img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  position: static;
+}
+
+.carousel-wrapper
   .carousel.block
   .carousel-main-wrapper
   .carousel-frame
@@ -822,25 +843,4 @@
   width: 100%;
   height: 100%;
   background-color: #ededed;
-}
-
-.carousel-wrapper
-  .carousel.block.auto-carousel
-  .carousel-main-wrapper
-  .carousel-inner-wrapper
-  .carousel-frame
-  .image-wrapper
-  picture,
-.carousel-wrapper
-  .carousel.block.auto-carousel
-  .carousel-main-wrapper
-  .carousel-inner-wrapper
-  .carousel-frame
-  .image-wrapper
-  img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center center;
-  position: static;
 }

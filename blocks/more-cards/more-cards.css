@@ -5,6 +5,10 @@
     justify-content: center;
 }
 
+.more-cards a {
+    text-decoration: none;
+}
+
 .more-cards.multiple {
     background-color: #f6f6f6;
 }
