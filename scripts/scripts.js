@@ -616,11 +616,13 @@ window.store = new (class {
           .find((className) => className.endsWith(spreadsheet));
 
         if (queryClassName) {
-          const query = queryClassName.replace(`-${spreadsheet}`, '');
-          if (!this._queryMap[query]) {
-            this._queryMap[query] = {
+          const sheetName = queryClassName.replace(`-${spreadsheet}`, '');
+          if (!this._queryMap[queryClassName]) {
+            this._queryMap[queryClassName] = {
               spreadsheet,
+              sheetName,
               limit: 0,
+              query: queryClassName,
             };
           }
         }
@@ -631,8 +633,7 @@ window.store = new (class {
     const queryNames = Object.keys(this._queryMap);
     this.blockNames.forEach((blockName) => {
       queryNames.forEach((queryName) => {
-        const { spreadsheet } = this._queryMap[queryName];
-        document.querySelectorAll(`main .${blockName}.${queryName}-${spreadsheet}.block`).forEach((blockEl) => {
+        document.querySelectorAll(`main .${queryName}.block[data-block-name="${blockName}"]`).forEach((blockEl) => {
           this._queryMap[queryName].limit += this._blockQueryLimit[blockName](blockEl);
         });
       });
@@ -695,7 +696,7 @@ Make sure to set a limit for \x1b[31m"${block.dataset.blockName}"\x1b[0m in \x1b
       url = queryDetails.mock;
     } else {
       // Build query sheet url
-      url = `/${this._spreadsheets[queryDetails.spreadsheet]}.json?sheet=${query}`;
+      url = `/${this._spreadsheets[queryDetails.spreadsheet]}.json?sheet=${queryDetails.sheetName}`;
     }
 
     const dispatchData = (dispatchId) => {
