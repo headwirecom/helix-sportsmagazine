@@ -1,8 +1,3 @@
-.default-article-wrapper .default-article.block .center-seperator {
-    display: flex;
-    justify-content: center;
-}
-
 .default-article-wrapper .default-article.block .container {
     max-width: var(--layout-width);
     margin: 0 auto;

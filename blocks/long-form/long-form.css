@@ -117,7 +117,7 @@
     margin: 20px 0;
 }
 
-.long-form-wrapper .long-form.block .article-body > div > div > div > * {
+.long-form-wrapper .long-form.block .article-body div > p {
     display: block;
     line-height: 30px;
     margin: 0 auto 20px;
@@ -151,7 +151,7 @@
 }
 
 @media (min-width: 1025px) {
-    .long-form-wrapper .long-form.block .article-body > div > div > div > * {
+    .long-form-wrapper .long-form.block .article-body div > p {
         padding: 0 15px 0 35px;
         margin-bottom: 60px;
     }

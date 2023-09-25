@@ -30,6 +30,18 @@ const LCP_BLOCKS = [...Object.values(ARTICLE_TEMPLATES), 'hero']; // add your LC
 
 const range = document.createRange();
 
+// getting real path, and adjusting canonical link to use the vanity path
+const canonicalLinkTag = document.head.querySelector('link[rel="canonical"]');
+const longPathMetadata = document.createElement('meta')
+longPathMetadata.setAttribute('property', 'hlx:long-form-path')
+longPathMetadata.content = canonicalLinkTag.href
+document.head.appendChild(longPathMetadata)
+window.canonicalLocation = canonicalLinkTag.href;
+canonicalLinkTag.href = window.location.href;
+
+
+
+
 export function replaceLinksWithEmbed(block) {
   const embeds = ['youtube', 'brightcove', 'instagram', 'ceros'];
   block.querySelectorAll(embeds.map((embed) => `a:only-child[href*="${embed}"]`).join(',')).forEach((embedLink) => {
@@ -217,28 +229,33 @@ function buildTemplate(main) {
 
     // TODO remove once importer fixes more cards
     const checkForMoreCards = (el, elems) => {
-      if (el.tagName === 'P' && el.querySelector('picture') && el.querySelector('a') && el?.nextElementSibling?.tagName === 'P' && el.nextElementSibling.children[0]?.tagName === 'A' && el.nextElementSibling?.nextElementSibling.tagName === 'P' && el.nextElementSibling.nextElementSibling.children[0]?.tagName === 'A') {
+      if (el.tagName === 'P' && el.querySelector('picture') && el.querySelector('a') ) {
+        const hasRubric = el.nextElementSibling.children[0]?.tagName === 'A'
+        const hasDesc = el.nextElementSibling?.nextElementSibling?.children[0]?.tagName === 'A'
+
         const rubric = document.createElement('span');
-        rubric.textContent = el.nextElementSibling.textContent.trim();
+        rubric.textContent = (hasRubric && hasDesc) ? el.nextElementSibling.textContent.trim() : '';
 
         const desc = document.createElement('strong');
-        desc.textContent = el.nextElementSibling.nextElementSibling.textContent.trim();
+        desc.textContent = (hasRubric && hasDesc) ? el.nextElementSibling.nextElementSibling.textContent.trim() : hasRubric ? el.nextElementSibling.textContent.trim() : '';
 
         const link = document.createElement('a');
         link.setAttribute('href', new URL(el.querySelector('a').getAttribute('href')).pathname);
 
         link.append(el.querySelector('picture'));
-        link.append(rubric);
-        link.append(desc);
+        rubric.textContent && link.append(rubric);
+        desc.textContent && link.append(desc);
 
-        el.nextElementSibling.nextElementSibling.classList.add('remove');
-        el.nextElementSibling.classList.add('remove');
+        (hasRubric && hasDesc) && el.nextElementSibling.nextElementSibling.classList.add('remove');
+        (hasRubric || hasDesc) && el.nextElementSibling.classList.add('remove');
         el.classList.add('remove');
 
         elems.push(link);
 
-        if (el.nextElementSibling.nextElementSibling.nextElementSibling) {
-          checkForMoreCards(el.nextElementSibling.nextElementSibling.nextElementSibling, elems);
+        const checkAfterSibling = (hasRubric && hasDesc) ? el.nextElementSibling.nextElementSibling.nextElementSibling : (hasRubric || hasDesc) ? el.nextElementSibling.nextElementSibling : el.nextElementSibling
+
+        if (checkAfterSibling?.nextElementSibling) {
+          checkForMoreCards(checkAfterSibling.nextElementSibling, elems);
         }
       }
     };
@@ -580,6 +597,7 @@ window.store = new (class {
       },
       carousel: () => 20,
       loop: () => 30,
+      'trending-banner': () => 6,
       'series-cards': () => 100,
       'tiger-cards': () => 35,
       'tiger-vault-hero': () => 1,
@@ -635,6 +653,7 @@ window.store = new (class {
       queryNames.forEach((queryName) => {
         document.querySelectorAll(`main .${queryName}.block[data-block-name="${blockName}"]`).forEach((blockEl) => {
           this._queryMap[queryName].limit += this._blockQueryLimit[blockName](blockEl);
+          console.log("\x1b[34m ~ TEST:", queryName, this._blockQueryLimit[blockName](blockEl))
         });
       });
     });
@@ -665,6 +684,7 @@ window.store = new (class {
    */
   query(block) {
     const id = getBlockId(block);
+    this.initQueries();
     let query = this.getQuery(block);
 
     if (!query) {

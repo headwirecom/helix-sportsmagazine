@@ -64,11 +64,11 @@
   background-color: #ed3e49;
 }
 
-.carousel-wrapper .carousel.block .carousel-title-wrapper .carousel-title.courses::before {
+.carousel-wrapper .carousel.block[class*='courses'] .carousel-title-wrapper .carousel-title::before {
   background-color: #105259;
 }
 
-.carousel-wrapper .carousel.block .carousel-title-wrapper .carousel-title.loop::before {
+.carousel-wrapper .carousel.block[class*='loop'] .carousel-title-wrapper .carousel-title::before {
   background-color: #e8b94d;
 }
 

@@ -1,3 +1,4 @@
+import { getMetadata } from "../../scripts/lib-franklin.js";
 import { createTag } from '../../scripts/scripts.js';
 import leaderboard from './leaderboard.js';
 
@@ -721,7 +722,7 @@ function getChannelPathPart(url) {
 
 function isActiveMenuURL(url) {
   const channelPath = getChannelPathPart(url);
-  return (window.location.pathname.lastIndexOf(channelPath) > -1);
+  return (getMetadata('hlx:long-form-path').lastIndexOf(channelPath) > -1);
 }
 
 let activeItem = null;
