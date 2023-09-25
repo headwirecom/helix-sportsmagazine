@@ -1,8 +1,12 @@
 .more-cards {
-    padding: 15px 10px;
+    padding: 15px 22px !important;
     margin: 30px 0;
     display: flex;
     justify-content: center;
+}
+
+.more-cards a {
+    text-decoration: none;
 }
 
 .more-cards.multiple {
@@ -22,7 +26,9 @@
 
 @media (min-width: 1025px) {
     .more-cards {
-        margin: 60px 0;
+        margin: 60px auto;
+        width: max-content;
+        max-width: 100%;
     }
 }
 

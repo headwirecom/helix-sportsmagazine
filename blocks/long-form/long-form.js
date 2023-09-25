@@ -1,7 +1,9 @@
 import {
   addPhotoCredit,
   ARTICLE_TEMPLATES,
-  assignSlot, getAuthors, normalizeAuthorURL,
+  assignSlot,
+  getAuthors,
+  normalizeAuthorURL,
   parseFragment,
   parseSectionMetadata,
   removeEmptyElements,
@@ -39,7 +41,9 @@ export default async function decorate(block) {
             <div class="byline">
               <div class="attribution">
                   <span>By&nbsp;</span>
-                  ${authors.map((author) => `<a href="${normalizeAuthorURL(author)}">${author}</a>`).join('&nbsp;and&nbsp;')}
+                  ${authors
+    .map((author) => `<a href="${normalizeAuthorURL(author)}">${author}</a>`)
+    .join('&nbsp;and&nbsp;')}
               </div>
               <div class="publication">
                   ${publicationDate ? '<div class="separator"></div>' : ''}  
@@ -53,7 +57,9 @@ export default async function decorate(block) {
           <div class="byline">
             <div class="attribution">
                 ${authors.length ? '<span>By&nbsp;</span>' : ''}
-                ${authors.map((author) => `<a href="${normalizeAuthorURL(author)}">${author}</a>`).join('&nbsp;and&nbsp;')}
+                ${authors
+    .map((author) => `<a href="${normalizeAuthorURL(author)}">${author}</a>`)
+    .join('&nbsp;and&nbsp;')}
             </div>
             <div class="publication">
                 <span>${publicationDate}</span>
@@ -116,21 +122,14 @@ export default async function decorate(block) {
   const pictures = template.querySelectorAll('.article-body p > picture');
   addPhotoCredit(pictures);
 
-  // Set fullscreen images
-  pictures.forEach((picture) => {
-    const img = picture.querySelector('img');
-    picture.parentElement.classList.add('fullscreen');
-    img.onload = () => {
-      img.style.left = `-${img.offsetLeft}px`;
-    };
-  });
-
   // Update block with rendered template
   block.innerHTML = '';
   block.append(template);
 
   // Inner block loading
-  block.querySelectorAll('.social-share, .embed, .more-cards, .courses').forEach((innerBlock) => decorateBlock(innerBlock));
+  block
+    .querySelectorAll('.social-share, .embed, .more-cards, .courses')
+    .forEach((innerBlock) => decorateBlock(innerBlock));
   loadBlocks(document.querySelector('main'));
 
   // Toggle dark theme on scroll
@@ -143,18 +142,39 @@ export default async function decorate(block) {
     }).observe(block.querySelector('.lead .image'));
   });
 
-  // Get images that were styled as fullscreen and adjust position
-  window.onresize = () => {
-    block.querySelectorAll('.fullscreen img').forEach((img) => {
-      // Hide visibility before resetting the position
-      img.style.visibility = 'hidden';
-      img.style.left = 0;
+  // creating auto carousels
+  const autoCarouselGroups = [];
 
-      // Wait frame before reading position
-      requestAnimationFrame(() => {
-        img.style.left = `-${img.offsetLeft}px`;
-        img.style.visibility = 'visible';
-      });
-    });
-  };
+  const potentialArticleImageGroups = block.querySelectorAll(
+    '.article-body *:not(:has(picture)) + p:has(> picture img)',
+  );
+  potentialArticleImageGroups.forEach((imageParagraph) => {
+    // this element is followed by at least 2 other images
+    if (
+      imageParagraph.nextElementSibling.querySelector('picture > img')
+      && imageParagraph.nextElementSibling.nextElementSibling.querySelector('picture > img')
+    ) {
+      const imageGroup = [];
+
+      let nextElementToProcess = imageParagraph;
+      while (nextElementToProcess) {
+        const hasImage = nextElementToProcess.querySelector('picture > img');
+        if (hasImage) {
+          imageGroup.push(nextElementToProcess);
+          nextElementToProcess = nextElementToProcess.nextElementSibling;
+        } else {
+          nextElementToProcess = false;
+        }
+      }
+      autoCarouselGroups.push(imageGroup);
+    }
+  });
+
+  autoCarouselGroups.forEach((imageArray) => {
+    const prevNode = imageArray[0].previousSibling;
+    const autoCarouselBlock = buildBlock('carousel', { elems: imageArray });
+    autoCarouselBlock.classList.add('auto-carousel');
+    prevNode.parentElement.insertBefore(autoCarouselBlock, prevNode.nextElementSibling);
+    decorateBlock(autoCarouselBlock);
+  });
 }

@@ -1,5 +1,7 @@
 .long-form-wrapper .long-form.block .container {
     margin: 0 auto;
+
+    --article-width: 800px;
 }
 
 .long-form-wrapper .long-form.block .container-article {
@@ -25,7 +27,7 @@
 
 .long-form-wrapper .long-form.block .article-body a {
     color: #000;
-    text-decoration: none;
+    font-weight: 500;
 }
 
 .long-form-wrapper .long-form.block .article-body strong > a {
@@ -115,18 +117,25 @@
     margin: 20px 0;
 }
 
-.long-form-wrapper .long-form.block .article-body div > p {
+.long-form-wrapper .long-form.block .article-body > div > div > div > * {
+    display: block;
     line-height: 30px;
-    margin-bottom: 20px;
+    margin: 0 auto 20px;
     padding: 0 20px;
+    max-width: var(--article-width);
+}
+
+.long-form-wrapper .long-form.block .article-body > div > div > div > div:has(iframe:not([src*="players.brightcove.net"])) {
+    max-width: none;
+    padding: 0;
 }
 
 .long-form-wrapper .long-form.block .article-body h2 {
     font-family: var(--font-tungsten);
     font-size: 37px;
     font-style: normal;
-    font-weight: 700;
-    line-height: 38px;
+    font-weight: 600;
+    line-height: 38px !important;
     letter-spacing: .05em;
     text-decoration: underline;
     text-decoration-color: var(--link-hover-color);
@@ -142,8 +151,8 @@
 }
 
 @media (min-width: 1025px) {
-    .long-form-wrapper .long-form.block .article-body div > p {
-        padding: 0 35px;
+    .long-form-wrapper .long-form.block .article-body > div > div > div > * {
+        padding: 0 15px 0 35px;
         margin-bottom: 60px;
     }
 
@@ -151,6 +160,12 @@
         margin-top: 0;
         margin-bottom: 60px;
     }
+}
+
+.long-form-wrapper .long-form.block .article-body p:has( > picture img ) {
+    width: 100vw;
+    max-width: none !important;
+    padding: 0 !important;
 }
 
 .long-form-wrapper .long-form.block .headline .description p {
@@ -307,7 +322,6 @@
 }
 
 .long-form-wrapper .long-form.block .article-body {
-    max-width: 800px;
     margin: auto;
     padding-bottom: 60px;
 }
@@ -352,11 +366,11 @@
     }
 }
 
-.long-form-wrapper .long-form.block .article-body .fullscreen {
+.long-form-wrapper .long-form.block .article-body p > picture {
     margin-bottom: 0;
 }
 
-.long-form-wrapper .long-form.block .article-body .fullscreen img {
+.long-form-wrapper .long-form.block .article-body p > picture img {
     position: relative;
     background-color: #ededed;
     width: 100vw;

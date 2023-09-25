@@ -111,7 +111,6 @@ const embedTwitter = (url) => {
 };
 
 const loadEmbed = (block, link, autoplay) => {
-  console.log('\x1b[31m ~ link:', link);
   if (block.classList.contains('embed-is-loaded')) {
     return;
   }

@@ -31,8 +31,12 @@ const LCP_BLOCKS = [...Object.values(ARTICLE_TEMPLATES), 'hero']; // add your LC
 const range = document.createRange();
 
 export function replaceLinksWithEmbed(block) {
-  const embeds = ['youtube', 'brightcove', 'instagram'];
-  block.querySelectorAll(embeds.map((embed) => `a[href*="${embed}"]`).join(',')).forEach((embedLink) => {
+  const embeds = ['youtube', 'brightcove', 'instagram', 'ceros'];
+  block.querySelectorAll(embeds.map((embed) => `a:only-child[href*="${embed}"]`).join(',')).forEach((embedLink) => {
+    // do not transform links that are inline
+    if (embedLink.innerText !== embedLink.parentElement.innerText) {
+      return;
+    }
     if (embedLink.textContent.startsWith('View') && embedLink.href.includes('instagram')) {
       embedLink.remove();
     } else {

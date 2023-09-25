@@ -79,6 +79,10 @@ main .embed.block:has(div > iframe, iframe) {
     max-width: 100%;
 }
 
+main article.article-content .embed.block:has(div > iframe, iframe) {
+    max-width: 800px;
+}
+
 main .embed.block[data-embed-link^="https://view.ceros.com/golf-digest/"] {
     max-width: var(--layout-width);
 }

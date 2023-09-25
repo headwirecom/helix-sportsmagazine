@@ -44,9 +44,9 @@ export default async function decorate(block) {
             <div class="attribution">
               ${author ? `<span>By&nbsp;</span><a href="${normalizeAuthorURL(author)}">${author}</a>` : ''}
             </div>
-            <div class="publication">
+            ${publicationDate ? `<div class="publication">
                 <span>${publicationDate}</span>
-            </div>
+            </div>` : ''}
             <div class="sharing">
                 <slot name="share"></slot>
             </div>
@@ -91,6 +91,12 @@ export default async function decorate(block) {
   const share = buildBlock('social-share', { elems: [] });
   share.setAttribute('slot', 'share');
   block.append(share);
+
+  block.querySelectorAll('p').forEach((p) => {
+    if (p.textContent.includes('• • •')) {
+      p.classList.add('center-seperator');
+    }
+  });
 
   replaceLinksWithEmbed(block);
 
