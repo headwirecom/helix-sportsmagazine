@@ -211,11 +211,14 @@ function getRubric(document) {
   return '';
 }
 
-function createMetadataBlock(document, main) {
-  /* eslint-disable no-undef */
-  const block = WebImporter.Blocks.getMetadataBlock(document, {});
-  main.append(block);
-  return block;
+let metaDataBlock = null;
+function getOrCreateMetadataBlock(document, main) {
+  if (metaDataBlock === null) {
+    /* eslint-disable no-undef */
+    metaDataBlock = WebImporter.Blocks.getMetadataBlock(document, {});
+    main.append(metaDataBlock);
+  }
+  return metaDataBlock;
 }
 
 function appendMetadata(metadata, key, value) {
@@ -484,7 +487,7 @@ function transformArticleDOM(document, templateConfig) {
     el.remove();
   });
 
-  const metadata = createMetadataBlock(document, main);
+  const metadata = getOrCreateMetadataBlock(document, main);
   appendMetadata(metadata, 'Author', author);
   appendMetadata(metadata, 'Author URL', authorURL);
   appendMetadata(metadata, 'Publication Date', publicationDate);
@@ -638,7 +641,7 @@ function transformGalleryDOM(document, templateConfig) {
   const publicationDate = getPublicationDate(document);
   const rubric = getRubric(document);
 
-  const metadata = createMetadataBlock(document, main);
+  const metadata = getOrCreateMetadataBlock(document, main);
 
   appendMetadata(metadata, 'Author', author);
   appendMetadata(metadata, 'Author URL', authorURL);
@@ -687,7 +690,7 @@ function transformProductDOM(document, templateConfig) {
     }
   });
 
-  const metadata = createMetadataBlock(document, main);
+  const metadata = getOrCreateMetadataBlock(document, main);
   appendMetadata(metadata, 'og:type', 'product');
   appendMetadata(metadata, 'template', templateConfig.template);
   appendMetadata(metadata, 'category', templateConfig.category);
@@ -771,7 +774,7 @@ function applyMarkupFixes(document) {
   fixImages(document);
 }
 
-async function trasformDOM(document, url) {
+async function trasformDOM(document, url, documentPath) {
   const templateConfig = findTemplateConfig(document);
 
   let retObj = {
@@ -786,6 +789,9 @@ async function trasformDOM(document, url) {
     applyMarkupFixes(document);
     retObj = templateConfig.transformer(document, templateConfig);
     await updateInternalLinks(retObj.element, url, retObj.report);
+
+    const metadata = getOrCreateMetadataBlock(document, retObj.element);
+    appendMetadata(metadata, 'path', documentPath);
   } else {
     const bodyClass = document.querySelector('body').getAttribute('class');
     throw new Error(`Unknown page type. Body class list ${bodyClass}`);
@@ -817,7 +823,7 @@ function preprocess({ document, url, html, params }) {
    */
 async function transform({document, url, html, params}) {
   const docPath = mapToDocumentPath(document, url);
-  const retObj = await trasformDOM(document, url);
+  const retObj = await trasformDOM(document, url, docPath);
   return [{
     element: retObj.element,
     path: docPath,
