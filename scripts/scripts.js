@@ -30,6 +30,17 @@ const LCP_BLOCKS = [...Object.values(ARTICLE_TEMPLATES), 'hero']; // add your LC
 
 const range = document.createRange();
 
+// getting real path, and adjusting canonical link to use the vanity path
+const canonicalLinkTag = document.head.querySelector('link[rel="canonical"]');
+if (canonicalLinkTag) {
+  const longPathMetadata = document.createElement('meta');
+  longPathMetadata.setAttribute('property', 'hlx:long-form-path');
+  longPathMetadata.content = canonicalLinkTag?.href;
+  document.head.appendChild(longPathMetadata);
+  window.canonicalLocation = canonicalLinkTag.href;
+  canonicalLinkTag.href = window.location.href;
+}
+
 export function replaceLinksWithEmbed(block) {
   const embeds = ['youtube', 'brightcove', 'instagram', 'ceros'];
   block.querySelectorAll(embeds.map((embed) => `a:only-child[href*="${embed}"]`).join(',')).forEach((embedLink) => {
@@ -398,7 +409,7 @@ export function addFavIcons() {
   `;
 
   // Remove placeholder
-  document.head.querySelector('head link[rel="icon"]').remove();
+  document.head.querySelector('head link[rel="icon"]')?.remove();
 
   // Add favicons
   document.head.insertAdjacentHTML('beforeend', favicons);
