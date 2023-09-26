@@ -376,6 +376,7 @@
 .loop {
   padding-top: 220px;
   position: relative;
+  min-height: 100vh;
 }
 
 .trending-banner {
