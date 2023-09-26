@@ -1,4 +1,4 @@
-import { getMetadata } from "../../scripts/lib-franklin.js";
+import { getMetadata } from '../../scripts/lib-franklin.js';
 import { createTag } from '../../scripts/scripts.js';
 import leaderboard from './leaderboard.js';
 

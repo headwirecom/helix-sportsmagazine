@@ -4,6 +4,12 @@
     padding: 20px;
 }
 
+@media (min-width: 1025px) {
+    .default-article-wrapper .default-article.block .container {
+        margin-top: 40px;
+    }
+}
+
 .default-article-wrapper .default-article.block .container .gd-plus-icon {
     border-right: 2px solid #f6f6f6;
     margin-right: 10px;

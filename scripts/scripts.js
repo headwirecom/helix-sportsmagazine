@@ -11,7 +11,7 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
-  toCamelCase, getMetadata, toClassName,
+  toCamelCase, getMetadata, toClassName, decorateBlock, loadBlock,
 } from './lib-franklin.js';
 
 export const ARTICLE_TEMPLATES = {
@@ -32,15 +32,12 @@ const range = document.createRange();
 
 // getting real path, and adjusting canonical link to use the vanity path
 const canonicalLinkTag = document.head.querySelector('link[rel="canonical"]');
-const longPathMetadata = document.createElement('meta')
-longPathMetadata.setAttribute('property', 'hlx:long-form-path')
-longPathMetadata.content = canonicalLinkTag.href
-document.head.appendChild(longPathMetadata)
+const longPathMetadata = document.createElement('meta');
+longPathMetadata.setAttribute('property', 'hlx:long-form-path');
+longPathMetadata.content = canonicalLinkTag.href;
+document.head.appendChild(longPathMetadata);
 window.canonicalLocation = canonicalLinkTag.href;
 canonicalLinkTag.href = window.location.href;
-
-
-
 
 export function replaceLinksWithEmbed(block) {
   const embeds = ['youtube', 'brightcove', 'instagram', 'ceros'];
@@ -229,33 +226,43 @@ function buildTemplate(main) {
 
     // TODO remove once importer fixes more cards
     const checkForMoreCards = (el, elems) => {
-      if (el.tagName === 'P' && el.querySelector('picture') && el.querySelector('a') ) {
-        const hasRubric = el.nextElementSibling.children[0]?.tagName === 'A'
-        const hasDesc = el.nextElementSibling?.nextElementSibling?.children[0]?.tagName === 'A'
+      if (el.tagName === 'P' && el.querySelector('picture') && el.querySelector('a')) {
+        const hasRubric = el.nextElementSibling.children[0]?.tagName === 'A';
+        const hasDesc = el.nextElementSibling?.nextElementSibling?.children[0]?.tagName === 'A';
 
         const rubric = document.createElement('span');
         rubric.textContent = (hasRubric && hasDesc) ? el.nextElementSibling.textContent.trim() : '';
 
         const desc = document.createElement('strong');
-        desc.textContent = (hasRubric && hasDesc) ? el.nextElementSibling.nextElementSibling.textContent.trim() : hasRubric ? el.nextElementSibling.textContent.trim() : '';
+        desc.textContent = '';
+        if (hasRubric && hasDesc) {
+          desc.textContent = el.nextElementSibling.nextElementSibling.textContent.trim();
+        } else if (hasRubric) {
+          desc.textContent = el.nextElementSibling.textContent.trim();
+        }
 
         const link = document.createElement('a');
         link.setAttribute('href', new URL(el.querySelector('a').getAttribute('href')).pathname);
 
         link.append(el.querySelector('picture'));
-        rubric.textContent && link.append(rubric);
-        desc.textContent && link.append(desc);
+        if (rubric.textContent) { link.append(rubric); }
+        if (desc.textContent) { link.append(desc); }
 
-        (hasRubric && hasDesc) && el.nextElementSibling.nextElementSibling.classList.add('remove');
-        (hasRubric || hasDesc) && el.nextElementSibling.classList.add('remove');
+        if (hasRubric && hasDesc) { el.nextElementSibling.nextElementSibling.classList.add('remove'); }
+        if (hasRubric || hasDesc) { el.nextElementSibling.classList.add('remove'); }
         el.classList.add('remove');
 
         elems.push(link);
 
-        const checkAfterSibling = (hasRubric && hasDesc) ? el.nextElementSibling.nextElementSibling.nextElementSibling : (hasRubric || hasDesc) ? el.nextElementSibling.nextElementSibling : el.nextElementSibling
+        let checkAfterSibling = el.nextElementSibling;
+        if (hasRubric && hasDesc) {
+          checkAfterSibling = el.nextElementSibling.nextElementSibling.nextElementSibling;
+        } else if (hasRubric || hasDesc) {
+          checkAfterSibling = el.nextElementSibling.nextElementSibling;
+        }
 
-        if (checkAfterSibling?.nextElementSibling) {
-          checkForMoreCards(checkAfterSibling.nextElementSibling, elems);
+        if (checkAfterSibling) {
+          checkForMoreCards(checkAfterSibling, elems);
         }
       }
     };
@@ -607,7 +614,7 @@ window.store = new (class {
     this.blockNames = Object.keys(this._blockQueryLimit);
     this.spreadsheets = Object.keys(this._spreadsheets);
 
-    this.initQueries();
+    // this.initQueries();
 
     this._cache = {};
 
@@ -653,7 +660,6 @@ window.store = new (class {
       queryNames.forEach((queryName) => {
         document.querySelectorAll(`main .${queryName}.block[data-block-name="${blockName}"]`).forEach((blockEl) => {
           this._queryMap[queryName].limit += this._blockQueryLimit[blockName](blockEl);
-          console.log("\x1b[34m ~ TEST:", queryName, this._blockQueryLimit[blockName](blockEl))
         });
       });
     });
@@ -684,7 +690,7 @@ window.store = new (class {
    */
   query(block) {
     const id = getBlockId(block);
-    this.initQueries();
+    // this.initQueries();
     let query = this.getQuery(block);
 
     if (!query) {
@@ -903,4 +909,23 @@ export const generateArticleBlocker = (block, selector) => {
   `;
 
   articleBody.appendChild(articleBlocker);
+};
+
+/**
+ * Generates a Block for trending loop articles, assigns the slot article and appends the block.
+ *
+ * This function must be awaited!
+ *
+ * @param {block} Block that should contain the new trending-banner block.
+ * @param {slotName} Slot name that should be assigned to the new trending-banner block.
+ */
+export const createAndInsertTrendingBannerBlock = async (block, slotName) => {
+  // TODO use trending query instead of loop articles
+  const trendingBannerBlock = buildBlock('trending-banner', [[]]);
+  trendingBannerBlock.classList.add('loop-article');
+  trendingBannerBlock.setAttribute('slot', slotName);
+  block.append(trendingBannerBlock);
+  decorateBlock(trendingBannerBlock);
+  await loadBlock(trendingBannerBlock);
+  return trendingBannerBlock;
 };

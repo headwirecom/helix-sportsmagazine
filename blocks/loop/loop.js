@@ -1,9 +1,10 @@
-import { buildBlock, createOptimizedPicture, decorateBlock, loadBlock, loadBlocks } from '../../scripts/lib-franklin.js';
+import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 import {
   parseFragment,
   removeEmptyElements,
   render,
   getBlockId,
+  createAndInsertTrendingBannerBlock,
 } from '../../scripts/scripts.js';
 import { facebookSvg, twitterSvg, linkedInSvg } from '../social-share/social-share.js';
 
@@ -80,24 +81,20 @@ const placeholderHtml = (data) => `
 export default async function decorate(block) {
   const id = getBlockId(block);
 
-  // using placeholder html
-  const placeholderTemplate = parseFragment(placeholderHtml())
+  await createAndInsertTrendingBannerBlock(block, 'trending');
 
-  const trendingBannerBlock = buildBlock('trending-banner', [[]])
-  // TODO have trending query and use it instead of loop articles
-  trendingBannerBlock.classList.add('loop-article')
-  trendingBannerBlock.setAttribute('slot', 'trending');
-  block.append(trendingBannerBlock);
-  decorateBlock(trendingBannerBlock)
-  await loadBlock(trendingBannerBlock);
-  render(placeholderTemplate, block)
-  
+  // using placeholder html
+  const placeholderTemplate = parseFragment(placeholderHtml());
+
+  render(placeholderTemplate, block);
+  block.innerHTML = '';
+  block.append(placeholderTemplate);
+
   // Re-rendering content upon fetch complete
-  document.addEventListener(`query:${id}`, async (event) => {
+  document.addEventListener(`query:${id}`, (event) => {
     const loopData = event.detail.data;
 
     const HTML_TEMPLATE = placeholderHtml(loopData);
-
 
     // Template rendering
     const template = parseFragment(HTML_TEMPLATE);
@@ -110,7 +107,6 @@ export default async function decorate(block) {
 
     block.innerHTML = '';
     block.append(template);
-    
   });
 
   // Trigger query

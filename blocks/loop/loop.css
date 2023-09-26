@@ -17,17 +17,6 @@
   }
 }
 
-.loop-container .loop-wrapper slot[name="trending"] {
-  height: 220px;
-  display: block;
-}
-
-@media (max-width: 768) {
-  .loop-container .loop-wrapper slot[name="trending"] {
-    height: 197px;
-  }
-}
-
 /*
 *
 * Header Styling
