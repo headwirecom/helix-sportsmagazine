@@ -211,11 +211,12 @@ function getRubric(document) {
   return '';
 }
 
-let metaDataBlock = null;
 function getOrCreateMetadataBlock(document, main) {
-  if (metaDataBlock === null) {
+  let metaDataBlock = main.querySelector('.page-metadata');
+  if (!metaDataBlock) {
     /* eslint-disable no-undef */
     metaDataBlock = WebImporter.Blocks.getMetadataBlock(document, {});
+    metaDataBlock.classList.add('page-metadata');
     main.append(metaDataBlock);
   }
   return metaDataBlock;
