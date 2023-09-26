@@ -183,7 +183,6 @@
       import sitemap from "/import/tools/importer/data/sitemap.json" assert {type: 'json'}
 
       const pathLocation = sitemap.find((obj) => Object.hasOwn(obj, window.location.pathname))
-      // debugger
       if (pathLocation) {
         const drivePath = '/content-v2/' + pathLocation[window.location.pathname].replace('/content/golfdigest-com/en/', '').replace('.html', '')
         window.location.assign(drivePath)
