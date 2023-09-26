@@ -372,3 +372,13 @@
     max-width: 100%;
   }
 }
+
+.loop {
+  padding-top: 220px;
+  position: relative;
+}
+
+.trending-banner {
+  position: absolute;
+  top: 0;
+}
