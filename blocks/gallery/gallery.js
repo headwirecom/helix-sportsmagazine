@@ -9,6 +9,13 @@ import {
   buildBlock, decorateBlock, getMetadata, loadBlocks,
 } from '../../scripts/lib-franklin.js';
 
+
+let latestGalleries = []
+
+fetch('/gallery-query-index.json?sheet=play&limit=2').then(response => response.json()).then(data => {
+  latestGalleries = data.data
+})
+
 const gdPlusArticle = getMetadata('gdplus').length > 0;
 const rubric = getMetadata('rubric');
 const author = getMetadata('author');
@@ -57,9 +64,19 @@ const HTML_TEMPLATE = `
  * Add carousel interactions
  * @param {Element} carousel The carousel element
  */
-function addEventListeners(carousel) {
+function addEventListeners(carousel, carouselItemsLength) {
   // Slide to the sibling item
   const slide = (item, sibling) => {
+    if (sibling === 'next' && [...item.parentElement.children].indexOf(item) === (carouselItemsLength-1)) {
+      if (latestGalleries.length) {
+        if (window.location.pathname === latestGalleries[0].path) {
+          window.location.assign(latestGalleries[1].path)
+        } else {
+          window.location.assign(latestGalleries[0].path)
+        }
+      }
+      return
+    }
     carousel.classList.add('is-transitioning');
     item.hidden = true;
     item[`${sibling}ElementSibling`].hidden = false;
@@ -198,7 +215,7 @@ export default async function decorate(block) {
     }
   });
 
-  addEventListeners(carousel);
+  addEventListeners(carousel, carouselItemsLength);
 
   // Update block with rendered template
   block.innerHTML = '';
