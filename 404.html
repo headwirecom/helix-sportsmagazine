@@ -180,21 +180,28 @@
     <footer></footer>
     <script type="module">
       import { createOptimizedPicture } from "/scripts/lib-franklin.js";
-      import sitemap from "/import/tools/importer/data/sitemap.json" assert {type: 'json'}
 
-      const pathLocation = sitemap.find((obj) => Object.hasOwn(obj, window.location.pathname))
-      if (pathLocation) {
-        const drivePath = '/content-v2/' + pathLocation[window.location.pathname].replace('/content/golfdigest-com/en/', '').replace('.html', '')
-        window.location.assign(drivePath)
-      } else {
-        document.body.hidden = false
-  
-        const imageUrl = "/media_10b8f0c21a329ee5ab764abf34d64a94de757ea2a.png";
-        const imageAlt = "Tiger Woods regretting a bad shot";
-        const pictureElement = createOptimizedPicture(imageUrl, imageAlt);
-        const imageContainer = document.querySelector(".error-image");
-        imageContainer.appendChild(pictureElement);
+      const display404 = () => {
+          document.body.hidden = false
+    
+          const imageUrl = "/media_10b8f0c21a329ee5ab764abf34d64a94de757ea2a.png";
+          const imageAlt = "Tiger Woods regretting a bad shot";
+          const pictureElement = createOptimizedPicture(imageUrl, imageAlt);
+          const imageContainer = document.querySelector(".error-image");
+          imageContainer.appendChild(pictureElement);
       }
+      
+      fetch('/import/tools/importer/data/sitemap.json').then(response => response.json()).then((sitemap) => {
+        const pathLocation = sitemap.find((obj) => Object.hasOwn(obj, window.location.pathname))
+        if (pathLocation) {
+          const drivePath = '/content-v2/' + pathLocation[window.location.pathname].replace('/content/golfdigest-com/en/', '').replace('.html', '')
+          window.location.assign(drivePath)
+        } else {
+          display404()
+        }
+      }).catch(error => {
+        display404()
+      })
     </script>
   </body>
 </html>
