@@ -424,7 +424,7 @@ export function addFavIcons() {
   `;
 
   // Remove placeholder
-  document.head.querySelector('head link[rel="icon"]').remove();
+  document.head.querySelector('head link[rel="icon"]')?.remove();
 
   // Add favicons
   document.head.insertAdjacentHTML('beforeend', favicons);
