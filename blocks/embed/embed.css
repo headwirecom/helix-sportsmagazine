@@ -6,6 +6,14 @@ main .embed {
     position: relative;
 }
 
+main .embed.block:has(iframe) {
+    max-width: 100%;
+}
+
+main .embed-wrapper .embed.block {
+    padding: 0 !important;
+}
+
 main .embed > div {
     display: flex;
     justify-content: center;
@@ -75,8 +83,13 @@ main .embed .embed-placeholder-play button::before {
     left: 7px;
 }
 
-main .embed.block:has(div > iframe, iframe) {
-    max-width: 100%;
+main article.article-content .embed.block:has(iframe) {
+    max-width: 800px;
+}
+
+main .open-article.block article.article-content .embed.block:has(iframe) {
+    max-width: none;
+    margin: 0;
 }
 
 main article.article-content .embed.block:has(div > iframe, iframe) {
@@ -94,4 +107,9 @@ main .embed.block[data-embed-link^="https://view.ceros.com/golf-digest/"]:not(:h
 main .embed.block[data-embed-link^="https://view.ceros.com/golf-digest/"] .embed-placeholder picture,
 main .embed.block iframe[src^="https://view.ceros.com/golf-digest/"] {
     padding: 0 15px;
+}
+
+main .long-form-wrapper .long-form.block .embed.block[data-embed-link^="https://view.ceros.com/golf-digest/"] .embed-placeholder picture,
+main .long-form-wrapper .long-form.block .embed.block iframe[src^="https://view.ceros.com/golf-digest/"] {
+    padding: 0;
 }
