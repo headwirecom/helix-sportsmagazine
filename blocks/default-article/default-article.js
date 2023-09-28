@@ -2,6 +2,7 @@ import {
   addPhotoCredit,
   addPortraitClass,
   assignSlot,
+  createAndInsertTrendingBannerBlock,
   generateArticleBlocker,
   normalizeAuthorURL,
   parseFragment,
@@ -29,6 +30,7 @@ export default async function decorate(block) {
 
   // HTML template in JS to avoid extra waterfall for LCP blocks
   const HTML_TEMPLATE = `
+    <slot name="loop-trending-banner"></slot>
     <div class="container">
       <div class="container-article">
         <article class="article-content">
@@ -75,6 +77,12 @@ export default async function decorate(block) {
   // Identify slots
   assignSlot(block, 'heading', 'h1');
   assignSlot(block, 'image', 'picture');
+
+  if (getMetadata('hlx:long-form-path').includes('/the-loop/')) {
+    await createAndInsertTrendingBannerBlock(block, 'loop-trending-banner');
+  } else {
+    template.querySelector('slot[name="loop-trending-banner"]').remove();
+  }
 
   const picture = block.querySelector('picture');
   // Picture is optional

@@ -1,3 +1,8 @@
+.long-form-wrapper .long-form.block .center-seperator {
+    width: max-content;
+    margin: auto;
+}
+
 .long-form-wrapper .long-form.block .container {
     margin: 0 auto;
 
@@ -117,19 +122,6 @@
     margin: 20px 0;
 }
 
-.long-form-wrapper .long-form.block .article-body > div > div > div > * {
-    display: block;
-    line-height: 30px;
-    margin: 0 auto 20px;
-    padding: 0 20px;
-    max-width: var(--article-width);
-}
-
-.long-form-wrapper .long-form.block .article-body > div > div > div > div:has(iframe:not([src*="players.brightcove.net"])) {
-    max-width: none;
-    padding: 0;
-}
-
 .long-form-wrapper .long-form.block .article-body h2 {
     font-family: var(--font-tungsten);
     font-size: 37px;
@@ -144,6 +136,29 @@
     text-align: center;
 }
 
+.long-form-wrapper .long-form.block .article-body div > h2,
+.long-form-wrapper .long-form.block .article-body div > h3,
+.long-form-wrapper .long-form.block .article-body div > h4,
+.long-form-wrapper .long-form.block .article-body div > h5,
+.long-form-wrapper .long-form.block .article-body div > h6,
+.long-form-wrapper .long-form.block .article-body div > b,
+.long-form-wrapper .long-form.block .article-body div > i,
+.long-form-wrapper .long-form.block .article-body div > em,
+.long-form-wrapper .long-form.block .article-body div > blockquote,
+.long-form-wrapper .long-form.block .article-body div > strong,
+.long-form-wrapper .long-form.block .article-body div > p {
+    display: block;
+    line-height: 30px;
+    margin: 0 auto 20px;
+    padding: 0 20px;
+    max-width: var(--article-width);
+}
+
+.long-form-wrapper .long-form.block .article-body > div > div > div > div:has(iframe:not([src*="players.brightcove.net"])) {
+    max-width: none;
+    padding: 0;
+}
+
 .long-form-wrapper .long-form.block .article-body div > h2 {
     margin-top: 0;
     margin-bottom: 20px;
@@ -151,7 +166,17 @@
 }
 
 @media (min-width: 1025px) {
-    .long-form-wrapper .long-form.block .article-body > div > div > div > * {
+    .long-form-wrapper .long-form.block .article-body div > h2,
+    .long-form-wrapper .long-form.block .article-body div > h3,
+    .long-form-wrapper .long-form.block .article-body div > h4,
+    .long-form-wrapper .long-form.block .article-body div > h5,
+    .long-form-wrapper .long-form.block .article-body div > h6,
+    .long-form-wrapper .long-form.block .article-body div > b,
+    .long-form-wrapper .long-form.block .article-body div > i,
+    .long-form-wrapper .long-form.block .article-body div > em,
+    .long-form-wrapper .long-form.block .article-body div > blockquote,
+    .long-form-wrapper .long-form.block .article-body div > strong,
+    .long-form-wrapper .long-form.block .article-body div > p {
         padding: 0 15px 0 35px;
         margin-bottom: 60px;
     }

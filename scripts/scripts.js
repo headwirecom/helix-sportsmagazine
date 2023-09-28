@@ -11,7 +11,7 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
-  toCamelCase, getMetadata, toClassName,
+  toCamelCase, getMetadata, toClassName, decorateBlock, loadBlock,
 } from './lib-franklin.js';
 
 export const ARTICLE_TEMPLATES = {
@@ -29,6 +29,17 @@ export const ARTICLE_TEMPLATES = {
 const LCP_BLOCKS = [...Object.values(ARTICLE_TEMPLATES), 'hero']; // add your LCP blocks to the list
 
 const range = document.createRange();
+
+// getting real path, and adjusting canonical link to use the vanity path
+const canonicalLinkTag = document.head.querySelector('link[rel="canonical"]');
+if (canonicalLinkTag) {
+  const longPathMetadata = document.createElement('meta');
+  longPathMetadata.setAttribute('property', 'hlx:long-form-path');
+  longPathMetadata.content = canonicalLinkTag?.href;
+  document.head.appendChild(longPathMetadata);
+  window.canonicalLocation = canonicalLinkTag.href;
+  canonicalLinkTag.href = window.location.href;
+}
 
 export function replaceLinksWithEmbed(block) {
   const embeds = ['youtube', 'brightcove', 'instagram', 'ceros'];
@@ -217,28 +228,43 @@ function buildTemplate(main) {
 
     // TODO remove once importer fixes more cards
     const checkForMoreCards = (el, elems) => {
-      if (el.tagName === 'P' && el.querySelector('picture') && el.querySelector('a') && el?.nextElementSibling?.tagName === 'P' && el.nextElementSibling.children[0]?.tagName === 'A' && el.nextElementSibling?.nextElementSibling.tagName === 'P' && el.nextElementSibling.nextElementSibling.children[0]?.tagName === 'A') {
+      if (el.tagName === 'P' && el.querySelector('picture') && el.querySelector('a')) {
+        const hasRubric = el.nextElementSibling.children[0]?.tagName === 'A';
+        const hasDesc = el.nextElementSibling?.nextElementSibling?.children[0]?.tagName === 'A';
+
         const rubric = document.createElement('span');
-        rubric.textContent = el.nextElementSibling.textContent.trim();
+        rubric.textContent = (hasRubric && hasDesc) ? el.nextElementSibling.textContent.trim() : '';
 
         const desc = document.createElement('strong');
-        desc.textContent = el.nextElementSibling.nextElementSibling.textContent.trim();
+        desc.textContent = '';
+        if (hasRubric && hasDesc) {
+          desc.textContent = el.nextElementSibling.nextElementSibling.textContent.trim();
+        } else if (hasRubric) {
+          desc.textContent = el.nextElementSibling.textContent.trim();
+        }
 
         const link = document.createElement('a');
         link.setAttribute('href', new URL(el.querySelector('a').getAttribute('href')).pathname);
 
         link.append(el.querySelector('picture'));
-        link.append(rubric);
-        link.append(desc);
+        if (rubric.textContent) { link.append(rubric); }
+        if (desc.textContent) { link.append(desc); }
 
-        el.nextElementSibling.nextElementSibling.classList.add('remove');
-        el.nextElementSibling.classList.add('remove');
+        if (hasRubric && hasDesc) { el.nextElementSibling.nextElementSibling.classList.add('remove'); }
+        if (hasRubric || hasDesc) { el.nextElementSibling.classList.add('remove'); }
         el.classList.add('remove');
 
         elems.push(link);
 
-        if (el.nextElementSibling.nextElementSibling.nextElementSibling) {
-          checkForMoreCards(el.nextElementSibling.nextElementSibling.nextElementSibling, elems);
+        let checkAfterSibling = el.nextElementSibling;
+        if (hasRubric && hasDesc) {
+          checkAfterSibling = el.nextElementSibling.nextElementSibling.nextElementSibling;
+        } else if (hasRubric || hasDesc) {
+          checkAfterSibling = el.nextElementSibling.nextElementSibling;
+        }
+
+        if (checkAfterSibling) {
+          checkForMoreCards(checkAfterSibling, elems);
         }
       }
     };
@@ -580,6 +606,7 @@ window.store = new (class {
       },
       carousel: () => 20,
       loop: () => 30,
+      'trending-banner': () => 6,
       'series-cards': () => 100,
       'tiger-cards': () => 35,
       'tiger-vault-hero': () => 1,
@@ -589,7 +616,7 @@ window.store = new (class {
     this.blockNames = Object.keys(this._blockQueryLimit);
     this.spreadsheets = Object.keys(this._spreadsheets);
 
-    this.initQueries();
+    // this.initQueries();
 
     this._cache = {};
 
@@ -665,6 +692,7 @@ window.store = new (class {
    */
   query(block) {
     const id = getBlockId(block);
+    // this.initQueries();
     let query = this.getQuery(block);
 
     if (!query) {
@@ -883,4 +911,23 @@ export const generateArticleBlocker = (block, selector) => {
   `;
 
   articleBody.appendChild(articleBlocker);
+};
+
+/**
+ * Generates a Block for trending loop articles, assigns the slot article and appends the block.
+ *
+ * This function must be awaited!
+ *
+ * @param {block} Block that should contain the new trending-banner block.
+ * @param {slotName} Slot name that should be assigned to the new trending-banner block.
+ */
+export const createAndInsertTrendingBannerBlock = async (block, slotName) => {
+  // TODO use trending query instead of loop articles
+  const trendingBannerBlock = buildBlock('trending-banner', [[]]);
+  trendingBannerBlock.classList.add('loop-article');
+  trendingBannerBlock.setAttribute('slot', slotName);
+  block.append(trendingBannerBlock);
+  decorateBlock(trendingBannerBlock);
+  await loadBlock(trendingBannerBlock);
+  return trendingBannerBlock;
 };
