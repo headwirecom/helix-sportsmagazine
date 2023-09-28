@@ -9,6 +9,20 @@ import {
   buildBlock, decorateBlock, getMetadata, loadBlocks,
 } from '../../scripts/lib-franklin.js';
 
+const generateNextUpInfo = ({ title, path }) => {
+  const nextUpWrapper = document.createElement('a');
+  nextUpWrapper.className = 'next-up-wrapper';
+  nextUpWrapper.href = path;
+  nextUpWrapper.innerHTML = `<span>Next up</span><h4>${title}</h4>`;
+  return nextUpWrapper;
+};
+
+let latestGalleries = [];
+
+fetch('/gallery-query-index.json?sheet=play&limit=2').then((response) => response.json()).then((data) => {
+  latestGalleries = data.data;
+});
+
 const gdPlusArticle = getMetadata('gdplus').length > 0;
 const rubric = getMetadata('rubric');
 const author = getMetadata('author');
@@ -45,6 +59,7 @@ const HTML_TEMPLATE = `
         <slot></slot>
         <slot name="share"></slot>  
       </div>
+      <!-- TODO add recommendations based on what the user has already seen. -->
     </article>
     <div class="container-aside">
         <!-- ADVERTISEMENT HERE -->    
@@ -57,9 +72,19 @@ const HTML_TEMPLATE = `
  * Add carousel interactions
  * @param {Element} carousel The carousel element
  */
-function addEventListeners(carousel) {
+function addEventListeners(carousel, carouselItemsLength) {
   // Slide to the sibling item
   const slide = (item, sibling) => {
+    if (sibling === 'next' && [...item.parentElement.children].indexOf(item) === (carouselItemsLength - 1)) {
+      if (latestGalleries.length) {
+        if (window.location.pathname === latestGalleries[0].path) {
+          item.firstElementChild.append(generateNextUpInfo(latestGalleries[1]));
+        } else {
+          item.firstElementChild.append(generateNextUpInfo(latestGalleries[0]));
+        }
+      }
+      return;
+    }
     carousel.classList.add('is-transitioning');
     item.hidden = true;
     item[`${sibling}ElementSibling`].hidden = false;
@@ -172,14 +197,14 @@ export default async function decorate(block) {
           </svg>
         </button>  
       ` : ''}
-      ${index !== carouselItemsLength - 1 ? `
+      
         <button class="next ${isFirst ? 'has-label' : ''}">
           ${isFirst ? '<span>View the Gallery</span>' : ''}  
           <svg viewBox="0 0 16 16">
             <path fill="#FFF" d="M4.689 0L3.335 1.354 9.968 8l-6.633 6.644L4.689 16l7.976-7.99-.01-.01.01-.011z"/>
           </svg>    
         </button>
-      ` : ''}
+      
       <div class="count">${index + 1}/${carouselItemsLength}</div>  
     `);
 
@@ -198,7 +223,7 @@ export default async function decorate(block) {
     }
   });
 
-  addEventListeners(carousel);
+  addEventListeners(carousel, carouselItemsLength);
 
   // Update block with rendered template
   block.innerHTML = '';
