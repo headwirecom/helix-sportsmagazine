@@ -77,6 +77,7 @@ function shouldRewriteLink(href) {
 
 async function updateLink(el, url, rewrites, err) {
   let href = el.href;
+  let hostname = new URL(url).hostname;
   
   // is this an internal link?
   if (shouldRewriteLink(href)) {
@@ -93,7 +94,7 @@ async function updateLink(el, url, rewrites, err) {
       rewrites.new.push(`${href}`);
       el.setAttribute('href', href);
     } else {
-      const redirect = await getRedirect(`https://www.golfdigest.com${oldPath}`);
+      const redirect = await getRedirect(`https://${hostname}${oldPath}`);
       if (redirect) {
         // console.log(`${oldPath} redirected to ${redirect}`);
         err.push(`Redirect: [${el.innerHTML}](${el.href}) to ${redirect}`);
@@ -102,7 +103,7 @@ async function updateLink(el, url, rewrites, err) {
       } else {
         // console.warn(`Unable to replace link ${el.href} with Franklin path. Item not found in sitemap.`);
         try {
-          href = await fetchLongPath(`https://www.golfdigest.com${oldPath}`);
+          href = await fetchLongPath(`https://${hostname}${oldPath}`);
         } catch(error) {
           err.push(`Unble to map: [${el.innerHTML}](${el.href}) ${error.message}`);
           console.warn(`${url}: Unable to map ${el.href} to Franklin path. ${error}`);
