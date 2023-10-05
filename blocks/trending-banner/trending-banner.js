@@ -1,9 +1,7 @@
-import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
+import { createOptimizedPicture, decorateIcons } from '../../scripts/lib-franklin.js';
 import {
   getBlockId, parseFragment, removeEmptyElements, render,
 } from '../../scripts/scripts.js';
-
-const trendingSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 11 11"><g fill="none" fill-rule="evenodd"><path fill="#000" d="M6.211 2.216l3.5-2.234.58 4.07z"/><path stroke="#000" stroke-width="1.44" d="M8.232 3L6.103 7.677l-3.205-2.07L.622 9.83"/></g></svg>';
 
 const placeholderTrendingItemHtml = ({
   image = '', imageAlt = 'alt-text', title = '', path = '#',
@@ -30,7 +28,7 @@ const placeholderTrendingItemHtml = ({
 const generateTemplate = (loopData) => `
   <div class="trending-wrapper">
     <div class="trending-content">
-      <div class="trending-heading"><span>Trending</span>${trendingSvg}</div>
+      <div class="trending-heading"><span>Trending</span><span class="icon icon-trending"></span></div>
       ${
   !loopData
     ? placeholderTrendingItemHtml().repeat(6)
@@ -67,6 +65,8 @@ export default async function decorate(block) {
 
     blockInDom.innerHTML = '';
     blockInDom.append(template);
+
+    decorateIcons(blockInDom);
   });
 
   // Trigger query

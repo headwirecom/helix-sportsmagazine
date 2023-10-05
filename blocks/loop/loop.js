@@ -6,7 +6,6 @@ import {
   getBlockId,
   createAndInsertTrendingBannerBlock,
 } from '../../scripts/scripts.js';
-import { facebookSvg, twitterSvg, linkedInSvg } from '../social-share/social-share.js';
 
 let numberOfEagerCards = 3;
 if (window.innerWidth < 1024) {
@@ -64,9 +63,9 @@ const placeholderHtml = (data) => `
         Follow us
       </div>
       <ul class="loop-social-list">
-        <li><a href="https://www.facebook.com/sharer.php?u=${encodedUrl}">${facebookSvg}</a></li>
-        <li><a href="href="https://twitter.com/intent/tweet?text=The+Loop&url=${encodedUrl}&original_referer=${encodedUrl}">${twitterSvg}</a></li>
-        <li><a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}">${linkedInSvg}</a></li>
+        <li><a href="https://www.facebook.com/sharer.php?u=${encodedUrl}"><span class="icon icon-facebook"></span></a></li>
+        <li><a href="href="https://twitter.com/intent/tweet?text=The+Loop&url=${encodedUrl}&original_referer=${encodedUrl}"><span class="icon icon-twitter"></span></a></li>
+        <li><a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}"><span class="icon icon-linkedin"></span></a></li>
       </ul>
     </div>
   </div>

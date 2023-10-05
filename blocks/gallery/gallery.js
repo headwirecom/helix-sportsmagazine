@@ -6,7 +6,7 @@ import {
   render,
 } from '../../scripts/scripts.js';
 import {
-  buildBlock, decorateBlock, getMetadata, loadBlocks,
+  buildBlock, decorateBlock, decorateIcons, getMetadata, loadBlocks,
 } from '../../scripts/lib-franklin.js';
 
 const generateNextUpInfo = ({ title, path }) => {
@@ -192,17 +192,13 @@ export default async function decorate(block) {
       ${credit ? `<div class="photo-credit">Photo By: ${credit}</div>` : ''}
       ${!isFirst ? `
         <button class="prev">   
-          <svg viewBox="0 0 16 16">
-            <path fill="#FFF" d="M11.311 16l1.354-1.355L6.033 8l6.632-6.645L11.311 0 3.335 7.989l.01.011-.01.01z"/>
-          </svg>
+          <span class="icon icon-prev"></span>
         </button>  
       ` : ''}
       
         <button class="next ${isFirst ? 'has-label' : ''}">
           ${isFirst ? '<span>View the Gallery</span>' : ''}  
-          <svg viewBox="0 0 16 16">
-            <path fill="#FFF" d="M4.689 0L3.335 1.354 9.968 8l-6.633 6.644L4.689 16l7.976-7.99-.01-.01.01-.011z"/>
-          </svg>    
+          <span class="icon icon-next"></span>
         </button>
       
       <div class="count">${index + 1}/${carouselItemsLength}</div>  
@@ -232,4 +228,6 @@ export default async function decorate(block) {
   // Inner block loading
   block.querySelectorAll('.social-share').forEach((innerBlock) => decorateBlock(innerBlock));
   loadBlocks(document.querySelector('main'));
+
+  decorateIcons(block);
 }
