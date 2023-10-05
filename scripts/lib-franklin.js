@@ -176,8 +176,14 @@ export async function decorateIcons(element) {
     }
   }));
 
-  const symbols = Object.values(ICONS_CACHE).filter((v) => !v.styled).map((v) => v.html).join('\n');
+  const symbols = Object.values(ICONS_CACHE).filter((v) => !v.styled && !v.resolved).map((v) => v.html).join('\n');
   svgSprite.innerHTML += symbols;
+
+  Object.keys(ICONS_CACHE).forEach((icon) => {
+    if (ICONS_CACHE[icon].html) {
+      ICONS_CACHE[icon].resolved = true;
+    }
+  });
 
   icons.forEach((span) => {
     const iconName = Array.from(span.classList).find((c) => c.startsWith('icon-')).substring(5);

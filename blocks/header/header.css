@@ -65,6 +65,7 @@
 .header a.header-logo {
   border: none;
   margin-bottom: 0;
+  overflow: hidden;
 }
 
 .landing-page.dark .header-logo svg path:nth-child(2),
@@ -73,17 +74,21 @@
   color: #FFF;
 }
 
+.header .header-logo .icon {
+  display: flex;
+}
+
 .header .header-logo svg {
   width: 125px;
   height: auto;
   max-height: 100%;
 }
 
-.home-page .header:not(.is-scrolling) .header-menu-button svg path {
+.home-page .header:not(.is-scrolling) .header-menu-button svg {
   fill: #fff;
 }
 
-.header .nav-menu .social-links a:hover svg path {
+.header .nav-menu .social-links a:hover svg {
   stroke: #000;
 }
 
@@ -114,6 +119,10 @@
   height: 15px;
 }
 
+.header .header-menu-button .icon {
+  display: flex;
+}
+
 .home-page .header:not(.is-scrolling) .header-menu-button {
   color: #fff;
 }
@@ -125,6 +134,8 @@
 
 .leaderboard .o-leaderboard-link-container-link svg {
   margin-left: 10px;
+  width: 6px;
+  height: 9px;
 }
 
 .header .nav-menu .header-logo svg {
@@ -522,7 +533,7 @@ body:not(.landing-page) .header .header-bottom-bar {
   display: flex;
 }
 
-.home-page .header-menu-button span {
+.home-page .header-menu-button .label {
   margin-left: 25px;
 }
 
@@ -543,8 +554,14 @@ body:not(.landing-page) .header .header-bottom-bar {
   transition: transform 0.3s, opacity 0.3s, width 0.3s;
 }
 
-.home-page .header:not(.is-scrolling) .header-bottom-right .header-search-button svg path {
-  stroke: #fff;
+.header .header-bottom-right .header-search-button svg,
+.header .header-top-right .header-search-button svg {
+  height: 25px;
+  width: 25px;
+}
+
+.home-page .header:not(.is-scrolling) .header-bottom-right .header-search-button svg {
+  fill: #fff;
 }
 
 @media (max-width: 769px) {
@@ -662,7 +679,12 @@ body:not(.landing-page) .header .header-bottom-bar {
   opacity: 0.8;
 }
 
-.home-page .header:not(.is-scrolling) .header-cancel-search-button > svg line {
+.header .search-form-area .header-cancel-search-button svg {
+  width: 36px;
+  height: 35px;
+}
+
+.home-page .header:not(.is-scrolling) .header-cancel-search-button > svg {
   stroke: #fff;
 }
 
@@ -931,7 +953,7 @@ body:not(.landing-page) .header .header-bottom-bar {
   background-color: #f6f6f6;
 }
 
-.header .nav-menu-nav-link button:hover svg * {
+.header .nav-menu-nav-link button:hover svg {
   stroke: var(--link-hover-color);
   fill: var(--link-hover-color);
 }
@@ -1438,11 +1460,11 @@ body:not(.landing-page) .header .header-bottom-bar {
   color: #FFF;
 }
 
-.landing-page.dark .header:not(.is-scrolling) .header-menu-button svg path {
+.landing-page.dark .header:not(.is-scrolling) .header-menu-button svg {
   fill: #FFF;
   color: #FFF;
 }
 
-.landing-page.dark .header:not(.is-scrolling) .header-search-button svg path {
+.landing-page.dark .header:not(.is-scrolling) .header-search-button svg {
   stroke: #FFF;
 }

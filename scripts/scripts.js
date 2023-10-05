@@ -900,7 +900,7 @@ export const generateArticleBlocker = (block, selector) => {
         <span class="highlight">Golf Digest<span class="red-plus">+</span></span>
         includes unlimited digital articles, exclusive course reviews, magazine access and more!
       </div>
-      <a class="cta" href="https://www.golfdigest.com/subscribe-golf-digest-plus" target="_blank">
+      <a class="cta" href="/subscribe-golf-digest-plus" target="_blank">
         Learn More
       </a>
 

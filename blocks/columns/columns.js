@@ -5,7 +5,7 @@ import {
 } from '../../scripts/scripts.js';
 
 import {
-  decorateBlock, loadBlock,
+  decorateBlock, decorateIcons, loadBlock,
 } from '../../scripts/lib-franklin.js';
 
 export default async function decorate(block) {
@@ -45,8 +45,7 @@ export default async function decorate(block) {
 
   const link = block.querySelector('.content-container a');
   if (link) {
-    fetch('/icons/arrow-icon.svg').then((req) => req.text()).then((svg) => {
-      link.insertAdjacentHTML('afterbegin', `<div class="arrow-icon">${svg}</div>`);
-    });
+    link.insertAdjacentHTML('afterbegin', '<div class="arrow-icon"><span class="icon icon-arrow-right"></span></div>');
+    decorateIcons(link);
   }
 }

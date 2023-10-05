@@ -30,18 +30,10 @@ ratingElements.forEach((ratingElement, index) => {
   }
 });
 
-const arrowIcon = `
-    <div class="icon-container">
-        <svg width="6" height="9" viewBox="0 0 6 9" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Arrow Icon White" class="arrow-icon">
-            <path d="M1.70612 0.819317L1.53333 0.654091L1.36055 0.819317L0.827218 1.32933L0.638272 1.51001L0.827218 1.69069L3.57161 4.31506L0.827218 6.93943L0.638272 7.12012L0.827218 7.3008L1.36055 7.81081L1.53333 7.97604L1.70612 7.81081L5.17278 4.49575L5.36173 4.31506L5.17278 4.13438L1.70612 0.819317Z" fill="#ffffff" stroke="#ffffff" stroke-width="0.5"></path>
-        </svg>
-    </div>
-`;
-
 const buttonElements = document.querySelectorAll('.courses-button');
 
 buttonElements.forEach((button) => {
-  button.innerHTML += arrowIcon;
+  button.innerHTML += '<span class="icon icon-arrow-right icon-container"></span>';
 });
 
 // wrap courses info
