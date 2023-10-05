@@ -130,7 +130,9 @@ const enableCarouselFunctionality = (template, { isWedges, isLarge, isAutoCarous
     window.addEventListener('touchmove', touchMoveHandler);
   };
   carouselWrapper.onmousedown = mouseDownHandler;
-  carouselWrapper.addEventListener('touchstart', mouseDownHandler);
+  carouselWrapper.addEventListener('touchstart', mouseDownHandler, {
+    passive: true,
+  });
 
   // button logic
   const rightOnClick = () => {
