@@ -5,6 +5,7 @@ indices:
   gallery:
     include:
        - '/content-v2/**/gallery/**'
+       - '/content-v3/**/gallery/**'
     target: /gallery-query-index.json
     properties:
       title:
@@ -45,6 +46,7 @@ indices:
   article:
     include:
      - '/content-v2/**/article/**'
+     - '/content-v3/**/article/**'
     target: /article-query-index.json
     properties:
       title:
@@ -97,6 +99,7 @@ indices:
   products:
     include:
      - '/content-v2/**/products/**'
+     - '/content-v3/**/products/**'
     target: /product-query-index.json
     properties:
       title:
