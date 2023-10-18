@@ -32,9 +32,13 @@ function findLongUrlInSitemap(path) {
 }
 
 async function getRedirect(url) {
-  const resp = await fetch(url);
-  if (resp.redirected) {
-    return resp.url;
+  try {
+    const resp = await fetch(url);
+    if (resp.redirected) {
+      return resp.url;
+    }
+  } catch(err) {
+    console.error(`Unable to fetch ${url}. ${err.message}.`, err);
   }
   return false;
 }
@@ -70,19 +74,23 @@ async function fetchLongPath(url) {
 }
 
 function shouldRewriteLink(href) {
-  return (href.startsWith('https://www.golfdigest.com/') || 
+  return (href.startsWith('https://www.golfdigest.com/') || href.startsWith('http://www.golfdigest.com/') ||
     href.startsWith('//www.golfdigest.com/') ||
+    href.startsWith('https://www.golfdigest.golf-prod.sports.aws.discovery.com/') ||
+    href.startsWith('http://www.golfdigest.golf-prod.sports.aws.discovery.com/') ||
+    href.startsWith('//www.golfdigest.golf-prod.sports.aws.discovery.com/') ||
     (href.startsWith('/') && !href.startsWith('//')));
 }
 
 async function updateLink(el, url, rewrites, err) {
   let href = el.href;
   let hostname = new URL(url).hostname;
+  let port = new URL(url).port;
   
   // is this an internal link?
   if (shouldRewriteLink(href)) {
     // console.log(`rewriting ${href} to franklin url`);
-    href = href.replace('https:','').replace('\/\/www.golfdigest.com', '');
+    href = href.replace('https:','').replace('http:', '').replace('\/\/www.golfdigest.com', '').replace('\/\/www.golfdigest.golf-prod.sports.aws.discovery.com','');
     let oldPath = href;
     if (!href.startsWith('/content/golfdigest-com/en/')) {
       href = findLongUrlInSitemap(href);
@@ -94,16 +102,22 @@ async function updateLink(el, url, rewrites, err) {
       rewrites.new.push(`${href}`);
       el.setAttribute('href', href);
     } else {
-      const redirect = await getRedirect(`https://${hostname}${oldPath}`);
+      let proxyUrl = (port === 80) ? `//${hostname}${oldPath}` : `//${hostname}:${port}${oldPath}`;
+      if (hostname === 'localhost') {
+        proxyUrl = `http://${proxyUrl}?host=https%3A%2F%2Fwww.golfdigest.golf-prod.sports.aws.discovery.com`;
+      } else {
+        proxyUrl = `https://${proxyUrl}`;
+      }
+      const redirect = await getRedirect(proxyUrl);
       if (redirect) {
         // console.log(`${oldPath} redirected to ${redirect}`);
         err.push(`Redirect: [${el.innerHTML}](${el.href}) to ${redirect}`);
         el.setAttribute('href', redirect);
         updateLink(el, url, rewrites, err);
       } else {
-        // console.warn(`Unable to replace link ${el.href} with Franklin path. Item not found in sitemap.`);
+        console.warn(`Unable to replace link ${el.href} with Franklin path. Item not found in sitemap.`);
         try {
-          href = await fetchLongPath(`https://${hostname}${oldPath}`);
+          href = await fetchLongPath(proxyUrl);
         } catch(error) {
           err.push(`Unble to map: [${el.innerHTML}](${el.href}) ${error.message}`);
           console.warn(`${url}: Unable to map ${el.href} to Franklin path. ${error}`);
@@ -705,6 +719,36 @@ function transformProductDOM(document, templateConfig) {
   };
 }
 
+function transformClubListingDOM(document, templateConfig) {
+  const main = document.createElement('main');
+  const content = document.querySelector('.article-content');
+  main.append(content);
+
+  content.querySelectorAll('.brightcoveVideoEmbed').forEach((el) => {
+    const videoEl = el.querySelector('video-js');
+    const acct = videoEl.getAttribute('data-account');
+    const player = videoEl.getAttribute('data-player');
+    const videoId = videoEl.getAttribute('data-video-id');
+    const playlistId = videoEl.getAttribute('data-playlist-id');
+    const param = (videoId) ? `videoId=${videoId}` : `playlistId=${playlistId}`;
+    const src = `https://players.brightcove.net/${acct}/${player}_default/index.html?${param}`;
+    replaceEmbed(el, src);
+  });
+  // main.innerHTML = document.querySelector('.main').innerHTML;
+
+  const metadata = getOrCreateMetadataBlock(document, main);
+  appendMetadata(metadata, 'og:type', 'product');
+  appendMetadata(metadata, 'template', templateConfig.template);
+  appendMetadata(metadata, 'category', templateConfig.category);
+  appendPageMetadata(document, metadata);
+  return {
+    element: main,
+    report: {
+      title: document.title,
+    },
+  };
+}
+
 function mapToDocumentPath(document, url) {
   let franklinPath = null;
   let contentPath = document.body.getAttribute('data-page-path');
@@ -725,6 +769,7 @@ const TRANSFORM_CONFIG = {
   Gallery: { template: 'Gallery', selector: ".slideshow-wrapper", category: "gallery", transformer: transformGalleryDOM },
   GalleryListicle: { template: 'Gallery Listicle', selector: ".photocards", category: "gallery", transformer: transformGalleryDOM },
   ProductListing: { template: 'Product Listing', selector: ".productListingPage", category: "product", transformer: transformProductDOM },
+  ClubListing: { template: 'Club Listing', selector: '.clubListingPage', category: 'clublisting', transformer: transformClubListingDOM }
 };
 
 function findTemplateConfig(document) {
