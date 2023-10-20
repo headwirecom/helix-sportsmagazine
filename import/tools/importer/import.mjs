@@ -281,7 +281,7 @@ function replaceEmbed(document, el, url, textEl, main) {
   if (textEl) {
     const embedBlock = createBlockTable(document, main, 'Embed');
     appendToBlock(embedBlock, null, `<a href=${url}>${url}</a>`);
-    appendElementToBlock(embedBlock, null, textEl);
+    embedBlock.querySelector('a').insertAdjacentElement('afterend', textEl);
     el.insertAdjacentElement('beforebegin', embedBlock);
   } else {
     el.insertAdjacentHTML('beforebegin', `<a href=${url}>${url}</a>`);
