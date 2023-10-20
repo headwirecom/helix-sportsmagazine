@@ -161,11 +161,6 @@ async function updateInternalLinks(dom, url, report) {
   }
 }
 
-function replaceEmbed(el, url) {
-  el.insertAdjacentHTML('beforebegin', `<a href=${url}>${url}</a>`);
-  el.remove();
-}
-
 function getAttributionName(document) {
   let ret = '';
   document.querySelectorAll('.o-Attribution__a-Name').forEach((el) => {
@@ -282,6 +277,18 @@ function createBlockTable(document, main, blockName) {
   return table;
 }
 
+function replaceEmbed(document, el, url, textEl, main) {
+  if (textEl) {
+    const embedBlock = createBlockTable(document, main, 'Embed');
+    appendToBlock(embedBlock, null, `<a href=${url}>${url}</a>`);
+    appendElementToBlock(embedBlock, null, textEl);
+    el.insertAdjacentElement('beforebegin', embedBlock);
+  } else {
+    el.insertAdjacentHTML('beforebegin', `<a href=${url}>${url}</a>`);
+  }
+  el.remove();
+}
+
 function createSectionMetadata(document, main) {
   return createBlockTable(document, main, 'Section Metadata');
 }
@@ -367,6 +374,83 @@ function updateImage(el) {
   }
 }
 
+function processEmbeds(document, main, container) {
+  // Create a section for each image embed with it's own section metadata
+  container.querySelectorAll('.imageEmbed').forEach(imageEmbed => {
+    const imageEmbedCredit = imageEmbed.querySelector('.o-ImageEmbed__a-Credit');
+    const imageEmbedCaption = imageEmbed.querySelector('.o-ImageEmbed__a-Caption');
+    if (imageEmbedCredit || imageEmbedCaption) {
+      let sectionBlock = createSectionMetadata(document, main);
+      if (imageEmbedCredit) {
+        let heroImageCreditTxt = (imageEmbedCredit) ? imageEmbedCredit.innerHTML : '';
+        if (heroImageCreditTxt.includes('Photo By:')) {
+          heroImageCreditTxt = heroImageCreditTxt.replace('Photo By:','').trim();
+        }
+        imageEmbedCredit.remove();
+        appendToBlock(sectionBlock, 'Photo Credit', heroImageCreditTxt);
+      }
+      if (imageEmbedCaption) {
+        const imageEmbedCaptionTxt = (imageEmbedCaption.querySelector('p')) ? imageEmbedCaption.querySelector('p').innerHTML : imageEmbedCaption.innerHTML;
+        appendToBlock(sectionBlock, 'Photo Caption', imageEmbedCaptionTxt);
+        imageEmbedCaption.remove()
+      }
+    
+      imageEmbed.insertAdjacentHTML('beforebegin', '<hr/>');
+      imageEmbed.insertAdjacentElement('afterend', sectionBlock);
+      sectionBlock.insertAdjacentHTML('afterend', '<hr/>');
+    }
+  });
+
+  const tweets = container.querySelectorAll('.tweetEmbed');
+  tweets.forEach((tweet) => {
+    const embedData = tweet.querySelector('[data-module="tweet-embed"]');
+    if (embedData) {
+      const tweetURL = embedData.getAttribute('data-tweet-url');
+      replaceEmbed(document, tweet, tweetURL);
+    }
+  });
+
+  container.querySelectorAll('.iframe, .youtubeEmbed').forEach((el) => {
+    const frame = el.querySelector('iframe');
+    if (frame && frame.src.toLowerCase().includes('youtube.')) {
+      const textEl = el.querySelector('.o-StoryFeature__m-TextWrap');
+      const src = frame.src;
+      if (textEl) {
+        replaceEmbed(document, el, src, textEl, main);
+      } else {
+        replaceEmbed(document, el, src);
+      }
+    }
+  });
+
+  container.querySelectorAll('.brightcoveVideoEmbed').forEach((el) => {
+    const videoEl = el.querySelector('video-js');
+    const acct = videoEl.getAttribute('data-account');
+    const player = videoEl.getAttribute('data-player');
+    const videoId = videoEl.getAttribute('data-video-id');
+    const playlistId = videoEl.getAttribute('data-playlist-id');
+    const param = (videoId) ? `videoId=${videoId}` : `playlistId=${playlistId}`;
+    const src = `https://players.brightcove.net/${acct}/${player}_default/index.html?${param}`;
+    const textEl = el.querySelector('.o-StoryFeature__m-TextWrap');
+    if (textEl) {
+      replaceEmbed(document, el, src, textEl, main);
+    } else {
+      replaceEmbed(document, el, src);
+    }
+  });
+
+  // Issue https://github.com/headwirecom/helix-sportsmagazine/issues/128
+  // replace all other iframes with an embed block
+  container.querySelectorAll('.iframe').forEach((el) => {
+    const frame = el.querySelector('iframe');
+    const url = frame.src;
+    const embedBlock = createBlockTable(document, main, 'Embed');
+    appendToBlock(embedBlock, null, `<a href=${url}>${url}</a>`);
+    el.insertAdjacentElement('beforebegin', embedBlock);
+    el.remove();
+  });
+}
+
 function transformArticleDOM(document, templateConfig) {
   let articleTemplate = templateConfig.template;
 
@@ -439,69 +523,7 @@ function transformArticleDOM(document, templateConfig) {
   // reinsert original document section separators
   articleBody.querySelectorAll('.importer-section-separator').forEach(el => { el.replaceWith(document.createElement('hr')); });
 
-  // Create a section for each image embed with it's own section metadata
-  articleBody.querySelectorAll('.imageEmbed').forEach(imageEmbed => {
-    const imageEmbedCredit = imageEmbed.querySelector('.o-ImageEmbed__a-Credit');
-    const imageEmbedCaption = imageEmbed.querySelector('.o-ImageEmbed__a-Caption');
-    if (imageEmbedCredit || imageEmbedCaption) {
-      let sectionBlock = createSectionMetadata(document, main);
-      if (imageEmbedCredit) {
-        let heroImageCreditTxt = (imageEmbedCredit) ? imageEmbedCredit.innerHTML : '';
-        if (heroImageCreditTxt.includes('Photo By:')) {
-          heroImageCreditTxt = heroImageCreditTxt.replace('Photo By:','').trim();
-        }
-        imageEmbedCredit.remove();
-        appendToBlock(sectionBlock, 'Photo Credit', heroImageCreditTxt);
-      }
-      if (imageEmbedCaption) {
-        const imageEmbedCaptionTxt = (imageEmbedCaption.querySelector('p')) ? imageEmbedCaption.querySelector('p').innerHTML : imageEmbedCaption.innerHTML;
-        appendToBlock(sectionBlock, 'Photo Caption', imageEmbedCaptionTxt);
-        imageEmbedCaption.remove()
-      }
-    
-      imageEmbed.insertAdjacentHTML('beforebegin', '<hr/>');
-      imageEmbed.insertAdjacentElement('afterend', sectionBlock);
-      sectionBlock.insertAdjacentHTML('afterend', '<hr/>');
-    }
-  });
-
-  const tweets = articleBody.querySelectorAll('.tweetEmbed');
-  tweets.forEach((tweet) => {
-    const embedData = tweet.querySelector('[data-module="tweet-embed"]');
-    if (embedData) {
-      const tweetURL = embedData.getAttribute('data-tweet-url');
-      replaceEmbed(tweet, tweetURL);
-    }
-  });
-
-  articleBody.querySelectorAll('.iframe, .youtubeEmbed').forEach((el) => {
-    const frame = el.querySelector('iframe');
-    if (frame && frame.src.toLowerCase().includes('youtube.')) {
-      replaceEmbed(el, frame.src);
-    }
-  });
-
-  articleBody.querySelectorAll('.brightcoveVideoEmbed').forEach((el) => {
-    const videoEl = el.querySelector('video-js');
-    const acct = videoEl.getAttribute('data-account');
-    const player = videoEl.getAttribute('data-player');
-    const videoId = videoEl.getAttribute('data-video-id');
-    const playlistId = videoEl.getAttribute('data-playlist-id');
-    const param = (videoId) ? `videoId=${videoId}` : `playlistId=${playlistId}`;
-    const src = `https://players.brightcove.net/${acct}/${player}_default/index.html?${param}`;
-    replaceEmbed(el, src);
-  });
-
-  // Issue https://github.com/headwirecom/helix-sportsmagazine/issues/128
-  // replace all other iframes with an embed block
-  articleBody.querySelectorAll('.iframe').forEach((el) => {
-    const frame = el.querySelector('iframe');
-    const url = frame.src;
-    const embedBlock = createBlockTable(document, main, 'Embed');
-    appendToBlock(embedBlock, null, `<a href=${url}>${url}</a>`);
-    el.insertAdjacentElement('beforebegin', embedBlock);
-    el.remove();
-  });
+  processEmbeds(document, main, articleBody);
 
   const metadata = getOrCreateMetadataBlock(document, main);
   appendMetadata(metadata, 'Author', author);
@@ -732,7 +754,12 @@ function transformClubListingDOM(document, templateConfig) {
     const playlistId = videoEl.getAttribute('data-playlist-id');
     const param = (videoId) ? `videoId=${videoId}` : `playlistId=${playlistId}`;
     const src = `https://players.brightcove.net/${acct}/${player}_default/index.html?${param}`;
-    replaceEmbed(el, src);
+    const textEl = el.querySelector('.o-StoryFeature__m-TextWrap');
+    if (textEl) {
+      replaceEmbed(document, el, src, textEl, main);
+    } else {
+      replaceEmbed(document, el, src);
+    }
   });
   // main.innerHTML = document.querySelector('.main').innerHTML;
 
