@@ -1,4 +1,17 @@
 /* stylelint-disable */
+body {
+    background-color: #fff;
+    color: #24292e;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+}
+
+main {
+    width: 500px;
+    margin: 0 auto;
+    background-color: #eee;
+    border: 1px solid #ccc;
+}
+
 img {
     height: auto;
     width: 500px;
@@ -9,7 +22,6 @@ p {
 }
 
 h1, h2, h3 {
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.08em;
