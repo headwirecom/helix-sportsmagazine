@@ -1,0 +1,157 @@
+/* stylelint-disable */
+img {
+    height: auto;
+    width: 500px;
+}
+
+p {
+    font-size: 18px;
+}
+
+h1, h2, h3 {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+h1 {
+    font-size: 32px;
+}
+
+h2 {
+    font-size: 24px;
+}
+
+h3 {
+    font-size: 20px;
+    text-transform: none;
+}
+
+p > strong:only-child > a:only-child {
+    background-color: #ED3E49;
+    color: white;
+    border-radius: 2px;
+    padding: 8px 16px;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+p > a:only-child {
+    text-decoration: underline;
+    font-weight: bold;
+    color: #000;
+}
+
+main > div:first-child, main > div:last-child {
+    background-color: rgb(51 51 51);
+    color: white;
+    padding: 48px;
+    text-align: center;
+}
+
+main > div:first-child img, main > div:last-child img {
+    height: 100px;
+    width: auto;
+}
+
+main > div:first-child a, main > div:last-child a {
+    color: rgb(200 70 70);
+    text-decoration: none;
+    font-weight: normal;
+}
+
+main > div:first-child img {
+    margin: auto;
+}
+
+main > div:last-child h2 {
+    margin-bottom: 48px;
+}
+
+main > div:last-child p:has(img:not(.icon)) {
+    display: flex;
+    margin-top: 48px;
+}
+
+main > div:last-child p:has(img:not(.icon)) img {
+    margin: auto;
+}
+
+main > div:last-child ul:has(.icon) {
+    list-style: none;
+    padding: 0;
+}
+
+main > div:last-child ul:has(.icon) li {
+    display: inline-block;
+}
+
+main > div:last-child .icon {
+    height: 52px;
+    width: 52px;
+    padding: 0 10px;
+}
+
+main > div:has(p:has(img) + h2) {
+    padding: 0 0 48px 0;
+    text-align: center;
+}
+
+main > div:has(p:has(img) + h2) p:has(img) {
+    margin: 0 0 24px 0;
+}
+
+main > div:has(p:has(img) + h2) p:not(:has(img)) {
+    padding: 0 48px;
+}
+
+div:has(.column) {
+    padding: 48px;
+    border-top: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+}
+
+.column img {
+    width: 200px;
+    margin-left: 24px;
+}
+
+div:has(.fragment) {
+    padding: 48px;
+}
+
+div:has(.fragment) a {
+    color: #000;
+}
+
+div:has(.fragment) ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 48px;
+}
+
+div:has(.fragment) ul > li {
+    background-color: #fff;
+    margin-bottom: 24px;
+}
+
+div:has(.fragment) ul > li .text {
+    padding: 24px;
+}
+
+div:has(.fragment) ul > li .text h3 {
+    margin-top: 0;
+}
+
+div:has(.fragment) ul > li .text span {
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: bold;
+    margin-top: 24px;
+}
+
+div:has(.fragment) img {
+    width: 100%;
+}
