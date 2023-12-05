@@ -75,8 +75,8 @@ main > div:first-child h2, main > div:last-child h2 {
 }
 
 main > div:first-child img, main > div:last-child img {
-    height: 100px;
-    width: auto;
+    height: auto;
+    width: 200px;
 }
 
 main > div:first-child a, main > div:last-child a {
@@ -178,5 +178,6 @@ div:has(.fragment) ul > li .text span {
 }
 
 div:has(.fragment) img {
-    width: 100%;
+    width: 400px;
+    height: auto;
 }
